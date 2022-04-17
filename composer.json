@@ -9,8 +9,8 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "ext-json": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "codeception/codeception": "4.1.29",
@@ -57,7 +57,7 @@
             "vendor/bin/rector process",
             "vendor/bin/ecs check"
         ],
-        "lint:clear-cache" :[
+        "lint:clear-cache": [
             "vendor/bin/rector process --clear-cache",
             "vendor/bin/ecs check --clear-cache"
         ],
