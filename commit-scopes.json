@@ -1,0 +1,6 @@
+[
+    "monorepo",
+    "*",
+    "octane",
+    "caching-bundle"
+]

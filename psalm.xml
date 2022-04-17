@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<psalm
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        errorLevel="1"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        phpVersion="7.4"
+        strictBinaryOperands="true"
+        disableSuppressAll="true"
+        ignoreInternalFunctionFalseReturn="false"
+        ignoreInternalFunctionNullReturn="false"
+        findUnusedPsalmSuppress="true"
+        ensureArrayIntOffsetsExist="true"
+        sealAllMethods="true"
+        sealAllProperties="true"
+        autoloader="psalm/bootstrap.php"
+>
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+
+    </issueHandlers>
+
+    <globals>
+        <var name="GLOBALS" type="array{phpmailer: \PHPMailer\PHPMailer\PHPMailer, wpdb: \wpdb}"/>
+    </globals>
+
+    <plugins>
+        <plugin filename="psalm/Plugins/TestCaseClasses.php"/>
+    </plugins>
+
+</psalm>

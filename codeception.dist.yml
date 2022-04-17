@@ -1,0 +1,11 @@
+# If this file is not in the root directory things get messy with codeception.
+include:
+  - src/Snicco/*
+paths:
+  output: tests/_output
+  tests: tests
+  data: tests/_data
+  support: tests/_support
+settings:
+  colors: true
+bootstrap: bootstrap.php

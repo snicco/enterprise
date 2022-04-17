@@ -1,1 +1,1 @@
-# Snicco enterprise components
+# Snicco enterprise WordPress solutions

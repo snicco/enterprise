@@ -1,0 +1,15 @@
+{
+  "name": "snicco-test/plugin-b",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "require": {
+    "snicco-test/bundle-b" : "dev-master"
+  },
+  "require-dev": {
+    "snicco-test/bundle-a" : "dev-master"
+  }
+}

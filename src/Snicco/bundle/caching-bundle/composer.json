@@ -1,0 +1,23 @@
+{
+  "name": "snicco/caching-bundle",
+  "minimum-stability": "stable",
+  "license": "commercial",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\Caching\\" : "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\Caching\\Tests\\" : "tests"
+    }
+  }
+}

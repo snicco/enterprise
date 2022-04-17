@@ -1,0 +1,11 @@
+{
+  "name": "snicco-test/plugin-a",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "require": {
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "snicco-test/bundle-a",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "require": {
+    "snicco/better-wp-api": "dev-master"
+  },
+  "require-dev": {
+    "snicco/better-wp-cache": "dev-master"
+  }
+}

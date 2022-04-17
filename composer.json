@@ -1,0 +1,77 @@
+{
+    "name": "snicco/enterprise",
+    "license": "commerical",
+    "authors": [
+        {
+            "name": "Calvin Alkan",
+            "email": "calvin@snicco.de"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "ext-json": "*",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "codeception/codeception": "4.1.29",
+        "lucatume/wp-browser": "~3.1.4",
+        "php-stubs/wordpress-stubs": "^5.9",
+        "rector/rector": "0.12.18",
+        "snicco/str-arr": "^1.0",
+        "symfony/console": "5.4.7",
+        "symplify/composer-json-manipulator": "9.3.26",
+        "symplify/easy-coding-standard": "10.1.2",
+        "symplify/monorepo-builder": "9.4.70",
+        "vimeo/psalm": "4.22.0",
+        "vlucas/phpdotenv": "5.4.1",
+        "webmozart/assert": "1.10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\Caching\\": "src/Snicco/bundle/caching-bundle/src",
+            "Snicco\\Enterprise\\Component\\Octane\\": "src/Snicco/component/octane/src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\Caching\\Tests\\": "src/Snicco/bundle/caching-bundle/tests",
+            "Snicco\\Enterprise\\Component\\Octane\\Tests\\": "src/Snicco/component/octane/tests",
+            "Snicco\\Enterprise\\Monorepo\\": "src/Monorepo/",
+            "Snicco\\Enterprise\\Monorepo\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": false
+    },
+    "scripts": {
+        "merge": [
+            "vendor/bin/monorepo-builder merge",
+            "composer dump-autoload"
+        ],
+        "lint:fix": [
+            "vendor/bin/rector process",
+            "vendor/bin/ecs --fix"
+        ],
+        "lint": [
+            "vendor/bin/rector process",
+            "vendor/bin/ecs check"
+        ],
+        "lint:clear-cache" :[
+            "vendor/bin/rector process --clear-cache",
+            "vendor/bin/ecs check --clear-cache"
+        ],
+        "psalm": "vendor/bin/psalm",
+        "psalm:clear-cache": [
+            "vendor/bin/psalm --clear-cache",
+            "vendor/bin/psalm --clear-global-cache"
+        ],
+        "test": "vendor/bin/codecept run"
+    },
+    "replace": {
+        "snicco/caching-bundle": "self.version",
+        "snicco/octane": "self.version"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
