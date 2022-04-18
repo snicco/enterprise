@@ -4,3 +4,7 @@ vendor
 package-lock.json
 node_modules
 /tests/_output/
+codeception.yml
+
+## repos
+/src/Snicco/*/*/tests/_output/*

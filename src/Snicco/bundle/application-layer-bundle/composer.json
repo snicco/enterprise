@@ -1,5 +1,5 @@
 {
-    "name": "snicco/caching-bundle",
+    "name": "snicco/application-layer-bundle",
     "license": "commercial",
     "authors": [
         {
@@ -7,19 +7,25 @@
             "email": "calvin@snicco.de"
         }
     ],
+    "require": {
+        "snicco/kernel": "^1.0.0",
+        "league/tactician" : "^1.1.0",
+        "webmozart/assert" : "*"
+    },
     "require-dev": {
         "codeception/codeception": "4.1.29",
         "lucatume/wp-browser": "3.1.5",
-        "phpunit/phpunit": "9.5.13"
+        "phpunit/phpunit": "9.5.13",
+        "snicco/testing-bundle": "^1.0.0"
     },
     "autoload": {
         "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\Caching\\": "src"
+            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\Caching\\Tests\\": "tests"
+            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "tests"
         }
     },
     "minimum-stability": "stable"

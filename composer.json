@@ -10,15 +10,18 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-curl": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "league/tactician": "^1.1.0",
+        "snicco/kernel": "^1.0.0"
     },
     "require-dev": {
         "codeception/codeception": "4.1.29",
         "lucatume/wp-browser": "3.1.5",
         "php-stubs/wordpress-stubs": "^5.9",
-        "phpunit/phpunit": "9.5.20",
+        "phpunit/phpunit": "9.5.13",
         "rector/rector": "0.12.18",
         "snicco/str-arr": "^1.0",
+        "snicco/testing-bundle": "^1.0.0",
         "symfony/console": "5.4.7",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
@@ -29,12 +32,14 @@
     },
     "autoload": {
         "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src/Snicco/bundle/application-layer-bundle/src",
             "Snicco\\Enterprise\\Bundle\\Caching\\": "src/Snicco/bundle/caching-bundle/src",
             "Snicco\\Enterprise\\Component\\Octane\\": "src/Snicco/component/octane/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "src/Snicco/bundle/application-layer-bundle/tests",
             "Snicco\\Enterprise\\Bundle\\Caching\\Tests\\": "src/Snicco/bundle/caching-bundle/tests",
             "Snicco\\Enterprise\\Component\\Octane\\Tests\\": "src/Snicco/component/octane/tests",
             "Snicco\\Enterprise\\Monorepo\\": "src/Monorepo/",
@@ -70,6 +75,7 @@
         "test": "vendor/bin/codecept run"
     },
     "replace": {
+        "snicco/application-layer-bundle": "self.version",
         "snicco/caching-bundle": "self.version",
         "snicco/octane": "self.version"
     },
