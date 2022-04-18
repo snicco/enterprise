@@ -106,6 +106,7 @@ jobs:
       - name: 'Localize composer paths and install dependencies'
         run: |
           ./vendor/bin/monorepo-builder localize-composer-paths ${{ matrix.packages.composer_json_path }} --ansi
+          composer validate
           composer update --no-progress --ansi --working-dir ${{ matrix.packages.abs_directory_path }}
 
       - name: 'Parse .env file'
