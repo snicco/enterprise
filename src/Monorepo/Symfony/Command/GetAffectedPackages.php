@@ -9,6 +9,7 @@ use Snicco\Enterprise\Monorepo\Package\PackageRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use const JSON_PRETTY_PRINT;
@@ -26,18 +27,29 @@ final class GetAffectedPackages extends Command
             InputArgument::IS_ARRAY | InputArgument::REQUIRED,
             'Space seperated list of modified/deleted files'
         );
+        $this->addOption('pretty', 'p', InputOption::VALUE_OPTIONAL, 'Pretty print the packages', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $files = (array) $input->getArgument('files');
 
-        $output->writeln($this->package_repo->getAffected($files)->toJson(fn (Package $package): array => [
-            'abs_path' => $package->absolute_directory_path,
-            'name' => $package->name,
-            'vendor_name' => $package->vendor_name,
-            'short_name' => $package->short_name,
-        ], JSON_PRETTY_PRINT));
+        $json_options = 0;
+
+        if (false !== $input->getOption('pretty')) {
+            $json_options = JSON_PRETTY_PRINT;
+        }
+
+        $output->writeln(
+            $this->package_repo->getAffected($files)
+                ->toJson(fn (Package $package): array => [
+                    'short_name' => $package->short_name,
+                    'vendor_name' => $package->vendor_name,
+                    'name' => $package->name,
+                    'abs_directory_path' => $package->absolute_directory_path,
+                    'composer_json_path' => $package->composer_path,
+                ], $json_options)
+        );
 
         return Command::SUCCESS;
     }

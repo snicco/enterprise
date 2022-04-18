@@ -25,7 +25,9 @@ jobs:
               - 'src/**/*.php'
               - 'tests/**/*.php'
               - 'codeception.dist.yml'
-              - 'src/**/*.yml'                
+              - 'src/**/*.yml'
+              - composer.json
+              
 
   codeception_tests:
     name: 'Codeception tests'

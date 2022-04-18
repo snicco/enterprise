@@ -1,23 +1,26 @@
 {
-  "name": "snicco/caching-bundle",
-  "minimum-stability": "stable",
-  "license": "commercial",
-  "authors": [
-    {
-      "name": "Calvin Alkan",
-      "email": "calvin@snicco.de"
-    }
-  ],
-  "require": {
-  },
-  "autoload": {
-    "psr-4": {
-      "Snicco\\Enterprise\\Bundle\\Caching\\" : "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Snicco\\Enterprise\\Bundle\\Caching\\Tests\\" : "tests"
-    }
-  }
+    "name": "snicco/caching-bundle",
+    "license": "commercial",
+    "authors": [
+        {
+            "name": "Calvin Alkan",
+            "email": "calvin@snicco.de"
+        }
+    ],
+    "require-dev": {
+        "codeception/codeception": "4.1.29",
+        "lucatume/wp-browser": "3.1.5",
+        "phpunit/phpunit": "9.5.20"
+    },
+    "autoload": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\Caching\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\Caching\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "stable"
 }

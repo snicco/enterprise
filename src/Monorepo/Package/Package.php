@@ -17,8 +17,6 @@ use function array_keys;
  */
 final class Package
 {
-    public ComposerJson $composer_json;
-
     /**
      * @var non-empty-string
      */
@@ -39,7 +37,17 @@ final class Package
      */
     public string $name;
 
+    /**
+     * @var string[]
+     */
     public array $first_party_dependencies;
+
+    /**
+     * @var non-empty-string
+     */
+    public string $composer_path;
+
+    private ComposerJson $composer_json;
 
     /**
      * @psalm-suppress ImpureMethodCall
@@ -77,5 +85,9 @@ final class Package
             $deps,
             fn (string $name): bool => Str::startsWith($name, $this->vendor_name . '/')
         );
+    
+        $path = $file_info->getRealPath();
+        Assert::stringNotEmpty($path);
+        $this->composer_path = $path;
     }
 }
