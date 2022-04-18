@@ -7,28 +7,36 @@
             "email": "calvin@snicco.de"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/snicco/codeception"
+        }
+    ],
     "require": {
         "php": "^7.4|^8.0",
         "ext-curl": "*",
         "ext-json": "*",
         "league/tactician": "^1.1.0",
-        "snicco/kernel": "^1.0.0"
+        "league/tactician-logger": "^0.11.0",
+        "snicco/better-wpdb": "^1.0.1",
+        "snicco/kernel": "^1.0.1",
+        "webmozart/assert": "^1.10.0"
     },
     "require-dev": {
-        "codeception/codeception": "4.1.29",
+        "codeception/codeception": "4.1.x-dev",
         "lucatume/wp-browser": "3.1.5",
         "php-stubs/wordpress-stubs": "^5.9",
         "phpunit/phpunit": "9.5.13",
         "rector/rector": "0.12.18",
-        "snicco/str-arr": "^1.0",
-        "snicco/testing-bundle": "^1.0.0",
+        "snicco/str-arr": "^1.0.1",
+        "snicco/testing-bundle": "^1.0.1",
         "symfony/console": "5.4.7",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
         "symplify/monorepo-builder": "9.4.70",
         "vimeo/psalm": "4.22.0",
-        "vlucas/phpdotenv": "5.4.1",
-        "webmozart/assert": "1.10.0"
+        "vlucas/phpdotenv": "5.4.1"
     },
     "autoload": {
         "psr-4": {
@@ -55,6 +63,9 @@
             "vendor/bin/monorepo-builder merge",
             "composer dump-autoload"
         ],
+        "propagate": [
+            "vendor/bin/monorepo-builder propagate"
+        ],
         "lint:fix": [
             "vendor/bin/rector process",
             "vendor/bin/ecs --fix"
@@ -72,7 +83,10 @@
             "vendor/bin/psalm --clear-cache",
             "vendor/bin/psalm --clear-global-cache"
         ],
-        "test": "vendor/bin/codecept run"
+        "test": [
+            "vendor/bin/codecept run -i unit",
+            "vendor/bin/codecept run -i wpunit"
+        ]
     },
     "replace": {
         "snicco/application-layer-bundle": "self.version",

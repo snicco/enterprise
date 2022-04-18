@@ -8,15 +8,17 @@
         }
     ],
     "require": {
-        "snicco/kernel": "^1.0.0",
-        "league/tactician" : "^1.1.0",
-        "webmozart/assert" : "*"
+        "snicco/kernel": "^1.0.1",
+        "snicco/better-wpdb": "^1.0.1",
+        "league/tactician": "^1.1.0",
+        "webmozart/assert": "^1.10.0",
+        "league/tactician-logger": "^0.11.0"
     },
     "require-dev": {
-        "codeception/codeception": "4.1.29",
+        "codeception/codeception": "4.1.x-dev",
         "lucatume/wp-browser": "3.1.5",
         "phpunit/phpunit": "9.5.13",
-        "snicco/testing-bundle": "^1.0.0"
+        "snicco/testing-bundle": "^1.0.1"
     },
     "autoload": {
         "psr-4": {

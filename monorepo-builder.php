@@ -37,7 +37,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'php-stubs/wordpress-stubs' => '^5.9',
             'symfony/console' => '5.4.7',
             'symplify/composer-json-manipulator' => '9.3.26',
-            'webmozart/assert' => '1.10.0',
+            'webmozart/assert' => '^1.10.0',
             'snicco/str-arr' => '^1.0',
         ],
         ComposerJsonSection::AUTOLOAD_DEV => [
