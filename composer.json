@@ -1,6 +1,7 @@
 {
     "name": "snicco/enterprise",
     "license": "commerical",
+    "description": "Snicco enterprise WordPress solutions",
     "authors": [
         {
             "name": "Calvin Alkan",

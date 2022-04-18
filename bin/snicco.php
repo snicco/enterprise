@@ -32,6 +32,7 @@ try {
     $application->add(new GetAffectedPackages($package_repo));
     $application->add(new SplitPackage($package_repo));
     
+    
     exit($application->run());
     
 }catch (Throwable $e) {
