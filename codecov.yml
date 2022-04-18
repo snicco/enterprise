@@ -5,14 +5,14 @@ coverage:
         target: auto
         threshold: 0.01%
         paths:
-          - "src/Snicco"
+          - "src/Snicco/*"
 
     patch:
       default:
         target: auto
         threshold: 0.05%
         paths:
-          - "src/Snicco"
+          - "src/Snicco/*"
 
   precision: 3
   round: nearest
@@ -32,4 +32,3 @@ comment:
   require_changes: false
   require_head: true
   require_base: true
-  after_n_builds: 1
