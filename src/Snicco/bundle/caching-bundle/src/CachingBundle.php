@@ -15,4 +15,8 @@ final class CachingBundle
     {
         return 'foo';
     }
+    public static function testMethod2(): string
+    {
+        return 'bar';
+    }
 }
