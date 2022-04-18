@@ -1,0 +1,158 @@
+name: 'Tests'
+
+on:
+  pull_request:
+
+jobs:
+
+  should_run:
+    name: 'Generate diff'
+    runs-on: ubuntu-20.04
+    outputs:
+      diff: ${{ steps.get_diff.outputs.php }}
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+
+      - name: 'Generate diff'
+        # https://github.com/dorny/paths-filter/tree/v2.10.2
+        uses: dorny/paths-filter@b2feaf19c27470162a626bd6fa8438ae5b263721
+        id: get_diff
+        with:
+          filters: |
+            php:
+              - 'src/**/*.php'
+              - 'tests/**/*.php'
+              - 'phpunit.xml.dist'
+              - 'codeception/*dist.yml'                
+
+  phpunit_tests:
+    name: 'PHPUnit tests'
+    needs: should_run
+    runs-on: ubuntu-20.04
+    if: ${{ needs.should_run.outputs.diff == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 7.4, 8.0, 8.1 ]
+        dependencies: [ lowest, highest ]
+
+    steps:
+
+      - name: 'Checkout code'
+
+        uses: actions/checkout@v2
+
+      - name: 'Setup PHP [${{ matrix.php }}]'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          ini-values: error_reporting=E_ALL
+
+      - name: 'Install composer dependencies'
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: 'Run phpunit tests'
+        run: composer phpunit:all
+
+  codeception_tests:
+    name: 'Codeception tests'
+    needs: should_run
+    runs-on: ubuntu-20.04
+    if: ${{ needs.should_run.outputs.diff == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1' ]
+        wp: [ '5.8', '5.9' ]
+        dependencies: [ lowest, highest ]
+
+    services:
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: snicco_1
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=3s --health-timeout=3s --health-retries=10
+
+      redis:
+        image: redis:5.0
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
+
+    steps:
+
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+
+      - name: 'Setup PHP [${{ matrix.php }}]'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: wp-cli
+          coverage: none
+          ini-values: error_reporting=E_ALL
+
+      - name: 'Install composer dependencies'
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      # The config values must match the ones in env.testing.dist
+      - name: 'Download WordPress [${{ matrix.wp }}]'
+        run: |
+          mkdir wordpress && cd wordpress
+          wp core download --force --skip-content --version=${{ matrix.wp }}
+          wp config create --dbname="snicco_1" --dbuser="root" --dbpass="root" --dbhost="127.0.0.1" --dbprefix="wp_"
+          wp core install --url="snicco.test" --title="Snicco" --admin_user="admin" --admin_password="admin" --admin_email="admin@snicco.com" --skip-email
+          wp core update-db
+          wp rewrite structure '/%postname%/'
+          wp plugin install redis-cache
+          wp plugin activate redis-cache
+          wp redis enable
+        working-directory: /tmp
+
+      - name: 'Run codeception tests'
+        run: composer codeception:all
+
+  check_matrix:
+    name: 'Tests'
+    if: always()
+    needs: [ phpunit_tests, codeception_tests ]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: 'Verify PHPUnit'
+        run: |
+          if [ ${{ needs.phpunit_tests.result }} == 'success' ]; then
+            echo "All phpunit tests passing."
+            exit 0
+          fi
+          
+          if [ ${{ needs.phpunit_tests.result }} == 'skipped' ]; then
+            echo "PHPUnit tests skipped."
+            exit 0
+          fi
+          
+          echo "At least one phpunit test failed or the workflow was cancelled."
+          exit 1
+
+      - name: 'Verify codeception'
+        run: |
+          if [ ${{ needs.codeception_tests.result }} == 'success' ]; then
+            echo "All codeception tests passing."
+            exit 0
+          fi
+          
+          if [ ${{ needs.codeception_tests.result }} == 'skipped' ]; then
+            echo "Codeceptions tests skipped."
+            exit 0
+          fi
+          
+          echo "At least one codeception test failed or the workflow was cancelled."
+          exit 1

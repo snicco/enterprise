@@ -1,0 +1,71 @@
+name: 'Code coverage'
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+env:
+  WP_VERSION: 5.9
+
+
+jobs:
+
+  codeception_coverage:
+    name: 'Codeception coverage'
+    runs-on: ubuntu-20.04
+    services:
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: snicco-enterprise
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=3s --health-timeout=3s --health-retries=10
+
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          tools: wp-cli
+          coverage: xdebug3
+          ini-values: error_reporting=E_ALL
+
+      - name: 'Install composer dependencies'
+        uses: ramsey/composer-install@v1
+
+      # The config values here must match the ones in env.testing.dist
+      - name: Download WordPress ${{ env.WP_VERSION }}
+        run: |
+          mkdir wordpress && cd wordpress
+          wp core download --force --skip-content --version=${{ env.WP_VERSION }}
+          wp config create --dbname="snicco-enterprise" --dbuser="root" --dbpass="root" --dbhost="127.0.0.1" --dbprefix="wp_"
+          wp core install --url="snicco.test" --title="Snicco" --admin_user="admin" --admin_password="admin" --admin_email="admin@snicco.io" --skip-email
+          wp core update-db
+          wp rewrite structure '/%postname%/'
+        working-directory: /tmp
+
+      - name: 'Collect codeception coverage'
+        run: |
+          composer test -- --coverage-xml codeception-coverage.xml
+
+      - name: 'Archive code coverage results'
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-coverage.xml
+          path: tests/_output/codeception-coverage.xml
+
+      - name: 'Upload coverage to codecov.io'
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -f tests/_output/codeception-coverage.xml -Z

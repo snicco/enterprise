@@ -1,0 +1,35 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 0.01%
+        paths:
+          - "src/Snicco/*"
+
+    patch:
+      default:
+        target: auto
+        threshold: 0.05%
+        paths:
+          - "src/Snicco/*"
+
+  precision: 3
+  round: nearest
+  range: "95...99"
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,files"
+  behavior: default
+  require_changes: false
+  require_head: true
+  require_base: true
+  after_n_builds: 1
