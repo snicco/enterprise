@@ -44,7 +44,7 @@ jobs:
 
       - name: 'Install dependencies'
         if: ${{ steps.diff.outputs.psalm == 'true' || github.event_name  == 'workflow_dispatch' || github.event_name  == 'push' }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
 
       - name: 'Psalm'
         if: ${{ steps.diff.outputs.psalm == 'true' || github.event_name  == 'workflow_dispatch' || github.event_name  == 'push' }}

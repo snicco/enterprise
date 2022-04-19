@@ -51,7 +51,7 @@ jobs:
       - name: 'Add composer HTTP basic auth credentials'
         run: composer config github-oauth.github.com ${{secrets.COMPOSER_AUTH }} --global
 
-      - uses: ramsey/composer-install@v1
+      - uses: ramsey/composer-install@v2
 
       - id: affected_packages
         run: echo "::set-output name=matrix::$(php bin/snicco.php affected-packages ${{ needs.should_run.outputs.files }})"
@@ -96,7 +96,7 @@ jobs:
         run: composer config github-oauth.github.com ${{secrets.COMPOSER_AUTH }} --global
 
       - name: 'Install composer dependencies'
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
 

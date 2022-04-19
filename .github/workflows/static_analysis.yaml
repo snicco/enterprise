@@ -83,7 +83,7 @@ jobs:
 
       - name: 'Install dependencies'
         if: ${{ matrix.actions.should_run == true }}
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
 
       - name: ${{ matrix.actions.name }}
         if: ${{ matrix.actions.should_run == true }}
