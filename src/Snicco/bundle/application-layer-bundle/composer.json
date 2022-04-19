@@ -10,9 +10,12 @@
     "require": {
         "snicco/kernel": "^1.0.1",
         "snicco/better-wpdb": "^1.0.1",
+        "snicco/str-arr": "^1.0.1",
         "league/tactician": "^1.1.0",
+        "league/tactician-logger": "^0.11.0",
         "webmozart/assert": "^1.10.0",
-        "league/tactician-logger": "^0.11.0"
+        "psr/log": "^1.1.4",
+        "psr/container": "^1.1.2"
     },
     "require-dev": {
         "codeception/codeception": "4.1.x-dev",

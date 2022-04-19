@@ -26,7 +26,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'php' => '^7.4|^8.0',
         ],
         ComposerJsonSection::REQUIRE_DEV => [
-            'codeception/codeception' => '4.1.29',
+            'codeception/codeception' => '4.1.x-dev',
             'phpunit/phpunit' => '9.5.13',
             'symplify/monorepo-builder' => '9.4.70',
             'lucatume/wp-browser' => '3.1.5',
@@ -38,7 +38,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'symfony/console' => '5.4.7',
             'symplify/composer-json-manipulator' => '9.3.26',
             'webmozart/assert' => '^1.10.0',
-            'snicco/str-arr' => '^1.0',
+            'snicco/str-arr' => '^1.0.1',
         ],
         ComposerJsonSection::AUTOLOAD_DEV => [
             'psr-4' => [

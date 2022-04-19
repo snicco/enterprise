@@ -77,6 +77,10 @@ jobs:
           php-version: 7.4
           coverage: none
 
+      # @todo: remove when https://github.com/Codeception/Codeception/pull/6435 is merged
+      - name: 'Add composer HTTP basic auth credentials'
+        run: composer config github-oauth.github.com ${{secrets.COMPOSER_AUTH }} --global
+
       - name: 'Install dependencies'
         if: ${{ matrix.actions.should_run == true }}
         uses: ramsey/composer-install@v1

@@ -8,7 +8,6 @@ use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use Psr\Container\ContainerInterface;
 use Snicco\Component\StrArr\Str;
-
 use Webmozart\Assert\Assert;
 
 use function get_class;
