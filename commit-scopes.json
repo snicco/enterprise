@@ -2,5 +2,6 @@
     "monorepo",
     "*",
     "octane",
+    "application-layer-bundle",
     "caching-bundle"
 ]

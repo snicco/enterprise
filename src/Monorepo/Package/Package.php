@@ -85,7 +85,7 @@ final class Package
             $deps,
             fn (string $name): bool => Str::startsWith($name, $this->vendor_name . '/')
         );
-    
+
         $path = $file_info->getRealPath();
         Assert::stringNotEmpty($path);
         $this->composer_path = $path;

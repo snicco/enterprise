@@ -1,0 +1,38 @@
+{
+    "name": "snicco/application-layer-bundle",
+    "license": "commercial",
+    "description": "An application layer bundle for building large, enterprise WordPress plugins.",
+    "authors": [
+        {
+            "name": "Calvin Alkan",
+            "email": "calvin@snicco.de"
+        }
+    ],
+    "require": {
+        "snicco/kernel": "^1.0.1",
+        "snicco/better-wpdb": "^1.0.1",
+        "snicco/str-arr": "^1.0.1",
+        "league/tactician": "^1.1.0",
+        "league/tactician-logger": "^0.11.0",
+        "webmozart/assert": "^1.10.0",
+        "psr/log": "^1.1.4",
+        "psr/container": "^1.1.2"
+    },
+    "require-dev": {
+        "codeception/codeception": "4.1.x-dev",
+        "lucatume/wp-browser": "3.1.5",
+        "phpunit/phpunit": "9.5.13",
+        "snicco/testing-bundle": "^1.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "stable"
+}

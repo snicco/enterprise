@@ -1,6 +1,7 @@
 {
     "name": "snicco/caching-bundle",
     "license": "commercial",
+    "description": "A caching bundle for WordPress nginx stacks",
     "authors": [
         {
             "name": "Calvin Alkan",
@@ -8,9 +9,9 @@
         }
     ],
     "require-dev": {
-        "codeception/codeception": "4.1.29",
+        "codeception/codeception": "4.1.x-dev",
         "lucatume/wp-browser": "3.1.5",
-        "phpunit/phpunit": "9.5.20"
+        "phpunit/phpunit": "9.5.13"
     },
     "autoload": {
         "psr-4": {

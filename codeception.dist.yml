@@ -9,3 +9,5 @@ paths:
 settings:
   colors: true
 bootstrap: bootstrap.php
+reporters:
+  report: "PhpStorm_Codeception_ReportPrinter"

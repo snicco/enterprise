@@ -27,8 +27,7 @@ jobs:
               - 'codeception.dist.yml'
               - 'src/**/*.yml'
               - composer.json
-              
-
+            
   codeception_tests:
     name: 'Codeception tests'
     needs: should_run
@@ -63,9 +62,11 @@ jobs:
           tools: wp-cli
           coverage: none
           ini-values: error_reporting=E_ALL
+        env:
+          COMPOSER_TOKEN: ${{ secrets.COMPOSER_AUTH }}
 
       - name: 'Install composer dependencies'
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
 

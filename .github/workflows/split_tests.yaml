@@ -47,7 +47,11 @@ jobs:
           php-version: 7.4
           coverage: none
 
-      - uses: ramsey/composer-install@v1
+      # @todo: remove when https://github.com/Codeception/Codeception/pull/6435 is merged
+      - name: 'Add composer HTTP basic auth credentials'
+        run: composer config github-oauth.github.com ${{secrets.COMPOSER_AUTH }} --global
+
+      - uses: ramsey/composer-install@v2
 
       - id: affected_packages
         run: echo "::set-output name=matrix::$(php bin/snicco.php affected-packages ${{ needs.should_run.outputs.files }})"
@@ -87,8 +91,12 @@ jobs:
           coverage: none
           ini-values: error_reporting=E_ALL
 
+      # @todo: remove when https://github.com/Codeception/Codeception/pull/6435 is merged
+      - name: 'Add composer HTTP basic auth credentials'
+        run: composer config github-oauth.github.com ${{secrets.COMPOSER_AUTH }} --global
+
       - name: 'Install composer dependencies'
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
