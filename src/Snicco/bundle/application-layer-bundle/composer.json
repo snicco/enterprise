@@ -1,6 +1,7 @@
 {
     "name": "snicco/application-layer-bundle",
     "license": "commercial",
+    "description": "An application layer bundle for building large, enterprise WordPress plugins.",
     "authors": [
         {
             "name": "Calvin Alkan",

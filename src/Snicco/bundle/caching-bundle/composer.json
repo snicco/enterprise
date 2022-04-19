@@ -1,6 +1,7 @@
 {
     "name": "snicco/caching-bundle",
     "license": "commercial",
+    "description": "A caching bundle for WordPress nginx stacks",
     "authors": [
         {
             "name": "Calvin Alkan",

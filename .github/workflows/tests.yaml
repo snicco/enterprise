@@ -62,10 +62,8 @@ jobs:
           tools: wp-cli
           coverage: none
           ini-values: error_reporting=E_ALL
-
-      # @todo: remove when https://github.com/Codeception/Codeception/pull/6435 is merged
-      - name: 'Add composer HTTP basic auth credentials'
-        run: composer config github-oauth.github.com ${{secrets.COMPOSER_AUTH }}
+        env:
+          COMPOSER_TOKEN: ${{ secrets.COMPOSER_AUTH }}
 
       - name: 'Install composer dependencies'
         uses: ramsey/composer-install@v1
