@@ -1,7 +1,8 @@
 [
     "monorepo",
     "*",
-    "octane",
+    "asset",
     "application-layer-bundle",
-    "caching-bundle"
+    "better-wp-cli-bundle",
+    "distributed-plugin"
 ]

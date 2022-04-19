@@ -1,0 +1,180 @@
+name: 'Tests'
+
+on:
+  pull_request:
+
+jobs:
+
+  should_run:
+    name: 'Generate diff'
+    runs-on: ubuntu-20.04
+    outputs:
+      diff: ${{ steps.get_diff.outputs.php }}
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+
+      - name: 'Generate diff'
+        # https://github.com/dorny/paths-filter/tree/v2.10.2
+        uses: dorny/paths-filter@b2feaf19c27470162a626bd6fa8438ae5b263721
+        id: get_diff
+        with:
+          filters: |
+            php:
+              - 'src/**/*.php'
+              - 'tests/**/*.php'
+              - 'tests/**/*.yml'
+
+  tests:
+    name: 'Tests'
+    needs: should_run
+    runs-on: ubuntu-20.04
+    if: ${{ needs.should_run.outputs.diff == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1' ]
+        wp: [ '5.8', '5.9' ]
+
+    services:
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: VENDOR_SLUG_testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=3s --health-timeout=3s --health-retries=10
+
+    steps:
+
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+
+      - name: 'Setup PHP [${{ matrix.php }}]'
+        uses: shivammathur/setup-php@448bd61c6fe9db2113173467e4c22b87ddc2971a
+        with:
+          php-version: ${{ matrix.php }}
+          tools: wp-cli
+          coverage: none
+          ini-values: error_reporting=E_ALL
+
+      - name: 'Install composer dependencies'
+        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6
+        with:
+          dependency-versions: highest
+
+      # The config values must match the ones in env.testing.dist
+      - name: 'Download WordPress [${{ matrix.wp }}]'
+        run: |
+          mkdir wordpress && cd wordpress
+          wp core download --force --skip-content --version=${{ matrix.wp }}
+          wp config create --dbname="VENDOR_SLUG_testing" --dbuser="root" --dbpass="root" --dbhost="127.0.0.1" --dbprefix="wp_"
+          wp core install --url="VENDOR_SLUG.test" --title="VENDOR_TITLE" --admin_user="admin" --admin_password="admin" --admin_email="admin@VENDOR_DOMAIN" --skip-email
+          wp core update-db
+          wp rewrite structure '/%postname%/'
+          wp redis enable
+        working-directory: /tmp
+
+      - name: 'Run unit/integration tests'
+        run: |
+          cp .env.testing.dist .env.testing
+          vendor/bin/codecept build
+          composer test:unit
+          composer test:integration
+  
+
+
+  e2e_tests:
+    name: 'E2E Tests'
+    needs: should_run
+    runs-on: ubuntu-20.04
+    if: ${{ needs.should_run.outputs.diff == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1' ]
+        wp: [ '5.8', '5.9' ]
+
+    services:
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: VENDOR_SLUG_e2e_testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=3s --health-timeout=3s --health-retries=10
+
+    steps:
+
+      - name: 'Checkout code'
+        uses: actions/checkout@v2
+
+      - name: 'Setup PHP [${{ matrix.php }}]'
+        uses: shivammathur/setup-php@448bd61c6fe9db2113173467e4c22b87ddc2971a
+        with:
+          php-version: ${{ matrix.php }}
+          tools: wp-cli
+          coverage: none
+          ini-values: error_reporting=E_ALL
+
+      - name: 'Install composer dependencies'
+        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6
+        with:
+          dependency-versions: highest
+
+      # The config values must match the ones in env.testing.dist
+      - name: 'Download WordPress [${{ matrix.wp }}]'
+        run: |
+          mkdir wordpress && cd wordpress
+          wp core download --force --skip-content --version=${{ matrix.wp }}
+          wp config create --dbname="VENDOR_SLUG_e2e_testing" --dbuser="root" --dbpass="root" --dbhost="127.0.0.1" --dbprefix="wp_"
+          wp core install --url="VENDOR_SLUG.test" --title="VENDOR_TITLE" --admin_user="admin" --admin_password="admin" --admin_email="admin@VENDOR_DOMAIN" --skip-email
+          wp core update-db
+          wp rewrite structure '/%postname%/'
+          wp redis enable
+        working-directory: /tmp
+
+      - name: 'Run e2e tests'
+        run: |
+          cp .env.testing.dist .env.testing
+          vendor/bin/codecept build
+          composer test:cli
+#         @todo: composer test:browser This needs a webserver in CI.
+
+
+  check_matrix:
+    name: 'Tests'
+    if: always()
+    needs: [ tests, e2e_tests ]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: 'Verify unit/integration tests'
+        run: |
+          if [ ${{ needs.tests.result }} == 'success' ]; then
+            echo "All unit/integration tests passing."
+            exit 0
+          fi
+          
+          if [ ${{ needs.tests.result }} == 'skipped' ]; then
+            echo "unit/integration tests skipped."
+            exit 0
+          fi
+          
+          echo "At least one unit/integration test failed or the workflow was cancelled."
+          exit 1
+      - name: 'Verify E2E tests'
+        run: |
+          if [ ${{ needs.e2e_tests.result }} == 'success' ]; then
+            echo "All E2E tests passing."
+            exit 0
+          fi
+          
+          if [ ${{ needs.e2e_tests.result }} == 'skipped' ]; then
+            echo "E2E tests skipped."
+            exit 0
+          fi
+          
+          echo "At least one E2E test failed or the workflow was cancelled."
+          exit 1

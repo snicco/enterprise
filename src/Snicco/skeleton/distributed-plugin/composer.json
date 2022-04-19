@@ -1,0 +1,19 @@
+{
+    "name": "snicco/distributed-plugin",
+    "type": "project",
+    "description": "A skeleton for building a distributed mu-plugin using the snicco framework.",
+    "autoload": {
+        "psr-4": {
+            "": ".setup"
+        }
+    },
+    "require": {
+        "webmozart/assert": "^1.10.0",
+        "symfony/console": "5.4.7",
+        "symfony/process": "^5.4",
+        "snicco/str-arr": "^1.1.1"
+    },
+    "scripts": {
+        "configure-plugin": "php .setup/configure.php"
+    }
+}

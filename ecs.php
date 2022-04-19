@@ -32,7 +32,9 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 return static function (ContainerConfigurator $configurator): void {
     $parameters = $configurator->parameters();
     $parameters->set(Option::PATHS, [
-        __DIR__ . '/src',
+        __DIR__ . '/src/Snicco/component',
+        __DIR__ . '/src/Snicco/bundle',
+        __DIR__ . '/src/Snicco/plugin',
         __DIR__ . '/monorepo-builder.php',
         __DIR__ . '/rector.php',
         __DIR__ . '/ecs.php',

@@ -1,9 +1,8 @@
 <?php
 
 declare(strict_types=1);
+
 use Codeception\Test\Unit;
-
-
 use Codeception\TestCase\WPTestCase;
 use Psalm\Plugin\EventHandler\AfterClassLikeVisitInterface;
 use Psalm\Plugin\EventHandler\Event\AfterClassLikeVisitEvent;

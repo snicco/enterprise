@@ -1,0 +1,1 @@
+wp i18n make-pot ./resources/languages/VENDOR_SLUG.pot

@@ -27,11 +27,14 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $configurator): void {
     $parameters = $configurator->parameters();
     $parameters->set(Option::PATHS, [
-        __DIR__ . '/src',
+        __DIR__ . '/src/Snicco/component',
+        __DIR__ . '/src/Snicco/bundle',
+        __DIR__ . '/src/Snicco/plugin',
         __DIR__ . '/monorepo-builder.php',
         __DIR__ . '/rector.php',
         __DIR__ . '/ecs.php',
     ]);
+
     $parameters->set(Option::PARALLEL, true);
     $parameters->set(Option::PHP_VERSION_FEATURES, '7.4');
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);

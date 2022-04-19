@@ -1,0 +1,11 @@
+vendor
+var/cache/*
+!var/cache/.gitkeep
+var/log/*
+!var/log/.gitkeep
+tests/_output
+tests/.env.testing
+tests/_support/_generated
+!tests/_support/_generated/.gitkeep
+node_modules
+dist

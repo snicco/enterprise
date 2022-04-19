@@ -1,0 +1,79 @@
+name: 'Release'
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: 'Release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@448bd61c6fe9db2113173467e4c22b87ddc2971a
+        with:
+          php-version: 7.4
+          coverage: none
+
+      - name: 'Install composer dependencies'
+        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6
+
+      - name: 'Install npm dependencies'
+        run: npm install
+
+      - name: 'Import GPG keys'
+        # https://github.com/crazy-max/ghaction-import-gpg/releases/tag/v4.3.0
+        uses: crazy-max/ghaction-import-gpg@4d58d49bfefed583addec96996588e8bc4b306b8
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_config_global: true
+
+      - name: 'Disable admin enforcement'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.ACCESS_TOKEN }}
+          script: |
+            result = github.rest.repos.deleteAdminBranchProtection({
+              owner: 'VENDOR_SLUG',
+              repo: 'VENDOR_SLUG',
+              branch: 'master'
+            })
+      - name: 'Semantic release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GIT_AUTHOR_NAME: VENDOR_SLUG-bot
+          GIT_AUTHOR_EMAIL: VENDOR_SLUG-bot@VENDOR_DOMAIN
+          GIT_COMMITTER_NAME: VENDOR_SLUG-bot
+          GIT_COMMITTER_EMAIL: VENDOR_SLUG-bot@VENDOR_DOMAIN
+        # This needs to be executable before the release.
+        run: |
+          chmod +x ./bin/prepare-release.sh
+          npx semantic-release
+        shell: bash
+
+      - name: 'Re-enable admin enforcement'
+        uses: actions/github-script@v6
+        if: always()
+        with:
+          github-token: ${{ secrets.ACCESS_TOKEN }}
+          script: |
+            result = github.rest.repos.setAdminBranchProtection({
+              owner: 'VENDOR_SLUG',
+              repo: 'VENDOR_SLUG',
+              branch: 'master'
+            })

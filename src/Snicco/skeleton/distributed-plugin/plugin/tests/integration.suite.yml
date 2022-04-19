@@ -1,0 +1,11 @@
+modules:
+  enabled:
+    - WPLoader
+  config:
+    WPLoader:
+      wpRootFolder: "%INTEGRATION_TESTING_WP_ROOT_FOLDER%"
+      dbName: "%INTEGRATION_TESTING_DB_NAME%"
+      dbHost: "%INTEGRATION_TESTING_DB_HOST%"
+      dbUser: "%INTEGRATION_TESTING_DB_USER%"
+      dbPassword: "%INTEGRATION_TESTING_DB_PASSWORD%"
+      tablePrefix: "%INTEGRATION_TESTING_DB_PREFIX%"
