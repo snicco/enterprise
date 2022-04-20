@@ -6,7 +6,7 @@ namespace Snicco\Enterprise\Bundle\ApplicationLayer;
 
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Logger\Formatter\ClassNameFormatter;
+use League\Tactician\Logger\Formatter\ClassPropertiesFormatter;
 use League\Tactician\Logger\LoggerMiddleware;
 use League\Tactician\Middleware;
 use Psr\Log\LoggerInterface;
@@ -21,6 +21,7 @@ use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBusOption;
+use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandLogger;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\GenerateCommandMap;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\MapCommandToApplicationService;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\Middleware\BetterWPDBTransaction;
@@ -94,7 +95,7 @@ final class ApplicationLayerBundle implements Bundle
             $container,
             $config
         ): CommandHandlerMiddleware {
-            /** @var array<class-string,class-string> $map */
+            /** @var array<class-string, array{0:class-string, 1:string}> $map */
             $map = $config->getArray('command_bus.command-map');
 
             $name_extractor = new ClassNameExtractor();
@@ -108,8 +109,8 @@ final class ApplicationLayerBundle implements Bundle
     private function bindLoggerMiddleware(DIContainer $container): void
     {
         $container->shared(LoggerMiddleware::class, fn (): LoggerMiddleware => new LoggerMiddleware(
-            new ClassNameFormatter(),
-            $container[LoggerInterface::class] ?? new NullLogger()
+            new ClassPropertiesFormatter(),
+            $container[CommandLogger::class] ?? $container[LoggerInterface::class] ?? new NullLogger()
         ));
     }
 

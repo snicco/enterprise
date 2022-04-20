@@ -7,11 +7,9 @@ namespace Snicco\Enterprise\Bundle\ApplicationLayer\Command;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use Psr\Container\ContainerInterface;
-use Snicco\Component\StrArr\Str;
 use Webmozart\Assert\Assert;
 
 use function get_class;
-use function lcfirst;
 use function sprintf;
 
 /**
@@ -24,12 +22,12 @@ final class MapCommandToApplicationService implements HandlerLocator, MethodName
     private ContainerInterface $container;
 
     /**
-     * @var array<class-string, class-string>
+     * @var array<class-string, array{0:class-string, 1:string}>
      */
     private array $command_map;
 
     /**
-     * @param array<class-string, class-string> $command_map
+     * @param array<class-string, array{0:class-string, 1:string}> $command_map
      */
     public function __construct(ContainerInterface $container, array $command_map)
     {
@@ -39,13 +37,13 @@ final class MapCommandToApplicationService implements HandlerLocator, MethodName
 
     public function getHandlerForCommand($commandName): object
     {
-        $application_service_class = $this->command_map[$commandName] ?? null;
+        $application_service_mapping = $this->command_map[$commandName] ?? null;
         Assert::notNull(
-            $application_service_class,
+            $application_service_mapping,
             sprintf('No application services is registered to handle the command [%s].', $commandName)
         );
 
-        $application_service = $this->container->get($application_service_class);
+        $application_service = $this->container->get($application_service_mapping[0]);
         Assert::object($application_service);
 
         return $application_service;
@@ -53,11 +51,13 @@ final class MapCommandToApplicationService implements HandlerLocator, MethodName
 
     public function inflect($command, $commandHandler): string
     {
-        $class_name = get_class($command);
+        $name = get_class($command);
+        $application_service_mapping = $this->command_map[$name] ?? null;
+        Assert::notNull(
+            $application_service_mapping,
+            sprintf('No application services is registered to handle the command [%s].', $name)
+        );
 
-        $method_name = Str::afterLast($class_name, '\\');
-        $method_name = Str::beforeLast($method_name, 'Command');
-
-        return lcfirst($method_name);
+        return $application_service_mapping[1];
     }
 }

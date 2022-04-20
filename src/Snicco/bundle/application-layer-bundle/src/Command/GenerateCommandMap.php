@@ -37,7 +37,7 @@ final class GenerateCommandMap
     /**
      * @throws ReflectionException
      *
-     * @return array<class-string,class-string>
+     * @return array<class-string,array{0:class-string, 1: string}>
      */
     public function __invoke(): array
     {
@@ -45,7 +45,9 @@ final class GenerateCommandMap
 
         foreach ($this->application_services as $application_service) {
             $reflection_class = new ReflectionClass($application_service);
+            /** @var ReflectionMethod[] $public_methods */
             $public_methods = $reflection_class->getMethods(ReflectionMethod::IS_PUBLIC);
+
             $public_methods = array_filter(
                 $public_methods,
                 fn (ReflectionMethod $method): bool => 1 === $method->getNumberOfParameters() && ! $method->isConstructor()
@@ -72,7 +74,7 @@ final class GenerateCommandMap
                     $name,
                     sprintf('Command %s can not be handled by two application services.', $name)
                 );
-                $map[$name] = $application_service;
+                $map[$name] = [$application_service, $public_method->getName()];
             }
         }
 
