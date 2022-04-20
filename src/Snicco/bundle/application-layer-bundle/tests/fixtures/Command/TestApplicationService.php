@@ -15,7 +15,7 @@ final class TestApplicationService
         $this->class = $class;
     }
 
-    public function rentMovie(RentMovieCommand $command): void
+    public function __invoke(RentMovieCommand $command): void
     {
         $command->handled = true;
     }

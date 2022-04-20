@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\ApplicationLayer\Tests\wpunit;
 
 use Codeception\TestCase\WPTestCase;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\Test\TestLogger;
 use Snicco\Bundle\Testing\Bundle\BundleTestHelpers;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
@@ -12,6 +15,7 @@ use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBusOption;
+use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandLogger;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Tests\fixtures\Command\RentMovieCommand;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Tests\fixtures\Command\ReturnMovieCommand;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Tests\fixtures\Command\TestApplicationService;
@@ -104,8 +108,8 @@ final class ApplicationLayerBundleTest extends WPTestCase
         $config = $kernel->config();
 
         $this->assertSame([
-            RentMovieCommand::class => TestApplicationService::class,
-            ReturnMovieCommand::class => TestApplicationService::class,
+            RentMovieCommand::class => [TestApplicationService::class, '__invoke'],
+            ReturnMovieCommand::class => [TestApplicationService::class, 'returnMovie'],
         ], $config->getArray('command_bus.command-map'));
     }
 
@@ -168,6 +172,84 @@ final class ApplicationLayerBundleTest extends WPTestCase
         $kernel->boot();
 
         $this->assertFalse(is_file($this->directories->configDir() . '/command_bus.php'));
+    }
+
+    /**
+     * @test
+     */
+    public function that_commands_are_logged(): void
+    {
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+
+        $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
+            $config->set('command_bus', [
+                CommandBusOption::APPLICATION_SERVICES => [TestApplicationService::class],
+            ]);
+        });
+        $logger = new TestLogger();
+        $kernel->afterRegister(function (Kernel $kernel) use ($logger): void {
+            $kernel->container()
+                ->instance(TestApplicationService::class, new TestApplicationService(new stdClass()));
+            $kernel->container()
+                ->instance(LoggerInterface::class, $logger);
+        });
+
+        $kernel->boot();
+
+        /** @var CommandBus $bus */
+        $bus = $kernel->container()
+            ->get(CommandBus::class);
+
+        $this->assertFalse($logger->hasDebugRecords());
+
+        $bus->handle($command = new ReturnMovieCommand('foo'));
+        $this->assertTrue($command->returned);
+
+        $this->assertTrue($logger->hasDebugRecords());
+    }
+
+    /**
+     * @test
+     */
+    public function that_the_configured_psr3_logger_can_be_overwritten_by_using_the_command_logger_interface(): void
+    {
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+
+        $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
+            $config->set('command_bus', [
+                CommandBusOption::APPLICATION_SERVICES => [TestApplicationService::class],
+            ]);
+        });
+        $logger_psr = new TestLogger();
+        $command_logger = new class() extends AbstractLogger implements CommandLogger {
+            public array $records = [];
+
+            public function log($level, $message, array $context = []): void
+            {
+                $this->records[] = [$level, $message, $context];
+            }
+        };
+
+        $kernel->afterRegister(function (Kernel $kernel) use ($logger_psr, $command_logger): void {
+            $kernel->container()
+                ->instance(TestApplicationService::class, new TestApplicationService(new stdClass()));
+            $kernel->container()
+                ->instance(LoggerInterface::class, $logger_psr);
+            $kernel->container()
+                ->instance(CommandLogger::class, $command_logger);
+        });
+
+        $kernel->boot();
+
+        /** @var CommandBus $bus */
+        $bus = $kernel->container()
+            ->get(CommandBus::class);
+
+        $this->assertCount(0, $command_logger->records);
+        $this->assertFalse($logger_psr->hasDebugRecords());
+        $bus->handle(new ReturnMovieCommand('foo'));
+        $this->assertFalse($logger_psr->hasDebugRecords());
+        $this->assertCount(2, $command_logger->records);
     }
 
     protected function fixturesDir(): string
