@@ -1,0 +1,10 @@
+export-ignore psalm.xml
+export-ignore psalm
+export-ignore .gitignore
+export-ignore tests
+export-ignore vendor
+export-ignore .github
+export-ignore codeception.dist.yml
+export-ignore .env.testing.dist
+export-ignore translate.sh
+export-ignore bin

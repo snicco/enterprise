@@ -1,0 +1,20 @@
+actor: CLITester
+modules:
+  enabled:
+    - WPDb
+    - WPCLI
+  config:
+    WPDb:
+      dsn: 'mysql:host=%E2E_TESTING_DB_HOST%;dbname=%E2E_TESTING_DB_NAME%'
+      user: "%E2E_TESTING_DB_USER%"
+      password: "%E2E_TESTING_DB_PASSWORD%"
+      dump: tests/_data/dump.sql
+      populate: true
+      cleanup: true
+      url: '%E2E_TESTING_SITE_URL%'
+      tablePrefix: "%E2E_TESTING_DB_PREFIX%"
+      urlReplacement: true
+      populator: 'mysql -u $user -h $host $dbname < $dump'
+    WPCLI:
+      path: "%INTEGRATION_TESTING_WP_ROOT_FOLDER%"
+      throw: true

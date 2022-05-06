@@ -9,3 +9,5 @@ tests/.env.testing
 
 ## repos
 /src/Snicco/*/*/tests/_output/*
+/src/Snicco/*/*/vendor
+/src/Snicco/*/*/composer.lock

@@ -1,0 +1,91 @@
+name: 'Static analysis'
+
+on:
+  pull_request:
+
+jobs:
+
+  diff:
+    name: 'Generate diff'
+    runs-on: ubuntu-20.04
+    outputs:
+      php: ${{ steps.diff.outputs.php }}
+      composer: ${{ steps.diff.outputs.composer }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+        # https://github.com/dorny/paths-filter/tree/v2.10.2
+      - uses: dorny/paths-filter@b2feaf19c27470162a626bd6fa8438ae5b263721
+        id: diff
+        with:
+          filters: |
+            php:
+              - 'src/**/*.php'
+              - 'tests/**/*.php'
+              - 'bin/*.php'
+              _ '*.php'
+            composer:
+              - 'composer.json'
+  static_analysis:
+    name: ${{ matrix.actions.name }}
+    needs: diff
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        actions:
+          - name: 'Composer require checker'
+            should_run: ${{ needs.diff.outputs.php == 'true' || needs.diff.outputs.composer == 'true' }}
+            run: |
+              curl -LS https://github.com/maglnet/ComposerRequireChecker/releases/download/3.8.0/composer-require-checker.phar -o require-checker.phar
+              sudo chmod +x require-checker.phar
+              sudo mv require-checker.phar /usr/local/bin/require-checker
+              require-checker check composer.json --config-file=$GITHUB_WORKSPACE/composer-require-checker.json
+          - name: 'Composer unused'
+            should_run: ${{ needs.diff.outputs.php == 'true' || needs.diff.outputs.composer == 'true' }}
+            run: |
+              curl -LS https://github.com/composer-unused/composer-unused/releases/download/0.7.12/composer-unused.phar -o composer-unused.phar
+              sudo chmod +x composer-unused.phar
+              sudo mv composer-unused.phar /usr/local/bin/composer-unused
+              composer-unused
+          - name: 'Composer validate'
+            should_run: ${{ needs.diff.outputs.php == 'true' || needs.diff.outputs.composer == 'true' }}
+            run: composer validate
+
+          - name: 'Easy coding standards'
+            should_run: ${{ needs.diff.outputs.php == 'true' }}
+            run: composer lint
+
+    # The value of matrix.actions.should_run is (bool) true. Not (string) true as in the matrix.
+    steps:
+      - name: 'Checkout repo'
+        if: ${{ matrix.actions.should_run == true }}
+        uses: actions/checkout@v2
+
+      - name: 'Setup PHP'
+        if: ${{ matrix.actions.should_run == true }}
+        uses: shivammathur/setup-php@448bd61c6fe9db2113173467e4c22b87ddc2971a
+        with:
+          php-version: 7.4
+          coverage: none
+
+      - name: 'Install dependencies'
+        if: ${{ matrix.actions.should_run == true }}
+        uses: ramsey/composer-install@f680dac46551dffb2234a240d65ae806c2999dd6
+
+      - name: ${{ matrix.actions.name }}
+        if: ${{ matrix.actions.should_run == true }}
+        run: ${{ matrix.actions.run }}
+
+  check_matrix:
+    name: 'Static Analysis'
+    runs-on: ubuntu-20.04
+    needs: static_analysis
+    if: ${{ always() }}
+    steps:
+      - name: 'Check matrix success'
+        if: ${{ needs.static_analysis.result != 'success'}}
+        run: |
+          echo "At least one static analysis tool has failed."
+          exit 1
