@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Snicco\Enterprise\DistributedPlugin\Setup;
+
+use SplFileInfo;
+use RuntimeException;
 use Snicco\Component\StrArr\Str;
-use PHP_CodeSniffer\Tokenizers\PHP;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
@@ -223,23 +226,23 @@ final class ConfigureCommand extends Command
             return;
         }
         
-        if ($symfony_style->confirm('Delete the .setup folder')) {
-            $process = new Process(['rm', '-rf', $this->repo_root_directory.DIRECTORY_SEPARATOR.'.setup']);
+        if ($symfony_style->confirm('Delete the setup folder')) {
+            $process = new Process(['rm', '-rf', $this->repo_root_directory.DIRECTORY_SEPARATOR.'setup']);
             $process->mustRun();
-            $symfony_style->success('./setup folder has been deleted.');
+            $symfony_style->success('setup folder has been deleted.');
         }
         
-        if ($symfony_style->confirm('Delete the symfony/console dependencies')) {
+        if ($symfony_style->confirm('Delete the setup dependencies')) {
             $process = new Process(['rm', '-rf', $this->repo_root_directory.DIRECTORY_SEPARATOR.'vendor']);
             $process->mustRun();
-            $symfony_style->success('symfony/console dependencies have been deleted.');
+            $symfony_style->success('setup dependencies have been deleted.');
         }
     }
     
     private function installDependencies(SymfonyStyle $symfony_style) :void
     {
         if ($symfony_style->confirm('Do you want to install composer dependencies now?')) {
-            $process = new Symfony\Component\Process\Process([
+            $process = new Process([
                 'composer',
                 'install',
             ], getcwd().DIRECTORY_SEPARATOR.'plugin');
@@ -264,7 +267,7 @@ final class ConfigureCommand extends Command
         }
         
         if ($symfony_style->confirm('Do you want to install npm dependencies now?')) {
-            $process = new Symfony\Component\Process\Process([
+            $process = new Process([
                 'npm',
                 'install',
             ], getcwd().DIRECTORY_SEPARATOR.'plugin');

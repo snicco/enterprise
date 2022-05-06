@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Symfony\Component\Console\Application;
+use Snicco\Enterprise\DistributedPlugin\Setup\ConfigureCommand;
 
 try {
     set_error_handler(function (int $errno, string $errstr, string $errfile, int $errline) {

@@ -60,12 +60,10 @@
     },
     "autoload": {
         "psr-4": {
-            "": "src/Snicco/skeleton/distributed-plugin/.setup",
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src/Snicco/bundle/application-layer-bundle/src",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
-            "Snicco\\Enterprise\\Bundle\\Caching\\": "src/Snicco/bundle/caching-bundle/src",
             "Snicco\\Enterprise\\Component\\Asset\\": "src/Snicco/component/asset/src",
-            "Snicco\\Enterprise\\Component\\Octane\\": "src/Snicco/component/octane/src",
+            "Snicco\\Enterprise\\DistributedPlugin\\Setup\\": "src/Snicco/skeleton/distributed-plugin/setup",
             "VENDOR_NAMESPACE\\": "src/Snicco/skeleton/distributed-plugin/plugin/src/VENDOR_NAMESPACE"
         }
     },
@@ -73,9 +71,7 @@
         "psr-4": {
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "src/Snicco/bundle/application-layer-bundle/tests",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "src/Snicco/bundle/better-wp-cli-bundle/tests",
-            "Snicco\\Enterprise\\Bundle\\Caching\\Tests\\": "src/Snicco/bundle/caching-bundle/tests",
             "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "src/Snicco/component/asset/tests",
-            "Snicco\\Enterprise\\Component\\Octane\\Tests\\": "src/Snicco/component/octane/tests",
             "Snicco\\Enterprise\\Monorepo\\": "src/Monorepo/",
             "Snicco\\Enterprise\\Monorepo\\Tests\\": "tests/",
             "VENDOR_NAMESPACE\\Tests\\": [

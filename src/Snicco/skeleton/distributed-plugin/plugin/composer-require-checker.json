@@ -12,6 +12,7 @@
     "wp_mail",
     "WP_PLUGIN_DIR",
     "__",
+    "Snicco\\Bundle\\Debug\\DebugBundle",
     "__________INTERNAL_SYMBOLS__________",
     "null",
     "true",
