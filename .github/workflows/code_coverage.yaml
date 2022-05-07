@@ -60,16 +60,16 @@ jobs:
 
       - name: 'Collect codeception coverage'
         run: |
-          composer test -- --coverage-xml codeception-coverage.xml
+          composer test:coverage
 
       - name: 'Archive code coverage results'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: codeception-coverage.xml
-          path: tests/_output/codeception-coverage.xml
+          path: tests/_output/*-coverage.xml
 
       - name: 'Upload coverage to codecov.io'
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -f tests/_output/codeception-coverage.xml -Z
+          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -Z

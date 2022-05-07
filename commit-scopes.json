@@ -2,6 +2,7 @@
     "monorepo",
     "*",
     "asset",
+    "condition",
     "application-layer-bundle",
     "better-wp-cli-bundle",
     "distributed-plugin"
