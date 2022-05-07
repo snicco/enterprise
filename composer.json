@@ -63,6 +63,8 @@
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src/Snicco/bundle/application-layer-bundle/src",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
             "Snicco\\Enterprise\\Component\\Asset\\": "src/Snicco/component/asset/src",
+            "Snicco\\Enterprise\\Component\\Condition\\": "src/Snicco/component/condition/src",
+            "Snicco\\Enterprise\\Component\\Conditions\\": "src/Snicco/component/conditions/src",
             "Snicco\\Enterprise\\DistributedPlugin\\Setup\\": "src/Snicco/skeleton/distributed-plugin/setup",
             "VENDOR_NAMESPACE\\": "src/Snicco/skeleton/distributed-plugin/plugin/src/VENDOR_NAMESPACE"
         }
@@ -72,6 +74,8 @@
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "src/Snicco/bundle/application-layer-bundle/tests",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "src/Snicco/bundle/better-wp-cli-bundle/tests",
             "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "src/Snicco/component/asset/tests",
+            "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "src/Snicco/component/condition/tests",
+            "Snicco\\Enterprise\\Component\\Conditions\\Tests\\": "src/Snicco/component/conditions/tests",
             "Snicco\\Enterprise\\Monorepo\\": "src/Monorepo/",
             "Snicco\\Enterprise\\Monorepo\\Tests\\": "tests/",
             "VENDOR_NAMESPACE\\Tests\\": [

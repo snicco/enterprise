@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Snicco\Enterprise\Component\Condition\Tests\fixtures;
+
+use Snicco\Enterprise\Component\Condition\Condition;
+use Snicco\Enterprise\Component\Condition\Context;
+
+final class FooCondition implements Condition
+{
+    private string $value;
+
+    public function __construct(string $value)
+    {
+        $this->value = $value;
+    }
+
+    public function isTruthy(Context $context): bool
+    {
+        return 'FOO' === $this->value;
+    }
+}
