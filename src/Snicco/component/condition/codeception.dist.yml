@@ -1,4 +1,4 @@
-namespace: Snicco\Enterprise\Component\Condition
+namespace: Snicco\Enterprise\Component\Condition\Tests
 paths:
   tests: tests
   output: tests/_output
