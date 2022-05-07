@@ -9,14 +9,13 @@ use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
 use Snicco\Enterprise\Component\Condition\WP\AdminAjaxActionStartsWith;
 
-use Snicco\Enterprise\Component\Condition\WP\IsAjaxAdminAjaxAction;
-
 use function add_filter;
+use function remove_all_filters;
 
 /**
  * @internal
  */
-final class IsAdminAjaxActionStartsWithTest extends WPTestCase
+final class AdminAjaxActionStartsWithTest extends WPTestCase
 {
     use CreateContext;
 
@@ -63,9 +62,10 @@ final class IsAdminAjaxActionStartsWithTest extends WPTestCase
             'action' => 'bogus',
         ])));
 
+        remove_all_filters('wp_doing_ajax');
         add_filter('wp_doing_ajax', fn (): bool => false);
 
-        $condition = new IsAjaxAdminAjaxAction('foobar');
+        $condition = new AdminAjaxActionStartsWith('foobar');
         $this->assertFalse($condition->isTruthy($this->createContext([], [
             'action' => 'foobar',
         ])));

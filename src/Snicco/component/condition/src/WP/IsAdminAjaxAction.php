@@ -8,7 +8,7 @@ use Snicco\Component\StrArr\Arr;
 use Snicco\Enterprise\Component\Condition\Condition;
 use Snicco\Enterprise\Component\Condition\Context;
 
-final class IsAjaxAdminAjaxAction implements Condition
+final class IsAdminAjaxAction implements Condition
 {
     private string $action;
 
@@ -19,7 +19,8 @@ final class IsAjaxAdminAjaxAction implements Condition
 
     public function isTruthy(Context $context): bool
     {
-        if (! (new IsAdminAjax())->isTruthy($context)) {
+        $admin_ajax = new IsAdminAjax();
+        if (! $admin_ajax->isTruthy($context)) {
             return false;
         }
 

@@ -7,7 +7,7 @@ namespace Snicco\Enterprise\Component\Condition\Tests\wpunit\WP;
 use Codeception\TestCase\WPTestCase;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
-use Snicco\Enterprise\Component\Condition\WP\IsAjaxAdminAjaxAction;
+use Snicco\Enterprise\Component\Condition\WP\IsAdminAjaxAction;
 
 use function add_filter;
 
@@ -29,7 +29,7 @@ final class IsAdminAjaxActionTest extends WPTestCase
      */
     public function that_it_passes(): void
     {
-        $condition = new IsAjaxAdminAjaxAction('foobar');
+        $condition = new IsAdminAjaxAction('foobar');
         $this->assertTrue($condition->isTruthy($this->createContext([], [
             'action' => 'foobar',
         ])));
@@ -53,7 +53,7 @@ final class IsAdminAjaxActionTest extends WPTestCase
      */
     public function that_it_fails(): void
     {
-        $condition = new IsAjaxAdminAjaxAction('foobar');
+        $condition = new IsAdminAjaxAction('foobar');
         $this->assertFalse($condition->isTruthy($this->createContext([], [
             'action' => 'bogus',
         ])));
@@ -63,7 +63,7 @@ final class IsAdminAjaxActionTest extends WPTestCase
 
         add_filter('wp_doing_ajax', fn (): bool => false);
 
-        $condition = new IsAjaxAdminAjaxAction('foobar');
+        $condition = new IsAdminAjaxAction('foobar');
         $this->assertFalse($condition->isTruthy($this->createContext([], [
             'action' => 'foobar',
         ])));

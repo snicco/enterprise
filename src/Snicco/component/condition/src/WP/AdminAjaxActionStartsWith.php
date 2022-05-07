@@ -22,7 +22,8 @@ final class AdminAjaxActionStartsWith implements Condition
 
     public function isTruthy(Context $context): bool
     {
-        if (! (new IsAdminAjax())->isTruthy($context)) {
+        $admin_ajax = new IsAdminAjax();
+        if (! $admin_ajax->isTruthy($context)) {
             return false;
         }
 

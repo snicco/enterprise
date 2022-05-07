@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Component\Condition;
 
 use Snicco\Component\StrArr\Arr;
+use Snicco\Component\StrArr\Str;
+
 use WP_User;
 
 use function array_map;
@@ -64,7 +66,9 @@ final class Context
     {
         if (! isset($this->path)) {
             $path = (string) Arr::get($this->_server, 'REQUEST_URI', '');
-            $this->path = '' === $path ? '' : '/' . ltrim($this->decodePath($path), '/');
+            $this->path = ('' === $path)
+                ? ''
+                : '/' . ltrim(Str::beforeFirst($this->decodePath($path), '?'), '/');
         }
 
         return $this->path;
@@ -101,6 +105,11 @@ final class Context
         }
 
         return $this->user;
+    }
+
+    public function scriptName(): string
+    {
+        return $this->_server['SCRIPT_NAME'] ?? '';
     }
 
     private function decodePath(string $path): string

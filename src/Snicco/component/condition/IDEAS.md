@@ -23,3 +23,6 @@
 
 ## => paragonie double select pattern
 
+## Define dependencies between plugins
+
+1. A deactivation of one "mother" plugin should auto disable all children.
