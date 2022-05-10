@@ -19,4 +19,9 @@ final class IsWPRestAPI implements Condition
 
         return Str::startsWith($context->path(), $rest_prefix);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

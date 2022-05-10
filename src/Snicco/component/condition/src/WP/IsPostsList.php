@@ -14,4 +14,9 @@ final class IsPostsList implements Condition
     {
         return Str::endsWith($context->scriptName(), '/wp-admin/edit.php');
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

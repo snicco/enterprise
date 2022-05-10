@@ -50,6 +50,7 @@
         "phpunit/phpunit": "9.5.13",
         "rector/rector": "0.12.18",
         "snicco/debug-bundle": "^1.1.0",
+        "snicco/event-dispatcher-testing": "^1.1.1",
         "snicco/testing-bundle": "^1.1.0",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
@@ -64,7 +65,7 @@
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
             "Snicco\\Enterprise\\Component\\Asset\\": "src/Snicco/component/asset/src",
             "Snicco\\Enterprise\\Component\\Condition\\": "src/Snicco/component/condition/src",
-            "Snicco\\Enterprise\\Component\\Conditions\\": "src/Snicco/component/conditions/src",
+            "Snicco\\Enterprise\\Component\\Performance\\Core\\": "src/Snicco/component/performance-core/src",
             "Snicco\\Enterprise\\DistributedPlugin\\Setup\\": "src/Snicco/skeleton/distributed-plugin/setup",
             "VENDOR_NAMESPACE\\": "src/Snicco/skeleton/distributed-plugin/plugin/src/VENDOR_NAMESPACE"
         }
@@ -75,7 +76,7 @@
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "src/Snicco/bundle/better-wp-cli-bundle/tests",
             "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "src/Snicco/component/asset/tests",
             "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "src/Snicco/component/condition/tests",
-            "Snicco\\Enterprise\\Component\\Conditions\\Tests\\": "src/Snicco/component/conditions/tests",
+            "Snicco\\Enterprise\\Component\\Performance\\Core\\Tests\\": "src/Snicco/component/performance-core/tests",
             "Snicco\\Enterprise\\Monorepo\\": "src/Monorepo/",
             "Snicco\\Enterprise\\Monorepo\\Tests\\": "tests/",
             "VENDOR_NAMESPACE\\Tests\\": [
@@ -151,8 +152,11 @@
         "snicco/asset": "self.version",
         "snicco/better-wp-cli-bundle": "self.version",
         "snicco/caching-bundle": "self.version",
+        "snicco/condition": "self.version",
         "snicco/distributed-plugin": "self.version",
         "snicco/octane": "self.version",
+        "snicco/performance-core": "self.version",
+        "snicco/plugin-remover": "self.version",
         "vendor_slug/plugin": "self.version"
     },
     "minimum-stability": "dev",

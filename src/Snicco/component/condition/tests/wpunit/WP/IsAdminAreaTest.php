@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Component\Condition\Tests\wpunit\WP;
 
 use Codeception\TestCase\WPTestCase;
+use Snicco\Enterprise\Component\Condition\Tests\Assert;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 use Snicco\Enterprise\Component\Condition\Tests\WPContext;
 use Snicco\Enterprise\Component\Condition\WP\IsAdminArea;
@@ -46,5 +47,13 @@ final class IsAdminAreaTest extends WPTestCase
         WPContext::forceIsAdmin(false);
         $condition = new IsAdminArea();
         $this->assertFalse($condition->isTruthy($this->createContext()));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serialize_works(): void
+    {
+        Assert::canBeNormalized(new IsAdminArea());
     }
 }

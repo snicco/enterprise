@@ -14,4 +14,9 @@ final class IsNewPost implements Condition
     {
         return Str::endsWith($context->scriptName(), '/wp-admin/post-new.php');
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

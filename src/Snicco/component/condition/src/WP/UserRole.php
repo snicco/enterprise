@@ -24,4 +24,9 @@ final class UserRole implements Condition
 
         return in_array($this->role, $user->roles, true);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->role]];
+    }
 }

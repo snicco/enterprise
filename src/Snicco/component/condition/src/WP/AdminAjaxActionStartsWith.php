@@ -38,4 +38,9 @@ final class AdminAjaxActionStartsWith implements Condition
 
         return is_string($post) && '' !== $post && Str::startsWith($post, $this->action);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->action]];
+    }
 }

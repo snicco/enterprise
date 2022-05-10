@@ -28,4 +28,9 @@ final class HasCookie implements Condition
 
         return $this->cookie_value === Arr::get($context->cookies(), $this->cookie_name);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->cookie_name, $this->cookie_value]];
+    }
 }

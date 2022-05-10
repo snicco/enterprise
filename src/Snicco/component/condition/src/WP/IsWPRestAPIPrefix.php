@@ -30,4 +30,9 @@ final class IsWPRestAPIPrefix implements Condition
 
         return Str::startsWith($context->path(), $full_prefix);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->prefix]];
+    }
 }

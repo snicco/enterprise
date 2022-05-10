@@ -32,4 +32,9 @@ final class QueryVar implements Condition
 
         return false;
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->query_vars]];
+    }
 }

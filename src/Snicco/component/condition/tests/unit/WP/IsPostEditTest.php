@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Component\Condition\Tests\unit\WP;
 
 use Codeception\Test\Unit;
+use Snicco\Enterprise\Component\Condition\Tests\Assert;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 use Snicco\Enterprise\Component\Condition\WP\IsPostEdit;
 
@@ -38,5 +39,13 @@ final class IsPostEditTest extends Unit
         $this->assertFalse($condition->isTruthy($this->createContext([
             'SCRIPT_NAME' => '/post.php',
         ])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serialize_works(): void
+    {
+        Assert::canBeNormalized(new IsPostEdit());
     }
 }

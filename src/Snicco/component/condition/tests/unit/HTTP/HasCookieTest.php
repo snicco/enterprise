@@ -6,6 +6,7 @@ namespace Snicco\Enterprise\Component\Condition\Tests\unit\HTTP;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Component\Condition\HTTP\HasCookie;
+use Snicco\Enterprise\Component\Condition\Normalizer;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
 /**
@@ -50,5 +51,17 @@ final class HasCookieTest extends Unit
 
         $condition = new HasCookie('foo', null);
         $this->assertFalse($condition->isTruthy($this->createContext([], [], [], [])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serializing_works(): void
+    {
+        $condition = new HasCookie('foo', null);
+        $this->assertEquals($condition, Normalizer::denormalize(Normalizer::normalize($condition)));
+
+        $condition = new HasCookie('foo', 'bar');
+        $this->assertEquals($condition, Normalizer::denormalize(Normalizer::normalize($condition)));
     }
 }

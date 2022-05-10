@@ -13,4 +13,9 @@ final class IsFrontend implements Condition
     {
         return '/index.php' === $context->scriptName();
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

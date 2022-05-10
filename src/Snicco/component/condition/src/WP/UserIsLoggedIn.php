@@ -14,4 +14,9 @@ final class UserIsLoggedIn implements Condition
         return $context->user()
             ->exists();
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

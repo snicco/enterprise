@@ -34,4 +34,9 @@ final class AdminPage implements Condition
 
         return in_array($page_query_var, $this->pages, true);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->pages]];
+    }
 }

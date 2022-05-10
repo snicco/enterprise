@@ -6,6 +6,7 @@ namespace Snicco\Enterprise\Component\Condition\Tests\unit\HTTP;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Component\Condition\HTTP\PathSegment;
+use Snicco\Enterprise\Component\Condition\Normalizer;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
 /**
@@ -65,5 +66,14 @@ final class PathSegmentTest extends Unit
         $this->assertFalse($condition->isTruthy($this->createContext([
             'REQUEST_URI' => '/foo/bar/baz',
         ])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serializing_works(): void
+    {
+        $condition = new PathSegment('foo');
+        $this->assertEquals($condition, Normalizer::denormalize(Normalizer::normalize($condition)));
     }
 }

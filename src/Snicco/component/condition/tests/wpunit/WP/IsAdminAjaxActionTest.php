@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Component\Condition\Tests\wpunit\WP;
 
 use Codeception\TestCase\WPTestCase;
+use Snicco\Enterprise\Component\Condition\Tests\Assert;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
 use Snicco\Enterprise\Component\Condition\WP\IsAdminAjaxAction;
@@ -80,5 +81,13 @@ final class IsAdminAjaxActionTest extends WPTestCase
         ], [
             'action' => 'bogus',
         ], )));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serialize_works(): void
+    {
+        Assert::canBeNormalized(new IsAdminAjaxAction('foo'));
     }
 }

@@ -14,4 +14,9 @@ final class IsPostEdit implements Condition
     {
         return Str::endsWith($context->scriptName(), '/wp-admin/post.php');
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

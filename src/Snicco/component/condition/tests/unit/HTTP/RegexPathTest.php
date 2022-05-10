@@ -6,6 +6,7 @@ namespace Snicco\Enterprise\Component\Condition\Tests\unit\HTTP;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Component\Condition\HTTP\RegexPath;
+use Snicco\Enterprise\Component\Condition\Normalizer;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
 /**
@@ -55,5 +56,14 @@ final class RegexPathTest extends Unit
         $this->assertFalse($condition->isTruthy($this->createContext([
             'REQUEST_URI' => '/d22',
         ])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serializing_works(): void
+    {
+        $condition = new RegexPath('[abc]\d{2,3}');
+        $this->assertEquals($condition, Normalizer::denormalize(Normalizer::normalize($condition)));
     }
 }

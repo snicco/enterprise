@@ -30,4 +30,9 @@ final class IsAdminAjaxAction implements Condition
 
         return Arr::get($context->post(), 'action') === $this->action;
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->action]];
+    }
 }

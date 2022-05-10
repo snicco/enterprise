@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Component\Condition\Tests\unit;
 
 use Codeception\Test\Unit;
-use RuntimeException;
 use Snicco\Enterprise\Component\Condition\All;
-use Snicco\Enterprise\Component\Condition\CallableCondition;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
+use Snicco\Enterprise\Component\Condition\Tests\fixtures\FalseCondition;
+use Snicco\Enterprise\Component\Condition\Tests\fixtures\TrueCondition;
 
 /**
  * @internal
@@ -22,10 +22,7 @@ final class AllTest extends Unit
      */
     public function that_it_passes(): void
     {
-        $condition = new All([
-            new CallableCondition(fn (): bool => true),
-            new CallableCondition(fn (): bool => true),
-        ]);
+        $condition = new All([new TrueCondition(), new TrueCondition()]);
 
         $this->assertTrue($condition->isTruthy($this->createContext()));
     }
@@ -35,12 +32,7 @@ final class AllTest extends Unit
      */
     public function that_it_fails(): void
     {
-        $condition = new All([
-            new CallableCondition(fn (): bool => false),
-            new CallableCondition(function (): void {
-                throw new RuntimeException('This should not be called');
-            }),
-        ]);
+        $condition = new All([new TrueCondition(), new FalseCondition()]);
 
         $this->assertFalse($condition->isTruthy($this->createContext()));
     }

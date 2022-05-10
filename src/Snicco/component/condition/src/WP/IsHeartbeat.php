@@ -14,4 +14,9 @@ final class IsHeartbeat implements Condition
     {
         return 'heartbeat' === Arr::get($context->post(), 'action');
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

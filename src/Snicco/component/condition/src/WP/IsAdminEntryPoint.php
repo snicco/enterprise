@@ -36,4 +36,9 @@ final class IsAdminEntryPoint implements Condition
 
         return false;
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->entry_points]];
+    }
 }

@@ -6,6 +6,7 @@ namespace Snicco\Enterprise\Component\Condition\Tests\unit\HTTP;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Component\Condition\HTTP\RequestMethod;
+use Snicco\Enterprise\Component\Condition\Tests\Assert;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
 /**
@@ -45,5 +46,14 @@ final class RequestMethodTest extends Unit
         $this->assertFalse($condition->isTruthy($this->createContext([
             'REQUEST_METHOD' => 'GET',
         ])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serializing_works(): void
+    {
+        Assert::canBeNormalized(new RequestMethod('GET'));
+        Assert::canBeNormalized(new RequestMethod(['GET', 'POST']));
     }
 }

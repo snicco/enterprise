@@ -30,4 +30,9 @@ final class RequestMethod implements Condition
 
         return in_array($request_method, $this->methods, true);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->methods]];
+    }
 }

@@ -27,4 +27,9 @@ final class PathSegment implements Condition
     {
         return Str::contains($context->path(), $this->path_segment);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->path_segment]];
+    }
 }

@@ -14,4 +14,9 @@ final class IsTaxonomyEdit implements Condition
     {
         return Str::endsWith($context->scriptName(), '/wp-admin/term.php');
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Component\Condition\Tests\wpunit\WP;
 
 use Codeception\TestCase\WPTestCase;
+use Snicco\Enterprise\Component\Condition\Tests\Assert;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 use Snicco\Enterprise\Component\Condition\Tests\WPContext;
 use Snicco\Enterprise\Component\Condition\WP\AdminPageStartsWith;
@@ -44,6 +45,17 @@ final class AdminPageStartsWithTest extends WPTestCase
         $this->assertTrue($condition->isTruthy($this->createContext([], [
             'page' => 'foo',
         ])));
+
+        $condition = new AdminPageStartsWith(['foo', 'bogus']);
+        $this->assertTrue($condition->isTruthy($this->createContext([], [
+            'page' => 'bogusbar',
+        ])));
+        $this->assertTrue($condition->isTruthy($this->createContext([], [
+            'page' => 'bogus-bar',
+        ])));
+        $this->assertTrue($condition->isTruthy($this->createContext([], [
+            'page' => 'bogus',
+        ])));
     }
 
     /**
@@ -68,5 +80,33 @@ final class AdminPageStartsWithTest extends WPTestCase
         $this->assertFalse($condition->isTruthy($this->createContext([], [
             'page' => 'foobar',
         ])));
+
+        $condition = new AdminPageStartsWith(['foo', 'bogus']);
+        $this->assertFalse($condition->isTruthy($this->createContext([], [
+            'page' => 'whateverbar',
+        ])));
+        $this->assertFalse($condition->isTruthy($this->createContext([], [
+            'page' => 'whatever-bar',
+        ])));
+        $this->assertFalse($condition->isTruthy($this->createContext([], [
+            'page' => 'whatever',
+        ])));
+
+        $condition = new AdminPageStartsWith('foo');
+        $this->assertFalse($condition->isTruthy($this->createContext([], [
+            'page' => ['foo'],
+        ])));
+        $this->assertFalse($condition->isTruthy($this->createContext([], [
+            'page' => '',
+        ])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serialize_works(): void
+    {
+        Assert::canBeNormalized(new AdminPageStartsWith('foo'));
+        Assert::canBeNormalized(new AdminPageStartsWith(['foo', 'bar']));
     }
 }

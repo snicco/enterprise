@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Component\Condition;
 
-final class Unless implements Condition
+final class Not implements ContainingCondition
 {
     private Condition $condition;
 
@@ -16,5 +16,10 @@ final class Unless implements Condition
     public function isTruthy(Context $context): bool
     {
         return ! $this->condition->isTruthy($context);
+    }
+
+    public function toArray(): array
+    {
+        return [self::class, $this->condition->toArray()];
     }
 }

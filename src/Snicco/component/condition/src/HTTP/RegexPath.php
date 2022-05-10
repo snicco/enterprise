@@ -24,13 +24,18 @@ final class RegexPath implements Condition
             $pattern = Str::afterFirst($pattern, '\\/');
         }
 
-        $this->pattern = sprintf('#%s#', $pattern);
+        $this->pattern = $pattern;
     }
 
     public function isTruthy(Context $context): bool
     {
         $path = ltrim($context->path(), '/');
 
-        return 1 === preg_match($this->pattern, $path);
+        return 1 === preg_match(sprintf('#%s#', $this->pattern), $path);
+    }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->pattern]];
     }
 }

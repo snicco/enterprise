@@ -3,6 +3,7 @@
     "*",
     "asset",
     "condition",
+    "performance-core",
     "application-layer-bundle",
     "better-wp-cli-bundle",
     "distributed-plugin"

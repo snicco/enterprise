@@ -15,4 +15,9 @@ final class IsAdminArea implements Condition
     {
         return is_admin();
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

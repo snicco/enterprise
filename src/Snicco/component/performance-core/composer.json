@@ -1,0 +1,37 @@
+{
+  "name": "snicco/performance-core",
+  "license": "commercial",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/snicco/codeception"
+    }
+  ],
+  "require": {
+    "php": "^7.4|^8.0",
+    "snicco/condition": "dev-master",
+    "snicco/str-arr": "^1.1.1",
+    "snicco/better-wp-hooks": "^1.1.1"
+  },
+  "require-dev": {
+    "codeception/codeception": "4.1.x-dev",
+    "snicco/event-dispatcher-testing": "^1.1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Component\\Performance\\Core\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Component\\Performance\\Core\\Tests\\": "tests"
+    }
+  },
+  "minimum-stability": "stable"
+}

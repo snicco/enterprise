@@ -24,4 +24,9 @@ final class UserCan implements Condition
 
         return user_can($user, $this->cap);
     }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->cap]];
+    }
 }

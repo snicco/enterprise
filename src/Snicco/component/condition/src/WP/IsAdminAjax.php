@@ -15,4 +15,9 @@ final class IsAdminAjax implements Condition
     {
         return wp_doing_ajax();
     }
+
+    public function toArray(): array
+    {
+        return [self::class, []];
+    }
 }

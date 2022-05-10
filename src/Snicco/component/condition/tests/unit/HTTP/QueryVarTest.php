@@ -6,6 +6,7 @@ namespace Snicco\Enterprise\Component\Condition\Tests\unit\HTTP;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Component\Condition\HTTP\QueryVar;
+use Snicco\Enterprise\Component\Condition\Normalizer;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
 /**
@@ -53,5 +54,19 @@ final class QueryVarTest extends Unit
             'baz' => 'biz',
         ]);
         $this->assertFalse($condition->isTruthy($this->createContext([], [])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serializing_works(): void
+    {
+        $condition = new QueryVar([]);
+        $this->assertEquals($condition, Normalizer::denormalize(Normalizer::normalize($condition)));
+
+        $condition = new QueryVar([
+            'foo' => 'bar',
+        ]);
+        $this->assertEquals($condition, Normalizer::denormalize(Normalizer::normalize($condition)));
     }
 }

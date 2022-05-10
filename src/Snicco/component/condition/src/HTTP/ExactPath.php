@@ -6,7 +6,7 @@ namespace Snicco\Enterprise\Component\Condition\HTTP;
 
 use Snicco\Enterprise\Component\Condition\Condition;
 use Snicco\Enterprise\Component\Condition\Context;
-use function ltrim;
+use function trim;
 
 final class ExactPath implements Condition
 {
@@ -25,6 +25,11 @@ final class ExactPath implements Condition
 
     public function isTruthy(Context $context): bool
     {
-        return ltrim($this->path, '/') === ltrim($context->path(), '/');
+        return trim($this->path, '/') === trim($context->path(), '/');
+    }
+
+    public function toArray(): array
+    {
+        return [self::class, [$this->path]];
     }
 }

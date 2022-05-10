@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Component\Condition;
 
-final class Any implements Condition
+use function array_map;
+
+final class Any implements AggregateCondition
 {
     /**
      * @var Condition[]
@@ -28,5 +30,12 @@ final class Any implements Condition
         }
 
         return false;
+    }
+
+    public function toArray(): array
+    {
+        $arrays = array_map(fn (Condition $condition): array => $condition->toArray(), $this->conditions);
+
+        return [self::class, $arrays];
     }
 }

@@ -39,6 +39,11 @@ final class ExactPathTest extends Unit
         $this->assertTrue($condition->isTruthy($this->createContext([
             'REQUEST_URI' => 'foo',
         ])));
+
+        $condition = new ExactPath('/bar');
+        $this->assertTrue($condition->isTruthy($this->createContext([
+            'REQUEST_URI' => '/bar/',
+        ])));
     }
 
     /**
@@ -53,12 +58,7 @@ final class ExactPathTest extends Unit
 
         $condition = new ExactPath('/foo/');
         $this->assertFalse($condition->isTruthy($this->createContext([
-            'REQUEST_URI' => '/foo',
-        ])));
-
-        $condition = new ExactPath('/bar/');
-        $this->assertFalse($condition->isTruthy($this->createContext([
-            'REQUEST_URI' => '/bar',
+            'REQUEST_URI' => '/foo/bar',
         ])));
     }
 }

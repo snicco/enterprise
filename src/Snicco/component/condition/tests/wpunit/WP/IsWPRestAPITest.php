@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Component\Condition\Tests\wpunit\WP;
 
 use Codeception\TestCase\WPTestCase;
+use Snicco\Enterprise\Component\Condition\Tests\Assert;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 use Snicco\Enterprise\Component\Condition\WP\IsWPRestAPI;
 
@@ -47,5 +48,13 @@ final class IsWPRestAPITest extends WPTestCase
         $this->assertFalse($condition->isTruthy($this->createContext([
             'REQUEST_URI' => '/wp-bogus',
         ])));
+    }
+
+    /**
+     * @test
+     */
+    public function that_json_serialize_works(): void
+    {
+        Assert::canBeNormalized(new IsWPRestAPI());
     }
 }
