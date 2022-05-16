@@ -14,6 +14,7 @@
         "league/tactician": "^1.1.0",
         "league/tactician-logger": "^0.11.0",
         "nyholm/psr7": "^1.5.0",
+        "pragmarx/google2fa": "^8.0",
         "psr/container": "^1.1.2",
         "psr/log": "^1.1.4",
         "ramsey/uuid": "^4.2",
@@ -29,6 +30,8 @@
         "snicco/method-override-middleware": "^1.1.1",
         "snicco/pimple-bridge": "^1.1.1",
         "snicco/psr7-error-handler": "^1.1.1",
+        "snicco/session": "^1.1.1",
+        "snicco/signed-url": "^1.1.1",
         "snicco/str-arr": "^1.1.1",
         "snicco/templating": "^1.1.1",
         "snicco/templating-bundle": "^1.1.1",
@@ -50,6 +53,7 @@
         "phpunit/phpunit": "9.5.13",
         "rector/rector": "0.12.18",
         "snicco/debug-bundle": "^1.1.0",
+        "snicco/event-dispatcher-testing": "^1.1.1",
         "snicco/testing-bundle": "^1.1.0",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
@@ -61,6 +65,7 @@
     "autoload": {
         "psr-4": {
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src/Snicco/bundle/application-layer-bundle/src",
+            "Snicco\\Enterprise\\Bundle\\Auth\\": "src/Snicco/bundle/auth-bundle/src",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
             "Snicco\\Enterprise\\Component\\Asset\\": "src/Snicco/component/asset/src",
             "Snicco\\Enterprise\\Component\\Condition\\": "src/Snicco/component/condition/src",
@@ -72,6 +77,7 @@
     "autoload-dev": {
         "psr-4": {
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "src/Snicco/bundle/application-layer-bundle/tests",
+            "Snicco\\Enterprise\\Bundle\\Auth\\Tests\\": "src/Snicco/bundle/auth-bundle/tests",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "src/Snicco/bundle/better-wp-cli-bundle/tests",
             "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "src/Snicco/component/asset/tests",
             "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "src/Snicco/component/condition/tests",
@@ -149,8 +155,10 @@
     "replace": {
         "snicco/application-layer-bundle": "self.version",
         "snicco/asset": "self.version",
+        "snicco/auth-bundle": "self.version",
         "snicco/better-wp-cli-bundle": "self.version",
         "snicco/caching-bundle": "self.version",
+        "snicco/condition": "self.version",
         "snicco/distributed-plugin": "self.version",
         "snicco/octane": "self.version",
         "vendor_slug/plugin": "self.version"

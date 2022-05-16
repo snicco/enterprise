@@ -1,0 +1,35 @@
+{
+    "name": "snicco/auth-bundle",
+    "license": "commercial",
+    "description": "An authentication bundle for snicco/kernel",
+    "authors": [
+        {
+            "name": "Calvin Alkan",
+            "email": "calvin@snicco.de"
+        }
+    ],
+    "require": {
+        "snicco/event-dispatcher": "^1.1.1",
+        "snicco/http-routing": "^1.1.1",
+        "snicco/session": "^1.1.1",
+        "snicco/signed-url": "^1.1.1",
+        "pragmarx/google2fa": "^8.0.0",
+        "snicco/encryption-bundle": "^1.1.1",
+        "snicco/better-wpdb": "^1.1.1"
+    },
+    "require-dev": {
+        "nyholm/psr7": "^1.5.0",
+        "snicco/event-dispatcher-testing": "^1.1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\Auth\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Snicco\\Enterprise\\Bundle\\Auth\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "stable"
+}
