@@ -176,13 +176,13 @@ return static function (ContainerConfigurator $configurator): void {
 
     $services->set(NoUnusedImportsFixer::class);
 
-    $services->set(LineLengthFixer::class)->call('configure', [
-        [
-            LineLengthFixer::LINE_LENGTH => 120,
-            LineLengthFixer::BREAK_LONG_LINES => true,
-            LineLengthFixer::INLINE_SHORT_LINES => true,
-        ],
-    ]);
+    //$services->set(LineLengthFixer::class)->call('configure', [
+    //    [
+    //        LineLengthFixer::LINE_LENGTH => 120,
+    //        LineLengthFixer::BREAK_LONG_LINES => true,
+    //        LineLengthFixer::INLINE_SHORT_LINES => true,
+    //    ],
+    //]);
 
     $services->set(DocBlockLineLengthFixer::class)->call('configure', [
         [
