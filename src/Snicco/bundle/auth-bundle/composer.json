@@ -11,7 +11,6 @@
     "require": {
         "snicco/event-dispatcher": "^1.1.1",
         "snicco/http-routing": "^1.1.1",
-        "snicco/session": "^1.1.1",
         "snicco/signed-url": "^1.1.1",
         "pragmarx/google2fa": "^8.0.0",
         "snicco/encryption-bundle": "^1.1.1",

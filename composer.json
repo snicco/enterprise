@@ -49,7 +49,7 @@
         "codeception/module-webdriver": "^1.0",
         "humbug/php-scoper": "^0.17.2",
         "lucatume/wp-browser": "3.1.6",
-        "php-stubs/wordpress-stubs": "^5.9.3",
+        "php-stubs/wordpress-stubs": "^5.9",
         "phpunit/phpunit": "9.5.13",
         "rector/rector": "0.12.18",
         "snicco/debug-bundle": "^1.1.0",
@@ -69,7 +69,6 @@
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
             "Snicco\\Enterprise\\Component\\Asset\\": "src/Snicco/component/asset/src",
             "Snicco\\Enterprise\\Component\\Condition\\": "src/Snicco/component/condition/src",
-            "Snicco\\Enterprise\\Component\\Conditions\\": "src/Snicco/component/conditions/src",
             "Snicco\\Enterprise\\DistributedPlugin\\Setup\\": "src/Snicco/skeleton/distributed-plugin/setup",
             "VENDOR_NAMESPACE\\": "src/Snicco/skeleton/distributed-plugin/plugin/src/VENDOR_NAMESPACE"
         }
