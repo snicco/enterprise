@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
+use Snicco\Enterprise\Bundle\Auth\Event\SessionWasRotated;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use Snicco\Enterprise\Bundle\Auth\Event\SessionRotationIntervalExceeded;
 use Snicco\Enterprise\Bundle\Auth\Event\SessionWasIdle;
@@ -53,7 +54,7 @@ final class WPAuthSessionsTest extends WPTestCase
             60 * 15
         );
 
-        $session_repository->createTable();
+        SessionRepository::createTable($this->table_name);
 
         WPAuthSessions::setSessionRepository($session_repository);
         add_filter('session_token_manager', fn (): string => WPAuthSessions::class, 9999999);
@@ -349,14 +350,14 @@ final class WPAuthSessionsTest extends WPTestCase
 
         $this->assertIsArray($sessions_1->get($token));
 
-        $this->testable_dispatcher->assertNotDispatched(SessionRotationIntervalExceeded::class);
+        $this->testable_dispatcher->assertNotDispatched(SessionWasRotated::class);
 
         sleep(1);
 
         $this->assertIsArray($sessions_1->get($token));
 
         $this->testable_dispatcher->assertDispatched(
-            fn (SessionRotationIntervalExceeded $event) => 10 === $event->user_id
+            fn (SessionWasRotated $event) => 10 === $event->userId()
         );
     }
 }

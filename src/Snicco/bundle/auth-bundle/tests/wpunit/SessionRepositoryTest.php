@@ -52,7 +52,7 @@ final class SessionRepositoryTest extends WPTestCase
             60 * 15
         );
 
-        $session_repository->createTable();
+        SessionRepository::createTable(self::TABLE_NAME);
 
         $this->session_repository = $session_repository;
     }
@@ -117,7 +117,7 @@ final class SessionRepositoryTest extends WPTestCase
             $new_token_hashed = $event->newTokenHashed();
         });
 
-        $this->session_repository->rotate($hashed_token);
+        $this->session_repository->rotate(1, $hashed_token);
 
         $this->assertIsString($new_token_hashed);
         $next_rotation = (int) $this->db->selectValue(
@@ -132,10 +132,67 @@ final class SessionRepositoryTest extends WPTestCase
             [$hashed_token]
         );
     }
-
-    private function aValidSessionForUser(int $user_id): string
+    
+    /**
+     * @test
+     */
+    public function that_a_rotated_session_token_proxies_to_the_newly_generated_token() :void
     {
-        $hashed_token = (string) hash('sha256', bin2hex(random_bytes(16)));
+        $this->session_repository = new SessionRepository(
+            $this->testable_dispatcher,
+            $this->db,
+            self::TABLE_NAME,
+            60 * 15,
+            10
+        );
+        
+        $hashed_token_old = $this->aValidSessionForUser(1, 'foobar');
+        $session_payload = $this->session_repository->getSession(1, $hashed_token_old);
+        $session_payload['foo'] = 'bar';
+        
+        $new_token_hashed = $this->session_repository->rotate(1, $hashed_token_old);
+    
+        $this->session_repository->update(1,$hashed_token_old, $session_payload);
+        
+        $this->assertSame($session_payload, $this->session_repository->getSession(1, $hashed_token_old));
+        $this->assertSame($session_payload, $this->session_repository->getSession(1, $new_token_hashed));
+        
+        $this->expectException(NoMatchingRowFound::class);
+        $this->db->selectRow("select * from ".self::TABLE_NAME. " where hashed_token = ?", [$hashed_token_old]);
+    }
+    
+    /**
+     * @test
+     */
+    public function that_an_idle_session_is_deleted() :void
+    {
+        $this->session_repository = new SessionRepository(
+            $this->testable_dispatcher,
+            $this->db,
+            self::TABLE_NAME,
+            1,
+            10
+        );
+    
+        $hashed_token = $this->aValidSessionForUser(1);
+    
+        sleep(2);
+    
+        $session = $this->session_repository->getSession(1, $hashed_token);
+    
+        $this->assertNull($session);
+        
+        $this->expectException(NoMatchingRowFound::class);
+        $this->db->selectValue(
+            sprintf('select * from %s where hashed_token = ?', self::TABLE_NAME),
+            [$hashed_token]
+        );
+    }
+    
+    private function aValidSessionForUser(int $user_id, string $token_plain = null): string
+    {
+        $token_plain ??= bin2hex(random_bytes(16));
+        $hashed_token = (string) hash('sha256', $token_plain);
         $this->session_repository->update($user_id, $hashed_token, [
             'expiration' => time() + 7200,
         ]);
