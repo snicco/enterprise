@@ -28,7 +28,7 @@ final class BetterWPCLIBundleTest extends Unit
      */
     public function that_the_alias_is_correct(): void
     {
-        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories, );
 
         $kernel->boot();
 

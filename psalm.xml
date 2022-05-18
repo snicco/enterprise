@@ -28,7 +28,7 @@
     </issueHandlers>
 
     <globals>
-        <var name="GLOBALS" type="array{phpmailer: \PHPMailer\PHPMailer\PHPMailer, wpdb: \wpdb}"/>
+        <var name="GLOBALS" type="array{phpmailer: \PHPMailer\PHPMailer\PHPMailer, wpdb: \wpdb, wp_hasher: null|\PasswordHash}"/>
     </globals>
 
     <plugins>

@@ -38,7 +38,7 @@ final class ApplicationLayerBundleTest extends WPTestCase
      */
     public function that_the_alias_is_correct(): void
     {
-        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories, );
 
         $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
             $config->set('kernel.bundles.all', [ApplicationLayerBundle::class]);
@@ -54,7 +54,7 @@ final class ApplicationLayerBundleTest extends WPTestCase
      */
     public function that_the_command_bus_can_be_resolved(): void
     {
-        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories, );
 
         $kernel->boot();
 
@@ -66,7 +66,7 @@ final class ApplicationLayerBundleTest extends WPTestCase
      */
     public function that_a_command_can_be_run(): void
     {
-        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories, );
 
         $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
             $config->set('command_bus', [
@@ -96,7 +96,7 @@ final class ApplicationLayerBundleTest extends WPTestCase
      */
     public function that_the_command_map_is_generated_in_the_configuration(): void
     {
-        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories, );
 
         $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
             $config->set('command_bus', [
@@ -179,7 +179,7 @@ final class ApplicationLayerBundleTest extends WPTestCase
      */
     public function that_commands_are_logged(): void
     {
-        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories, );
 
         $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
             $config->set('command_bus', [
@@ -213,7 +213,7 @@ final class ApplicationLayerBundleTest extends WPTestCase
      */
     public function that_the_configured_psr3_logger_can_be_overwritten_by_using_the_command_logger_interface(): void
     {
-        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories,);
+        $kernel = new Kernel($this->newContainer(), Environment::testing(), $this->directories, );
 
         $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
             $config->set('command_bus', [

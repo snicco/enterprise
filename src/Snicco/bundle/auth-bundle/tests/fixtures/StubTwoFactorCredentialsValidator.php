@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
 
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
-use Snicco\Enterprise\Bundle\Auth\TwoFactor\InvalidTwoFactorCredentials;
-use Snicco\Enterprise\Bundle\Auth\TwoFactor\TwoFactorCredentialsValidator;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\InvalidTwoFactorCredentials;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\TwoFactorCredentialsValidator;
 use WP_User;
 
 final class StubTwoFactorCredentialsValidator implements TwoFactorCredentialsValidator

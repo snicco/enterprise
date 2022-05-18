@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
 
 use LogicException;
-use Snicco\Enterprise\Bundle\Auth\TwoFactor\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\TwoFactor\No2FaSettingsFound;
-use Snicco\Enterprise\Bundle\Auth\TwoFactor\TwoFactorOTPSettings;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\BackupCodes;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\No2FaSettingsFound;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\TwoFactorOTPSettings;
 use function array_map;
 use function sprintf;
 

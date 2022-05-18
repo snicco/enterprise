@@ -15,3 +15,7 @@ const PLUGINS_COOKIE_PATH = '/wp-admin/plugins';
 const COOKIEPATH = 'example.test';
 const SITECOOKIEPATH = 'example.test';
 const COOKIEHASH = 'secret_hash';
+
+const SNICCO_AUTH_ENCRYPTION_SECRET = '';
+const ABSPATH = '';
+const WPINC = '';
