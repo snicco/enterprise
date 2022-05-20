@@ -17,7 +17,8 @@
         "snicco/better-wpdb": "^1.1.3",
         "snicco/testable-clock": "^1.1.3",
         "paragonie/password_lock": "^3.1.0",
-        "wp-cli/wp-config-transformer": "v1.3.0"
+        "wp-cli/wp-config-transformer": "v1.3.0",
+        "bjeavons/zxcvbn-php": "^1.3.1"
     },
     "require-dev": {
         "nyholm/psr7": "^1.5.0",

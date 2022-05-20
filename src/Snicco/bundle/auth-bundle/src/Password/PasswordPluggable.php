@@ -6,6 +6,9 @@ namespace Snicco\Enterprise\Bundle\Auth\Password;
 
 use LogicException;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class PasswordPluggable
 {
     
@@ -13,9 +16,6 @@ final class PasswordPluggable
     
     public static function set(SecureWPPasswords $secure_passwords) :void
     {
-        if(null !== self::$instance) {
-            throw new LogicException('An instance of '.SecureWPPasswords::class.' has already been set.');
-        }
         self::$instance = $secure_passwords;
     }
     
