@@ -8,7 +8,7 @@ use Snicco\Component\BetterWPHooks\EventMapping\ExposeToWP;
 use Snicco\Component\EventDispatcher\ClassAsName;
 use Snicco\Component\EventDispatcher\ClassAsPayload;
 use Snicco\Component\EventDispatcher\Event;
-use Snicco\Enterprise\Bundle\Auth\Authentication\Fail2Ban\BannableEvent;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\BannableEvent;
 
 use const LOG_WARNING;
 

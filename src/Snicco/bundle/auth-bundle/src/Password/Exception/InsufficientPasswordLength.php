@@ -8,5 +8,4 @@ use InvalidArgumentException;
 
 final class InsufficientPasswordLength extends InvalidArgumentException
 {
-    
 }

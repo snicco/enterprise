@@ -39,8 +39,7 @@ final class TwoFactorSettingsBetterWPDB implements TwoFactorOTPSettings
     public function createTable(): void
     {
         $this->db->unprepared(
-            'CREATE TABLE IF NOT EXISTS `two_factor_settings` (
-
+            "CREATE TABLE IF NOT EXISTS `{$this->table_name}` (
 	`id` integer(11) NOT NULL AUTO_INCREMENT,
 	`user_id` integer(11) unsigned NOT NULL UNIQUE,
     `completed` tinyint DEFAULT 0,
@@ -50,7 +49,7 @@ final class TwoFactorSettingsBetterWPDB implements TwoFactorOTPSettings
     `backup_codes` text,
 	PRIMARY KEY (`id`)
 
-);'
+);"
         );
     }
 

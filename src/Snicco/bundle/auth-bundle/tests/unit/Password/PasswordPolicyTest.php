@@ -5,69 +5,70 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\unit\Password;
 
 use Codeception\Test\Unit;
-use Snicco\Enterprise\Bundle\Auth\Password\PasswordPolicy;
-use Snicco\Enterprise\Bundle\Auth\Password\Exception\PasswordLengthExceeded;
-
-use Snicco\Enterprise\Bundle\Auth\Password\Exception\InsufficientPasswordLength;
-
 use Snicco\Enterprise\Bundle\Auth\Password\Exception\InsufficientPasswordEntropy;
+use Snicco\Enterprise\Bundle\Auth\Password\Exception\InsufficientPasswordLength;
+use Snicco\Enterprise\Bundle\Auth\Password\Exception\PasswordLengthExceeded;
+use Snicco\Enterprise\Bundle\Auth\Password\PasswordPolicy;
 
 use function str_repeat;
 
+/**
+ * @internal
+ */
 final class PasswordPolicyTest extends Unit
 {
-    
     /**
      * @test
      */
-    public function that_at_least_12_chars_are_required() :void
+    public function that_at_least_12_chars_are_required(): void
     {
         $password = 'XyasGasdwq3';
-        
+
         $policy = new PasswordPolicy();
-        
+
         $this->expectException(InsufficientPasswordLength::class);
-        
+
         $policy->check($password);
     }
-    
+
     /**
      * @test
      */
-    public function that_at_max_4096_chars_are_allowed() :void
+    public function that_at_max_4096_chars_are_allowed(): void
     {
         $password = str_repeat('x', 4096);
-        
+
         $policy = new PasswordPolicy();
-        
+
         $policy->check($password);
-        
-        $this->expectException(\Snicco\Enterprise\Bundle\Auth\Password\Exception\PasswordLengthExceeded::class);
-        
-        $policy->check($password.'a');
-        
+
+        $this->expectException(PasswordLengthExceeded::class);
+
+        $policy->check($password . 'a');
     }
-    
+
     /**
      * @test
      */
-    public function that_at_least_a_3_score_is_needed_with_zxcvbn() :void
+    public function that_at_least_a_3_score_is_needed_with_zxcvbn(): void
     {
         $policy = new PasswordPolicy();
-    
+
         $this->expectException(InsufficientPasswordEntropy::class);
         $policy->check('password12345');
     }
-    
+
     /**
      * @test
      */
-    public function that_a_password_can_be_valid() :void
+    public function that_a_password_can_be_valid(): void
     {
         $this->expectNotToPerformAssertions();
-        
+
         $policy = new PasswordPolicy();
         $policy->check('correct horse battery staple');
+
+        $policy = new PasswordPolicy(100);
+        $policy->check(str_repeat('x', 101));
     }
-    
 }

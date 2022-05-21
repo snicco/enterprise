@@ -11,20 +11,19 @@ use LogicException;
  */
 final class PasswordPluggable
 {
-    
     private static ?SecureWPPasswords $instance = null;
-    
-    public static function set(SecureWPPasswords $secure_passwords) :void
+
+    public static function set(SecureWPPasswords $secure_passwords): void
     {
         self::$instance = $secure_passwords;
     }
-    
-    public static function securePasswords() :SecureWPPasswords
+
+    public static function securePasswords(): SecureWPPasswords
     {
-        if(null === self::$instance) {
-            throw new LogicException('No instance of '.SecureWPPasswords::class.' has been set yet.');
+        if (null === self::$instance) {
+            throw new LogicException('No instance of ' . SecureWPPasswords::class . ' has been set yet.');
         }
+
         return self::$instance;
     }
-    
 }

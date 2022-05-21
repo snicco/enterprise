@@ -129,7 +129,7 @@
             "vendor/bin/ecs --fix"
         ],
         "lint": [
-            "vendor/bin/rector process",
+            "vendor/bin/rector process --dry-run",
             "vendor/bin/ecs check"
         ],
         "lint:clear-cache": [
@@ -146,6 +146,7 @@
             "@test:wpunit"
         ],
         "test:unit": [
+            "vendor/bin/codecept run unit",
             "vendor/bin/codecept run *::unit"
         ],
         "test:wpunit": [
