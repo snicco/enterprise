@@ -34,9 +34,10 @@ const jsEntryPoints = [
 ];
 jsEntryPoints.forEach(file => mix.js(resourcesDirectory + '/js/' + file, 'js'))
 
+
 if (isProd) {
-    mix.version();
     mix.sourceMaps();
+    mix.version();
 }
 
 if (!isProd) {
@@ -52,9 +53,10 @@ if (!isProd) {
 
     browserSyncConfig = {
             files: [
+                'resources/**/*.php',
+                'resources/**/*.css',
+                'resources/**/*.js',
                 'src/**/*.php',
-                'src/**/*.js',
-                'src/**/*.css',
             ],
             open: false,
             proxy: domain
