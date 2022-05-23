@@ -7,9 +7,14 @@ namespace Snicco\Enterprise\Bundle\Auth;
 use Defuse\Crypto\Key;
 use Snicco\Component\Kernel\Bundle;
 use Snicco\Component\Kernel\Configuration\Config;
+use Snicco\Enterprise\Bundle\Auth\Session\SessionModule;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
+
+use Snicco\Enterprise\Bundle\Auth\Password\PasswordModule;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Fail2BanModule;
+use Snicco\Enterprise\Bundle\Auth\Authentication\AuthenticationModule;
 
 use function array_filter;
 use function array_map;
@@ -29,6 +34,7 @@ final class AuthBundle implements Bundle
         SessionModule::class,
         PasswordModule::class,
         Fail2BanModule::class,
+        AuthenticationModule::class,
     ];
 
     /**
@@ -53,10 +59,11 @@ final class AuthBundle implements Bundle
 
     public function configure(WritableConfig $config, Kernel $kernel): void
     {
-        $config->setIfMissing('snicco_auth.features', [
+        $config->setIfMissing('snicco_auth.modules', [
             'password',
             'session',
             'fail2ban',
+            'authentication'
         ]);
 
         if ($kernel->env()->isTesting()) {
@@ -96,7 +103,7 @@ final class AuthBundle implements Bundle
     private function enabledModules(Config $config): array
     {
         if (null === $this->enabled_modules) {
-            $enabled = $config->getListOfStrings('snicco_auth.features');
+            $enabled = $config->getListOfStrings('snicco_auth.modules');
 
             $this->enabled_modules = array_filter(
                 $this->modules,

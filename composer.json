@@ -143,7 +143,8 @@
         ],
         "test": [
             "@test:unit",
-            "@test:wpunit"
+            "@test:wpunit",
+            "@test:integration"
         ],
         "test:unit": [
             "vendor/bin/codecept run unit",
@@ -152,9 +153,13 @@
         "test:wpunit": [
             "vendor/bin/codecept run *::wpunit"
         ],
+        "test:integration": [
+            "vendor/bin/codecept run *::integration"
+        ],
         "test:coverage": [
             "@test:unit --coverage --coverage-xml unit-coverage.xml",
-            "@test:wpunit --coverage --coverage-xml wpunit-coverage.xml"
+            "@test:wpunit --coverage --coverage-xml wpunit-coverage.xml",
+            "@test:integration --coverage --coverage-xml integration-coverage.xml"
         ]
     },
     "replace": {

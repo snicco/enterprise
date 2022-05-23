@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth;
+namespace Snicco\Enterprise\Bundle\Auth\Password;
 
 use Defuse\Crypto\Key;
 use PasswordHash;
 use Snicco\Component\BetterWPDB\BetterWPDB;
+use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\ReadOnlyConfig;
@@ -15,9 +16,9 @@ use Snicco\Component\Kernel\DIContainer;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Enterprise\Bundle\Auth\Password\Event\ResettingPassword;
 use Snicco\Enterprise\Bundle\Auth\Password\Event\UpdatingUserInAdminArea;
-use Snicco\Enterprise\Bundle\Auth\Password\PasswordEventHandler;
-use Snicco\Enterprise\Bundle\Auth\Password\PasswordPluggable;
-use Snicco\Enterprise\Bundle\Auth\Password\SecureWPPasswords;
+
+use const \WPINC;
+use const \ABSPATH;
 
 final class PasswordModule extends AuthModule
 {
@@ -68,7 +69,7 @@ final class PasswordModule extends AuthModule
             )
         );
 
-        require_once __DIR__ . '/Password/password-pluggable.php';
+        require_once __DIR__ . '/password-pluggable.php';
     }
 
     private function passwordPolicy(DIContainer $container): void

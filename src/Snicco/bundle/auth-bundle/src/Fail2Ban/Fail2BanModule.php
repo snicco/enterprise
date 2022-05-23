@@ -2,19 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth;
+namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban;
 
+use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\BannableEvent;
 use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Event\AuthCookieBadHash;
 use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Event\WPLoginFailed;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Fail2Ban;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\PHPSyslogger;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Syslogger;
 
 use const LOG_AUTH;
 use const LOG_PID;

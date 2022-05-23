@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth;
+namespace Snicco\Enterprise\Bundle\Auth\Session;
 
 use RuntimeException;
 use Snicco\Component\BetterWPDB\BetterWPDB;
+use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
