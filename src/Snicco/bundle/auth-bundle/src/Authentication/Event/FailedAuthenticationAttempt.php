@@ -8,11 +8,11 @@ use Snicco\Component\BetterWPHooks\EventMapping\ExposeToWP;
 use Snicco\Component\EventDispatcher\ClassAsName;
 use Snicco\Component\EventDispatcher\ClassAsPayload;
 use Snicco\Component\EventDispatcher\Event;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\BannableEvent;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\BanworthyEvent;
 
 use const LOG_WARNING;
 
-abstract class FailedAuthenticationAttempt implements Event, ExposeToWP, BannableEvent
+abstract class FailedAuthenticationAttempt implements Event, ExposeToWP, BanworthyEvent
 {
     use ClassAsPayload;
     use ClassAsName;
@@ -29,7 +29,7 @@ abstract class FailedAuthenticationAttempt implements Event, ExposeToWP, Bannabl
         return LOG_WARNING;
     }
 
-    public function ip(): string
+    public function ip():?string
     {
         return $this->ip;
     }

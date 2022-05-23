@@ -14,8 +14,8 @@ use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\Auth\Authentication\AuthenticationModule;
 
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Fail2BanModule;
-use Snicco\Enterprise\Bundle\Auth\Password\PasswordModule;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\Fail2BanModule;
+use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\PasswordModule;
 use Snicco\Enterprise\Bundle\Auth\Session\SessionModule;
 
 use function array_filter;

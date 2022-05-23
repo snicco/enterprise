@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
 
 use PHPUnit\Framework\Assert as PHPUnit;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Syslogger;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Domain\Syslogger;
+
 use function sprintf;
 
 final class TestSysLogger implements Syslogger
@@ -17,7 +18,7 @@ final class TestSysLogger implements Syslogger
      */
     private array $log_entries = [];
 
-    private bool  $log_closed = false;
+    private bool $log_closed = false;
 
     public function open(string $prefix, int $flags, int $facility): bool
     {
@@ -80,4 +81,18 @@ final class TestSysLogger implements Syslogger
     {
         PHPUnit::assertContains((string) $priority . '-' . $message, $this->log_entries);
     }
+    
+    public  function reset() :void
+    {
+        $this->log_entries = [];
+        $this->opened_log = [];
+        $this->log_closed = false;
+    }
+    
+    public function assertNothingLogged() :void
+    {
+        PHPUnit::assertEmpty($this->log_entries);
+        PHPUnit::assertEmpty($this->opened_log);
+    }
+    
 }

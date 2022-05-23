@@ -12,6 +12,7 @@
         "snicco/event-dispatcher": "^1.2.0",
         "snicco/http-routing": "^1.2.0",
         "snicco/http-routing-bundle": "^1.2.0",
+        "snicco/application-layer-bundle": "^1.2.0",
         "snicco/signed-url": "^1.2.0",
         "pragmarx/google2fa": "^8.0.0",
         "snicco/encryption-bundle": "^1.2.0",
