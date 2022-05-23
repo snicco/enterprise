@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Core\Event;
+namespace Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\MappedEvent;
 
 use Snicco\Component\BetterWPHooks\EventMapping\MappedHook;
 use Snicco\Component\EventDispatcher\ClassAsName;

@@ -137,7 +137,7 @@ final class Fail2BanModuleTest extends WPTestCase
     
     protected function fixturesDir() :string
     {
-        return dirname(__DIR__, 2).'/fixtures/test-app';
+        return dirname(__DIR__, 3).'/fixtures/test-app';
     }
     
 }

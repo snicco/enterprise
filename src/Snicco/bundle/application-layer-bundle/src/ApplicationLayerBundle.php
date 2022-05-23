@@ -39,7 +39,7 @@ final class ApplicationLayerBundle implements Bundle
     /**
      * @var string
      */
-    private const ALIAS = 'snicco/application-layer-bundle';
+    public const ALIAS = 'snicco/application-layer-bundle';
 
     public function shouldRun(Environment $env): bool
     {

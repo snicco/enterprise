@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Core;
+namespace Snicco\Enterprise\Bundle\Auth\Session\Infrastructure;
 
 use Snicco\Component\EventDispatcher\EventSubscriber;
-use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionActivityRecorded;
-use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionWasIdle;
-use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionWasRotated;
+use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
+use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionRepository;
+use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\MappedEvent\SessionActivityRecorded;
+use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasIdle;
+use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasRotated;
 
 use function setcookie;
 use function wp_set_auth_cookie;
@@ -20,11 +22,11 @@ use const SECURE_AUTH_COOKIE;
 
 final class SessionEventHandler implements EventSubscriber
 {
-    private SessionRepository $session_repository;
-
-    public function __construct(SessionRepository $session_repository)
+    private SessionManager $session_manager;
+    
+    public function __construct(SessionManager $session_manager)
     {
-        $this->session_repository = $session_repository;
+        $this->session_manager = $session_manager;
     }
 
     public static function subscribedEvents(): array
@@ -38,9 +40,7 @@ final class SessionEventHandler implements EventSubscriber
 
     public function onSessionActivityRecorded(SessionActivityRecorded $event): void
     {
-        $this->session_repository->touch(
-            $this->session_repository->hashToken($event->raw_token)
-        );
+        $this->session_manager->updateActivity($event->raw_token);
     }
 
     /**
@@ -129,6 +129,6 @@ final class SessionEventHandler implements EventSubscriber
     public function onSessionRotated(SessionWasRotated $event): void
     {
         // Remember_me can be set to true because we are filtering the expiration of the cookie anyway.
-        wp_set_auth_cookie($event->userId(), true, '', $event->newTokenRaw());
+        wp_set_auth_cookie($event->user_id, true, '', $event->new_token_plain);
     }
 }

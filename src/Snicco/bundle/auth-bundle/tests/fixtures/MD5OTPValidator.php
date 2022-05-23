@@ -39,7 +39,7 @@ final class MD5OTPValidator implements OTPValidator
         try {
             $secret = $this->settings->getSecretKey($user_id);
         }catch (No2FaSettingsFound $e) {
-            throw new InvalidOTPCode('2FA not completed');
+            throw new InvalidOTPCode("2FA not completed for user [$user_id]");
         }
     
         if($secret !== md5($otp_code)) {

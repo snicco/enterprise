@@ -12,11 +12,12 @@ use Snicco\Component\Kernel\Configuration\Config;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
+use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
 use Snicco\Enterprise\Bundle\Auth\Authentication\AuthenticationModule;
 
 use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\Fail2BanModule;
 use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\PasswordModule;
-use Snicco\Enterprise\Bundle\Auth\Session\SessionModule;
+use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\SessionModule;
 
 use function array_filter;
 use function array_map;
@@ -124,6 +125,9 @@ final class AuthBundle implements Bundle
     {
         if (! $kernel->usesBundle(HttpRoutingBundle::ALIAS)) {
             throw new RuntimeException(self::ALIAS . ' needs the ' . HttpRoutingBundle::ALIAS . ' to run.');
+        }
+        if (! $kernel->usesBundle(ApplicationLayerBundle::ALIAS)) {
+            throw new RuntimeException(self::ALIAS . ' needs the ' . ApplicationLayerBundle::ALIAS . ' to run.');
         }
     }
 }

@@ -9,6 +9,7 @@ use WP_User;
 use Generator;
 use Codeception\Test\Unit;
 use PragmaRX\Google2FA\Google2FA;
+use Codeception\TestCase\WPTestCase;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\MD5OTPValidator;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\OTPValidator;
@@ -21,7 +22,7 @@ use function time;
 use function substr;
 use function strlen;
 
-final class OTPValidatorTest extends Unit
+final class OTPValidatorTest extends WPTestCase
 {
     
     private InMemoryTwoFactorSettings $settings;

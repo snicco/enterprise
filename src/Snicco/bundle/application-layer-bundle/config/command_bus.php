@@ -16,7 +16,7 @@ return [
     CommandBusOption::MIDDLEWARE => [
         LockingMiddleware::class,
         LoggerMiddleware::class,
-        BetterWPDBTransaction::class,
+        //BetterWPDBTransaction::class,
         CommandHandlerMiddleware::class,
     ],
 ];
