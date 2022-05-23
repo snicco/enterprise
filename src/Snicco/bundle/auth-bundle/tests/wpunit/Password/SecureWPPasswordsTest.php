@@ -24,7 +24,7 @@ use const WPINC;
  */
 final class SecureWPPasswordsTest extends WPTestCase
 {
-    private \Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords $password;
+    private SecureWPPasswords $password;
 
     protected function setUp(): void
     {
@@ -36,7 +36,7 @@ final class SecureWPPasswordsTest extends WPTestCase
             require_once ABSPATH . WPINC . '/class-phpass.php';
         }
 
-        $this->password = new \Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords(
+        $this->password = new SecureWPPasswords(
             BetterWPDB::fromWpdb(),
             Key::createNewRandomKey(),
             new PasswordHash(8, true)
@@ -137,7 +137,7 @@ final class SecureWPPasswordsTest extends WPTestCase
         $this->assertNotSame($prev_pass, $new_hash);
         $this->assertSame($new_hash, $user->user_pass);
 
-        $new_instance = new \Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords(
+        $new_instance = new SecureWPPasswords(
             BetterWPDB::fromWpdb(),
             $new_key,
             new PasswordHash(8, true)

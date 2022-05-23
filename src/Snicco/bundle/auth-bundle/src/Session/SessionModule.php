@@ -6,11 +6,11 @@ namespace Snicco\Enterprise\Bundle\Auth\Session;
 
 use RuntimeException;
 use Snicco\Component\BetterWPDB\BetterWPDB;
-use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
+use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionActivityRecorded;
 use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionEventHandler;
 use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionRepository;

@@ -5,33 +5,48 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
 
 use LogicException;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\No2FaSettingsFound;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\TwoFactorOTPSettings;
-use function array_map;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsNotInitialized;
+
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsAlreadyInitialized;
+
 use function sprintf;
 
-final class InMemory2FaSettingsTwoFactor implements TwoFactorOTPSettings
+final class InMemoryTwoFactorSettings implements TwoFactorSettings
 {
     /**
      * @var array<int,array{is_complete: bool, is_pending: bool, secret_key: string, backup_codes: BackupCodes, last_used?: ?int }>
      */
-    private array $user_settings;
+    private array $user_settings = [];
 
     /**
-     * @param array<int,array{secret:string, last_used?:int}> $user_settings
-     *
-     * @return array{is_complete: true, is_pending: true, secret_key: string, last_used: int|null, backup_codes: BackupCodes}
+     * @param array<positive-int,array{secret:string, last_used?:int, complete?: bool}> $user_settings
      */
-    public function __construct(array $user_settings)
+    public function __construct(array $user_settings = [])
     {
-        $this->user_settings = array_map(fn (array $settings): array => [
-            'is_complete' => true,
-            'is_pending' => false,
+        foreach ($user_settings as $id => $settings) {
+            $this->add($id, $settings);
+        }
+    }
+
+    /**
+     * @param positive-int                         $user_id
+     * @param array{secret:string, last_used?:int, complete?: bool} $settings
+     */
+    public function add(int $user_id, array $settings): void
+    {
+        $is_complete = $settings['complete'] ?? true;
+        
+        $this->user_settings[$user_id] = [
+            'is_complete' => $is_complete,
+            'is_pending' => !$is_complete,
             'secret_key' => $settings['secret'],
             'last_used' => $settings['last_used'] ?? null,
             'backup_codes' => BackupCodes::fromPlainCodes(),
-        ], $user_settings);
+        ];
     }
 
     public function isSetupCompleteForUser(int $user_id): bool
@@ -56,24 +71,30 @@ final class InMemory2FaSettingsTwoFactor implements TwoFactorOTPSettings
 
     public function initiateSetup(int $user_id, string $secret_key, BackupCodes $backup_codes): void
     {
-        if (isset($this->user_settings[$user_id])) {
-            throw new LogicException(sprintf('Cant initiate twice for user_id [%d]', $user_id));
+        $current = $this->user_settings[$user_id] ?? null;
+        
+        if(null === $current) {
+            $this->user_settings[$user_id] = [
+                'secret_key' => $secret_key,
+                'is_pending' => true,
+                'is_complete' => false,
+                'backup_codes' => $backup_codes,
+            ];
+            return;
         }
-
-        $new = [
-            'secret_key' => $secret_key,
-            'is_pending' => true,
-            'is_complete' => false,
-            'backup_codes' => $backup_codes,
-        ];
-
-        $this->user_settings[$user_id] = $new;
+        
+        if($current['is_pending']) {
+            throw TwoFactorSetupIsAlreadyInitialized::forUser($user_id);
+    
+        }
+        
+        throw TwoFactorSetupAlreadyCompleted::forUser($user_id);
     }
 
     public function completeSetup(int $user_id): void
     {
         if (! isset($this->user_settings[$user_id])) {
-            throw No2FaSettingsFound::forUser($user_id);
+            throw TwoFactorSetupIsNotInitialized::forUser($user_id);
         }
 
         $current = $this->user_settings[$user_id];
@@ -112,6 +133,10 @@ final class InMemory2FaSettingsTwoFactor implements TwoFactorOTPSettings
 
     public function delete(int $user_id): void
     {
+        if(!isset($this->user_settings[$user_id])){
+            throw new No2FaSettingsFound();
+        }
+        
         unset($this->user_settings[$user_id]);
     }
 

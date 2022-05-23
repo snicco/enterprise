@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor;
+namespace Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain;
 
 use ArrayIterator;
 use InvalidArgumentException;
 use IteratorAggregate;
 use RuntimeException;
+
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\InvalidBackupCode;
 
 use function array_map;
 use function array_values;
@@ -26,17 +28,17 @@ use function substr;
 use const PASSWORD_BCRYPT;
 
 /**
- * @template-implements IteratorAggregate<string>
+ * @template-implements IteratorAggregate<non-empty-string>
  */
 final class BackupCodes implements IteratorAggregate
 {
     /**
-     * @var string[]
+     * @var non-empty-list<non-empty-string>
      */
     private array $hashed_codes;
 
     /**
-     * @param string[] $hashed_codes
+     * @param non-empty-array<non-empty-string> $hashed_codes
      */
     private function __construct(array $hashed_codes)
     {
@@ -50,7 +52,7 @@ final class BackupCodes implements IteratorAggregate
     }
 
     /**
-     * @return non-empty-list<string>
+     * @return non-empty-list<non-empty-string>
      */
     public static function generate(): array
     {
@@ -67,7 +69,7 @@ final class BackupCodes implements IteratorAggregate
     }
 
     /**
-     * @param string[]|null $plain_codes
+     * @param non-empty-list<non-empty-string>|null $plain_codes
      */
     public static function fromPlainCodes(?array $plain_codes = null): self
     {
@@ -89,7 +91,7 @@ final class BackupCodes implements IteratorAggregate
     }
 
     /**
-     * @param string[] $hashed_codes
+     * @param non-empty-list<non-empty-string> $hashed_codes
      */
     public static function fromHashedCodes(array $hashed_codes): self
     {
@@ -98,9 +100,12 @@ final class BackupCodes implements IteratorAggregate
 
     public function getIterator(): ArrayIterator
     {
-        return new ArrayIterator(array_values($this->hashed_codes));
+        return new ArrayIterator($this->hashed_codes);
     }
-
+    
+    /**
+     * @throws InvalidBackupCode
+     */
     public function revoke(string $user_provided_code): void
     {
         foreach ($this->hashed_codes as $index => $hashed_code) {

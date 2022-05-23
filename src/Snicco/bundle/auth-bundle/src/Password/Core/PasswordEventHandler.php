@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Password\Core;
 
 use Snicco\Component\EventDispatcher\EventSubscriber;
-use Snicco\Enterprise\Bundle\Auth\Password\Core\PasswordPolicy;
 use Snicco\Enterprise\Bundle\Auth\Password\Core\Event\ResettingPassword;
 use Snicco\Enterprise\Bundle\Auth\Password\Core\Event\UpdatingUserInAdminArea;
 use Snicco\Enterprise\Bundle\Auth\Password\Core\Exception\InsufficientPasswordEntropy;

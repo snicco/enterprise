@@ -7,20 +7,20 @@ namespace Snicco\Enterprise\Bundle\Auth\Password;
 use Defuse\Crypto\Key;
 use PasswordHash;
 use Snicco\Component\BetterWPDB\BetterWPDB;
-use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\ReadOnlyConfig;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\DIContainer;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords;
-use Snicco\Enterprise\Bundle\Auth\Password\Core\PasswordEventHandler;
+use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Enterprise\Bundle\Auth\Password\Core\Event\ResettingPassword;
 use Snicco\Enterprise\Bundle\Auth\Password\Core\Event\UpdatingUserInAdminArea;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\PasswordEventHandler;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords;
 
-use const \WPINC;
-use const \ABSPATH;
+use const ABSPATH;
+use const WPINC;
 
 final class PasswordModule extends AuthModule
 {

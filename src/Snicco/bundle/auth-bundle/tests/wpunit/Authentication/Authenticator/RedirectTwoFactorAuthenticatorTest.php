@@ -14,8 +14,8 @@ use Snicco\Component\HttpRouting\Http\Psr7\ResponseFactory;
 use Snicco\Component\HttpRouting\Http\Response\RedirectResponse;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Authenticator\LoginResult;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Authenticator\RedirectTwoFactorAuthenticator;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemory2FaSettingsTwoFactor;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\StubUrlGenerator;
 use WP_User;
 
@@ -28,7 +28,7 @@ final class RedirectTwoFactorAuthenticatorTest extends WPTestCase
 
     private RedirectTwoFactorAuthenticator $authenticator;
 
-    private InMemory2FaSettingsTwoFactor   $two_factor_settings;
+    private InMemoryTwoFactorSettings   $two_factor_settings;
 
     protected function setUp(): void
     {
@@ -40,7 +40,7 @@ final class RedirectTwoFactorAuthenticatorTest extends WPTestCase
         ]);
 
         $this->authenticator = new RedirectTwoFactorAuthenticator(
-            $this->two_factor_settings = new InMemory2FaSettingsTwoFactor([]),
+            $this->two_factor_settings = new InMemoryTwoFactorSettings([]),
             $response_factory,
             $url_g,
             '2fa.challenge',

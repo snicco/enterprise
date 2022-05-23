@@ -13,9 +13,9 @@ use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Authenticator\TwoFactorAuthenticator;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Event\FailedTwoFactorAuthentication;
 use Snicco\Enterprise\Bundle\Auth\Authentication\RequestAttributes;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\BackupCodes;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Auth\Authentication\User\WPUserProvider;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemory2FaSettingsTwoFactor;
+use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\StubTwoFactorCredentialsValidator;
 use WP_User;
 
@@ -34,7 +34,7 @@ final class TwoFactorAuthenticatorTest extends WPTestCase
 
     private TwoFactorAuthenticator $authenticator;
 
-    private InMemory2FaSettingsTwoFactor $two_factor_settings;
+    private InMemoryTwoFactorSettings $two_factor_settings;
 
     protected function setUp(): void
     {
@@ -42,7 +42,7 @@ final class TwoFactorAuthenticatorTest extends WPTestCase
         $this->testable_dispatcher = new TestableEventDispatcher(new BaseEventDispatcher());
         $this->authenticator = new TwoFactorAuthenticator(
             $this->testable_dispatcher,
-            $this->two_factor_settings = new InMemory2FaSettingsTwoFactor([]),
+            $this->two_factor_settings = new InMemoryTwoFactorSettings([]),
             new StubTwoFactorCredentialsValidator(),
             new WPUserProvider()
         );

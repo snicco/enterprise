@@ -8,10 +8,10 @@ use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Event\FailedTwoFactorAuthentication;
 use Snicco\Enterprise\Bundle\Auth\Authentication\RequestAttributes;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\InvalidBackupCode;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\InvalidBackupCode;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\InvalidTwoFactorCredentials;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\TwoFactorCredentialsValidator;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\TwoFactorOTPSettings;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSettings;
 use Snicco\Enterprise\Bundle\Auth\Authentication\User\UserProvider;
 use WP_User;
 
@@ -21,15 +21,15 @@ final class TwoFactorAuthenticator extends Authenticator
 {
     private TwoFactorCredentialsValidator $two_factor_validator;
 
-    private EventDispatcher               $event_dispatcher;
+    private EventDispatcher $event_dispatcher;
 
-    private UserProvider         $user_provider;
+    private UserProvider $user_provider;
 
-    private TwoFactorOTPSettings $two_factor_settings;
+    private TwoFactorSettings $two_factor_settings;
 
     public function __construct(
         EventDispatcher $event_dispatcher,
-        TwoFactorOTPSettings $two_factor_settings,
+        TwoFactorSettings $two_factor_settings,
         TwoFactorCredentialsValidator $two_factor_provider,
         UserProvider $user_provider
     ) {

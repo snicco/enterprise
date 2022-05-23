@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Session\Core;
 
 use Snicco\Component\EventDispatcher\EventSubscriber;
-use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionRepository;
 use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionActivityRecorded;
 use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionWasIdle;
 use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionWasRotated;
@@ -69,31 +68,31 @@ final class SessionEventHandler implements EventSubscriber
             'path' => ADMIN_COOKIE_PATH,
             'domain' => $cookie_domain,
         ]);
-        
+
         setcookie(SECURE_AUTH_COOKIE, 'deleted', [
             'expires' => 1,
             'path' => ADMIN_COOKIE_PATH,
             'domain' => $cookie_domain,
         ]);
-        
+
         setcookie(AUTH_COOKIE, 'deleted', [
             'expires' => 1,
             'path' => PLUGINS_COOKIE_PATH,
             'domain' => $cookie_domain,
         ]);
-        
+
         setcookie(SECURE_AUTH_COOKIE, 'deleted', [
             'expires' => 1,
             'path' => PLUGINS_COOKIE_PATH,
             'domain' => $cookie_domain,
         ]);
-        
+
         setcookie(LOGGED_IN_COOKIE, 'deleted', [
             'expires' => 1,
             'path' => COOKIEPATH,
             'domain' => $cookie_domain,
         ]);
-        
+
         setcookie(LOGGED_IN_COOKIE, 'deleted', [
             'expires' => 1,
             'path' => SITECOOKIEPATH,
@@ -105,7 +104,7 @@ final class SessionEventHandler implements EventSubscriber
             'expires' => 1,
             'path' => SITECOOKIEPATH,
         ]);
-        
+
         setcookie('wp-settings-time-' . (string) $event->user_id, 'deleted', [
             'expires' => 1,
             'path' => SITECOOKIEPATH,

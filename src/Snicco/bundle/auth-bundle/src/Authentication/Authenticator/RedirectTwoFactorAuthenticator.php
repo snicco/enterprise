@@ -7,7 +7,7 @@ namespace Snicco\Enterprise\Bundle\Auth\Authentication\Authenticator;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Component\HttpRouting\Http\Psr7\ResponseFactory;
 use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\TwoFactorOTPSettings;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSettings;
 use WP_User;
 
 final class RedirectTwoFactorAuthenticator extends Authenticator
@@ -23,10 +23,10 @@ final class RedirectTwoFactorAuthenticator extends Authenticator
 
     private UrlGenerator $url_generator;
 
-    private TwoFactorOTPSettings $two_2fa_settings;
+    private TwoFactorSettings $two_2fa_settings;
 
     public function __construct(
-        TwoFactorOTPSettings $two_2fa_settings,
+        TwoFactorSettings $two_2fa_settings,
         ResponseFactory $response_factory,
         UrlGenerator $url_generator,
         string $route_name_2fa

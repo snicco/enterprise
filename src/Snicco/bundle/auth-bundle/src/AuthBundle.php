@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Bundle\Auth;
 
-use RuntimeException;
 use Defuse\Crypto\Key;
-use Snicco\Component\Kernel\Bundle;
+use RuntimeException;
 use Snicco\Bundle\HttpRouting\HttpRoutingBundle;
+use Snicco\Component\Kernel\Bundle;
 use Snicco\Component\Kernel\Configuration\Config;
-use Snicco\Enterprise\Bundle\Auth\Session\SessionModule;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
-
-use Snicco\Enterprise\Bundle\Auth\Password\PasswordModule;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Fail2BanModule;
 use Snicco\Enterprise\Bundle\Auth\Authentication\AuthenticationModule;
+
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Fail2BanModule;
+use Snicco\Enterprise\Bundle\Auth\Password\PasswordModule;
+use Snicco\Enterprise\Bundle\Auth\Session\SessionModule;
 
 use function array_filter;
 use function array_map;
@@ -62,12 +62,12 @@ final class AuthBundle implements Bundle
     public function configure(WritableConfig $config, Kernel $kernel): void
     {
         $this->validateBundles($kernel);
-        
+
         $config->setIfMissing('snicco_auth.modules', [
             'password',
             'session',
             'fail2ban',
-            'authentication'
+            'authentication',
         ]);
 
         if ($kernel->env()->isTesting()) {
@@ -85,7 +85,7 @@ final class AuthBundle implements Bundle
     public function register(Kernel $kernel): void
     {
         $this->validateBundles($kernel);
-        
+
         foreach ($this->enabledModules($kernel->config()) as $enabled_module) {
             $enabled_module->register($kernel);
         }
@@ -119,12 +119,11 @@ final class AuthBundle implements Bundle
 
         return $this->enabled_modules;
     }
-    
-    private function validateBundles(Kernel $kernel) :void
+
+    private function validateBundles(Kernel $kernel): void
     {
-        if(!$kernel->usesBundle(HttpRoutingBundle::ALIAS)){
-            throw new RuntimeException(self::ALIAS. ' needs the ' .HttpRoutingBundle::ALIAS . ' to run.');
+        if (! $kernel->usesBundle(HttpRoutingBundle::ALIAS)) {
+            throw new RuntimeException(self::ALIAS . ' needs the ' . HttpRoutingBundle::ALIAS . ' to run.');
         }
     }
-    
 }
