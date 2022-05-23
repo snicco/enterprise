@@ -10,7 +10,7 @@ use Defuse\Crypto\Key;
 use InvalidArgumentException;
 use PasswordHash;
 use Snicco\Component\BetterWPDB\BetterWPDB;
-use Snicco\Enterprise\Bundle\Auth\Password\SecureWPPasswords;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords;
 use WP_User;
 
 use function class_exists;
@@ -24,7 +24,7 @@ use const WPINC;
  */
 final class SecureWPPasswordsTest extends WPTestCase
 {
-    private SecureWPPasswords $password;
+    private \Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords $password;
 
     protected function setUp(): void
     {
@@ -36,7 +36,7 @@ final class SecureWPPasswordsTest extends WPTestCase
             require_once ABSPATH . WPINC . '/class-phpass.php';
         }
 
-        $this->password = new SecureWPPasswords(
+        $this->password = new \Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords(
             BetterWPDB::fromWpdb(),
             Key::createNewRandomKey(),
             new PasswordHash(8, true)
@@ -137,7 +137,7 @@ final class SecureWPPasswordsTest extends WPTestCase
         $this->assertNotSame($prev_pass, $new_hash);
         $this->assertSame($new_hash, $user->user_pass);
 
-        $new_instance = new SecureWPPasswords(
+        $new_instance = new \Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords(
             BetterWPDB::fromWpdb(),
             $new_key,
             new PasswordHash(8, true)

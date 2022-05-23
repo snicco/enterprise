@@ -11,11 +11,11 @@ use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use Snicco\Component\TestableClock\TestClock;
-use Snicco\Enterprise\Bundle\Auth\Session\Event\SessionWasIdle;
-use Snicco\Enterprise\Bundle\Auth\Session\Event\SessionWasRotated;
-use Snicco\Enterprise\Bundle\Auth\Session\SessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\TimeoutResolver;
-use Snicco\Enterprise\Bundle\Auth\Session\WPAuthSessions;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionWasIdle;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionWasRotated;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionRepository;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\TimeoutResolver;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\WPAuthSessions;
 use stdClass;
 
 use function add_filter;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session;
+namespace Snicco\Enterprise\Bundle\Auth\Session\Core;
 
 use InvalidArgumentException;
 

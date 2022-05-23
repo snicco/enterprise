@@ -12,7 +12,7 @@ use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Event\FailedMagicLinkAuthentication;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Event\FailedPasswordAuthentication;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Syslogger;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Syslogger;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\TestSysLogger;
 
 use function dirname;

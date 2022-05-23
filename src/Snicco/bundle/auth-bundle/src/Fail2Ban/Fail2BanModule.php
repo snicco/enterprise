@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban;
 
 use Snicco\Enterprise\Bundle\Auth\AuthModule;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Fail2Ban;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Syslogger;
 use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Event\AuthCookieBadHash;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Event\WPLoginFailed;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\PHPSyslogger;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\BannableEvent;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Event\AuthCookieBadHash;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Event\WPLoginFailed;
 
 use const LOG_AUTH;
 use const LOG_PID;

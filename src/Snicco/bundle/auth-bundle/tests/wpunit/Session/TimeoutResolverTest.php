@@ -6,7 +6,7 @@ namespace Snicco\Enterprise\Bundle\Auth\Tests\wpunit\Session;
 
 use Codeception\TestCase\WPTestCase;
 use Snicco\Component\TestableClock\TestClock;
-use Snicco\Enterprise\Bundle\Auth\Session\TimeoutResolver;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\TimeoutResolver;
 
 /**
  * @internal

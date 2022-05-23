@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Password\Event;
+namespace Snicco\Enterprise\Bundle\Auth\Password\Core\Event;
 
 use LogicException;
 use Snicco\Component\BetterWPHooks\EventMapping\MappedHook;

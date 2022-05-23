@@ -11,11 +11,11 @@ use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Auth\Session\Event\SessionActivityRecorded;
-use Snicco\Enterprise\Bundle\Auth\Session\SessionEventHandler;
-use Snicco\Enterprise\Bundle\Auth\Session\SessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\TimeoutResolver;
-use Snicco\Enterprise\Bundle\Auth\Session\WPAuthSessions;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionActivityRecorded;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionEventHandler;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionRepository;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\TimeoutResolver;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\WPAuthSessions;
 use WP_User_Meta_Session_Tokens;
 
 use function add_filter;

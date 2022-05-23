@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban;
+namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core;
 
 use function sprintf;
 

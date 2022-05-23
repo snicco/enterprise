@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Bundle\Auth;
 
+use RuntimeException;
 use Defuse\Crypto\Key;
 use Snicco\Component\Kernel\Bundle;
+use Snicco\Bundle\HttpRouting\HttpRoutingBundle;
 use Snicco\Component\Kernel\Configuration\Config;
 use Snicco\Enterprise\Bundle\Auth\Session\SessionModule;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
@@ -59,6 +61,8 @@ final class AuthBundle implements Bundle
 
     public function configure(WritableConfig $config, Kernel $kernel): void
     {
+        $this->validateBundles($kernel);
+        
         $config->setIfMissing('snicco_auth.modules', [
             'password',
             'session',
@@ -80,6 +84,8 @@ final class AuthBundle implements Bundle
 
     public function register(Kernel $kernel): void
     {
+        $this->validateBundles($kernel);
+        
         foreach ($this->enabledModules($kernel->config()) as $enabled_module) {
             $enabled_module->register($kernel);
         }
@@ -113,4 +119,12 @@ final class AuthBundle implements Bundle
 
         return $this->enabled_modules;
     }
+    
+    private function validateBundles(Kernel $kernel) :void
+    {
+        if(!$kernel->usesBundle(HttpRoutingBundle::ALIAS)){
+            throw new RuntimeException(self::ALIAS. ' needs the ' .HttpRoutingBundle::ALIAS . ' to run.');
+        }
+    }
+    
 }

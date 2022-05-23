@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\unit\Fail2Ban;
 
 use Codeception\Test\Unit;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\BannableEvent;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Fail2Ban;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\BannableEvent;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Fail2Ban;
 
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Fail2BanEntry;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Fail2BanEntry;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\TestSysLogger;
 
 use const LOG_AUTH;

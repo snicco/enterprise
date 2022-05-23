@@ -14,8 +14,10 @@ use Snicco\Component\Kernel\Configuration\ReadOnlyConfig;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\DIContainer;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Auth\Password\Event\ResettingPassword;
-use Snicco\Enterprise\Bundle\Auth\Password\Event\UpdatingUserInAdminArea;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\PasswordEventHandler;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\Event\ResettingPassword;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\Event\UpdatingUserInAdminArea;
 
 use const \WPINC;
 use const \ABSPATH;

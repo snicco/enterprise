@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
 
 use PHPUnit\Framework\Assert as PHPUnit;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Syslogger;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Syslogger;
 use function sprintf;
 
 final class TestSysLogger implements Syslogger

@@ -8,6 +8,11 @@ use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 
+/**
+ * @internal
+ *
+ * @psalm-internal Snicco\Enterprise\Bundle\Auth
+ */
 abstract class AuthModule
 {
     abstract public function name(): string;

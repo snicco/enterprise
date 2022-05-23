@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Password;
 
 use LogicException;
+use Snicco\Enterprise\Bundle\Auth\Password\Core\SecureWPPasswords;
 
 /**
  * @codeCoverageIgnore

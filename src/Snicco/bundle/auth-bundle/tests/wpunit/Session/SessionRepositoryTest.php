@@ -11,11 +11,11 @@ use Snicco\Component\BetterWPDB\Exception\NoMatchingRowFound;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use Snicco\Component\TestableClock\TestClock;
-use Snicco\Enterprise\Bundle\Auth\Session\AuthSession;
-use Snicco\Enterprise\Bundle\Auth\Session\Event\SessionWasRotated;
-use Snicco\Enterprise\Bundle\Auth\Session\InvalidSessionToken;
-use Snicco\Enterprise\Bundle\Auth\Session\SessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\TimeoutResolver;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\AuthSession;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\Event\SessionWasRotated;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\InvalidSessionToken;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionRepository;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\TimeoutResolver;
 
 use function bin2hex;
 use function hash;

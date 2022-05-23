@@ -2,26 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Event;
+namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\Event;
 
 use Snicco\Component\BetterWPHooks\EventMapping\MappedHook;
 use Snicco\Component\EventDispatcher\ClassAsName;
 use Snicco\Component\EventDispatcher\ClassAsPayload;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\BannableEvent;
+use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Core\BannableEvent;
 
 use const LOG_WARNING;
 
-final class WPLoginFailed implements MappedHook, BannableEvent
+final class AuthCookieBadHash implements MappedHook, BannableEvent
 {
     use ClassAsName;
     use ClassAsPayload;
-
-    private string $user_name;
-
-    public function __construct(string $user_name)
-    {
-        $this->user_name = $user_name;
-    }
 
     public function shouldDispatch(): bool
     {
@@ -35,7 +28,7 @@ final class WPLoginFailed implements MappedHook, BannableEvent
 
     public function message(): string
     {
-        return 'WordPress login failed for user ' . $this->user_name;
+        return 'Tampered auth cookie provided';
     }
 
     public function ip(): string

@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session;
+namespace Snicco\Enterprise\Bundle\Auth\Session\Core;
 
 use WP_Session_Tokens;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\AuthSession;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\SessionRepository;
+use Snicco\Enterprise\Bundle\Auth\Session\Core\InvalidSessionToken;
 
 /**
  * @internal

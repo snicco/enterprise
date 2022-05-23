@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Event;
+namespace Snicco\Enterprise\Bundle\Auth\Session\Core\Event;
 
 use Snicco\Component\BetterWPHooks\EventMapping\ExposeToWP;
 use Snicco\Component\EventDispatcher\ClassAsName;
