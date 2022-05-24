@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\unit\Password;
+namespace Snicco\Enterprise\AuthBundle\Tests\unit\Password;
 
 use Codeception\Test\Unit;
 
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\PasswordPolicy;
+use Snicco\Enterprise\AuthBundle\Password\Domain\PasswordPolicy;
 
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\PasswordLengthExceeded;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordLength;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\PasswordLengthExceeded;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordLength;
 
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordEntropy;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordEntropy;
 
 use function str_repeat;
 

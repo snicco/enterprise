@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests;
+namespace Snicco\Enterprise\AuthBundle\Tests;
 
 use Snicco\Bridge\Pimple\PimpleContainerAdapter;
 use Snicco\Bundle\Testing\Functional\WebTestCase;

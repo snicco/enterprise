@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth;
+namespace Snicco\Enterprise\AuthBundle\Auth;
 
 final class RequestAttributes
 {

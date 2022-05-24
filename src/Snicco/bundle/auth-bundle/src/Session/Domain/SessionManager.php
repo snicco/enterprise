@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Domain;
+namespace Snicco\Enterprise\AuthBundle\Session\Domain;
 
 use RuntimeException;
 use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\TestableClock\SystemClock;
 use Snicco\Component\EventDispatcher\EventDispatcher;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasIdle;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasRotated;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionRotationTimeout;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Exception\InvalidSessionToken;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionIdleTimeout;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\AllowWeakAuthenticationForIdleSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionWasIdle;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionWasRotated;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionRotationTimeout;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionIdleTimeout;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\AllowWeakAuthenticationForIdleSession;
 
 use function hash;
 use function bin2hex;
@@ -92,7 +92,7 @@ final class SessionManager
     
     public function delete(string $hashed_token) :void
     {
-        $this->session_repo->delete($hashed_token);
+        $this->session_repo->delete($this->withReferenceToRotatedToken($hashed_token));
     }
     
     public function destroyOtherSessionsForUser(int $user_id, string $hashed_token) :void
@@ -106,7 +106,9 @@ final class SessionManager
     }
     
     public function updateActivity(string $token_plain) :void {
-        $this->session_repo->updateActivity($this->hashToken($token_plain));
+        $this->session_repo->updateActivity(
+            $this->withReferenceToRotatedToken($this->hashToken($token_plain))
+        );
     }
     
     private function hashToken(string $token_plain) :string

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception;
 
 use InvalidArgumentException;
 use function sprintf;

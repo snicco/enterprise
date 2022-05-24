@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Infrastructure;
 
 interface BanworthyEvent
 {

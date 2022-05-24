@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
+namespace Snicco\Enterprise\AuthBundle\Tests\fixtures;
 
 use PHPUnit\Framework\Assert as PHPUnit;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Domain\Syslogger;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Domain\Syslogger;
 
 use function sprintf;
 

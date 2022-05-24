@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\User;
+namespace Snicco\Enterprise\AuthBundle\Auth\User\Domain;
 
 use InvalidArgumentException;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration;
 
 use Codeception\TestCase\WPTestCase;
 use RuntimeException;
@@ -13,7 +13,7 @@ use Snicco\Bundle\Testing\Bundle\BundleTestHelpers;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
-use Snicco\Enterprise\Bundle\Auth\AuthBundle;
+use Snicco\Enterprise\AuthBundle\AuthBundle;
 use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
 
 use function dirname;

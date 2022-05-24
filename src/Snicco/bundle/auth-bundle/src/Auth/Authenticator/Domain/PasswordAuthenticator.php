@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\LoginResult;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\FailedPasswordAuthentication;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\InvalidPassword;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\UserNotFound;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\UserProvider;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\Authenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
+use Snicco\Enterprise\AuthBundle\Auth\Event\FailedPasswordAuthentication;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\InvalidPassword;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserNotFound;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Authenticator;
 
 final class PasswordAuthenticator extends Authenticator
 {

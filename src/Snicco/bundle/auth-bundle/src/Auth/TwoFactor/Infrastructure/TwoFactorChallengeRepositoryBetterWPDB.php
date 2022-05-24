@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure;
 
 use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\TestableClock\SystemClock;
 use Snicco\Component\BetterWPDB\Exception\NoMatchingRowFound;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallenge;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\Invalid2FaChallenge;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallenge;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\Invalid2FaChallenge;
 
 final class TwoFactorChallengeRepositoryBetterWPDB implements TwoFactorChallengeRepository
 {

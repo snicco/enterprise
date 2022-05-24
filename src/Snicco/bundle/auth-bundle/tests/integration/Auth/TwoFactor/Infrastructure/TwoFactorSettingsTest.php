@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Auth\TwoFactor\Infrastructure;
 
 use Closure;
 use Generator;
@@ -13,15 +13,15 @@ use PragmaRX\Google2FA\Google2FA;
 use Codeception\TestCase\WPTestCase;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Bundle\Encryption\DefuseEncryptor;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\EncryptedTwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\EncryptedTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
 
 use function time;
 

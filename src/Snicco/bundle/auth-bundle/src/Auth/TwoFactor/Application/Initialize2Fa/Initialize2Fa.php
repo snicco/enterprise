@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Application\Initialize2Fa;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Initialize2Fa;
 
 /**
  * @psalm-readonly

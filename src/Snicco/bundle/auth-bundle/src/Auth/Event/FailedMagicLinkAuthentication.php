@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Event;
+namespace Snicco\Enterprise\AuthBundle\Auth\Event;
 
 use function sprintf;
 

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain;
 
 use ArrayIterator;
 use InvalidArgumentException;
 use IteratorAggregate;
 use RuntimeException;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\InvalidBackupCode;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidBackupCode;
 
 use function array_map;
 use function array_values;

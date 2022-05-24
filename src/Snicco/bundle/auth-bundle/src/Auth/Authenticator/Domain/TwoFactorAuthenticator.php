@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\OTPValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\LoginResult;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\Authenticator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\FailedTwoFactorAuthentication;
-use Snicco\Enterprise\Bundle\Auth\Auth\RequestAttributes;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\InvalidBackupCode;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\UserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\OTPValidator;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Authenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Event\FailedTwoFactorAuthentication;
+use Snicco\Enterprise\AuthBundle\Auth\RequestAttributes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidBackupCode;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserProvider;
 use WP_User;
 
 use function is_bool;

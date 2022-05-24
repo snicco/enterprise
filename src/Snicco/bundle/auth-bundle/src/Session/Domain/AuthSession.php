@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Domain;
+namespace Snicco\Enterprise\AuthBundle\Session\Domain;
 
 use InvalidArgumentException;
 
@@ -12,7 +12,7 @@ use function is_string;
 
 /**
  * @internal
- * @psalm-internal Snicco\Enterprise\Bundle\Auth
+ * @psalm-internal Snicco\Enterprise\AuthBundle
  */
 final class AuthSession
 {
@@ -57,7 +57,7 @@ final class AuthSession
     
     /**
      * @internal
-     * @psalm-internal Snicco\Enterprise\Bundle\Auth\Session\Infrastructure
+     * @psalm-internal Snicco\Enterprise\AuthBundle\Session\Infrastructure
      */
     public static function fromArrayDataForStorage(string $hashed_token, int $int, array $data) :self
     {

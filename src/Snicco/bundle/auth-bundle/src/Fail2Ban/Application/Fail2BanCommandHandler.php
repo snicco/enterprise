@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Application;
+namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Application;
 
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Domain\Syslogger;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Application\ReportEvent\ReportBanworthyEvent;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Domain\Syslogger;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Application\ReportEvent\ReportBanworthyEvent;
 
 use function sprintf;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Auth\TwoFactor\Infrastructure;
 
 use Closure;
 use WP_User;
@@ -10,12 +10,12 @@ use Generator;
 use Codeception\Test\Unit;
 use PragmaRX\Google2FA\Google2FA;
 use Codeception\TestCase\WPTestCase;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\MD5OTPValidator;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\OTPValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\Google2FaProvider;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\OTPValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\Google2FaProvider;
 
 use function md5;
 use function time;

@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\usecase\Session;
+namespace Snicco\Enterprise\AuthBundle\Tests\usecase\Session;
 
 use RuntimeException;
 use Codeception\Test\Unit;
 use Snicco\Component\TestableClock\TestClock;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\TimeoutConfig;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\TimeoutConfig;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemorySessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasIdle;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasRotated;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionRotationTimeout;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Exception\InvalidSessionToken;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionIdleTimeout;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\AllowWeakAuthenticationForIdleSession;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemorySessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionWasIdle;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionWasRotated;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionRotationTimeout;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionIdleTimeout;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\AllowWeakAuthenticationForIdleSession;
 
 use function hash;
 use function time;
@@ -236,6 +236,55 @@ final class SessionManagerTest extends Unit
         
         $this->assertEquals($s->withToken($retrieved->hashedToken()) , $this->session_manager->getSession($old_token));
     }
+    
+    /**
+     * @test
+     */
+    public function that_a_rotated_session_can_be_destroyed_by_the_old_session_token() :void
+    {
+        $old_token = $this->aPersistedSessionForUser(
+            1,
+            10,
+            [],
+            $this->clock->currentTimestamp() - $this->rotation_interval - 1
+        )->hashedToken();
+        
+        $session_with_rotated_token = $this->session_manager->getSession($old_token);
+        
+        $this->assertNotSame($old_token, $session_with_rotated_token->hashedToken());
+        
+        $this->session_manager->delete($old_token);
+        
+        $this->expectException(InvalidSessionToken::class);
+        
+        $this->session_manager->getSession($session_with_rotated_token->hashedToken());
+    }
+    
+    /**
+     * @test
+     */
+    public function that_a_rotated_sessions_activity_can_be_updated_by_the_old_session_token() :void
+    {
+        $old_token = $this->aPersistedSessionForUser(
+            1,
+            10,
+            [],
+            $this->clock->currentTimestamp() - $this->rotation_interval - 1,
+            'foobar'
+        )->hashedToken();
+        
+        $session_with_rotated_token = $this->session_manager->getSession($old_token);
+        
+        $this->assertNotSame($old_token, $session_with_rotated_token->hashedToken());
+        
+        $now = $this->clock->currentTimestamp();
+        $this->clock->travelIntoFuture(10);
+        
+        $this->session_manager->updateActivity('foobar');
+        
+        $this->assertSame($now+10, $this->session_manager->getSession($old_token)->lastActivity());
+    }
+    
     
     private function aPersistedSessionForUser(
         int $user_id,

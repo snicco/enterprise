@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Password\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Password\Infrastructure;
 
 use Snicco\Component\EventDispatcher\EventSubscriber;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\PasswordPolicy;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\PasswordLengthExceeded;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordLength;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\MappedEvent\ResettingPassword;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordEntropy;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\MappedEvent\UpdatingUserInAdminArea;
+use Snicco\Enterprise\AuthBundle\Password\Domain\PasswordPolicy;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\PasswordLengthExceeded;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordLength;
+use Snicco\Enterprise\AuthBundle\Password\Infrastructure\MappedEvent\ResettingPassword;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordEntropy;
+use Snicco\Enterprise\AuthBundle\Password\Infrastructure\MappedEvent\UpdatingUserInAdminArea;
 use WP_User;
 
 use function __;

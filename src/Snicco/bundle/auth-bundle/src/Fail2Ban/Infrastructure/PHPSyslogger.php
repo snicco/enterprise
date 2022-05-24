@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Infrastructure;
 
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Domain\Syslogger;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Domain\Syslogger;
 
 use function closelog;
 use function openlog;

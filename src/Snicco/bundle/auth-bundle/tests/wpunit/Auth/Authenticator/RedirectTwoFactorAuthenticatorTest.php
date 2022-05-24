@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\wpunit\Auth\Authenticator;
+namespace Snicco\Enterprise\AuthBundle\Tests\wpunit\Auth\Authenticator;
 
 use Codeception\TestCase\WPTestCase;
 use LogicException;
@@ -12,11 +12,11 @@ use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Component\HttpRouting\Http\Psr7\Response;
 use Snicco\Component\HttpRouting\Http\Psr7\ResponseFactory;
 use Snicco\Component\HttpRouting\Http\Response\RedirectResponse;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\LoginResult;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\RedirectTwoFactorAuthenticator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\StubUrlGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\RedirectTwoFactorAuthenticator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\StubUrlGenerator;
 use WP_User;
 
 /**

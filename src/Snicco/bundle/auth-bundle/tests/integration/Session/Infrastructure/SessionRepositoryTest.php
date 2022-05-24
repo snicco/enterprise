@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Session\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Session\Infrastructure;
 
 use C;
 use Closure;
@@ -12,13 +12,13 @@ use Codeception\TestCase\WPTestCase;
 use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\TestableClock\TestClock;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
 
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemorySessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemorySessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
 
-use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\BetterWPDBSessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Infrastructure\SessionRepositoryBetterWPDB;
 
 use function hash;
 use function time;
@@ -36,7 +36,7 @@ final class SessionRepositoryTest extends WPTestCase
     protected function setUp() :void
     {
         parent::setUp();
-        BetterWPDBSessionRepository::createTable($this->table_name);
+        SessionRepositoryBetterWPDB::createTable(BetterWPDB::fromWpdb(),$this->table_name);
     }
     
     protected function tearDown() :void
@@ -522,7 +522,7 @@ final class SessionRepositoryTest extends WPTestCase
         
         yield 'better-wpdb' => [
             function (Clock $clock) {
-                return new BetterWPDBSessionRepository(BetterWPDB::fromWpdb(), $this->table_name, $clock);
+                return new SessionRepositoryBetterWPDB(BetterWPDB::fromWpdb(), $this->table_name, $clock);
             },
         ];
     }

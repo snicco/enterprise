@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain;
 
 use RuntimeException;
 

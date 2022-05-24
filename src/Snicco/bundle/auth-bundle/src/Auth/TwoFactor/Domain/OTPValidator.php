@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
 
 interface OTPValidator
 {

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Session\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Session\Infrastructure;
 
 use Codeception\TestCase\WPTestCase;
 use InvalidArgumentException;
 use RuntimeException;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\TimeoutConfig;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Session\Domain\TimeoutConfig;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use stdClass;
 
-use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\WPAuthSessionTokens;
-use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\BetterWPDBSessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Infrastructure\WPAuthSessionTokens;
+use Snicco\Enterprise\AuthBundle\Session\Infrastructure\SessionRepositoryBetterWPDB;
 
 use function add_filter;
 use function base64_encode;
@@ -47,12 +47,12 @@ final class WPAuthSessionTokensTest extends WPTestCase
         $this->testable_dispatcher = new TestableEventDispatcher(new BaseEventDispatcher());
         $this->db = BetterWPDB::fromWpdb();
         
-        $session_repository = new BetterWPDBSessionRepository(
+        $session_repository = new SessionRepositoryBetterWPDB(
             $this->db,
             $this->table_name,
         );
         
-        BetterWPDBSessionRepository::createTable($this->table_name);
+        SessionRepositoryBetterWPDB::createTable($this->table_name);
         
         WPAuthSessionTokens::setSessionManager(
             new SessionManager(

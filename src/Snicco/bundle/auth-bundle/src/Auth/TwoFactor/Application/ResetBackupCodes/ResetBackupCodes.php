@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Application\ResetBackupCodes;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\ResetBackupCodes;
 
 /**
  * @psalm-immutable

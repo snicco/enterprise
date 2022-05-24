@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\wpunit\Auth\Authenticator;
+namespace Snicco\Enterprise\AuthBundle\Tests\wpunit\Auth\Authenticator;
 
 use Codeception\TestCase\WPTestCase;
 use Nyholm\Psr7\ServerRequest;
@@ -10,9 +10,9 @@ use RuntimeException;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\PasswordAuthenticator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\FailedPasswordAuthentication;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\WPUserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\PasswordAuthenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Event\FailedPasswordAuthentication;
+use Snicco\Enterprise\AuthBundle\Auth\User\WPUserProvider;
 use WP_User;
 use function sprintf;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Domain;
+namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Domain;
 
 interface Syslogger
 {

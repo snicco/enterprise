@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth;
+namespace Snicco\Enterprise\AuthBundle\Auth;
 
 use Snicco\Component\EventDispatcher\EventSubscriber;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\WPAuthenticate;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\WPAuthenticate2FaChallengeRedirect;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorChallengeGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate2FaChallengeRedirect;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeGenerator;
 
 use function wp_safe_redirect;
 

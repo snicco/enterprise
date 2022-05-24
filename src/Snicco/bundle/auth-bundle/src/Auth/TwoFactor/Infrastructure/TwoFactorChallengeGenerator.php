@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure;
 
 use ParagonIE\ConstantTime\Base64;
 use ParagonIE\ConstantTime\Binary;
 use ParagonIE\ConstantTime\Base64UrlSafe;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallenge;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallenge;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
 
 use function time;
 use function intval;
@@ -19,7 +19,6 @@ use function random_bytes;
 
 final class TwoFactorChallengeGenerator
 {
-    
     private TwoFactorChallengeRepository $challenges;
     private TwoFactorChallengeValidator $validator;
     

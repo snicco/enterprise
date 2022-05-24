@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Application\ReportEvent;
+namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Application\ReportEvent;
 
 /**
  * @psalm-immutable

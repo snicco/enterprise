@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Session\Infrastructure;
 
 use WP_Session_Tokens;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
 
 use function array_map;
 
 /**
  * @internal
  *
- * @psalm-internal Snicco\Enterprise\Bundle\Auth
+ * @psalm-internal Snicco\Enterprise\AuthBundle
  * @psalm-suppress PropertyNotSetInConstructor
  */
 final class WPAuthSessionTokens extends WP_Session_Tokens

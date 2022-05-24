@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Session\Infrastructure;
 
 use Snicco\Component\EventDispatcher\EventSubscriber;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\MappedEvent\SessionActivityRecorded;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasIdle;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Event\SessionWasRotated;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Infrastructure\MappedEvent\SessionActivityRecorded;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionWasIdle;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Event\SessionWasRotated;
 
 use function setcookie;
 use function wp_set_auth_cookie;
@@ -23,6 +23,11 @@ use const SECURE_AUTH_COOKIE;
 final class SessionEventHandler implements EventSubscriber
 {
     private SessionManager $session_manager;
+    
+    /**
+     * @var array<string,true>
+     */
+    private array $updated = [];
     
     public function __construct(SessionManager $session_manager)
     {
@@ -40,7 +45,15 @@ final class SessionEventHandler implements EventSubscriber
 
     public function onSessionActivityRecorded(SessionActivityRecorded $event): void
     {
+        // The auth_cookie_valid hook will be dispatched multiple times
+        // because WordPress does redundant things on auth_redirect() and determine_current_user()
+        if(isset($this->updated[$event->raw_token])){
+            return;
+        }
+        
         $this->session_manager->updateActivity($event->raw_token);
+        
+        $this->updated[$event->raw_token] = true;
     }
 
     /**
@@ -129,6 +142,7 @@ final class SessionEventHandler implements EventSubscriber
     public function onSessionRotated(SessionWasRotated $event): void
     {
         // Remember_me can be set to true because we are filtering the expiration of the cookie anyway.
+        // @todo Get remember value dynamically here.
         wp_set_auth_cookie($event->user_id, true, '', $event->new_token_plain);
     }
 }

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Domain;
+namespace Snicco\Enterprise\AuthBundle\Session\Domain;
 
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
 
 /**
  * @internal
  *
- * @psalm-internal Snicco\Enterprise\Bundle\Auth\Session
+ * @psalm-internal Snicco\Enterprise\AuthBundle\Session
  */
 interface SessionRepository
 {

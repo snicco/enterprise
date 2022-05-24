@@ -69,6 +69,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Snicco\\Enterprise\\AuthBundle\\": "src/Snicco/bundle/auth-bundle/src",
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src/Snicco/bundle/application-layer-bundle/src",
             "Snicco\\Enterprise\\Bundle\\Auth\\": "src/Snicco/bundle/auth-bundle/src",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
@@ -80,6 +81,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Snicco\\Enterprise\\AuthBundle\\Tests\\": "src/Snicco/bundle/auth-bundle/tests",
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "src/Snicco/bundle/application-layer-bundle/tests",
             "Snicco\\Enterprise\\Bundle\\Auth\\Tests\\": "src/Snicco/bundle/auth-bundle/tests",
             "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "src/Snicco/bundle/better-wp-cli-bundle/tests",

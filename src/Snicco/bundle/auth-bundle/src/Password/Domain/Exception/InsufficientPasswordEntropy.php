@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception;
+namespace Snicco\Enterprise\AuthBundle\Password\Domain\Exception;
 
 use InvalidArgumentException;
 

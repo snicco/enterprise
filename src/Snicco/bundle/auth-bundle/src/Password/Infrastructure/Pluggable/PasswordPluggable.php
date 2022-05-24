@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Pluggable;
+namespace Snicco\Enterprise\AuthBundle\Password\Infrastructure\Pluggable;
 
 use LogicException;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\SecureWPPasswords;
+use Snicco\Enterprise\AuthBundle\Password\Infrastructure\SecureWPPasswords;
 
 /**
  * @codeCoverageIgnore

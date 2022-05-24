@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Fail2Ban\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Fail2Ban\Infrastructure;
 
 use Snicco\Component\Kernel\Kernel;
 use Codeception\TestCase\WPTestCase;
@@ -11,9 +11,9 @@ use Snicco\Bundle\Testing\Bundle\BundleTestHelpers;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Domain\Syslogger;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\TestSysLogger;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\BanworthyEvent;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Domain\Syslogger;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\TestSysLogger;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Infrastructure\BanworthyEvent;
 
 use const LOG_ERR;
 use const LOG_WARNING;

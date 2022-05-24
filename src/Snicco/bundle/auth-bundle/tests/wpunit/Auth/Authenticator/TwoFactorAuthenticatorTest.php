@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\wpunit\Auth\Authenticator;
+namespace Snicco\Enterprise\AuthBundle\Tests\wpunit\Auth\Authenticator;
 
 use Codeception\TestCase\WPTestCase;
 use Nyholm\Psr7\ServerRequest;
 use RuntimeException;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\MD5OTPValidator;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\TwoFactorAuthenticator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\FailedTwoFactorAuthentication;
-use Snicco\Enterprise\Bundle\Auth\Auth\RequestAttributes;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\WPUserProvider;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\TwoFactorAuthenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Event\FailedTwoFactorAuthentication;
+use Snicco\Enterprise\AuthBundle\Auth\RequestAttributes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\User\WPUserProvider;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
 use WP_User;
 
 use function iterator_to_array;

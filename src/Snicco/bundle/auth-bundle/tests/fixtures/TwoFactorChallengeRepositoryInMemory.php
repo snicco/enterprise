@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
+namespace Snicco\Enterprise\AuthBundle\Tests\fixtures;
 
 use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\TestableClock\SystemClock;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallenge;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\Invalid2FaChallenge;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallenge;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\Invalid2FaChallenge;
 
 use function array_filter;
 

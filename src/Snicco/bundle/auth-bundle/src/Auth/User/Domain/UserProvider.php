@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\User;
+namespace Snicco\Enterprise\AuthBundle\Auth\User\Domain;
 
 use WP_User;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\InvalidPassword;
 
 interface UserProvider
 {

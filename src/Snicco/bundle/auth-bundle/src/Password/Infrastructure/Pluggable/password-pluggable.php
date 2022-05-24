@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Pluggable\PasswordPluggable;
+use Snicco\Enterprise\AuthBundle\Password\Infrastructure\Pluggable\PasswordPluggable;
 
 if (! \function_exists('wp_check_password')) {
     /**

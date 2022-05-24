@@ -7,7 +7,7 @@ use Snicco\Bundle\BetterWPHooks\BetterWPHooksBundle;
 use Snicco\Bundle\HttpRouting\HttpRoutingBundle;
 use Snicco\Component\Kernel\KernelOption;
 use Snicco\Component\Kernel\ValueObject\Environment;
-use Snicco\Enterprise\Bundle\Auth\AuthBundle;
+use Snicco\Enterprise\AuthBundle\AuthBundle;
 use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
 
 return [

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\wpunit\Auth\User;
+namespace Snicco\Enterprise\AuthBundle\Tests\wpunit\Auth\User;
 
 use Codeception\TestCase\WPTestCase;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\UserNotFound;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\WPUserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserNotFound;
+use Snicco\Enterprise\AuthBundle\Auth\User\WPUserProvider;
 use WP_User;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Auth\TwoFactor\Infrastructure;
 
 use Closure;
 use Generator;
@@ -11,12 +11,12 @@ use Codeception\TestCase\WPTestCase;
 use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\TestableClock\TestClock;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\TwoFactorChallengeRepositoryInMemory;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallenge;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\Invalid2FaChallenge;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\TwoFactorChallengeRepositoryInMemory;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallenge;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\Invalid2FaChallenge;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
 
 use function time;
 

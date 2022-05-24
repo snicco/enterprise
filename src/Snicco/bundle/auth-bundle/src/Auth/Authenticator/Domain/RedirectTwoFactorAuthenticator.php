@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Component\HttpRouting\Http\Psr7\ResponseFactory;
 use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\LoginResult;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
 use WP_User;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\Authenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Authenticator;
 
 final class RedirectTwoFactorAuthenticator extends Authenticator
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Codeception\Test\Unit;
 use Codeception\TestCase\WPTestCase;
 use Snicco\Bundle\Testing\Functional\WebTestCase;
-use Snicco\Enterprise\Bundle\Auth\Tests\AuthWebTestCase;
+use Snicco\Enterprise\AuthBundle\Tests\AuthWebTestCase;
 use Psalm\Plugin\EventHandler\AfterClassLikeVisitInterface;
 use Psalm\Plugin\EventHandler\Event\AfterClassLikeVisitEvent;
 

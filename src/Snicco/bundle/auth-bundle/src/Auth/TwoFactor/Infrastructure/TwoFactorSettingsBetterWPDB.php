@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure;
 
 use LogicException;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\BetterWPDB\Exception\NoMatchingRowFound;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 
 use function base64_decode;
 use function base64_encode;
@@ -50,10 +50,10 @@ final class TwoFactorSettingsBetterWPDB implements TwoFactorSettings
         $this->table_name = $table_name;
     }
     
-    public function createTable() :void
+    public static function createTable(BetterWPDB $db, string $table_name) :void
     {
-        $this->db->unprepared(
-            "CREATE TABLE IF NOT EXISTS `{$this->table_name}` (
+        $db->unprepared(
+            "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 	`id` INTEGER(11) NOT NULL AUTO_INCREMENT,
 	`user_id` INTEGER(11) unsigned NOT NULL UNIQUE,
     `completed` TINYINT DEFAULT 0,

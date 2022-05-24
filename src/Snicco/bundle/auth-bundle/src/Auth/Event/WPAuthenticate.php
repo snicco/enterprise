@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Event;
+namespace Snicco\Enterprise\AuthBundle\Auth\Event;
 
 use LogicException;
 use Snicco\Component\BetterWPHooks\EventMapping\MappedFilter;
@@ -14,7 +14,7 @@ use WP_User;
 /**
  * @internal
  *
- * @psalm-internal Snicco\Enterprise\Bundle\Auth
+ * @psalm-internal Snicco\Enterprise\AuthBundle
  */
 final class WPAuthenticate implements MappedFilter
 {

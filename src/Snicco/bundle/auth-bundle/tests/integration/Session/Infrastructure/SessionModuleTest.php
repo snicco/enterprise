@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Session\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Session\Infrastructure;
 
 use RuntimeException;
 use WP_Session_Tokens;
@@ -12,11 +12,11 @@ use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Bundle\Testing\Bundle\BundleTest;
 use Snicco\Bundle\Testing\Bundle\BundleTestHelpers;
 use Snicco\Component\Kernel\ValueObject\Environment;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
-use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\WPAuthSessionTokens;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Session\Infrastructure\WPAuthSessionTokens;
 
-use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\BetterWPDBSessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Infrastructure\SessionRepositoryBetterWPDB;
 
 use function time;
 use function hash;
@@ -41,7 +41,7 @@ final class SessionModuleTest extends WPTestCase
             $this->directories
         );
         parent::setUp();
-        BetterWPDBSessionRepository::createTable('wp_snicco_auth_sessions');
+        SessionRepositoryBetterWPDB::createTable('wp_snicco_auth_sessions');
     }
     
     protected function tearDown(): void

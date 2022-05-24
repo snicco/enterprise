@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\wpunit\Auth\Authenticator;
+namespace Snicco\Enterprise\AuthBundle\Tests\wpunit\Auth\Authenticator;
 
 use Codeception\TestCase\WPTestCase;
 use Nyholm\Psr7\ServerRequest;
@@ -15,9 +15,9 @@ use Snicco\Component\SignedUrl\Secret;
 use Snicco\Component\SignedUrl\SignedUrlValidator;
 use Snicco\Component\SignedUrl\Storage\InMemoryStorage;
 use Snicco\Component\SignedUrl\UrlSigner;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\MagicLinkAuthenticator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\FailedMagicLinkAuthentication;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\WPUserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\MagicLinkAuthenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Event\FailedMagicLinkAuthentication;
+use Snicco\Enterprise\AuthBundle\Auth\User\WPUserProvider;
 use WP_User;
 
 use function sprintf;

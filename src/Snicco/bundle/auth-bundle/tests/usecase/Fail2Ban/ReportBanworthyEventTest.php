@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\usecase\Fail2Ban;
+namespace Snicco\Enterprise\AuthBundle\Tests\usecase\Fail2Ban;
 
 use Codeception\Test\Unit;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\TestSysLogger;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Application\Fail2BanCommandHandler;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Application\ReportEvent\ReportBanworthyEvent;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\TestSysLogger;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Application\Fail2BanCommandHandler;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Application\ReportEvent\ReportBanworthyEvent;
 
 use const LOG_PID;
 use const LOG_ERR;

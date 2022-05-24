@@ -1,4 +1,4 @@
-namespace: Snicco\Enterprise\Bundle\Auth\Tests
+namespace: Snicco\Enterprise\AuthBundle\Tests
 modules:
   enabled:
     - WPLoader

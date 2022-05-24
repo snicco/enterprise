@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\unit\Session\Domain;
+namespace Snicco\Enterprise\AuthBundle\Tests\unit\Session\Domain;
 
 use RuntimeException;
 use Codeception\Test\Unit;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
 
 use function time;
 

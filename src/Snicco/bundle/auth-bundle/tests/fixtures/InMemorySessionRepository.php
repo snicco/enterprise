@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
+namespace Snicco\Enterprise\AuthBundle\Tests\fixtures;
 
 use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\TestableClock\TestClock;
 use Snicco\Component\TestableClock\SystemClock;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
 
 use function array_map;
 use function array_filter;

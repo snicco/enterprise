@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Application;
+namespace Snicco\Enterprise\AuthBundle\Session\Application;
 
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
-use Snicco\Enterprise\Bundle\Auth\Session\Application\DestroyAllSessions\DestroyAllSessions;
-use Snicco\Enterprise\Bundle\Auth\Session\Application\RemoveExpiredSessions\RemoveExpiredSessions;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Session\Application\DestroyAllSessions\DestroyAllSessions;
+use Snicco\Enterprise\AuthBundle\Session\Application\RemoveExpiredSessions\RemoveExpiredSessions;
 
 final class SessionCommandHandler
 {

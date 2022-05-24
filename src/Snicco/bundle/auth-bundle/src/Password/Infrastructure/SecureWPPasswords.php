@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Password\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Password\Infrastructure;
 
 use Defuse\Crypto\Core;
 use Defuse\Crypto\Key;

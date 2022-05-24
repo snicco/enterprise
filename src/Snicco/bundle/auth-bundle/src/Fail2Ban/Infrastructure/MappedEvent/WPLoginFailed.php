@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\MappedEvent;
+namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Infrastructure\MappedEvent;
 
 use Snicco\Component\BetterWPHooks\EventMapping\MappedHook;
 use Snicco\Component\EventDispatcher\ClassAsName;
 use Snicco\Component\EventDispatcher\ClassAsPayload;
-use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\BanworthyEvent;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Infrastructure\BanworthyEvent;
 
 use const LOG_WARNING;
 

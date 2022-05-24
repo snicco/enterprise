@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
+namespace Snicco\Enterprise\AuthBundle\Tests\fixtures;
 
 use BadMethodCallException;
 use Snicco\Component\HttpRouting\Routing\Exception\RouteNotFound;

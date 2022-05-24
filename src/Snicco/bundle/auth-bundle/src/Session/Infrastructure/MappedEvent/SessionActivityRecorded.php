@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\MappedEvent;
+namespace Snicco\Enterprise\AuthBundle\Session\Infrastructure\MappedEvent;
 
 use Snicco\Component\BetterWPHooks\EventMapping\MappedHook;
 use Snicco\Component\EventDispatcher\ClassAsName;
@@ -43,7 +43,7 @@ final class SessionActivityRecorded implements MappedHook
         $this->user_id = $user->ID;
         $this->timestamp = time();
     }
-
+    
     public function shouldDispatch(): bool
     {
         if (! wp_doing_ajax()) {
@@ -54,6 +54,8 @@ final class SessionActivityRecorded implements MappedHook
             return true;
         }
 
+        // This event should not dispatch for the heartbeat API that
+        // continuously polls the server.
         return 'heartbeat' !== $_REQUEST['action'];
     }
 }

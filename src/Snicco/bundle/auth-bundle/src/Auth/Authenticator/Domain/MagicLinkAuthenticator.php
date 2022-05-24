@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Component\SignedUrl\Exception\SignedUrlException;
 use Snicco\Component\SignedUrl\SignedUrlValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\LoginResult;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\Authenticator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\FailedMagicLinkAuthentication;
-use Snicco\Enterprise\Bundle\Auth\Auth\User\UserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Authenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Event\FailedMagicLinkAuthentication;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserProvider;
 
 final class MagicLinkAuthenticator extends Authenticator
 {

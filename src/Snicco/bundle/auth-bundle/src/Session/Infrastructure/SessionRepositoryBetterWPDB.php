@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Session\Infrastructure;
 
 use RuntimeException;
 use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\TestableClock\SystemClock;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
 use Snicco\Component\BetterWPDB\Exception\NoMatchingRowFound;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
 
 use function time;
 use function sprintf;
@@ -23,7 +23,7 @@ use function array_values;
 use function base64_encode;
 use function base64_decode;
 
-final class BetterWPDBSessionRepository implements SessionRepository
+final class SessionRepositoryBetterWPDB implements SessionRepository
 {
     
     private BetterWPDB $db;
@@ -50,9 +50,9 @@ final class BetterWPDBSessionRepository implements SessionRepository
         $this->clock = $clock ? : SystemClock::fromUTC();
     }
     
-    public static function createTable(string $table_name) :void
+    public static function createTable(BetterWPDB $db, string $table_name) :void
     {
-        BetterWPDB::fromWpdb()->unprepared(
+        $db->unprepared(
             "CREATE TABLE IF NOT EXISTS `{$table_name}`  (
             	`id` INTEGER(11) NOT NULL AUTO_INCREMENT,
                 `hashed_token` CHAR(64) NOT NULL,
@@ -209,7 +209,11 @@ final class BetterWPDBSessionRepository implements SessionRepository
     
     public function updateActivity(string $hashed_token) :void
     {
-        $count = $this->db->update(
+        if(!$this->exists($hashed_token)){
+            throw InvalidSessionToken::forToken($hashed_token);
+        }
+        
+        $this->db->update(
             $this->table_name,
             [
                 'hashed_token' => $hashed_token,
@@ -219,16 +223,16 @@ final class BetterWPDBSessionRepository implements SessionRepository
             ]
         );
         
-        if (0 === $count) {
-            throw InvalidSessionToken::forToken($hashed_token);
-        }
-        
         unset($this->session_cache[$hashed_token]);
     }
     
     public function rotateToken(string $hashed_token_old, string $hashed_token_new, int $current_timestamp) :void
     {
-        $count = $this->db->update(
+        if(!$this->exists($hashed_token_old)){
+            throw InvalidSessionToken::forToken($hashed_token_old);
+        }
+        
+       $this->db->update(
             $this->table_name,
             [
                 'hashed_token' => $hashed_token_old,
@@ -238,10 +242,6 @@ final class BetterWPDBSessionRepository implements SessionRepository
                 'hashed_token' => $hashed_token_new,
             ]
         );
-        
-        if (0 === $count) {
-            throw InvalidSessionToken::forToken($hashed_token_old);
-        }
         
         unset($this->session_cache[$hashed_token_old]);
     }

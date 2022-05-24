@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth;
+namespace Snicco\Enterprise\AuthBundle;
 
 use Snicco\Bundle\HttpRouting\Option\RoutingOption;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
@@ -12,8 +12,7 @@ use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBusOption;
 
 /**
  * @internal
- *
- * @psalm-internal Snicco\Enterprise\Bundle\Auth
+ * @psalm-internal Snicco\Enterprise\AuthBundle
  */
 abstract class Module
 {
@@ -56,6 +55,15 @@ abstract class Module
     {
         $config->setIfMissing('routing.'.RoutingOption::ROUTE_DIRECTORIES, []);
         $config->appendToList('routing.'.RoutingOption::ROUTE_DIRECTORIES, $route_dirs);
+    }
+    
+    /**
+     * @param  string[]  $route_dirs
+     */
+    public function addApiRouteDirectories(WritableConfig $config, array $route_dirs) :void
+    {
+        $config->setIfMissing('routing.'.RoutingOption::API_ROUTE_DIRECTORIES, []);
+        $config->appendToList('routing.'.RoutingOption::API_ROUTE_DIRECTORIES, $route_dirs);
     }
     
 }

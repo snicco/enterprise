@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Session\Infrastructure;
 
 use RuntimeException;
 use Snicco\Component\BetterWPDB\BetterWPDB;
@@ -11,12 +11,12 @@ use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Auth\Module;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\TimeoutConfig;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
-use Snicco\Enterprise\Bundle\Auth\Session\Application\SessionCommandHandler;
-use Snicco\Enterprise\Bundle\Auth\Session\Infrastructure\MappedEvent\SessionActivityRecorded;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionRepository;
+use Snicco\Enterprise\AuthBundle\Module;
+use Snicco\Enterprise\AuthBundle\Session\Domain\TimeoutConfig;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Session\Application\SessionCommandHandler;
+use Snicco\Enterprise\AuthBundle\Session\Infrastructure\MappedEvent\SessionActivityRecorded;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionRepository;
 use WP_User_Meta_Session_Tokens;
 
 use function add_filter;
@@ -61,7 +61,7 @@ final class SessionModule extends Module
         $c->shared(SessionRepository::class, function ()use ($c, $config) {
             $table_name = $GLOBALS['wpdb']->prefix.'snicco_auth_sessions';
     
-            return new BetterWPDBSessionRepository(
+            return new SessionRepositoryBetterWPDB(
                 $c[BetterWPDB::class],
                 $table_name,
                 SystemClock::fromUTC()

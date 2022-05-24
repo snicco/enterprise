@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\usecase\Session;
+namespace Snicco\Enterprise\AuthBundle\Tests\usecase\Session;
 
 use Codeception\Test\Unit;
 use Snicco\Component\TestableClock\TestClock;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\AuthSession;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\TimeoutConfig;
-use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemorySessionRepository;
-use Snicco\Enterprise\Bundle\Auth\Session\Application\SessionCommandHandler;
-use Snicco\Enterprise\Bundle\Auth\Session\Application\RemoveExpiredSessions\RemoveExpiredSessions;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
+use Snicco\Enterprise\AuthBundle\Session\Domain\TimeoutConfig;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemorySessionRepository;
+use Snicco\Enterprise\AuthBundle\Session\Application\SessionCommandHandler;
+use Snicco\Enterprise\AuthBundle\Session\Application\RemoveExpiredSessions\RemoveExpiredSessions;
 
 use function hash;
 use function time;

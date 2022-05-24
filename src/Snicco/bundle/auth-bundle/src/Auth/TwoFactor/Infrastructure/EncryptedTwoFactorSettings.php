@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure;
 
 use Snicco\Bundle\Encryption\DefuseEncryptor;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
 
 final class EncryptedTwoFactorSettings implements TwoFactorSettings
 {

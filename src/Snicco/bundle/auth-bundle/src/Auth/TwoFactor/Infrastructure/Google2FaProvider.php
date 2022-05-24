@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure;
 
 use PragmaRX\Google2FA\Google2FA;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\OTPValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\OTPValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
 
 use function sprintf;
 

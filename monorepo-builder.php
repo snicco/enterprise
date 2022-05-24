@@ -44,7 +44,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'symfony/console' => '5.4.7',
             'symplify/composer-json-manipulator' => '9.3.26',
             'webmozart/assert' => '^1.10.0',
-            'snicco/str-arr' => '^1.1.3',
+            'snicco/str-arr' => '^1.2.0',
         ],
         ComposerJsonSection::AUTOLOAD_DEV => [
             'psr-4' => [

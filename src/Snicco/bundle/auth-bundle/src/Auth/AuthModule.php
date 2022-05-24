@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth;
+namespace Snicco\Enterprise\AuthBundle\Auth;
 
 use PragmaRX\Google2FA\Google2FA;
 use Snicco\Component\BetterWPDB\BetterWPDB;
@@ -11,17 +11,17 @@ use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\WPAuthenticate;
-use Snicco\Enterprise\Bundle\Auth\Module;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\OTPValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\Google2FaProvider;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Application\TwoFactorCommandHandler;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorChallengeGenerator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate;
+use Snicco\Enterprise\AuthBundle\Module;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\OTPValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\Google2FaProvider;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\TwoFactorCommandHandler;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
 
 use function dirname;
 use function bin2hex;

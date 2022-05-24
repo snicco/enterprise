@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
@@ -43,7 +43,7 @@ final class LoginResult
     public function authenticatedUser() :WP_User
     {
         if ( ! $this->user instanceof WP_User) {
-            throw new LogicException('No user was authenticated. User isSuccess() before calling this method.');
+            throw new LogicException('No user was authenticated. Use isSuccess() before calling this method.');
         }
         
         return $this->user;

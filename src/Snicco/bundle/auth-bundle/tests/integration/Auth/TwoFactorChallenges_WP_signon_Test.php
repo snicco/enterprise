@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Auth;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Auth;
 
 use WP_User;
 use WP_Error;
@@ -18,15 +18,15 @@ use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
-use Snicco\Enterprise\Bundle\Auth\Auth\Event\WPAuthenticate2FaChallengeRedirect;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorChallengeGenerator;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
+use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate2FaChallengeRedirect;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
 
 use function end;
 use function dirname;

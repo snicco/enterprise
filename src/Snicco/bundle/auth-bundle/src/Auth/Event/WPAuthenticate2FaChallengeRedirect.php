@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\Event;
+namespace Snicco\Enterprise\AuthBundle\Auth\Event;
 
 use WP_User;
 use Snicco\Component\EventDispatcher\Event;
@@ -12,7 +12,7 @@ use Snicco\Component\EventDispatcher\ClassAsPayload;
 /**
  * @internal
  *
- * @psalm-internal Snicco\Enterprise\Bundle\Auth
+ * @psalm-internal Snicco\Enterprise\AuthBundle
  */
 final class WPAuthenticate2FaChallengeRedirect implements Event
 {

@@ -1,4 +1,4 @@
-namespace: Snicco\Enterprise\Bundle\Auth
+namespace: Snicco\Enterprise\AuthBundle
 paths:
   tests: tests
   output: tests/_output

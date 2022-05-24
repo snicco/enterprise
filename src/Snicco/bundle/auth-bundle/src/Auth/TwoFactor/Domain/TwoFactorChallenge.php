@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain;
 
 /**
  * @internal
  *
  * @psalm-immutable
  *
- * @psalm-internal Snicco\Enterprise\Bundle\Auth
+ * @psalm-internal Snicco\Enterprise\AuthBundle
  */
 final class TwoFactorChallenge
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\unit\Auth;
+namespace Snicco\Enterprise\AuthBundle\Tests\unit\Auth;
 
 use Codeception\Test\Unit;
 use Nyholm\Psr7\ServerRequest;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Component\HttpRouting\Http\Psr7\Response;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\AuthenticationPipeline;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\Authenticator;
-use Snicco\Enterprise\Bundle\Auth\Auth\Authenticator\Domain\LoginResult;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\AuthenticationPipeline;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Authenticator;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
 
 /**
  * @internal

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Password\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Password\Infrastructure;
 
 use Codeception\TestCase\WPTestCase;
 use Snicco\Bundle\Testing\Bundle\BundleTest;

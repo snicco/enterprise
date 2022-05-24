@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Password\Domain;
+namespace Snicco\Enterprise\AuthBundle\Password\Domain;
 
 use ParagonIE\ConstantTime\Binary;
 use ZxcvbnPhp\Zxcvbn;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\PasswordLengthExceeded;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordLength;
-use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordEntropy;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\PasswordLengthExceeded;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordLength;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordEntropy;
 
 final class PasswordPolicy
 {

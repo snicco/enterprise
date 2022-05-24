@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Application\DestroyAllSessions;
+namespace Snicco\Enterprise\AuthBundle\Session\Application\DestroyAllSessions;
 
 final class DestroyAllSessions
 {

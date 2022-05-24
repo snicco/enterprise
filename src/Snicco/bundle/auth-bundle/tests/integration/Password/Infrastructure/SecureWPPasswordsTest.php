@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\integration\Password\Infrastructure;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Password\Infrastructure;
 
 use Codeception\TestCase\WPTestCase;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
@@ -10,7 +10,7 @@ use Defuse\Crypto\Key;
 use InvalidArgumentException;
 use PasswordHash;
 use Snicco\Component\BetterWPDB\BetterWPDB;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\SecureWPPasswords;
+use Snicco\Enterprise\AuthBundle\Password\Infrastructure\SecureWPPasswords;
 use WP_User;
 
 use function class_exists;

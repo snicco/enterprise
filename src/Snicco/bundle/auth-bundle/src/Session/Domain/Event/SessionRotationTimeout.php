@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Session\Domain\Event;
+namespace Snicco\Enterprise\AuthBundle\Session\Domain\Event;
 
 use Snicco\Component\EventDispatcher\Event;
 use Snicco\Component\EventDispatcher\ClassAsName;

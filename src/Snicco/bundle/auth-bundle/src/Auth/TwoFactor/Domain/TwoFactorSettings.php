@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain;
 
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 
 interface TwoFactorSettings
 {

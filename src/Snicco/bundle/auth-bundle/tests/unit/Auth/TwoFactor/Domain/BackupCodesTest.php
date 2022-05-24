@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\unit\Auth\TwoFactor\Domain;
+namespace Snicco\Enterprise\AuthBundle\Tests\unit\Auth\TwoFactor\Domain;
 
 use Codeception\Test\Unit;
 use InvalidArgumentException;
-use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
 
 use function iterator_to_array;
 use function sprintf;
