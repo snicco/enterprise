@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
 
 use LogicException;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\No2FaSettingsFound;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
+use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 
 use function sprintf;
 

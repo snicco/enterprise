@@ -9,7 +9,7 @@ use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
-use Snicco\Enterprise\Bundle\Auth\AuthModule;
+use Snicco\Enterprise\Bundle\Auth\Module;
 use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Domain\Syslogger;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
 use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Application\Fail2BanCommandHandler;
@@ -19,7 +19,7 @@ use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\MappedEvent\WPLoginFai
 use const LOG_AUTH;
 use const LOG_PID;
 
-final class Fail2BanModule extends AuthModule
+final class Fail2BanModule extends Module
 {
     
     public function name() :string

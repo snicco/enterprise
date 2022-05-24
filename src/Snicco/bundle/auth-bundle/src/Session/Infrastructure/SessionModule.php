@@ -11,7 +11,7 @@ use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Auth\AuthModule;
+use Snicco\Enterprise\Bundle\Auth\Module;
 use Snicco\Enterprise\Bundle\Auth\Session\Domain\TimeoutConfig;
 use Snicco\Enterprise\Bundle\Auth\Session\Domain\SessionManager;
 use Snicco\Enterprise\Bundle\Auth\Session\Application\SessionCommandHandler;
@@ -24,7 +24,7 @@ use function sprintf;
 
 use const PHP_INT_MAX;
 
-final class SessionModule extends AuthModule
+final class SessionModule extends Module
 {
     
     public function name() :string

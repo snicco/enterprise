@@ -13,7 +13,7 @@ use Snicco\Component\Kernel\Configuration\ReadOnlyConfig;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\DIContainer;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Auth\AuthModule;
+use Snicco\Enterprise\Bundle\Auth\Module;
 use Snicco\Enterprise\Bundle\Auth\Password\Domain\PasswordPolicy;
 use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\MappedEvent\ResettingPassword;
 use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\MappedEvent\UpdatingUserInAdminArea;
@@ -22,7 +22,7 @@ use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Pluggable\PasswordPlug
 use const ABSPATH;
 use const WPINC;
 
-final class PasswordModule extends AuthModule
+final class PasswordModule extends Module
 {
     public function name(): string
     {

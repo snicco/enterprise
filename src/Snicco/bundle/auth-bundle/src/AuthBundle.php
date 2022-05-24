@@ -13,7 +13,7 @@ use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
-use Snicco\Enterprise\Bundle\Auth\Authentication\AuthenticationModule;
+use Snicco\Enterprise\Bundle\Auth\Auth\AuthModule;
 
 use Snicco\Enterprise\Bundle\Auth\Fail2Ban\Infrastructure\Fail2BanModule;
 use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\PasswordModule;
@@ -31,28 +31,28 @@ final class AuthBundle implements Bundle
     public const ALIAS = 'snicco/auth-bundle';
 
     /**
-     * @var array<class-string<AuthModule>>
+     * @var array<class-string<Module>>
      */
     private const MODULES = [
         SessionModule::class,
         PasswordModule::class,
         Fail2BanModule::class,
-        AuthenticationModule::class,
+        AuthModule::class,
     ];
 
     /**
-     * @var AuthModule[]
+     * @var Module[]
      */
     private array $modules;
 
     /**
-     * @var AuthModule[]|null
+     * @var Module[]|null
      */
     private ?array $enabled_modules = null;
 
     public function __construct()
     {
-        $this->modules = array_map(fn (string $class): AuthModule => new $class(), self::MODULES);
+        $this->modules = array_map(fn (string $class): Module => new $class(), self::MODULES);
     }
 
     public function shouldRun(Environment $env): bool
@@ -105,7 +105,7 @@ final class AuthBundle implements Bundle
     }
 
     /**
-     * @return AuthModule[]
+     * @return Module[]
      */
     private function enabledModules(Config $config): array
     {
@@ -114,7 +114,7 @@ final class AuthBundle implements Bundle
 
             $this->enabled_modules = array_filter(
                 $this->modules,
-                fn (AuthModule $module): bool => in_array($module->name(), $enabled, true)
+                fn (Module $module): bool => in_array($module->name(), $enabled, true)
             );
         }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Bundle\Auth\Tests\fixtures;
 
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSecretGenerator;
+use Snicco\Enterprise\Bundle\Auth\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
 
 final class HardCodedSecretGenerator implements TwoFactorSecretGenerator
 {
