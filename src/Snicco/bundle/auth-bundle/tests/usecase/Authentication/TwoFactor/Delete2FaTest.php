@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\acceptance\Authentication\TwoFactor;
+namespace Snicco\Enterprise\Bundle\Auth\Tests\usecase\Authentication\TwoFactor;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\Delete2Fa\Delete2FaSettings;

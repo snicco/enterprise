@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\acceptance\Authentication\TwoFactor;
+namespace Snicco\Enterprise\Bundle\Auth\Tests\usecase\Authentication\TwoFactor;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\InvalidOTPCode;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsNotInitialized;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\MD5OTPValidator;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;

@@ -8,10 +8,10 @@ use LogicException;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\No2FaSettingsFound;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupAlreadyCompleted;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsAlreadyInitialized;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 
 use function sprintf;
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application;
 
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\Delete2Fa\Delete2FaSettings;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\ResetBackupCodes\ResetBackupCodes;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\OTPValidator;

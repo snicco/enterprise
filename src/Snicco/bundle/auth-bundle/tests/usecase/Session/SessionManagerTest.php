@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\acceptance\Session;
+namespace Snicco\Enterprise\Bundle\Auth\Tests\usecase\Session;
 
 use RuntimeException;
 use Codeception\Test\Unit;

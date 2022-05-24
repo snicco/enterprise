@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\Bundle\Auth\Tests\acceptance\Authentication\TwoFactor;
+namespace Snicco\Enterprise\Bundle\Auth\Tests\usecase\Authentication\TwoFactor;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\MD5OTPValidator;

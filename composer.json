@@ -143,6 +143,7 @@
         ],
         "test": [
             "@test:unit",
+            "@test:usecase",
             "@test:wpunit",
             "@test:integration"
         ],
@@ -155,6 +156,9 @@
         ],
         "test:integration": [
             "vendor/bin/codecept run *::integration"
+        ],
+        "test:usecase": [
+            "vendor/bin/codecept run *::usecase"
         ],
         "test:coverage": [
             "@test:unit --coverage --coverage-xml unit-coverage.xml",

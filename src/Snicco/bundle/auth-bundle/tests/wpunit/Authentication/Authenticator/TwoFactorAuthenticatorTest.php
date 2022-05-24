@@ -8,6 +8,7 @@ use Codeception\TestCase\WPTestCase;
 use Nyholm\Psr7\ServerRequest;
 use RuntimeException;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
+use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\MD5OTPValidator;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Enterprise\Bundle\Auth\Authentication\Authenticator\TwoFactorAuthenticator;
@@ -16,7 +17,6 @@ use Snicco\Enterprise\Bundle\Auth\Authentication\RequestAttributes;
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Auth\Authentication\User\WPUserProvider;
 use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\InMemoryTwoFactorSettings;
-use Snicco\Enterprise\Bundle\Auth\Tests\fixtures\StubTwoFactorCredentialsValidator;
 use WP_User;
 
 use function iterator_to_array;
@@ -43,7 +43,7 @@ final class TwoFactorAuthenticatorTest extends WPTestCase
         $this->authenticator = new TwoFactorAuthenticator(
             $this->testable_dispatcher,
             $this->two_factor_settings = new InMemoryTwoFactorSettings([]),
-            new StubTwoFactorCredentialsValidator(),
+            new MD5OTPValidator($this->two_factor_settings),
             new WPUserProvider()
         );
         $this->base_request = new ServerRequest('POST', '/login', [], null, '1.1', [

@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Tests\unit\Password;
 
 use Codeception\Test\Unit;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Exception\InsufficientPasswordEntropy;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Exception\InsufficientPasswordLength;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Exception\PasswordLengthExceeded;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\PasswordPolicy;
+
+use Snicco\Enterprise\Bundle\Auth\Password\Domain\PasswordPolicy;
+
+use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\PasswordLengthExceeded;
+use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordLength;
+
+use Snicco\Enterprise\Bundle\Auth\Password\Domain\Exception\InsufficientPasswordEntropy;
 
 use function str_repeat;
 

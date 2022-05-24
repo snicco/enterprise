@@ -17,7 +17,7 @@ use Snicco\Enterprise\Bundle\Auth\AuthModule;
 use Snicco\Enterprise\Bundle\Auth\Password\Domain\PasswordPolicy;
 use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\MappedEvent\ResettingPassword;
 use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\MappedEvent\UpdatingUserInAdminArea;
-use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Infrastructure\Pluggable\PasswordPluggable;
+use Snicco\Enterprise\Bundle\Auth\Password\Infrastructure\Pluggable\PasswordPluggable;
 
 use const ABSPATH;
 use const WPINC;

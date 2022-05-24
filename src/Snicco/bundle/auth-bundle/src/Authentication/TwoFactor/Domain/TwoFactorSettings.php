@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain;
 
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 
 interface TwoFactorSettings
 {

@@ -40,8 +40,8 @@ final class WPUserProvider implements UserProvider
 
     public function validatePassword(string $plain_text_password, WP_User $user): void
     {
-        $res = wp_check_password($plain_text_password, $user->user_pass, $user->ID);
-        if ($res) {
+        $valid = wp_check_password($plain_text_password, $user->user_pass, $user->ID);
+        if ($valid) {
             return;
         }
 

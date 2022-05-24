@@ -14,10 +14,10 @@ use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetti
 
 use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\No2FaSettingsFound;
 
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsNotInitialized;
-use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\TwoFactorSetupIsAlreadyInitialized;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\Bundle\Auth\Authentication\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 
 use function base64_decode;
 use function base64_encode;
@@ -54,13 +54,13 @@ final class TwoFactorSettingsBetterWPDB implements TwoFactorSettings
     {
         $this->db->unprepared(
             "CREATE TABLE IF NOT EXISTS `{$this->table_name}` (
-	`id` integer(11) NOT NULL AUTO_INCREMENT,
-	`user_id` integer(11) unsigned NOT NULL UNIQUE,
-    `completed` tinyint DEFAULT 0,
-    `pending` tinyint DEFAULT 1,
-    `secret` varchar(360),
-    `last_used` datetime DEFAULT NULL,
-    `backup_codes` text,
+	`id` INTEGER(11) NOT NULL AUTO_INCREMENT,
+	`user_id` INTEGER(11) unsigned NOT NULL UNIQUE,
+    `completed` TINYINT DEFAULT 0,
+    `pending` TINYINT DEFAULT 1,
+    `secret` VARCHAR(360),
+    `last_used` INTEGER(11) UNSIGNED DEFAULT NULL,
+    `backup_codes` TEXT,
 	PRIMARY KEY (`id`)
 
 );"
