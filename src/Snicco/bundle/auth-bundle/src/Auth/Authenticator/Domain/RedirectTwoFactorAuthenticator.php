@@ -7,19 +7,13 @@ namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Component\HttpRouting\Http\Psr7\ResponseFactory;
 use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
-use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeService;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
 use WP_User;
-use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Authenticator;
 
 final class RedirectTwoFactorAuthenticator extends Authenticator
 {
-    /**
-     * @var string
-     */
-    public const CHALLENGED_USER_ID_HEADER = '_challenged_user';
-
-    private string $route_name_2fa;
+    private string $route_name;
 
     private ResponseFactory $response_factory;
 
@@ -27,41 +21,52 @@ final class RedirectTwoFactorAuthenticator extends Authenticator
 
     private TwoFactorSettings $two_2fa_settings;
 
+    private TwoFactorChallengeService $challenge_service;
+
     public function __construct(
         TwoFactorSettings $two_2fa_settings,
+        TwoFactorChallengeService $challenge_service,
         ResponseFactory $response_factory,
         UrlGenerator $url_generator,
         string $route_name_2fa
     ) {
-        $this->route_name_2fa = $route_name_2fa;
+        $this->route_name = $route_name_2fa;
         $this->response_factory = $response_factory;
         $this->url_generator = $url_generator;
         $this->two_2fa_settings = $two_2fa_settings;
+        $this->challenge_service = $challenge_service;
     }
 
     public function attempt(Request $request, callable $next): LoginResult
     {
         $result = $next($request);
 
-        if (! $result->isSuccess()) {
+        if (! $result->isAuthenticated()) {
             return $result;
         }
 
         $user = $result->authenticatedUser();
 
         if ($this->two_2fa_settings->isSetupCompleteForUser($user->ID)) {
-            return $this->redirectTo2FaForm($user);
+            return $this->redirectToChallenge($user, $result->rememberUser());
         }
 
         return $result;
     }
 
-    private function redirectTo2FaForm(WP_User $user): LoginResult
+    private function redirectToChallenge(WP_User $user, ?bool $remember_user): LoginResult
     {
-        $url = $this->url_generator->toRoute($this->route_name_2fa);
+        $token = $this->challenge_service->createChallenge($user->ID);
 
-        $response = $this->response_factory->redirect($url)
-            ->withHeader(self::CHALLENGED_USER_ID_HEADER, (string) $user->ID);
+        $challenge_url = $this->url_generator->toRoute(
+            $this->route_name,
+            [
+                TwoFactorAuthenticator::CHALLENGE_ID => $token,
+                'remember_me' => (int) $remember_user,
+            ]
+        );
+
+        $response = $this->response_factory->redirect($challenge_url);
 
         return new LoginResult(null, null, $response);
     }

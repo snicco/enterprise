@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
-use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
 
 abstract class Authenticator
 {

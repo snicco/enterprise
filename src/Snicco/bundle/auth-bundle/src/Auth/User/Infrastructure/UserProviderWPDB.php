@@ -2,29 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\AuthBundle\Auth\User;
+namespace Snicco\Enterprise\AuthBundle\Auth\User\Infrastructure;
+
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\InvalidPassword;
+
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\PasswordAuthenticationUserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserNotFound;
 
 use WP_User;
-
-use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserNotFound;
-use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserProvider;
-use Snicco\Enterprise\AuthBundle\Auth\User\Domain\InvalidPassword;
 
 use function get_user_by;
 use function sprintf;
 use function wp_check_password;
 
-final class WPUserProvider implements UserProvider
+final class UserProviderWPDB implements PasswordAuthenticationUserProvider
 {
     public function getUserByIdentifier(string $identifier): WP_User
     {
-        $user = get_user_by('email', $identifier);
+        $user = get_user_by('login', $identifier);
 
         if ($user instanceof WP_User) {
             return $user;
         }
 
-        $user = get_user_by('login', $identifier);
+        $user = get_user_by('email', $identifier);
 
         if ($user instanceof WP_User) {
             return $user;

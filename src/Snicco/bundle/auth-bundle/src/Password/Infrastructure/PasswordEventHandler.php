@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\AuthBundle\Password\Infrastructure;
 
 use Snicco\Component\EventDispatcher\EventSubscriber;
-use Snicco\Enterprise\AuthBundle\Password\Domain\PasswordPolicy;
-use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\PasswordLengthExceeded;
-use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordLength;
-use Snicco\Enterprise\AuthBundle\Password\Infrastructure\MappedEvent\ResettingPassword;
 use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordEntropy;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\InsufficientPasswordLength;
+use Snicco\Enterprise\AuthBundle\Password\Domain\Exception\PasswordLengthExceeded;
+use Snicco\Enterprise\AuthBundle\Password\Domain\PasswordPolicy;
+use Snicco\Enterprise\AuthBundle\Password\Infrastructure\MappedEvent\ResettingPassword;
 use Snicco\Enterprise\AuthBundle\Password\Infrastructure\MappedEvent\UpdatingUserInAdminArea;
 use WP_User;
 
@@ -24,9 +24,9 @@ final class PasswordEventHandler implements EventSubscriber
      * @var string[]
      */
     private array $excluded_roles;
-    
+
     private PasswordPolicy $policy;
-    
+
     /**
      * @param string[] $excluded_roles
      */
@@ -77,7 +77,6 @@ final class PasswordEventHandler implements EventSubscriber
         if (isset($_POST['email']) && is_string($_POST['email'])) {
             $context[] = $_POST['email'];
         }
-
 
         try {
             $this->policy->check($new_password, $context);

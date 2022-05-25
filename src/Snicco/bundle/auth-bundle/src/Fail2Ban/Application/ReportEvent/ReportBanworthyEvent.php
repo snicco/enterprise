@@ -9,15 +9,16 @@ namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Application\ReportEvent;
  */
 final class ReportBanworthyEvent
 {
-    
     public string $message;
+
     public int $priority;
+
     public string $ip_address;
-    
-    public function __construct(string $message, int $priority, string $ip_address) {
+
+    public function __construct(string $message, int $priority, string $ip_address)
+    {
         $this->message = $message;
         $this->priority = $priority;
         $this->ip_address = $ip_address;
     }
-    
 }

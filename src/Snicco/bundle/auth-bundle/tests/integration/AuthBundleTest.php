@@ -7,8 +7,8 @@ namespace Snicco\Enterprise\AuthBundle\Tests\integration;
 use Codeception\TestCase\WPTestCase;
 use RuntimeException;
 use Snicco\Bundle\BetterWPDB\BetterWPDBBundle;
-use Snicco\Bundle\HttpRouting\HttpRoutingBundle;
 use Snicco\Bundle\BetterWPHooks\BetterWPHooksBundle;
+use Snicco\Bundle\HttpRouting\HttpRoutingBundle;
 use Snicco\Bundle\Testing\Bundle\BundleTestHelpers;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
@@ -24,11 +24,6 @@ use function dirname;
 final class AuthBundleTest extends WPTestCase
 {
     use BundleTestHelpers;
-
-    /**
-     * @var string
-     */
-    private const TABLE_NAME = 'wp_snicco_auth_sessions';
 
     /**
      * @test
@@ -47,7 +42,7 @@ final class AuthBundleTest extends WPTestCase
                     AuthBundle::class,
                     BetterWPHooksBundle::class,
                     BetterWPDBBundle::class,
-                    ApplicationLayerBundle::class
+                    ApplicationLayerBundle::class,
                 ],
             ]);
         });
@@ -57,7 +52,7 @@ final class AuthBundleTest extends WPTestCase
 
         $kernel->boot();
     }
-    
+
     /**
      * @test
      */
@@ -68,24 +63,24 @@ final class AuthBundleTest extends WPTestCase
             Environment::testing(),
             $this->directories
         );
-        
+
         $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
             $config->set('kernel.bundles', [
                 Environment::ALL => [
                     AuthBundle::class,
                     BetterWPHooksBundle::class,
                     BetterWPDBBundle::class,
-                    HttpRoutingBundle::class
+                    HttpRoutingBundle::class,
                 ],
             ]);
         });
-        
+
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('snicco/application-layer-bundle');
-        
+
         $kernel->boot();
     }
-    
+
     /**
      * @test
      */
@@ -101,7 +96,7 @@ final class AuthBundleTest extends WPTestCase
 
         $this->assertTrue($kernel->usesBundle('snicco/auth-bundle'));
     }
-    
+
     protected function fixturesDir(): string
     {
         return dirname(__DIR__) . '/fixtures/test-app';

@@ -29,7 +29,7 @@ final class AuthenticationPipelineTest extends Unit
 
         $request = Request::fromPsr(new ServerRequest('POST', '/login'));
         $res = $pipeline->attempt($request);
-        $this->assertFalse($res->isSuccess());
+        $this->assertFalse($res->isAuthenticated());
         $this->assertNull($res->response());
 
         $pipeline = new AuthenticationPipeline([
@@ -41,7 +41,7 @@ final class AuthenticationPipelineTest extends Unit
             'custom_response' => true,
         ]));
 
-        $this->assertFalse($res->isSuccess());
+        $this->assertFalse($res->isAuthenticated());
         $this->assertNotNull($res->response());
     }
 }

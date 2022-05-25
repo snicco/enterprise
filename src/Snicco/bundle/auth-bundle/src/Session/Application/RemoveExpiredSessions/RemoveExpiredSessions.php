@@ -6,5 +6,4 @@ namespace Snicco\Enterprise\AuthBundle\Session\Application\RemoveExpiredSessions
 
 final class RemoveExpiredSessions
 {
-    
 }

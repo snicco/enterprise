@@ -10,9 +10,9 @@ use RuntimeException;
 use Snicco\Component\EventDispatcher\BaseEventDispatcher;
 use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Event\FailedPasswordAuthentication;
 use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\PasswordAuthenticator;
-use Snicco\Enterprise\AuthBundle\Auth\Event\FailedPasswordAuthentication;
-use Snicco\Enterprise\AuthBundle\Auth\User\WPUserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\User\Infrastructure\UserProviderWPDB;
 use WP_User;
 use function sprintf;
 
@@ -35,7 +35,7 @@ final class PasswordAuthenticatorTest extends WPTestCase
     {
         parent::setUp();
         $this->testable_dispatcher = new TestableEventDispatcher(new BaseEventDispatcher());
-        $this->password_authenticator = new PasswordAuthenticator($this->testable_dispatcher, new WPUserProvider());
+        $this->password_authenticator = new PasswordAuthenticator($this->testable_dispatcher, new UserProviderWPDB());
         $this->base_request = new ServerRequest('POST', '/login', [], null, '1.1', [
             'REQUEST_METHOD' => 'POST',
         ]);
@@ -107,7 +107,7 @@ final class PasswordAuthenticatorTest extends WPTestCase
             throw new RuntimeException('User should have been authenticated.');
         });
 
-        $this->assertFalse($result->isSuccess());
+        $this->assertFalse($result->isAuthenticated());
 
         $this->testable_dispatcher->assertDispatched(function (FailedPasswordAuthentication $event): bool {
             $user = $this->default_user->user_login . 'bogus';
@@ -131,7 +131,7 @@ final class PasswordAuthenticatorTest extends WPTestCase
             throw new RuntimeException('User should have been authenticated.');
         });
 
-        $this->assertFalse($result->isSuccess());
+        $this->assertFalse($result->isAuthenticated());
 
         $this->testable_dispatcher->assertDispatched(function (FailedPasswordAuthentication $event): bool {
             $user = $this->default_user->user_login;
@@ -155,7 +155,7 @@ final class PasswordAuthenticatorTest extends WPTestCase
             throw new RuntimeException('User should have been authenticated.');
         });
 
-        $this->assertTrue($result->isSuccess());
+        $this->assertTrue($result->isAuthenticated());
         $this->assertEquals($this->default_user, $result->authenticatedUser());
         $this->assertNull($result->rememberUser());
     }
@@ -176,7 +176,7 @@ final class PasswordAuthenticatorTest extends WPTestCase
             throw new RuntimeException('User should have been authenticated.');
         });
 
-        $this->assertTrue($result->isSuccess());
+        $this->assertTrue($result->isAuthenticated());
         $this->assertEquals($this->default_user, $result->authenticatedUser());
         $this->assertTrue($result->rememberUser());
         $this->assertNull($result->response());
@@ -198,7 +198,7 @@ final class PasswordAuthenticatorTest extends WPTestCase
             throw new RuntimeException('User should have been authenticated.');
         });
 
-        $this->assertTrue($result->isSuccess());
+        $this->assertTrue($result->isAuthenticated());
         $this->assertEquals($this->default_user, $result->authenticatedUser());
         $this->assertFalse($result->rememberUser());
         $this->assertNull($result->response());

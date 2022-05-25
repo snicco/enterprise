@@ -7,8 +7,8 @@ namespace Snicco\Enterprise\AuthBundle\Tests\usecase\Auth\TwoFactor;
 use Codeception\Test\Unit;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Delete2Fa\Delete2FaSettings;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\TwoFactorCommandHandler;
-use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
 use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
 
 /**
  * @internal

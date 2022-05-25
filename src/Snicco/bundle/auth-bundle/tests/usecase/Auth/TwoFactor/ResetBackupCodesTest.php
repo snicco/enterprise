@@ -9,8 +9,8 @@ use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\ResetBackupCodes\Res
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
-use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
 use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
 
 /**
  * @internal

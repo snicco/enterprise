@@ -5,52 +5,49 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\AuthBundle\Session\Infrastructure;
 
 use RuntimeException;
-use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\BetterWPDB\BetterWPDB;
-use Snicco\Component\TestableClock\SystemClock;
-use Snicco\Enterprise\AuthBundle\Session\Domain\SessionRepository;
-use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
 use Snicco\Component\BetterWPDB\Exception\NoMatchingRowFound;
+use Snicco\Component\TestableClock\Clock;
+use Snicco\Component\TestableClock\SystemClock;
+use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
 use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionRepository;
 
-use function time;
-use function sprintf;
+use function base64_decode;
+use function base64_encode;
+use function gettype;
 use function is_array;
 use function serialize;
-use function array_map;
+use function sprintf;
 use function unserialize;
-use function array_values;
-use function base64_encode;
-use function base64_decode;
 
 final class SessionRepositoryBetterWPDB implements SessionRepository
 {
-    
     private BetterWPDB $db;
-    
+
     /**
      * @var non-empty-string
      */
     private string $table_name;
-    
+
     /**
      * @var array<string,AuthSession>
      */
     private array $session_cache = [];
-    
+
     private Clock $clock;
-    
+
     /**
-     * @param  non-empty-string  $table_name
+     * @param non-empty-string $table_name
      */
     public function __construct(BetterWPDB $db, string $table_name, Clock $clock = null)
     {
         $this->db = $db;
         $this->table_name = $table_name;
-        $this->clock = $clock ? : SystemClock::fromUTC();
+        $this->clock = $clock ?: SystemClock::fromUTC();
     }
-    
-    public static function createTable(BetterWPDB $db, string $table_name) :void
+
+    public static function createTable(BetterWPDB $db, string $table_name): void
     {
         $db->unprepared(
             "CREATE TABLE IF NOT EXISTS `{$table_name}`  (
@@ -69,14 +66,14 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
         );"
         );
     }
-    
-    public function save(AuthSession $session) :void
+
+    public function save(AuthSession $session): void
     {
         $data = $session->data();
         $hashed_token = $session->hashedToken();
-        
+
         $payload = $this->encodePayload($data);
-        
+
         if ($this->exists($hashed_token)) {
             $this->db->update($this->table_name, [
                 'hashed_token' => $hashed_token,
@@ -85,53 +82,56 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
                 'last_activity' => $this->clock->currentTimestamp(),
             ]);
             unset($this->session_cache[$hashed_token]);
+
             return;
         }
+
         $this->db->insert($this->table_name, [
             'hashed_token' => $hashed_token,
             'user_id' => $session->userId(),
             'payload' => $payload,
             'expires_at' => $session->expiresAt(),
         ]);
-        
+
         $this->session_cache[$session->hashedToken()] = $session;
     }
-    
-    public function delete(string $hashed_token) :void
+
+    public function delete(string $hashed_token): void
     {
         unset($this->session_cache[$hashed_token]);
-        
+
         $affected = $this->db->delete($this->table_name, [
             'hashed_token' => $hashed_token,
         ]);
-        
+
         if (0 === $affected) {
             throw InvalidSessionToken::forToken($hashed_token);
         }
     }
-    
-    public function getSession(string $hashed_token) :AuthSession
+
+    public function getSession(string $hashed_token): AuthSession
     {
-        if ( ! isset($this->session_cache[$hashed_token])) {
+        if (! isset($this->session_cache[$hashed_token])) {
             try {
                 $session = $this->querySession($hashed_token);
                 $this->session_cache[$hashed_token] = $session;
+
                 return $session;
             } catch (NoMatchingRowFound $e) {
                 throw InvalidSessionToken::forToken($hashed_token);
             }
         }
-        
+
         $cached_session = $this->session_cache[$hashed_token];
-        
+
         if ($this->isExpired($cached_session)) {
             throw InvalidSessionToken::forToken($hashed_token);
         }
-        
+
         return $cached_session;
     }
-    
-    public function getAllForUser(int $user_id) :array
+
+    public function getAllForUser(int $user_id): array
     {
         /** @var non-empty-string $sql */
         $sql = sprintf(
@@ -141,7 +141,7 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
                     and `expires_at` >= ?',
             $this->table_name
         );
-        
+
         /**
          * @var array<array{
          *     payload:string,
@@ -153,9 +153,9 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
          * }> $rows
          */
         $rows = $this->db->selectAll($sql, [$user_id, $this->clock->currentTimestamp()]);
-        
+
         $sessions = [];
-        
+
         foreach ($rows as $row) {
             $session = new AuthSession(
                 $row['hashed_token'],
@@ -172,47 +172,47 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
             ];
             $this->session_cache[$session->hashedToken()] = $session;
         }
-        
+
         return $sessions;
     }
-    
-    public function destroyOtherSessionsForUser(int $user_id, string $hashed_token_to_keep) :void
+
+    public function destroyOtherSessionsForUser(int $user_id, string $hashed_token_to_keep): void
     {
         /** @var non-empty-string $sql */
         $sql = sprintf('delete from `%s` where `user_id` = ? and `hashed_token` != ? ', $this->table_name);
-        
+
         $this->db->preparedQuery(
             $sql,
             [$user_id, $hashed_token_to_keep]
         );
-        
+
         $this->session_cache = [];
     }
-    
-    public function destroyAllSessionsForUser(int $user_id) :void
+
+    public function destroyAllSessionsForUser(int $user_id): void
     {
         $this->db->delete($this->table_name, [
             'user_id' => $user_id,
         ]);
         $this->session_cache = [];
     }
-    
-    public function destroyAll() :void
+
+    public function destroyAll(): void
     {
         /** @var non-empty-string $sql */
         $sql = sprintf('DELETE FROM `%s`', $this->table_name);
-        
+
         $this->db->unprepared($sql);
-        
+
         $this->session_cache = [];
     }
-    
-    public function updateActivity(string $hashed_token) :void
+
+    public function updateActivity(string $hashed_token): void
     {
-        if(!$this->exists($hashed_token)){
+        if (! $this->exists($hashed_token)) {
             throw InvalidSessionToken::forToken($hashed_token);
         }
-        
+
         $this->db->update(
             $this->table_name,
             [
@@ -222,17 +222,17 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
                 'last_activity' => $this->clock->currentTimestamp(),
             ]
         );
-        
+
         unset($this->session_cache[$hashed_token]);
     }
-    
-    public function rotateToken(string $hashed_token_old, string $hashed_token_new, int $current_timestamp) :void
+
+    public function rotateToken(string $hashed_token_old, string $hashed_token_new, int $current_timestamp): void
     {
-        if(!$this->exists($hashed_token_old)){
+        if (! $this->exists($hashed_token_old)) {
             throw InvalidSessionToken::forToken($hashed_token_old);
         }
-        
-       $this->db->update(
+
+        $this->db->update(
             $this->table_name,
             [
                 'hashed_token' => $hashed_token_old,
@@ -242,40 +242,40 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
                 'hashed_token' => $hashed_token_new,
             ]
         );
-        
+
         unset($this->session_cache[$hashed_token_old]);
     }
-    
-    public function gc() :void
+
+    public function gc(): void
     {
         /** @var non-empty-string $sql */
         $sql = sprintf('delete from `%s` where `expires_at` < ?', $this->table_name);
-    
+
         $this->db->preparedQuery(
             $sql,
             [$this->clock->currentTimestamp()]
         );
-    
+
         $this->session_cache = [];
     }
-    
-    private function exists(string $hashed_token) :bool
+
+    private function exists(string $hashed_token): bool
     {
         return $this->db->exists($this->table_name, [
             'hashed_token' => $hashed_token,
         ]);
     }
-    
-    private function encodePayload(array $session) :string
+
+    private function encodePayload(array $session): string
     {
         return base64_encode(serialize($session));
     }
-    
-    private function decodePayload(string $payload) :array
+
+    private function decodePayload(string $payload): array
     {
-        $decoded = @unserialize((string)base64_decode($payload, true));
-        
-        if ( ! is_array($decoded)) {
+        $decoded = @unserialize((string) base64_decode($payload, true));
+
+        if (! is_array($decoded)) {
             throw new RuntimeException(
                 sprintf(
                     "Session payload is corrupted.\nPayload value should be an array.\nGot: %s",
@@ -283,14 +283,14 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
                 )
             );
         }
-        
+
         return $decoded;
     }
-    
+
     /**
      * @throws NoMatchingRowFound
      */
-    private function querySession(string $hashed_token) :AuthSession
+    private function querySession(string $hashed_token): AuthSession
     {
         /** @var array{payload:string, last_activity: int, last_rotation: int, user_id: int, expires_at: int} $row */
         $row = $this->db->selectRow(
@@ -301,9 +301,9 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
                      ",
             [$this->clock->currentTimestamp(), $hashed_token]
         );
-        
+
         $data = $this->decodePayload($row['payload']);
-        
+
         return new AuthSession(
             $hashed_token,
             $row['user_id'],
@@ -312,10 +312,9 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
             $data,
         );
     }
-    
-    private function isExpired(AuthSession $session) :bool
+
+    private function isExpired(AuthSession $session): bool
     {
         return $session->expiresAt() < $this->clock->currentTimestamp();
     }
-    
 }

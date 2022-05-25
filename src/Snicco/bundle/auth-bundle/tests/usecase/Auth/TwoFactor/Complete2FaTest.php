@@ -6,12 +6,12 @@ namespace Snicco\Enterprise\AuthBundle\Tests\usecase\Auth\TwoFactor;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\TwoFactorCommandHandler;
-use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
 
 use function md5;
 
@@ -25,17 +25,23 @@ final class Complete2FaTest extends Unit
     private InMemoryTwoFactorSettings $settings;
 
     private string $valid_otp_code;
-    
+
     private string $invalid_otp;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->valid_otp_code = '123456';
         $this->invalid_otp = '654321';
         $this->settings = new InMemoryTwoFactorSettings([
-            1 => ['secret' => md5($this->valid_otp_code), 'complete' => false],
-            2 => ['secret' => md5($this->valid_otp_code), 'complete' => true]
+            1 => [
+                'secret' => md5($this->valid_otp_code),
+                'complete' => false,
+            ],
+            2 => [
+                'secret' => md5($this->valid_otp_code),
+                'complete' => true,
+            ],
         ]);
         $this->handler = new TwoFactorCommandHandler(
             $this->settings,

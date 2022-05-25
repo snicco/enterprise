@@ -43,7 +43,7 @@ final class SessionActivityRecorded implements MappedHook
         $this->user_id = $user->ID;
         $this->timestamp = time();
     }
-    
+
     public function shouldDispatch(): bool
     {
         if (! wp_doing_ajax()) {

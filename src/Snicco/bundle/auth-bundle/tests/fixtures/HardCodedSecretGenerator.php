@@ -15,7 +15,7 @@ final class HardCodedSecretGenerator implements TwoFactorSecretGenerator
         $this->secret = $secret;
     }
 
-    public function create(): string
+    public function generate(): string
     {
         return $this->secret;
     }

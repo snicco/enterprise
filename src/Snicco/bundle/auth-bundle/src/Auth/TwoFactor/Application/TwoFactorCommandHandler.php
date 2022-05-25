@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application;
 
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Delete2Fa\Delete2FaSettings;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\ResetBackupCodes\ResetBackupCodes;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\OTPValidator;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
 
@@ -52,7 +52,7 @@ final class TwoFactorCommandHandler
         }
 
         $otp_code = $command->otp_code;
-    
+
         $this->validator->validate($otp_code, $user_id);
 
         $this->two_factor_settings->completeSetup($command->user_id);

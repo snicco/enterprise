@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\AuthBundle\Session\Infrastructure;
 
-use WP_Session_Tokens;
 use Snicco\Enterprise\AuthBundle\Session\Domain\AuthSession;
-use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
 use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
+use Snicco\Enterprise\AuthBundle\Session\Domain\SessionManager;
+use WP_Session_Tokens;
 
 use function array_map;
 
@@ -39,7 +39,8 @@ final class WPAuthSessionTokens extends WP_Session_Tokens
     protected function get_sessions(): array
     {
         return array_map(
-            fn(array $session) => $session['data'], self::$session_manager->getAllForUser($this->user_id)
+            fn (array $session) => $session['data'],
+            self::$session_manager->getAllForUser($this->user_id)
         );
     }
 
@@ -57,6 +58,7 @@ final class WPAuthSessionTokens extends WP_Session_Tokens
     {
         if (null === $session) {
             self::$session_manager->delete($verifier);
+
             return;
         }
 

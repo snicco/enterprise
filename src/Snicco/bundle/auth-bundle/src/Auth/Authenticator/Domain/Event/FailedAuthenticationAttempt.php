@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\AuthBundle\Auth\Event;
+namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Event;
 
 use Snicco\Component\BetterWPHooks\EventMapping\ExposeToWP;
 use Snicco\Component\EventDispatcher\ClassAsName;
@@ -29,7 +29,7 @@ abstract class FailedAuthenticationAttempt implements Event, ExposeToWP, Banwort
         return LOG_WARNING;
     }
 
-    public function ip():?string
+    public function ip(): ?string
     {
         return $this->ip;
     }

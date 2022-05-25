@@ -11,3 +11,10 @@
 - Redirect all GET requests to wp-login.php
 - Optionally disable all POST requests to wp-login.php (expect)
 - Disable pw resets if configured
+
+### View responses in the bundle
+
+Return only a view object for READ requests
+
+All other endpoints should return json only.
+

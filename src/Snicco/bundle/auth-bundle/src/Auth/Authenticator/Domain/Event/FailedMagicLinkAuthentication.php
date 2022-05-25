@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\AuthBundle\Auth\Event;
+namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Event;
 
 use function sprintf;
 
-final class FailedTwoFactorAuthentication extends FailedAuthenticationAttempt
+final class FailedMagicLinkAuthentication extends FailedAuthenticationAttempt
 {
     private string $user_id;
 
@@ -18,6 +18,6 @@ final class FailedTwoFactorAuthentication extends FailedAuthenticationAttempt
 
     public function message(): string
     {
-        return sprintf('Failed two-factor authentication for user [%s]', $this->user_id);
+        return sprintf('Failed authentication with magic link for user [%s]', $this->user_id);
     }
 }

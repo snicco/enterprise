@@ -7,11 +7,13 @@ namespace Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain;
 use Closure;
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 
-use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\LoginResult;
-use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\Authenticator;
-
 use function array_pop;
 
+/**
+ * @internal
+ *
+ * @psalm-internal Snicco\Enterprise\AuthBundle
+ */
 final class AuthenticationPipeline
 {
     /**

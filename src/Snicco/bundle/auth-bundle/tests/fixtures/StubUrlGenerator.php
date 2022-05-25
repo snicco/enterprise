@@ -8,6 +8,9 @@ use BadMethodCallException;
 use Snicco\Component\HttpRouting\Routing\Exception\RouteNotFound;
 use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
 
+use function rtrim;
+use function sprintf;
+
 final class StubUrlGenerator implements UrlGenerator
 {
     /**
@@ -42,7 +45,19 @@ final class StubUrlGenerator implements UrlGenerator
             throw RouteNotFound::name($name);
         }
 
-        return $this->routes[$name];
+        $route = $this->routes[$name];
+
+        if (empty($arguments)) {
+            return $route;
+        }
+
+        $route .= '?';
+
+        foreach ($arguments as $key => $value) {
+            $route .= sprintf('%s=%s&', $key, $value);
+        }
+
+        return rtrim($route, '&');
     }
 
     public function toLogin(array $arguments = [], int $type = self::ABSOLUTE_PATH): string

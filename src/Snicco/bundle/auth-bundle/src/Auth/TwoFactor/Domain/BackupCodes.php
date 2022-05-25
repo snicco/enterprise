@@ -12,7 +12,6 @@ use RuntimeException;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidBackupCode;
 
 use function array_map;
-use function array_values;
 use function base64_encode;
 use function explode;
 use function is_string;
@@ -102,7 +101,7 @@ final class BackupCodes implements IteratorAggregate
     {
         return new ArrayIterator($this->hashed_codes);
     }
-    
+
     /**
      * @throws InvalidBackupCode
      */

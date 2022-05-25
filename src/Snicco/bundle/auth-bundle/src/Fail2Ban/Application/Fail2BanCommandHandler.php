@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\AuthBundle\Fail2Ban\Application;
 
-use Snicco\Enterprise\AuthBundle\Fail2Ban\Domain\Syslogger;
 use Snicco\Enterprise\AuthBundle\Fail2Ban\Application\ReportEvent\ReportBanworthyEvent;
+use Snicco\Enterprise\AuthBundle\Fail2Ban\Domain\Syslogger;
 
 use function sprintf;
 
@@ -27,16 +27,16 @@ final class Fail2BanCommandHandler
         $this->config = $config;
     }
 
-    public function __invoke(ReportBanworthyEvent $command) :void
+    public function __invoke(ReportBanworthyEvent $command): void
     {
         $this->syslogger->open(
             $this->config['daemon'],
             $this->config['flags'],
             $this->config['facility']
         );
-    
+
         $this->syslogger->log($command->priority, $this->formatMessage($command));
-    
+
         $this->syslogger->close();
     }
 

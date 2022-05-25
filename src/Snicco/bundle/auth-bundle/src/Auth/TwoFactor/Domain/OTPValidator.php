@@ -8,7 +8,6 @@ use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
 
 interface OTPValidator
 {
-    
     /**
      * @throws InvalidOTPCode
      */

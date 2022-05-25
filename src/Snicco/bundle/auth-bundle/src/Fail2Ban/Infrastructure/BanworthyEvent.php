@@ -9,9 +9,9 @@ interface BanworthyEvent
     public function priority(): int;
 
     public function message(): string;
-    
+
     /**
      * @return non-empty-string|null
      */
-    public function ip():?string;
+    public function ip(): ?string;
 }

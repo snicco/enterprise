@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain;
 
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 
 interface TwoFactorSettings
 {
     public function isSetupCompleteForUser(int $user_id): bool;
 
     public function isSetupPendingForUser(int $user_id): bool;
-    
+
     /**
      * @param non-empty-string $secret_key
      *
@@ -28,16 +27,16 @@ interface TwoFactorSettings
      * @throws TwoFactorSetupIsNotInitialized
      */
     public function completeSetup(int $user_id): void;
-    
+
     /**
      * @throws No2FaSettingsFound
      */
     public function delete(int $user_id): void;
-    
+
     /**
-     * @return non-empty-string
-     *
      * @throws No2FaSettingsFound
+     *
+     * @return non-empty-string
      */
     public function getSecretKey(int $user_id): string;
 

@@ -6,11 +6,11 @@ namespace Snicco\Enterprise\AuthBundle\Tests\usecase\Auth\TwoFactor;
 
 use Codeception\Test\Unit;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemoryTwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Tests\fixtures\MD5OTPValidator;
 
 /**
  * @internal

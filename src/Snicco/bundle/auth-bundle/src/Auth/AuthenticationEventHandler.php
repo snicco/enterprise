@@ -4,33 +4,39 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\AuthBundle\Auth;
 
-use Snicco\Component\EventDispatcher\EventSubscriber;
 use Snicco\Component\EventDispatcher\EventDispatcher;
-use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
+use Snicco\Component\EventDispatcher\EventSubscriber;
 use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate;
+use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
 use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate2FaChallengeRedirect;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeService;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\TwoFactorAuthenticator;
 
+use function is_string;
 use function wp_safe_redirect;
 
 final class AuthenticationEventHandler implements EventSubscriber
 {
+    
     private TwoFactorSettings $two_factor_settings;
-    private TwoFactorChallengeGenerator $generate_challenge;
+    
+    private TwoFactorChallengeService $challenge_service;
+    
     private EventDispatcher $event_dispatcher;
+    
     private UrlGenerator $url_generator;
     
     public function __construct(
         TwoFactorSettings $two_factor_settings,
-        TwoFactorChallengeGenerator $challenges,
+        TwoFactorChallengeService $challenge_service,
         EventDispatcher $event_dispatcher,
         UrlGenerator $url_generator
     ) {
         $this->two_factor_settings = $two_factor_settings;
         $this->event_dispatcher = $event_dispatcher;
         $this->url_generator = $url_generator;
-        $this->generate_challenge = $challenges;
+        $this->challenge_service = $challenge_service;
     }
     
     public static function subscribedEvents() :array
@@ -40,6 +46,9 @@ final class AuthenticationEventHandler implements EventSubscriber
         ];
     }
     
+    /**
+     * @todo Browser test
+     */
     public function onWPAuthenticate(WPAuthenticate $event) :void
     {
         $user = $event->user();
@@ -48,20 +57,35 @@ final class AuthenticationEventHandler implements EventSubscriber
             return;
         }
         
-        $token = $this->generate_challenge->urlToken($user->ID);
+        $challenge_id = $this->challenge_service->createChallenge($user->ID);
         
-        $redirect_url = $this->url_generator->toRoute(
-            'snicco_auth.2fa.challenge', ['token' => $token]
+        $args = [
+            TwoFactorAuthenticator::CHALLENGE_ID => $challenge_id,
+        ];
+        
+        if (isset($_REQUEST['redirect_to']) && is_string($_REQUEST['redirect_to'])) {
+            $args['redirect_to'] = $_REQUEST['redirect_to'];
+        } elseif (isset($_SERVER['HTTP_REFERER']) && is_string($_SERVER['HTTP_REFERER'])) {
+            $args['redirect_to'] = $_SERVER['HTTP_REFERER'];
+        }
+        
+        if(isset($_REQUEST['remember_me']) || isset($_REQUEST['rememberme']) || isset($_REQUEST['remember'])) {
+            $args['remember_me'] = 1;
+        }
+        
+        $redirect_url = $this->url_generator->toRoute('snicco_auth.2fa.challenge', $args);
+        
+        $event = $this->event_dispatcher->dispatch(
+            new WPAuthenticate2FaChallengeRedirect(
+                $user,
+                $redirect_url
+            )
         );
         
-        $event = $this->event_dispatcher->dispatch(new WPAuthenticate2FaChallengeRedirect(
-            $user,
-            $redirect_url
-        ));
-        
-        if(false === $event->do_shutdown) {
+        if ( ! $event->do_shutdown) {
             return;
         }
+        
         // @codeCoverageIgnoreStart
         wp_safe_redirect($redirect_url);
         

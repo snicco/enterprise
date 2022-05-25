@@ -31,7 +31,7 @@ final class AuthCookieBadHash implements MappedHook, BanworthyEvent
         return 'Tampered auth cookie provided';
     }
 
-    public function ip():?string
+    public function ip(): ?string
     {
         return null;
     }

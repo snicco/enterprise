@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\AuthBundle\Tests\fixtures;
 
-use LogicException;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
-
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 
-use function sprintf;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
 
 final class InMemoryTwoFactorSettings implements TwoFactorSettings
 {
@@ -33,16 +30,16 @@ final class InMemoryTwoFactorSettings implements TwoFactorSettings
     }
 
     /**
-     * @param positive-int                         $user_id
+     * @param positive-int                                          $user_id
      * @param array{secret:string, last_used?:int, complete?: bool} $settings
      */
     public function add(int $user_id, array $settings): void
     {
         $is_complete = $settings['complete'] ?? true;
-        
+
         $this->user_settings[$user_id] = [
             'is_complete' => $is_complete,
-            'is_pending' => !$is_complete,
+            'is_pending' => ! $is_complete,
             'secret_key' => $settings['secret'],
             'last_used' => $settings['last_used'] ?? null,
             'backup_codes' => BackupCodes::fromPlainCodes(),
@@ -72,22 +69,22 @@ final class InMemoryTwoFactorSettings implements TwoFactorSettings
     public function initiateSetup(int $user_id, string $secret_key, BackupCodes $backup_codes): void
     {
         $current = $this->user_settings[$user_id] ?? null;
-        
-        if(null === $current) {
+
+        if (null === $current) {
             $this->user_settings[$user_id] = [
                 'secret_key' => $secret_key,
                 'is_pending' => true,
                 'is_complete' => false,
                 'backup_codes' => $backup_codes,
             ];
+
             return;
         }
-        
-        if($current['is_pending']) {
+
+        if ($current['is_pending']) {
             throw TwoFactorSetupIsAlreadyInitialized::forUser($user_id);
-    
         }
-        
+
         throw TwoFactorSetupAlreadyCompleted::forUser($user_id);
     }
 
@@ -133,10 +130,10 @@ final class InMemoryTwoFactorSettings implements TwoFactorSettings
 
     public function delete(int $user_id): void
     {
-        if(!isset($this->user_settings[$user_id])){
+        if (! isset($this->user_settings[$user_id])) {
             throw new No2FaSettingsFound();
         }
-        
+
         unset($this->user_settings[$user_id]);
     }
 

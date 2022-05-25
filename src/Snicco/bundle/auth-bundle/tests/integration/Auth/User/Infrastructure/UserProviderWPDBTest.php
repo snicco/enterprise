@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\AuthBundle\Tests\wpunit\Auth\User;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Auth\User\Infrastructure;
 
 use Codeception\TestCase\WPTestCase;
 use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserNotFound;
-use Snicco\Enterprise\AuthBundle\Auth\User\WPUserProvider;
+use Snicco\Enterprise\AuthBundle\Auth\User\Infrastructure\UserProviderWPDB;
 use WP_User;
 
 /**
  * @internal
  */
-final class WPUserProviderTest extends WPTestCase
+final class UserProviderWPDBTest extends WPTestCase
 {
     /**
      * @test
@@ -21,7 +21,7 @@ final class WPUserProviderTest extends WPTestCase
     {
         $default_admin = new WP_User(1);
 
-        $provider = new WPUserProvider();
+        $provider = new UserProviderWPDB();
 
         $user = $provider->getUserByIdentifier($default_admin->user_email);
 
@@ -35,7 +35,7 @@ final class WPUserProviderTest extends WPTestCase
     {
         $default_admin = new WP_User(1);
 
-        $provider = new WPUserProvider();
+        $provider = new UserProviderWPDB();
 
         $user = $provider->getUserByIdentifier($default_admin->user_login);
 
@@ -45,9 +45,35 @@ final class WPUserProviderTest extends WPTestCase
     /**
      * @test
      */
+    public function that_a_user_can_be_found_by_id(): void
+    {
+        $default_admin = new WP_User(1);
+
+        $provider = new UserProviderWPDB();
+
+        $user = $provider->getUserByIdentifier('1');
+
+        $this->assertEquals($default_admin, $user);
+    }
+
+    /**
+     * @test
+     */
+    public function that_an_id_of_null_throws_an_exception(): void
+    {
+        $provider = new UserProviderWPDB();
+
+        $this->expectException(UserNotFound::class);
+
+        $provider->getUserByIdentifier('0');
+    }
+
+    /**
+     * @test
+     */
     public function that_an_exception_is_thrown_if_no_user_can_be_found(): void
     {
-        $provider = new WPUserProvider();
+        $provider = new UserProviderWPDB();
 
         $this->expectException(UserNotFound::class);
 

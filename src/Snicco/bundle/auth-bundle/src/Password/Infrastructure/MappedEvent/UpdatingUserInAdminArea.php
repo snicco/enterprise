@@ -14,31 +14,30 @@ use function is_string;
 
 final class UpdatingUserInAdminArea implements MappedHook
 {
-    
     use ClassAsPayload;
     use ClassAsName;
-    
+
     private WP_Error $errors;
-    
+
     private int $wp_user_id;
-    
+
     public function __construct(WP_Error $errors, bool $is_user_update, stdClass $wp_user)
     {
         $this->errors = $errors;
-        $this->wp_user_id = (int)$wp_user->ID;
+        $this->wp_user_id = (int) $wp_user->ID;
     }
-    
-    public function addError(string $key, string $message) :void
+
+    public function addError(string $key, string $message): void
     {
         $this->errors->add($key, $message);
     }
-    
-    public function userId() :int
+
+    public function userId(): int
     {
         return $this->wp_user_id;
     }
-    
-    public function shouldDispatch() :bool
+
+    public function shouldDispatch(): bool
     {
         return isset($_POST['pass1'])
                && is_string($_POST['pass1'])
@@ -48,5 +47,4 @@ final class UpdatingUserInAdminArea implements MappedHook
                && '' !== $_POST['pass1']
                && '' !== $_POST['pass2'];
     }
-    
 }

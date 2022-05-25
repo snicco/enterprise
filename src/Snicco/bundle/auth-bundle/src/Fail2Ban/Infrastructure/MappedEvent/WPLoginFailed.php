@@ -38,7 +38,7 @@ final class WPLoginFailed implements MappedHook, BanworthyEvent
         return 'WordPress login failed for user ' . $this->user_name;
     }
 
-    public function ip():?string
+    public function ip(): ?string
     {
         return null;
     }

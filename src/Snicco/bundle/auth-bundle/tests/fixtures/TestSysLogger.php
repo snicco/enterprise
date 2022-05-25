@@ -81,18 +81,17 @@ final class TestSysLogger implements Syslogger
     {
         PHPUnit::assertContains((string) $priority . '-' . $message, $this->log_entries);
     }
-    
-    public  function reset() :void
+
+    public function reset(): void
     {
         $this->log_entries = [];
         $this->opened_log = [];
         $this->log_closed = false;
     }
-    
-    public function assertNothingLogged() :void
+
+    public function assertNothingLogged(): void
     {
         PHPUnit::assertEmpty($this->log_entries);
         PHPUnit::assertEmpty($this->opened_log);
     }
-    
 }
