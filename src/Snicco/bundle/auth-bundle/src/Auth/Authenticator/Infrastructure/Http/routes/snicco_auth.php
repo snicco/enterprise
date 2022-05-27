@@ -7,9 +7,10 @@ use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Infrastructure\Http\Controll
 
 return static function (WebRoutingConfigurator $router): void {
     $router
-        ->name('snicco_auth.2fa')
+        ->name('2fa')
         ->prefix('two-factor')
         ->group(function (WebRoutingConfigurator $router): void {
             $router->match(['GET', 'POST'],'challenge', '/challenge', [TwoFactorChallengeController::class, 'challenge']);
         });
+ 
 };

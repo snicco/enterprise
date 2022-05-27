@@ -12,6 +12,7 @@ use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBusOption;
 
 /**
  * @internal
+ *
  * @psalm-internal Snicco\Enterprise\AuthBundle
  */
 abstract class Module

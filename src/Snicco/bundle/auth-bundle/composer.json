@@ -9,6 +9,10 @@
         }
     ],
     "require": {
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-mbstring": "*",
+        "ext-libxml": "*",
         "snicco/event-dispatcher": "^1.2.0",
         "snicco/http-routing": "^1.2.0",
         "snicco/http-routing-bundle": "^1.2.0",

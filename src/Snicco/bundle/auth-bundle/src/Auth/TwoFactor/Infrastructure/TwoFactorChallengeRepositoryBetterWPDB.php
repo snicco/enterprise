@@ -39,13 +39,16 @@ final class TwoFactorChallengeRepositoryBetterWPDB implements TwoFactorChallenge
      */
     public static function createTable(BetterWPDB $db, string $table_name): void
     {
+        $users_table = $GLOBALS['wpdb']->users;
+        
         $db->unprepared(
             "CREATE TABLE IF NOT EXISTS `{$table_name}` (
             `selector` CHAR(32) NOT NULL,
             `hashed_validator` CHAR(64) NOT NULL,
             `user_id` BIGINT UNSIGNED NOT NULL,
             `expires_at` INT(11) UNSIGNED NOT NULL,
-            PRIMARY KEY (`selector`)
+            PRIMARY KEY (`selector`),
+            FOREIGN KEY (`user_id`) REFERENCES $users_table(`ID`) ON DELETE CASCADE ON UPDATE CASCADE
         )"
         );
     }

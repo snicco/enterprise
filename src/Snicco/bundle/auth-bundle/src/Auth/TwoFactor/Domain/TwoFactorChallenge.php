@@ -23,7 +23,7 @@ final class TwoFactorChallenge
     public string $hashed_validator;
 
     /**
-     * @var positive-int
+     * @var positive-int $user_id
      */
     public function __construct(string $hashed_validator, int $user_id, int $expires_at)
     {

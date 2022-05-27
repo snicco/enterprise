@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\AuthBundle\Auth;
 
 use PragmaRX\Google2FA\Google2FA;
-use Snicco\Component\BetterWPDB\BetterWPDB;
-use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
-use Snicco\Component\EventDispatcher\EventDispatcher;
-use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
-use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\TwoFactorCommandHandler;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\OTPValidator;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeService;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\Google2FaProvider;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
 use Snicco\Enterprise\AuthBundle\Module;
-
+use Snicco\Component\BetterWPDB\BetterWPDB;
+use Snicco\Component\EventDispatcher\EventDispatcher;
+use Snicco\Component\Kernel\Configuration\WritableConfig;
+use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
+use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\OTPValidator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeService;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\Google2FaProvider;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\TwoFactorCommandHandler;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorEventHandler;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\MappedEvent\WPAuthenticate;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
 use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Infrastructure\Http\Controller\TwoFactorChallengeController;
 
 use function bin2hex;
@@ -31,9 +31,11 @@ use function random_bytes;
 
 final class AuthModule extends Module
 {
+    public const NAME = 'auth';
+    
     public function name(): string
     {
-        return 'authentication';
+        return self::NAME;
     }
 
     public function configure(WritableConfig $config, Kernel $kernel): void
@@ -123,8 +125,8 @@ final class AuthModule extends Module
         );
 
         $container->shared(
-            AuthenticationEventHandler::class,
-            fn (): AuthenticationEventHandler => new AuthenticationEventHandler(
+            TwoFactorEventHandler::class,
+            fn (): TwoFactorEventHandler => new TwoFactorEventHandler(
                 $container[TwoFactorSettings::class],
                 $container[TwoFactorChallengeService::class],
                 $container[EventDispatcher::class],
@@ -148,6 +150,6 @@ final class AuthModule extends Module
 
         $event_mapper->map('authenticate', WPAuthenticate::class, 9999);
 
-        $event_dispatcher->subscribe(AuthenticationEventHandler::class);
+        $event_dispatcher->subscribe(TwoFactorEventHandler::class);
     }
 }

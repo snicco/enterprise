@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\AuthBundle\Auth\Event;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\MappedEvent;
 
+use WP_User;
+use WP_Error;
 use LogicException;
-use Snicco\Component\BetterWPHooks\EventMapping\MappedFilter;
 use Snicco\Component\EventDispatcher\ClassAsName;
 use Snicco\Component\EventDispatcher\ClassAsPayload;
-use WP_Error;
-use WP_User;
+use Snicco\Component\BetterWPHooks\EventMapping\MappedFilter;
 
 /**
  * @internal

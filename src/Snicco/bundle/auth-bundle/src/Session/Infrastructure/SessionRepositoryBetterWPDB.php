@@ -49,19 +49,21 @@ final class SessionRepositoryBetterWPDB implements SessionRepository
 
     public static function createTable(BetterWPDB $db, string $table_name): void
     {
+        $users_table = $GLOBALS['wpdb']->users;
+    
         $db->unprepared(
             "CREATE TABLE IF NOT EXISTS `{$table_name}`  (
             	`id` INTEGER(11) NOT NULL AUTO_INCREMENT,
                 `hashed_token` CHAR(64) NOT NULL,
-                `user_id` INTEGER(11) unsigned NOT NULL,
+                `user_id` BIGINT UNSIGNED NOT NULL,
                 `payload` TEXT NOT NULL,
                 `expires_at` INTEGER(11) UNSIGNED NOT NULL,
                 `last_activity` INTEGER(11) UNSIGNED NOT NULL DEFAULT (UNIX_TIMESTAMP()),
                 `last_rotation` INTEGER(11) UNSIGNED NOT NULL DEFAULT (UNIX_TIMESTAMP()),
                 `created_at` INTEGER(11) UNSIGNED NOT NULL DEFAULT (UNIX_TIMESTAMP()),
                 PRIMARY KEY (`id`),
+                FOREIGN KEY (`user_id`) REFERENCES $users_table(`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
                 UNIQUE KEY (`hashed_token`),
-                KEY (`user_id`),
                 KEY (`expires_at`)
         );"
         );

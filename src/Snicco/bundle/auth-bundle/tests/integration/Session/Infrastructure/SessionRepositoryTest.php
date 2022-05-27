@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\AuthBundle\Tests\integration\Session\Infrastructure;
 
 use Closure;
+use WP_User;
 use Codeception\TestCase\WPTestCase;
 use Generator;
 use RuntimeException;
@@ -19,12 +20,17 @@ use Snicco\Enterprise\AuthBundle\Session\Infrastructure\SessionRepositoryBetterW
 
 use Snicco\Enterprise\AuthBundle\Tests\fixtures\InMemorySessionRepository;
 
+use function is_int;
+use function implode;
+use function get_user_by;
 use function array_replace;
 use function bin2hex;
 use function hash;
 use function random_bytes;
 use function sprintf;
 use function time;
+use function wp_create_user;
+use function wp_delete_user;
 
 /**
  * @internal
@@ -35,16 +41,36 @@ final class SessionRepositoryTest extends WPTestCase
      * @var string
      */
     private const TABLE_NAME = 'wp_snicco_auth_sessions';
-
+    
+    private int $calvin_id;
+    
+    private int $marlon_id;
+    
     protected function setUp(): void
     {
         parent::setUp();
         SessionRepositoryBetterWPDB::createTable(BetterWPDB::fromWpdb(), self::TABLE_NAME);
+        $this->calvin_id = (new WP_User(1))->ID;
+        $marlon = get_user_by('login', 'marlon');
+        if($marlon){
+            $this->marlon_id = $marlon->ID;
+        }else {
+            $marlon_id = wp_create_user('marlon', 'foobar');
+            if(!is_int($marlon_id)){
+                throw new RuntimeException(implode(',', $marlon_id->get_error_messages()));
+            }
+            $this->marlon_id = $marlon_id;
+        }
+        
     }
 
     protected function tearDown(): void
     {
         BetterWPDB::fromWpdb()->unprepared(sprintf('DROP TABLE IF EXISTS %s', self::TABLE_NAME));
+        $res = wp_delete_user($this->marlon_id);
+        if(!$res){
+            throw new RuntimeException('Could not delete user');
+        }
         parent::tearDown();
     }
 
@@ -84,7 +110,7 @@ final class SessionRepositoryTest extends WPTestCase
     public function that_an_expired_session_is_not_included(Closure $session_repo): void
     {
         $session_repo = $session_repo($clock = new TestClock());
-        $session = $this->aNonPersistedSessionForUser(1, 2);
+        $session = $this->aNonPersistedSessionForUser($this->calvin_id, 2);
 
         $session_repo->save($session);
 
@@ -115,10 +141,10 @@ final class SessionRepositoryTest extends WPTestCase
     public function that_all_sessions_for_a_user_can_be_retrieved(Closure $session_repo): void
     {
         $session_repo = $session_repo(new TestClock());
-        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, 1);
-        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, 1);
+        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
+        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
 
-        $marlon_session1 = $this->aPersistedSessionForUser($session_repo, 2);
+        $marlon_session1 = $this->aPersistedSessionForUser($session_repo, $this->marlon_id);
 
         $this->assertEquals([
             $calvin_session1->hashedToken() => [
@@ -133,7 +159,7 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_activity' => $calvin_session2->lastActivity(),
                 'data' => $calvin_session2->data(),
             ],
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
 
         $this->assertEquals([
             $marlon_session1->hashedToken() => [
@@ -142,7 +168,7 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_activity' => $marlon_session1->lastActivity(),
                 'data' => $marlon_session1->data(),
             ],
-        ], $session_repo->getAllForUser(2));
+        ], $session_repo->getAllForUser($this->marlon_id));
     }
 
     /**
@@ -155,8 +181,8 @@ final class SessionRepositoryTest extends WPTestCase
     public function that_expired_sessions_are_not_included_in_all_sessions(Closure $session_repo): void
     {
         $session_repo = $session_repo($clock = new TestClock());
-        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, 1, 9);
-        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, 1, 10);
+        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id, 9);
+        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id, 10);
 
         $clock->travelIntoFuture(9);
 
@@ -173,7 +199,7 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $calvin_session2->lastRotation(),
                 'data' => $calvin_session2->data(),
             ],
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
 
         $clock->travelIntoFuture(1);
 
@@ -184,12 +210,12 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $calvin_session2->lastRotation(),
                 'data' => $calvin_session2->data(),
             ],
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
 
         $clock->travelIntoFuture(1);
 
         $this->assertEquals([
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
     }
 
     /**
@@ -203,8 +229,8 @@ final class SessionRepositoryTest extends WPTestCase
     {
         $session_repo = $session_repo(new TestClock());
 
-        $session_new = $this->aNonPersistedSessionForUser(1);
-        $persisted_session_for_user = $this->aPersistedSessionForUser($session_repo, 1);
+        $session_new = $this->aNonPersistedSessionForUser($this->calvin_id);
+        $persisted_session_for_user = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
 
         try {
             $session_repo->delete($session_new->hashedToken());
@@ -234,10 +260,10 @@ final class SessionRepositoryTest extends WPTestCase
     public function that_all_sessions_for_a_user_can_be_destroyed(Closure $session_repo): void
     {
         $session_repo = $session_repo(new TestClock());
-        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, 1);
-        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, 1);
+        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
+        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
 
-        $marlon_session1 = $this->aPersistedSessionForUser($session_repo, 2);
+        $marlon_session1 = $this->aPersistedSessionForUser($session_repo, $this->marlon_id);
 
         $this->assertEquals([
             $calvin_session1->hashedToken() => [
@@ -252,7 +278,7 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $calvin_session2->lastRotation(),
                 'data' => $calvin_session2->data(),
             ],
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
 
         $this->assertEquals([
             $marlon_session1->hashedToken() => [
@@ -261,12 +287,12 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $marlon_session1->lastRotation(),
                 'data' => $marlon_session1->data(),
             ],
-        ], $session_repo->getAllForUser(2));
+        ], $session_repo->getAllForUser($this->marlon_id));
 
-        $session_repo->destroyAllSessionsForUser(1);
+        $session_repo->destroyAllSessionsForUser($this->calvin_id);
 
         $this->assertEquals([
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
 
         $this->assertEquals([
             $marlon_session1->hashedToken() => [
@@ -275,7 +301,7 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $marlon_session1->lastRotation(),
                 'data' => $marlon_session1->data(),
             ],
-        ], $session_repo->getAllForUser(2));
+        ], $session_repo->getAllForUser($this->marlon_id));
     }
 
     /**
@@ -288,10 +314,10 @@ final class SessionRepositoryTest extends WPTestCase
     public function that_all_sessions_for_a_user_except_one_can_be_destroyed(Closure $session_repo): void
     {
         $session_repo = $session_repo(new TestClock());
-        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, 1);
-        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, 1);
+        $calvin_session1 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
+        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
 
-        $marlon_session1 = $this->aPersistedSessionForUser($session_repo, 2);
+        $marlon_session1 = $this->aPersistedSessionForUser($session_repo, $this->marlon_id);
 
         $this->assertEquals([
             $calvin_session1->hashedToken() => [
@@ -306,9 +332,9 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $calvin_session2->lastRotation(),
                 'data' => $calvin_session2->data(),
             ],
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
 
-        $session_repo->destroyOtherSessionsForUser(1, $calvin_session1->hashedToken());
+        $session_repo->destroyOtherSessionsForUser($this->calvin_id, $calvin_session1->hashedToken());
 
         $this->assertEquals([
             $calvin_session1->hashedToken() => [
@@ -317,7 +343,7 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $calvin_session1->lastRotation(),
                 'data' => $calvin_session1->data(),
             ],
-        ], $session_repo->getAllForUser(1));
+        ], $session_repo->getAllForUser($this->calvin_id));
 
         $this->assertEquals([
             $marlon_session1->hashedToken() => [
@@ -326,7 +352,7 @@ final class SessionRepositoryTest extends WPTestCase
                 'last_rotation' => $marlon_session1->lastRotation(),
                 'data' => $marlon_session1->data(),
             ],
-        ], $session_repo->getAllForUser(2));
+        ], $session_repo->getAllForUser($this->marlon_id));
     }
 
     /**
@@ -339,14 +365,14 @@ final class SessionRepositoryTest extends WPTestCase
     public function that_all_sessions_can_be_destroyed(Closure $session_repo): void
     {
         $session_repo = $session_repo(new TestClock());
-        $this->aPersistedSessionForUser($session_repo, 1);
-        $this->aPersistedSessionForUser($session_repo, 1);
-        $this->aPersistedSessionForUser($session_repo, 2);
+        $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
+        $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
+        $this->aPersistedSessionForUser($session_repo, $this->marlon_id);
 
         $session_repo->destroyAll();
 
-        $this->assertEquals([], $session_repo->getAllForUser(1));
-        $this->assertEquals([], $session_repo->getAllForUser(2));
+        $this->assertEquals([], $session_repo->getAllForUser($this->calvin_id));
+        $this->assertEquals([], $session_repo->getAllForUser($this->marlon_id));
     }
 
     /**
@@ -361,7 +387,7 @@ final class SessionRepositoryTest extends WPTestCase
         $session_repo = $session_repo($clock = new TestClock());
 
         $session_old = $session_repo->getSession(
-            $this->aPersistedSessionForUser($session_repo, 1, 10, [
+            $this->aPersistedSessionForUser($session_repo, $this->calvin_id, 10, [
                 'foo' => 'bar',
             ])->hashedToken()
         );
@@ -413,7 +439,7 @@ final class SessionRepositoryTest extends WPTestCase
         $session_repo = $session_repo($clock = new TestClock());
 
         $session = $session_repo->getSession(
-            $this->aPersistedSessionForUser($session_repo, 1)
+            $this->aPersistedSessionForUser($session_repo, $this->calvin_id)
                 ->hashedToken()
         );
         $now = $clock->currentTimestamp();
@@ -444,7 +470,7 @@ final class SessionRepositoryTest extends WPTestCase
     {
         $session_repo = $session_repo($clock = new TestClock());
 
-        $session = $this->aPersistedSessionForUser($session_repo, 1);
+        $session = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
         $now = $clock->currentTimestamp();
         $this->assertSame($now, $session->lastActivity());
 
@@ -467,7 +493,7 @@ final class SessionRepositoryTest extends WPTestCase
     ): void {
         $session_repo = $session_repo($clock = new TestClock());
 
-        $session = $this->aPersistedSessionForUser($session_repo, 1);
+        $session = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
         $now = $clock->currentTimestamp();
         $this->assertSame($now, $session->lastActivity());
 
@@ -489,41 +515,41 @@ final class SessionRepositoryTest extends WPTestCase
     {
         $session_repo = $session_repo($clock = new TestClock());
 
-        $this->aPersistedSessionForUser($session_repo, 1, 5);
-        $this->aPersistedSessionForUser($session_repo, 1, 4);
-        $this->aPersistedSessionForUser($session_repo, 1, 3);
+        $this->aPersistedSessionForUser($session_repo, $this->calvin_id, 5);
+        $this->aPersistedSessionForUser($session_repo, $this->calvin_id, 4);
+        $this->aPersistedSessionForUser($session_repo, $this->calvin_id, 3);
 
-        $this->aPersistedSessionForUser($session_repo, 2, 5);
-        $this->aPersistedSessionForUser($session_repo, 2, 4);
-        $this->aPersistedSessionForUser($session_repo, 2, 3);
+        $this->aPersistedSessionForUser($session_repo, $this->marlon_id, 5);
+        $this->aPersistedSessionForUser($session_repo, $this->marlon_id, 4);
+        $this->aPersistedSessionForUser($session_repo, $this->marlon_id, 3);
 
         $clock->travelIntoFuture(3);
 
         $session_repo->gc();
 
-        $this->assertCount(3, $session_repo->getAllForUser(1));
-        $this->assertCount(3, $session_repo->getAllForUser(2));
+        $this->assertCount(3, $session_repo->getAllForUser($this->calvin_id));
+        $this->assertCount(3, $session_repo->getAllForUser($this->marlon_id));
 
         $clock->travelIntoFuture(1);
 
         $session_repo->gc();
 
-        $this->assertCount(2, $session_repo->getAllForUser(1));
-        $this->assertCount(2, $session_repo->getAllForUser(2));
+        $this->assertCount(2, $session_repo->getAllForUser($this->calvin_id));
+        $this->assertCount(2, $session_repo->getAllForUser($this->marlon_id));
 
         $clock->travelIntoFuture(1);
 
         $session_repo->gc();
 
-        $this->assertCount(1, $session_repo->getAllForUser(1));
-        $this->assertCount(1, $session_repo->getAllForUser(2));
+        $this->assertCount(1, $session_repo->getAllForUser($this->calvin_id));
+        $this->assertCount(1, $session_repo->getAllForUser($this->marlon_id));
 
         $clock->travelIntoFuture(1);
 
         $session_repo->gc();
 
-        $this->assertCount(0, $session_repo->getAllForUser(1));
-        $this->assertCount(0, $session_repo->getAllForUser(2));
+        $this->assertCount(0, $session_repo->getAllForUser($this->calvin_id));
+        $this->assertCount(0, $session_repo->getAllForUser($this->marlon_id));
     }
 
     public function sessionRepos(): Generator

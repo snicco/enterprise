@@ -2,39 +2,40 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\AuthBundle\Tests\integration\Auth;
+namespace Snicco\Enterprise\AuthBundle\Tests\integration\Auth\TwoFactor\Infrastructure;
 
-use Codeception\TestCase\WPTestCase;
+use WP_Error;
 use PragmaRX\Google2FA\Google2FA;
+use WP_UnitTest_Factory_For_User;
+use Snicco\Component\Kernel\Kernel;
+use Codeception\TestCase\WPTestCase;
+use Snicco\Component\Kernel\DIContainer;
+use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Bundle\Testing\Bundle\BundleTest;
 use Snicco\Bundle\Testing\Bundle\BundleTestHelpers;
-use Snicco\Bundle\Testing\Functional\Concerns\CreateWordPressUsers;
-use Snicco\Component\BetterWPDB\BetterWPDB;
-use Snicco\Component\EventDispatcher\EventDispatcher;
-use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
-use Snicco\Component\Kernel\Configuration\WritableConfig;
-use Snicco\Component\Kernel\DIContainer;
-use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
-use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\TwoFactorAuthenticator;
-use Snicco\Enterprise\AuthBundle\Auth\Event\WPAuthenticate2FaChallengeRedirect;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeService;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
-use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
+use Snicco\Component\EventDispatcher\EventDispatcher;
+use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
-use WP_Error;
-use WP_UnitTest_Factory_For_User;
+use Snicco\Bundle\Testing\Functional\Concerns\CreateWordPressUsers;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\BackupCodes;
+use Snicco\Component\EventDispatcher\Testing\TestableEventDispatcher;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Domain\TwoFactorChallengeService;
+use Snicco\Enterprise\AuthBundle\Auth\Authenticator\Domain\TwoFactorAuthenticator;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\Event\WPAuthenticateChallengeUser;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
+use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\Event\WPAuthenticateChallengeRedirectShutdownPHP;
 
 use function dirname;
+use function sprintf;
 use function is_string;
 use function parse_str;
 use function parse_url;
-use function sprintf;
-
 use function wp_signon;
+
 use const PHP_URL_QUERY;
 
 /**
@@ -171,7 +172,7 @@ final class TwoFactorChallenges_WP_signon_Test extends WPTestCase
 
         $redirect_url = null;
 
-        $testable_dispatcher->listen(function (WPAuthenticate2FaChallengeRedirect $event) use (
+        $testable_dispatcher->listen(function (WPAuthenticateChallengeRedirectShutdownPHP $event) use (
             &$redirect_url
         ): void {
             $event->do_shutdown = false;
@@ -227,7 +228,7 @@ final class TwoFactorChallenges_WP_signon_Test extends WPTestCase
     
         $redirect_url = null;
     
-        $testable_dispatcher->listen(function (WPAuthenticate2FaChallengeRedirect $event) use (
+        $testable_dispatcher->listen(function (WPAuthenticateChallengeRedirectShutdownPHP $event) use (
             &$redirect_url
         ) :void {
             $event->do_shutdown = false;
@@ -273,7 +274,7 @@ final class TwoFactorChallenges_WP_signon_Test extends WPTestCase
     
         $redirect_url = null;
     
-        $testable_dispatcher->listen(function (WPAuthenticate2FaChallengeRedirect $event) use (
+        $testable_dispatcher->listen(function (WPAuthenticateChallengeRedirectShutdownPHP $event) use (
             &$redirect_url
         ) :void {
             $event->do_shutdown = false;
@@ -299,9 +300,42 @@ final class TwoFactorChallenges_WP_signon_Test extends WPTestCase
         $this->assertSame('1', $query_vars['remember_me']);
     }
     
+    /**
+     * @test
+     */
+    public function that_the_two_factor_redirect_can_be_prevented() :void
+    {
+        $this->kernel->boot();
+    
+        /** @var TestableEventDispatcher $testable_dispatcher */
+        $testable_dispatcher = $this->container->get(EventDispatcher::class);
+    
+        $user = $this->createAdmin([
+            'user_pass' => 'foobar',
+        ]);
+        
+        $this->preventShutdown($testable_dispatcher);
+        $this->userHasTwo2FaCompleted($user->ID);
+    
+        $testable_dispatcher->listen(function (WPAuthenticateChallengeUser $event) use ($user){
+            $this->assertEquals($user, $event->user);
+            $this->assertTrue($event->challenge_user);
+            $event->challenge_user = false;
+        });
+        
+        $auth_user = wp_signon([
+            'user_login' => $user->user_login,
+            'user_password' => 'foobar',
+        ]);
+    
+        $this->assertEquals($user, $auth_user);
+        
+        $testable_dispatcher->assertNotDispatched(WPAuthenticateChallengeRedirectShutdownPHP::class);
+    }
+    
     protected function fixturesDir(): string
     {
-        return dirname(__DIR__, 2) . '/fixtures/test-app';
+        return dirname(__DIR__, 4) . '/fixtures/test-app';
     }
 
     protected function userFactory(): WP_UnitTest_Factory_For_User
@@ -330,4 +364,12 @@ final class TwoFactorChallenges_WP_signon_Test extends WPTestCase
         $otp = $google_2fa->getCurrentOtp($secret);
         $bus->handle(new Complete2FaSetup($user_id, $otp));
     }
+    
+    private function preventShutdown(TestableEventDispatcher $testable_dispatcher) :void
+    {
+        $testable_dispatcher->listen(function (WPAuthenticateChallengeRedirectShutdownPHP $event):void {
+            $event->do_shutdown = false;
+        });
+    }
+    
 }

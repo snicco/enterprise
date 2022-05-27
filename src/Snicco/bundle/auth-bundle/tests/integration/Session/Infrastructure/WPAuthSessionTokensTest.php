@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\AuthBundle\Tests\integration\Session\Infrastructure;
 
+use WP_User;
 use Codeception\TestCase\WPTestCase;
 use InvalidArgumentException;
 use RuntimeException;
@@ -17,9 +18,14 @@ use Snicco\Enterprise\AuthBundle\Session\Infrastructure\SessionRepositoryBetterW
 use Snicco\Enterprise\AuthBundle\Session\Infrastructure\WPAuthSessionTokens;
 use stdClass;
 
+use function is_int;
+use function implode;
 use function add_filter;
 use function base64_encode;
 use function hash;
+use function wp_insert_user;
+use function wp_create_user;
+use function wp_delete_user;
 use function remove_all_filters;
 use function serialize;
 use function sleep;
@@ -38,7 +44,11 @@ final class WPAuthSessionTokensTest extends WPTestCase
     private string $table_name = 'wp_snicco_auth_sessions';
 
     private TestableEventDispatcher $testable_dispatcher;
-
+    
+    private int $other_user_id;
+    
+    private int $default_user_id;
+    
     protected function setUp(): void
     {
         parent::setUp();
@@ -61,6 +71,15 @@ final class WPAuthSessionTokensTest extends WPTestCase
             )
         );
         add_filter('session_token_manager', fn (): string => WPAuthSessionTokens::class, 9999999);
+        
+        $this->default_user_id = (new WP_User(1))->ID;
+        $other_user_id = wp_create_user('foo', 'bar');
+        if(!is_int($other_user_id)){
+            /** @var string[] $errors */
+            $errors = $other_user_id->get_error_messages();
+            throw new RuntimeException(implode(',', $errors));
+        }
+        $this->other_user_id = $other_user_id;
     }
 
     protected function tearDown(): void
@@ -68,6 +87,7 @@ final class WPAuthSessionTokensTest extends WPTestCase
         $this->db->unprepared("DROP TABLE IF EXISTS {$this->table_name}");
         parent::tearDown();
         remove_all_filters('session_token_manager');
+        wp_delete_user($this->other_user_id);
     }
 
     /**
@@ -157,7 +177,8 @@ final class WPAuthSessionTokensTest extends WPTestCase
         /** @var int $count */
         $count = $this->db->selectValue("select count(*) from {$this->table_name} where `user_id` = ?", [1]);
         $this->assertSame(1, $count);
-
+        
+        /** @psalm-suppress NullArgument */
         $sessions->update($token, null);
 
         /** @var int $count */
@@ -176,12 +197,12 @@ final class WPAuthSessionTokensTest extends WPTestCase
             ];
         });
 
-        $sessions_1 = WPAuthSessionTokens::get_instance(1);
+        $sessions_1 = WPAuthSessionTokens::get_instance($this->default_user_id);
 
         $sessions_1->create(time() + 10);
         $sessions_1->create(time() + 10);
 
-        $sessions_2 = WPAuthSessionTokens::get_instance(2);
+        $sessions_2 = WPAuthSessionTokens::get_instance($this->other_user_id);
 
         $sessions_2->create(time() + 10);
         $sessions_2->create(time() + 10);
@@ -205,12 +226,12 @@ final class WPAuthSessionTokensTest extends WPTestCase
      */
     public function that_all_sessions_for_a_user_can_be_destroyed(): void
     {
-        $sessions_1 = WPAuthSessionTokens::get_instance(1);
+        $sessions_1 = WPAuthSessionTokens::get_instance($this->default_user_id);
 
         $sessions_1->create(time() + 10);
         $sessions_1->create(time() + 10);
 
-        $sessions_2 = WPAuthSessionTokens::get_instance(2);
+        $sessions_2 = WPAuthSessionTokens::get_instance($this->other_user_id);
         $sessions_2->create(time() + 10);
         $sessions_2->create(time() + 10);
         $sessions_2->create(time() + 10);
@@ -229,12 +250,12 @@ final class WPAuthSessionTokensTest extends WPTestCase
      */
     public function that_all_sessions_besides_one_can_be_destroyed_for_a_user(): void
     {
-        $sessions_1 = WPAuthSessionTokens::get_instance(1);
+        $sessions_1 = WPAuthSessionTokens::get_instance($this->default_user_id);
 
         $token = $sessions_1->create(time() + 10);
         $token_deleted = $sessions_1->create(time() + 10);
 
-        $sessions_2 = WPAuthSessionTokens::get_instance(2);
+        $sessions_2 = WPAuthSessionTokens::get_instance($this->other_user_id);
         $sessions_2->create(time() + 10);
         $sessions_2->create(time() + 10);
         $sessions_2->create(time() + 10);
@@ -256,13 +277,13 @@ final class WPAuthSessionTokensTest extends WPTestCase
      */
     public function that_all_sessions_for_all_users_can_be_dropped(): void
     {
-        $sessions_1 = WPAuthSessionTokens::get_instance(1);
+        $sessions_1 = WPAuthSessionTokens::get_instance($this->default_user_id);
 
         $sessions_1->create(time() + 10);
         $sessions_1->create(time() + 10);
         $sessions_1->create(time() + 10);
 
-        $sessions_2 = WPAuthSessionTokens::get_instance(2);
+        $sessions_2 = WPAuthSessionTokens::get_instance($this->other_user_id);
         $sessions_2->create(time() + 10);
         $sessions_2->create(time() + 10);
         $sessions_2->create(time() + 10);

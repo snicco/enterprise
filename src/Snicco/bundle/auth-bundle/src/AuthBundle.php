@@ -9,6 +9,7 @@ use RuntimeException;
 use Snicco\Bundle\HttpRouting\HttpRoutingBundle;
 use Snicco\Component\Kernel\Bundle;
 use Snicco\Component\Kernel\Configuration\Config;
+use Snicco\Bundle\HttpRouting\Option\RoutingOption;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
@@ -17,6 +18,12 @@ use Snicco\Enterprise\AuthBundle\Fail2Ban\Infrastructure\Fail2BanModule;
 use Snicco\Enterprise\AuthBundle\Password\Infrastructure\PasswordModule;
 use Snicco\Enterprise\AuthBundle\Session\Infrastructure\SessionModule;
 use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
+
+use Snicco\Component\HttpRouting\Routing\RouteLoader\RouteLoadingOptions;
+
+use Snicco\Enterprise\AuthBundle\Shared\Infrastructure\AuthRouteLoadingOptions;
+
+use Snicco\Component\HttpRouting\Routing\RouteLoader\DefaultRouteLoadingOptions;
 
 use function array_filter;
 use function array_map;
@@ -64,11 +71,12 @@ final class AuthBundle implements Bundle
         $this->validateBundles($kernel);
 
         $config->setIfMissing('snicco_auth.modules', [
-            'password',
-            'session',
-            'fail2ban',
-            'authentication',
+            PasswordModule::NAME,
+            AuthModule::NAME,
+            Fail2BanModule::NAME,
+            SessionModule::NAME,
         ]);
+        $config->setIfMissing('snicco_auth.path_prefix', '/auth');
 
         if ($kernel->env()->isTesting()) {
             $config->setIfMissing(
@@ -89,6 +97,19 @@ final class AuthBundle implements Bundle
         foreach ($this->enabledModules($kernel->config()) as $enabled_module) {
             $enabled_module->register($kernel);
         }
+        
+        $container = $kernel->container();
+        $config = $kernel->config();
+        
+        $container->shared(RouteLoadingOptions::class, function () use($config) {
+            return new AuthRouteLoadingOptions(
+                new DefaultRouteLoadingOptions(
+                    $config->getString('routing.' . RoutingOption::API_PREFIX)
+                ),
+                $config->getString('snicco_auth.path_prefix')
+            );
+        });
+        
     }
 
     public function bootstrap(Kernel $kernel): void

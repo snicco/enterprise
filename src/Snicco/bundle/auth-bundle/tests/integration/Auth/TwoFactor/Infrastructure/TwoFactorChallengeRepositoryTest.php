@@ -18,6 +18,7 @@ use Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\TwoFactorChalleng
 use Snicco\Enterprise\AuthBundle\Tests\fixtures\TwoFactorChallengeRepositoryInMemory;
 
 use function time;
+use function wp_create_user;
 
 /**
  * @internal
@@ -109,9 +110,11 @@ final class TwoFactorChallengeRepositoryTest extends WPTestCase
         $challenges = ($challenges)($clock = new TestClock());
 
         $now = $clock->currentTimestamp();
-
+        
+        $other_id = wp_create_user('foo', 'bar');
+        
         $challenges->store('selector1', $c1 = new TwoFactorChallenge('hashed1', 1, $now + 1));
-        $challenges->store('selector2', $c2 = new TwoFactorChallenge('hashed2', 2, $now + 2));
+        $challenges->store('selector2', $c2 = new TwoFactorChallenge('hashed2', $other_id, $now + 2));
 
         $challenges->gc();
 

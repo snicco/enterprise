@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Snicco\Enterprise\AuthBundle\Auth\Event;
+namespace Snicco\Enterprise\AuthBundle\Auth\TwoFactor\Infrastructure\Event;
 
+use WP_User;
+use Snicco\Component\EventDispatcher\Event;
 use Snicco\Component\EventDispatcher\ClassAsName;
 use Snicco\Component\EventDispatcher\ClassAsPayload;
-use Snicco\Component\EventDispatcher\Event;
-use WP_User;
 
 /**
  * @internal
  *
  * @psalm-internal Snicco\Enterprise\AuthBundle
  */
-final class WPAuthenticate2FaChallengeRedirect implements Event
+final class WPAuthenticateChallengeRedirectShutdownPHP implements Event
 {
     use ClassAsName;
     use ClassAsPayload;

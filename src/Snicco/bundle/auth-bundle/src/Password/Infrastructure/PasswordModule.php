@@ -24,9 +24,11 @@ use const WPINC;
 
 final class PasswordModule extends Module
 {
+    public const NAME = 'password';
+    
     public function name(): string
     {
-        return 'password';
+        return self::NAME;
     }
 
     public function configure(WritableConfig $config, Kernel $kernel): void

@@ -9,7 +9,7 @@ use Snicco\Enterprise\AuthBundle\Session\Domain\Exception\InvalidSessionToken;
 /**
  * @internal
  *
- * @psalm-internal Snicco\Enterprise\AuthBundle\Session
+ * @psalm-internal Snicco\Enterprise\AuthBundle
  */
 interface SessionRepository
 {

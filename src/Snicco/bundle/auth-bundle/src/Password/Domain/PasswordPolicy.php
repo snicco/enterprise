@@ -38,6 +38,7 @@ final class PasswordPolicy
         }
 
         // Zxcvbn will take forever on really long password.
+        // https://github.com/bjeavons/zxcvbn-php/issues/56
         if ($length > $this->upper_limit_for_entropy_check) {
             return;
         }

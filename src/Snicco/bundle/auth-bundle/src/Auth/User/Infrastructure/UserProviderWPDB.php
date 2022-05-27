@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\AuthBundle\Auth\User\Infrastructure;
 
 use Snicco\Enterprise\AuthBundle\Auth\User\Domain\InvalidPassword;
-
 use Snicco\Enterprise\AuthBundle\Auth\User\Domain\PasswordAuthenticationUserProvider;
 use Snicco\Enterprise\AuthBundle\Auth\User\Domain\UserNotFound;
-
 use WP_User;
 
 use function get_user_by;

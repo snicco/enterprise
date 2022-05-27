@@ -21,9 +21,11 @@ use const LOG_PID;
 
 final class Fail2BanModule extends Module
 {
+    public const NAME = 'fail2ban';
+    
     public function name(): string
     {
-        return 'fail2ban';
+        return self::NAME;
     }
 
     public function shouldRun(Environment $env): bool
