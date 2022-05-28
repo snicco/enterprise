@@ -12,7 +12,7 @@
         "symfony/console": "5.4.7",
         "symfony/process": "^5.4",
         "symfony/finder": "^5.4",
-        "snicco/str-arr": "^1.2.0"
+        "snicco/str-arr": "^1.2.1"
     },
     "scripts": {
         "configure-plugin": "php .setup/configure.php"

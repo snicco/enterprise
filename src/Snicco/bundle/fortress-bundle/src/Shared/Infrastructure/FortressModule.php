@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure;
 
 use Snicco\Bundle\HttpRouting\Option\RoutingOption;
+use Snicco\Component\BetterWPCLI\Command;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBusOption;
+use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIOption;
 
 /**
  * @internal
@@ -65,4 +67,13 @@ abstract class FortressModule
         $config->setIfMissing('routing.' . RoutingOption::API_ROUTE_DIRECTORIES, []);
         $config->appendToList('routing.' . RoutingOption::API_ROUTE_DIRECTORIES, $route_dirs);
     }
+    
+    /**
+     * @param  array<class-string<Command>>  $command_classes
+     */
+    public function addCommands(WritableConfig $config, array $command_classes) :void
+    {
+        $config->appendToList('better-wp-cli.'.BetterWPCLIOption::COMMANDS, $command_classes);
+    }
+    
 }

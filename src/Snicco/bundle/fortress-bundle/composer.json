@@ -13,16 +13,17 @@
         "ext-openssl": "*",
         "ext-mbstring": "*",
         "ext-libxml": "*",
-        "snicco/event-dispatcher": "^1.2.0",
-        "snicco/http-routing": "^1.2.0",
-        "snicco/http-routing-bundle": "^1.2.0",
+        "snicco/event-dispatcher": "^1.2.1",
+        "snicco/http-routing": "^1.2.1",
+        "snicco/http-routing-bundle": "^1.2.1",
         "snicco/application-layer-bundle": "dev-master",
-        "snicco/signed-url": "^1.2.0",
-        "snicco/encryption-bundle": "^1.2.0",
-        "snicco/better-wpdb": "^1.2.0",
-        "snicco/testable-clock": "^1.2.0",
-        "snicco/content-negotiation-middleware" : "^1.2.0",
-        "snicco/payload-middleware" : "^1.2.0",
+        "snicco/signed-url": "^1.2.1",
+        "snicco/encryption-bundle": "^1.2.1",
+        "snicco/better-wpdb": "^1.2.1",
+        "snicco/testable-clock": "^1.2.1",
+        "snicco/content-negotiation-middleware": "^1.2.1",
+        "snicco/payload-middleware": "^1.2.1",
+        "snicco/wp-guests-only-middleware": "^1.2.1",
         "webmozart/assert": "^1.10.0",
         "pragmarx/google2fa": "^8.0.0",
         "paragonie/password_lock": "^3.1.0",
@@ -41,7 +42,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\Fortress\\Tests\\": "tests"
+            "Snicco\\Enterprise\\Bundle\\Fortress\\Tests\\": ["tests", "tests/_support"]
         }
     },
     "minimum-stability": "stable"

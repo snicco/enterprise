@@ -9,9 +9,9 @@
         }
     ],
     "require": {
-        "snicco/kernel": "^1.2.0",
-        "snicco/better-wpdb": "^1.2.0",
-        "snicco/str-arr": "^1.2.0",
+        "snicco/kernel": "^1.2.1",
+        "snicco/better-wpdb": "^1.2.1",
+        "snicco/str-arr": "^1.2.1",
         "league/tactician": "^1.1.0",
         "league/tactician-logger": "^0.11.0",
         "webmozart/assert": "^1.10.0",

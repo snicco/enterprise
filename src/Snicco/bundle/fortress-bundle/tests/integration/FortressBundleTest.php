@@ -118,7 +118,37 @@ final class FortressBundleTest extends WPTestCase
 
         $kernel->boot();
     }
-
+    
+    /**
+     * @test
+     */
+    public function that_an_exception_is_thrown_if_the_cli_bundle_is_not_used(): void
+    {
+        $kernel = new Kernel(
+            $this->newContainer(),
+            Environment::testing(),
+            $this->directories
+        );
+        
+        $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
+            $config->set('kernel.bundles', [
+                Environment::ALL => [
+                    FortressBundle::class,
+                    BetterWPHooksBundle::class,
+                    BetterWPDBBundle::class,
+                    HttpRoutingBundle::class,
+                    ApplicationLayerBundle::class,
+                    EncryptionBundle::class,
+                ],
+            ]);
+        });
+        
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('snicco/better-wp-cli-bundle');
+        
+        $kernel->boot();
+    }
+    
     /**
      * @test
      */
@@ -132,7 +162,7 @@ final class FortressBundleTest extends WPTestCase
 
         $kernel->boot();
 
-        $this->assertTrue($kernel->usesBundle('snicco/auth-bundle'));
+        $this->assertTrue($kernel->usesBundle('snicco/fortress-bundle'));
     }
 
     /**

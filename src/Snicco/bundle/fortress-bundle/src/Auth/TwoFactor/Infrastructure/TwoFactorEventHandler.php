@@ -12,8 +12,11 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeSe
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Event\WPAuthenticateChallengeRedirectShutdownPHP;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Event\WPAuthenticateChallengeUser;
+use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Event\WPAuthenticateRedirectContext;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\MappedEvent\WPAuthenticate;
 
+use function array_replace;
+use function filter_var;
 use function is_string;
 use function wp_authenticate;
 use function wp_safe_redirect;
@@ -97,16 +100,30 @@ final class TwoFactorEventHandler implements EventSubscriber
      */
     private function addArgsFromEnvironment(array $args): array
     {
+        $redirect_to = null;
+        $remember_me = null;
+        
         if (isset($_REQUEST['redirect_to']) && is_string($_REQUEST['redirect_to'])) {
-            $args['redirect_to'] = $_REQUEST['redirect_to'];
+            $redirect_to = $_REQUEST['redirect_to'];
         } elseif (isset($_SERVER['HTTP_REFERER']) && is_string($_SERVER['HTTP_REFERER'])) {
-            $args['redirect_to'] = $_SERVER['HTTP_REFERER'];
+            $redirect_to = $_SERVER['HTTP_REFERER'];
         }
 
         if (isset($_REQUEST['remember_me']) || isset($_REQUEST['rememberme']) || isset($_REQUEST['remember'])) {
+            $remember_me = true;
+        }
+        
+        $context = $this->event_dispatcher->dispatch(
+            new WPAuthenticateRedirectContext($redirect_to, $remember_me)
+        );
+        
+        if(null !== $context->redirect_to) {
+            $args['redirect_to'] = $context->redirect_to;
+        }
+        if($context->remember_me) {
             $args['remember_me'] = 1;
         }
-
+        
         return $args;
     }
 

@@ -6,12 +6,7 @@ namespace Snicco\Enterprise\Bundle\Fortress\Tests\integration\Auth\TwoFactor\Inf
 
 use Snicco\Component\HttpRouting\Http\Psr7\Request;
 use Snicco\Component\HttpRouting\Http\Response\ViewResponse;
-use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\TestableClock\TestClock;
-use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
-use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
-use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
-use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\OTPValidator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeService;
@@ -110,6 +105,27 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
     /**
      * @test
      */
+    public function that_logged_in_users_cant_access_the_route() :void
+    {
+        $user = $this->createAdmin();
+    
+        $this->loginAs($user);
+        
+        $challenge_token = $this->getChallengeService()->createChallenge($user->ID, 10);
+    
+        $browser = $this->getBrowser();
+        $browser->followRedirects(false);
+    
+        $browser->request('GET', "/auth/two-factor/challenge?challenge_id=$challenge_token&redirect_to=/foo&remember_me=1");
+    
+        $response = $browser->lastResponse();
+    
+        $response->assertRedirectPath('/');
+    }
+    
+    /**
+     * @test
+     */
     public function that_an_exception_is_thrown_if_json_is_not_accepted() :void
     {
         $browser = $this->getBrowser();
@@ -139,9 +155,9 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
         
         $this->clock->travelIntoFuture(2);
         
-        $browser->request('POST', '/auth/two-factor/challenge', [
+        $browser->jsonRequest('POST', '/auth/two-factor/challenge', [
             'challenge_id' => $challenge
-        ], [], ['HTTP_ACCEPT' => 'application/json']);
+        ]);
         
         $browser->lastResponse()
                 ->assertStatus(410);
@@ -160,9 +176,9 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
     
         $browser = $this->getBrowser();
     
-        $browser->request('POST', '/auth/two-factor/challenge', [
-            'challenge_id' => substr($challenge, 2).'aa'
-        ], [], ['HTTP_ACCEPT' => 'application/json']);
+        $browser->jsonRequest('POST', '/auth/two-factor/challenge', [
+            'challenge_id' => (string) substr($challenge, 2).'aa'
+        ]);
     
         $browser->lastResponse()
                 ->assertStatus(403);
@@ -181,9 +197,9 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
     
         $browser = $this->getBrowser();
     
-        $browser->request('POST', '/auth/two-factor/challenge', [
-            'challenge_id' => substr($challenge, 0, -2).'aa'
-        ], [], ['HTTP_ACCEPT' => 'application/json']);
+        $browser->jsonRequest('POST', '/auth/two-factor/challenge', [
+            'challenge_id' => (string) substr($challenge, 0, -2).'aa'
+        ]);
     
         $browser->lastResponse()
                 ->assertStatus(403);
@@ -200,9 +216,9 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
     
         $this->clock->travelIntoFuture(2);
     
-        $browser->request('POST', '/auth/two-factor/challenge', [
+        $browser->jsonRequest('POST', '/auth/two-factor/challenge', [
             'challenge_id' => 'foobar'
-        ], [], ['HTTP_ACCEPT' => 'application/json']);
+        ]);
     
         $browser->lastResponse()
                 ->assertStatus(422);
@@ -225,17 +241,17 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
     
         $browser = $this->getBrowser();
     
-        $browser->request('POST', '/auth/two-factor/challenge', [
+        $browser->jsonRequest('POST', '/auth/two-factor/challenge', [
             'challenge_id' => $challenge_token,
             'otp' => 'bar'
-        ], [], ['HTTP_ACCEPT' => 'application/json']);
+        ]);
         
         $response = $browser->lastResponse();
         
         $response->assertUnauthorized();
         $response->assertIsJson();
         $response->assertExactJson([
-            'message' => 'Invalid one-time-password'
+            'message' => 'Invalid one-time-password. Please try again.'
         ]);
         
         $this->assertIsGuest();
@@ -257,11 +273,11 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
         // Must remove our mapped events here because WPBrowser overwrites this function.
         remove_all_filters('set_logged_in_cookie');
     
-        $browser->request('POST', '/auth/two-factor/challenge', [
+        $browser->jsonRequest('POST', '/auth/two-factor/challenge', [
             'challenge_id' => $challenge_token,
             'otp' => 'foo',
             'redirect_to' => '/foo'
-        ], [], ['HTTP_ACCEPT' => 'application/json']);
+        ]);
     
         $response = $browser->lastResponse();
     

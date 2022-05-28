@@ -69,7 +69,12 @@ final class TwoFactorChallengeController extends Controller
 		try {
 			$user_id = $this->challenge_service->getChallengedUser($challenge_id);
 		} catch (TwoFactorChallengeExpired $e) {
-			throw HttpException::fromPrevious(410, $e);
+			
+			return $this->respondWith()
+			            ->json([
+					            'message' => __('This two-factor challenge is expired. Please login again.', 'snicco-fortress'),
+			            ], 410);
+			
 		} catch (MalformedChallengeToken $e) {
 			throw HttpException::fromPrevious(422, $e);
 		} catch (TwoFactorChallengeWasTampered|CouldNotFindChallengeToken $e) {

@@ -21,6 +21,8 @@ use Snicco\Component\TestableClock\Clock;
 use Snicco\Component\TestableClock\SystemClock;
 use Snicco\Component\TestableClock\TestClock;
 use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
+use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIBundle;
+use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIOption;
 use Snicco\Enterprise\Bundle\Fortress\Auth\AuthModule;
 use Snicco\Enterprise\Bundle\Fortress\Auth\AuthModuleOption;
 use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Infrastructure\Fail2BanModule;
@@ -48,7 +50,7 @@ final class FortressBundle implements Bundle
     /**
      * @var string
      */
-    public const ALIAS = 'snicco/auth-bundle';
+    public const ALIAS = 'snicco/fortress-bundle';
     
     /**
      * @var array<class-string<FortressModule>>
@@ -178,6 +180,10 @@ final class FortressBundle implements Bundle
         
         if ( ! $kernel->usesBundle(EncryptionBundle::ALIAS)) {
             throw new RuntimeException(self::ALIAS.' needs the '.EncryptionBundle::ALIAS.' to run.');
+        }
+    
+        if ( ! $kernel->usesBundle(BetterWPCLIBundle::ALIAS) && $kernel->env()->isCli()) {
+            throw new RuntimeException(self::ALIAS.' needs the '.BetterWPCLIBundle::ALIAS.' to run.');
         }
     }
     

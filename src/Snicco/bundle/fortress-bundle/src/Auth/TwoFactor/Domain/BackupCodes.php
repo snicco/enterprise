@@ -10,6 +10,8 @@ use IteratorAggregate;
 use RuntimeException;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\InvalidBackupCode;
 
+use Webmozart\Assert\Assert;
+
 use function array_map;
 use function base64_encode;
 use function explode;
@@ -138,15 +140,10 @@ final class BackupCodes implements IteratorAggregate
      */
     private static function hash(string $string): string
     {
-        /** @var non-empty-string $hashed */
         $hashed = password_hash($string, PASSWORD_BCRYPT);
 
-        // @codeCoverageIgnoreStart
-        if (! is_string($hashed)) {
-            throw new RuntimeException('password_hash returned non-string. This should not happen.');
-        }
-
-        // @codeCoverageIgnoreEnd
+        Assert::stringNotEmpty($hashed, 'password_hash returned non-string. This should not happen.');
+        
         return $hashed;
     }
 }

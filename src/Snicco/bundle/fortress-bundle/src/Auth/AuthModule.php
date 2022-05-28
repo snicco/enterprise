@@ -12,12 +12,17 @@ use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\TestableClock\Clock;
+use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
+use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIOption;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\OTPValidator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeService;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Console\Complete2FaCommand;
+use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Console\Delete2FaCommand;
+use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Console\Initialize2FaCommand;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Google2FaProvider;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Http\Controller\TwoFactorChallengeController;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\MappedEvent\WPAuthenticate;
@@ -55,6 +60,12 @@ final class AuthModule extends FortressModule
             dirname(__DIR__) . '/Auth/TwoFactor/Infrastructure/Http/routes',
         ]);
 
+        $this->addCommands($config, [
+            Initialize2FaCommand::class,
+            Delete2FaCommand::class,
+            Complete2FaCommand::class
+        ]);
+        
         if ($kernel->env()->isTesting()) {
             $config->setIfMissing(
                 'fortress.auth.' . AuthModuleOption::TWO_FACTOR_CHALLENGE_HMAC_KEY,
@@ -154,6 +165,31 @@ final class AuthModule extends FortressModule
                 $container[OTPValidator::class],
             )
         );
+        
+        // Commands
+        $container->shared(Initialize2FaCommand::class, function () use($container, $config){
+            return new Initialize2FaCommand(
+                $container[CommandBus::class],
+                $container[UserProvider::class],
+                $container[TwoFactorSecretGenerator::class],
+                $config->getString('better-wp-cli.'.BetterWPCLIOption::NAME)
+            );
+        });
+        
+        $container->shared(Delete2FaCommand::class, function () use($container){
+            return new Delete2FaCommand(
+                $container[CommandBus::class],
+                $container[UserProvider::class],
+            );
+        });
+    
+        $container->shared(Complete2FaCommand::class, function () use($container){
+            return new Complete2FaCommand(
+                $container[CommandBus::class],
+                $container[UserProvider::class],
+            );
+        });
+        
     }
 
     public function boot(Kernel $kernel): void
