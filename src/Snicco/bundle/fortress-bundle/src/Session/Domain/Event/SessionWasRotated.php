@@ -29,10 +29,16 @@ final class SessionWasRotated implements Event, ExposeToWP
      */
     public string $old_token_hashed;
 
-    public function __construct(int $user_id, string $new_token_plain, string $old_token_hashed)
+    /**
+     * @psalm-readonly
+     */
+    public int $expires_at;
+
+    public function __construct(int $user_id, string $new_token_plain, string $old_token_hashed, int $expires_at)
     {
         $this->user_id = $user_id;
         $this->new_token_plain = $new_token_plain;
         $this->old_token_hashed = $old_token_hashed;
+        $this->expires_at = $expires_at;
     }
 }

@@ -41,7 +41,7 @@ final class SecureWPPasswordsTest extends WPTestCase
             Key::createNewRandomKey(),
             new PasswordHash(8, true)
         );
-        $this->password->alterTable($GLOBALS['wpdb']);
+        SecureWPPasswords::alterTable($GLOBALS['wpdb']);
     }
 
     /**

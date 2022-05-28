@@ -7,8 +7,10 @@ namespace Snicco\Enterprise\Bundle\Fortress\Tests\usecase\Auth\TwoFactor;
 use Codeception\Test\Unit;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\Delete2Fa\Delete2FaSettings;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\TwoFactorCommandHandler;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Domain\UserNotFound;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\InMemoryTwoFactorSettings;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\MD5OTPValidator;
+use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\StubUserExistsProvider as StubUserExistsProviderAlias;
 
 /**
  * @internal
@@ -25,6 +27,7 @@ final class Delete2FaTest extends Unit
         $this->settings = new InMemoryTwoFactorSettings();
         $this->handler = new TwoFactorCommandHandler(
             $this->settings,
+            new StubUserExistsProviderAlias([1]),
             new MD5OTPValidator($this->settings)
         );
     }
@@ -43,5 +46,14 @@ final class Delete2FaTest extends Unit
         $this->handler->delete2Fa(new Delete2FaSettings(1));
 
         $this->assertFalse($this->settings->isSetupCompleteForUser(1));
+    }
+
+    /**
+     * @test
+     */
+    public function that_an_exception_is_thrown_for_missing_users(): void
+    {
+        $this->expectException(UserNotFound::class);
+        $this->handler->delete2Fa(new Delete2FaSettings(12));
     }
 }

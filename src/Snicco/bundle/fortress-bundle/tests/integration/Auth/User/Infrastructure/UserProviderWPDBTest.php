@@ -79,4 +79,22 @@ final class UserProviderWPDBTest extends WPTestCase
 
         $provider->getUserByIdentifier('bogus_1234');
     }
+
+    /**
+     * @test
+     */
+    public function that_user_existence_can_be_checked(): void
+    {
+        $default_admin = new WP_User(1);
+
+        $provider = new UserProviderWPDB();
+
+        $this->assertTrue($provider->exists((string) $default_admin->ID));
+        $this->assertTrue($provider->exists($default_admin->user_login));
+        $this->assertTrue($provider->exists($default_admin->user_email));
+
+        $this->assertFalse($provider->exists('12'));
+        $this->assertFalse($provider->exists('bogus'));
+        $this->assertFalse($provider->exists('bogus@web.de'));
+    }
 }

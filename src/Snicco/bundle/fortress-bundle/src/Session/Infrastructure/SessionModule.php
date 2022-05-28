@@ -11,12 +11,15 @@ use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\TestableClock\SystemClock;
-use Snicco\Enterprise\Bundle\Fortress\Module;
 use Snicco\Enterprise\Bundle\Fortress\Session\Application\SessionCommandHandler;
 use Snicco\Enterprise\Bundle\Fortress\Session\Domain\SessionManager;
 use Snicco\Enterprise\Bundle\Fortress\Session\Domain\SessionRepository;
 use Snicco\Enterprise\Bundle\Fortress\Session\Domain\TimeoutConfig;
-use Snicco\Enterprise\Bundle\Fortress\Session\Infrastructure\MappedEvent\SessionActivityRecorded;
+use Snicco\Enterprise\Bundle\Fortress\Session\Infrastructure\MappedEvent\AuthCookieValid;
+use Snicco\Enterprise\Bundle\Fortress\Session\Infrastructure\MappedEvent\SetLoginCookie;
+use Snicco\Enterprise\Bundle\Fortress\Session\Infrastructure\MappedEvent\WPLogout;
+use Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure\FortressModule;
+use Webmozart\Assert\Assert;
 use WP_User_Meta_Session_Tokens;
 
 use function add_filter;
@@ -24,7 +27,7 @@ use function sprintf;
 
 use const PHP_INT_MAX;
 
-final class SessionModule extends Module
+final class SessionModule extends FortressModule
 {
     public const NAME = 'session';
 
@@ -35,10 +38,6 @@ final class SessionModule extends Module
 
     public function configure(WritableConfig $config, Kernel $kernel): void
     {
-        $config->setIfMissing('snicco_auth.timeouts', [
-            'idle' => 60 * 15,
-            'rotation' => 60 * 5,
-        ]);
         $this->addCommandHandler($config, [
             SessionCommandHandler::class,
         ]);
@@ -51,7 +50,7 @@ final class SessionModule extends Module
 
         $c->shared(
             SessionEventHandler::class,
-            fn () => new SessionEventHandler($c[SessionManager::class])
+            fn () => new SessionEventHandler($c[SessionManager::class], 'snicco_fortress_remember_me')
         );
 
         $c->shared(
@@ -60,7 +59,10 @@ final class SessionModule extends Module
         );
 
         $c->shared(SessionRepository::class, function () use ($c, $config) {
-            $table_name = $GLOBALS['wpdb']->prefix . 'snicco_auth_sessions';
+            $table_name = $GLOBALS['wpdb']->prefix
+                          . $config->getString('fortress.session.' . SessionModuleOption::DB_TABLE_BASENAME);
+
+            Assert::stringNotEmpty($table_name);
 
             return new SessionRepositoryBetterWPDB(
                 $c[BetterWPDB::class],
@@ -73,8 +75,8 @@ final class SessionModule extends Module
             return new SessionManager(
                 $c[EventDispatcher::class],
                 new TimeoutConfig(
-                    $config->getInteger('snicco_auth.timeouts.idle'),
-                    $config->getInteger('snicco_auth.timeouts.rotation'),
+                    $config->getInteger('fortress.session.' . SessionModuleOption::IDLE_TIMEOUT),
+                    $config->getInteger('fortress.session.' . SessionModuleOption::ROTATION_INTERVAL),
                 ),
                 $c[SessionRepository::class],
                 SystemClock::fromUTC()
@@ -89,7 +91,9 @@ final class SessionModule extends Module
         $event_mapper = $c->make(EventMapper::class);
         $event_dispatcher = $c->make(EventDispatcher::class);
 
-        $event_mapper->map('auth_cookie_valid', SessionActivityRecorded::class);
+        $event_mapper->map('auth_cookie_valid', AuthCookieValid::class);
+        $event_mapper->map('set_logged_in_cookie', SetLoginCookie::class);
+        $event_mapper->map('wp_logout', WPLogout::class);
 
         add_filter('session_token_manager', function (string $class) use ($c): string {
             if (WP_User_Meta_Session_Tokens::class !== $class) {

@@ -37,13 +37,13 @@ final class SessionModuleTest extends WPTestCase
         $this->bundle_test = new BundleTest($this->fixturesDir());
         $this->directories = $this->bundle_test->setUpDirectories();
         parent::setUp();
-        SessionRepositoryBetterWPDB::createTable(BetterWPDB::fromWpdb(), 'wp_snicco_auth_sessions');
+        SessionRepositoryBetterWPDB::createTable(BetterWPDB::fromWpdb(), 'wp_snicco_fortress_sessions');
     }
 
     protected function tearDown(): void
     {
         $this->bundle_test->tearDownDirectories();
-        BetterWPDB::fromWpdb()->unprepared('DROP TABLE IF EXISTS wp_snicco_auth_sessions');
+        BetterWPDB::fromWpdb()->unprepared('DROP TABLE IF EXISTS wp_snicco_fortress_sessions');
         parent::tearDown();
     }
 
@@ -125,7 +125,15 @@ final class SessionModuleTest extends WPTestCase
 
         $session = $session_manager->getSession($hashed_token);
 
-        $this->assertSame(time(), $session->lastActivity());
+        $this->assertSame($first_timestamp = time(), $session->lastActivity());
+        
+        sleep(1);
+    
+        wp_validate_auth_cookie($cookie, 'auth');
+    
+        // Should not be updated twice in the same request.
+        $session = $session_manager->getSession($hashed_token);
+        $this->assertSame($first_timestamp, $session->lastActivity());
     }
 
     protected function fixturesDir(): string

@@ -6,8 +6,8 @@ use Codeception\Test\Unit;
 use Codeception\TestCase\WPTestCase;
 use Snicco\Bundle\Testing\Functional\WebTestCase;
 use Psalm\Plugin\EventHandler\AfterClassLikeVisitInterface;
-use Snicco\Enterprise\Bundle\Fortress\Tests\AuthWebTestCase;
 use Psalm\Plugin\EventHandler\Event\AfterClassLikeVisitEvent;
+use Snicco\Enterprise\Bundle\Fortress\Tests\FortressWebTestCase;
 
 final class TestCaseClasses implements AfterClassLikeVisitInterface
 {
@@ -30,7 +30,7 @@ final class TestCaseClasses implements AfterClassLikeVisitInterface
             Unit::class,
             WPTestCase::class,
             WebTestCase::class,
-            AuthWebTestCase::class,
+            FortressWebTestCase::class,
         ];
         
         if (array_intersect($parents, $suppress_for) !== []) {

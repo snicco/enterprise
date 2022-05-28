@@ -9,8 +9,10 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\ResetBackupCode
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\No2FaSettingsFound;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Domain\UserNotFound;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\InMemoryTwoFactorSettings;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\MD5OTPValidator;
+use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\StubUserExistsProvider;
 
 /**
  * @internal
@@ -27,6 +29,7 @@ final class ResetBackupCodesTest extends Unit
         $this->settings = new InMemoryTwoFactorSettings();
         $this->handler = new TwoFactorCommandHandler(
             $this->settings,
+            new StubUserExistsProvider([1]),
             new MD5OTPValidator($this->settings)
         );
     }
@@ -59,5 +62,17 @@ final class ResetBackupCodesTest extends Unit
         $this->assertNotEquals($old_codes, $stored_codes = $this->settings->getBackupCodes(1));
 
         $stored_codes->revoke($new_codes_plain[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function that_an_exception_is_thrown_if_the_user_does_not_exist(): void
+    {
+        $new_codes_plain = BackupCodes::generate();
+
+        $this->expectException(UserNotFound::class);
+
+        $this->handler->resetBackupCodes(new ResetBackupCodes(123, $new_codes_plain));
     }
 }

@@ -14,12 +14,9 @@ use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Application\Fail2BanCommandHandle
 use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Domain\Syslogger;
 use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Infrastructure\MappedEvent\AuthCookieBadHash;
 use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Infrastructure\MappedEvent\WPLoginFailed;
-use Snicco\Enterprise\Bundle\Fortress\Module;
+use Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure\FortressModule;
 
-use const LOG_AUTH;
-use const LOG_PID;
-
-final class Fail2BanModule extends Module
+final class Fail2BanModule extends FortressModule
 {
     /**
      * @var string
@@ -38,12 +35,6 @@ final class Fail2BanModule extends Module
 
     public function configure(WritableConfig $config, Kernel $kernel): void
     {
-        $config->setIfMissing('snicco_auth.fail2ban', [
-            'daemon' => 'snicco_auth',
-            'flags' => LOG_PID,
-            'facility' => LOG_AUTH,
-        ]);
-
         $this->addCommandHandler($config, [
             Fail2BanCommandHandler::class,
         ]);
@@ -59,9 +50,9 @@ final class Fail2BanModule extends Module
             fn (): Fail2BanCommandHandler => new Fail2BanCommandHandler(
                 $container[Syslogger::class] ?? new PHPSyslogger(),
                 [
-                    'daemon' => $config->getString('snicco_auth.fail2ban.daemon'),
-                    'flags' => $config->getInteger('snicco_auth.fail2ban.flags'),
-                    'facility' => $config->getInteger('snicco_auth.fail2ban.facility'),
+                    'daemon' => $config->getString('fortress.fail2ban.' . Fail2BanModuleOption::DAEMON),
+                    'flags' => $config->getInteger('fortress.fail2ban.' . Fail2BanModuleOption::FLAGS),
+                    'facility' => $config->getInteger('fortress.fail2ban.' . Fail2BanModuleOption::FACILITY),
                 ]
             )
         );

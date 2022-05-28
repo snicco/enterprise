@@ -13,6 +13,9 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorS
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\OTPValidator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Domain\UserNotFound;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Domain\UserProvider;
+use function sprintf;
 
 final class TwoFactorCommandHandler
 {
@@ -20,17 +23,23 @@ final class TwoFactorCommandHandler
 
     private OTPValidator $validator;
 
+    private UserProvider $user_provider;
+
     public function __construct(
         TwoFactorSettings $two_factor_settings,
+        UserProvider $user_provider,
         OTPValidator $validator
     ) {
         $this->two_factor_settings = $two_factor_settings;
         $this->validator = $validator;
+        $this->user_provider = $user_provider;
     }
 
     public function initialize2Fa(Initialize2Fa $command): void
     {
         $user = $command->user_id;
+
+        $this->guardAgainstMissingUserId($user);
 
         $this->two_factor_settings->initiateSetup(
             $user,
@@ -42,6 +51,8 @@ final class TwoFactorCommandHandler
     public function complete2FaSetup(Complete2FaSetup $command): void
     {
         $user_id = $command->user_id;
+
+        $this->guardAgainstMissingUserId($user_id);
 
         if ($this->two_factor_settings->isSetupCompleteForUser($user_id)) {
             throw TwoFactorSetupAlreadyCompleted::forUser($user_id);
@@ -60,14 +71,27 @@ final class TwoFactorCommandHandler
 
     public function delete2Fa(Delete2FaSettings $command): void
     {
+        $this->guardAgainstMissingUserId($command->user_id);
+
         $this->two_factor_settings->delete($command->user_id);
     }
 
     public function resetBackupCodes(ResetBackupCodes $command): void
     {
+        $user_id = $command->user_id;
+
+        $this->guardAgainstMissingUserId($user_id);
+
         $this->two_factor_settings->updateBackupCodes(
-            $command->user_id,
+            $user_id,
             BackupCodes::fromPlainCodes($command->new_codes)
         );
+    }
+
+    private function guardAgainstMissingUserId(int $user_id): void
+    {
+        if (! $this->user_provider->exists((string) $user_id)) {
+            throw new UserNotFound(sprintf('No user with the identifier [%d] exists.', $user_id));
+        }
     }
 }

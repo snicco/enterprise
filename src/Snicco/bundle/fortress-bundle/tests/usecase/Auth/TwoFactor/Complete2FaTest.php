@@ -10,8 +10,11 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\TwoFactorComman
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\InvalidOTPCode;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Domain\UserNotFound;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\InMemoryTwoFactorSettings;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\MD5OTPValidator;
+
+use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\StubUserExistsProvider;
 
 use function md5;
 
@@ -45,6 +48,7 @@ final class Complete2FaTest extends Unit
         ]);
         $this->handler = new TwoFactorCommandHandler(
             $this->settings,
+            new StubUserExistsProvider([1, 2, 3]),
             new MD5OTPValidator($this->settings)
         );
     }
@@ -92,5 +96,15 @@ final class Complete2FaTest extends Unit
         $this->expectExceptionMessage('user [1]');
 
         $this->handler->complete2FaSetup(new Complete2FaSetup(1, $this->invalid_otp));
+    }
+
+    /**
+     * @test
+     */
+    public function that_the_two_factor_setup_can_not_be_completed_for_a_missing_user(): void
+    {
+        $this->expectException(UserNotFound::class);
+
+        $this->handler->complete2FaSetup(new Complete2FaSetup(12, $this->invalid_otp));
     }
 }

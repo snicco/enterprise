@@ -50,4 +50,14 @@ final class UserProviderWPDB implements PasswordAuthenticationUserProvider
 
         throw new InvalidPassword(sprintf('Invalid password [%s] for user %s.', $plain_text_password, $user->ID));
     }
+
+    public function exists(string $identifier): bool
+    {
+        try {
+            return 0 !== $this->getUserByIdentifier($identifier)
+                ->ID;
+        } catch (UserNotFound $e) {
+            return false;
+        }
+    }
 }

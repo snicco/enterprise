@@ -11,7 +11,7 @@ use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\HttpRouting\Routing\UrlGenerator\UrlGenerator;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Fortress\Auth\Authenticator\Infrastructure\Http\Controller\TwoFactorChallengeController;
+use Snicco\Component\TestableClock\Clock;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\OTPValidator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeRepository;
@@ -19,17 +19,21 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeSe
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Google2FaProvider;
+use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Http\Controller\TwoFactorChallengeController;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\MappedEvent\WPAuthenticate;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\TwoFactorEventHandler;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
-use Snicco\Enterprise\Bundle\Fortress\Module;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Domain\UserProvider;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Infrastructure\UserProviderWPDB;
+use Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure\FortressModule;
+use Webmozart\Assert\Assert;
 
 use function bin2hex;
 use function dirname;
 use function random_bytes;
 
-final class AuthModule extends Module
+final class AuthModule extends FortressModule
 {
     /**
      * @var string
@@ -48,16 +52,14 @@ final class AuthModule extends Module
         ]);
 
         $this->addRouteDirectories($config, [
-            dirname(__DIR__) . '/Auth/Authenticator/Infrastructure/Http/routes',
-        ]);
-
-        $config->setIfMissing('snicco_auth.authentication.table_names', [
-            '2fa_settings' => 'snicco_auth_2fa_settings',
-            '2fa_challenges' => 'snicco_auth_2fa_challenges',
+            dirname(__DIR__) . '/Auth/TwoFactor/Infrastructure/Http/routes',
         ]);
 
         if ($kernel->env()->isTesting()) {
-            $config->setIfMissing('snicco_auth.authentication.2fa_challenge_hmac', bin2hex(random_bytes(32)));
+            $config->setIfMissing(
+                'fortress.auth.' . AuthModuleOption::TWO_FACTOR_CHALLENGE_HMAC_KEY,
+                bin2hex(random_bytes(32))
+            );
         }
     }
 
@@ -70,6 +72,7 @@ final class AuthModule extends Module
             TwoFactorCommandHandler::class,
             fn (): TwoFactorCommandHandler => new TwoFactorCommandHandler(
                 $container[TwoFactorSettings::class],
+                $container[UserProvider::class],
                 $container[OTPValidator::class]
             )
         );
@@ -83,10 +86,11 @@ final class AuthModule extends Module
             $container,
             $config
         ): TwoFactorSettingsBetterWPDB {
-            /** @var non-empty-string $table_name */
             $table_name = $GLOBALS['wpdb']->prefix . $config->getString(
-                'snicco_auth.authentication.table_names.2fa_settings'
+                'fortress.auth.' . AuthModuleOption::TWO_FACTOR_SETTINGS_TABLE_BASENAME
             );
+
+            Assert::stringNotEmpty($table_name);
 
             return new TwoFactorSettingsBetterWPDB(
                 $container[BetterWPDB::class],
@@ -108,22 +112,25 @@ final class AuthModule extends Module
             $container,
             $config
         ): TwoFactorChallengeRepositoryBetterWPDB {
-            /** @var non-empty-string $table_name */
             $table_name = $GLOBALS['wpdb']->prefix . $config->getString(
-                'snicco_auth.authentication.table_names.2fa_challenges'
+                'fortress.auth.' . AuthModuleOption::TWO_FACTOR_CHALLENGES_TABLE_BASENAME
             );
+
+            Assert::stringNotEmpty($table_name);
 
             return new TwoFactorChallengeRepositoryBetterWPDB(
                 $container[BetterWPDB::class],
-                $table_name
+                $table_name,
+                $container[Clock::class]
             );
         });
 
         $container->shared(
             TwoFactorChallengeService::class,
             fn (): TwoFactorChallengeService => new TwoFactorChallengeService(
-                $config->getString('snicco_auth.authentication.2fa_challenge_hmac'),
+                $config->getString('fortress.auth.' . AuthModuleOption::TWO_FACTOR_CHALLENGE_HMAC_KEY),
                 $container[TwoFactorChallengeRepository::class],
+                $container[Clock::class]
             )
         );
 
@@ -137,11 +144,14 @@ final class AuthModule extends Module
             )
         );
 
+        $container->shared(UserProvider::class, fn (): UserProviderWPDB => new UserProviderWPDB());
+
         // Controller
         $container->shared(
             TwoFactorChallengeController::class,
             fn (): TwoFactorChallengeController => new TwoFactorChallengeController(
-                $container[TwoFactorChallengeService::class]
+                $container[TwoFactorChallengeService::class],
+                $container[OTPValidator::class],
             )
         );
     }

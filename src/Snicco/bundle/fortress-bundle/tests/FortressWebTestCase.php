@@ -10,7 +10,7 @@ use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Directories;
 use Snicco\Component\Kernel\ValueObject\Environment;
 
-abstract class AuthWebTestCase extends WebTestCase
+abstract class FortressWebTestCase extends WebTestCase
 {
     protected function createKernel(): callable
     {

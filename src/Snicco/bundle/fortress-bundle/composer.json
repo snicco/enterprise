@@ -21,6 +21,8 @@
         "snicco/encryption-bundle": "^1.2.0",
         "snicco/better-wpdb": "^1.2.0",
         "snicco/testable-clock": "^1.2.0",
+        "snicco/content-negotiation-middleware" : "^1.2.0",
+        "snicco/payload-middleware" : "^1.2.0",
         "webmozart/assert": "^1.10.0",
         "pragmarx/google2fa": "^8.0.0",
         "paragonie/password_lock": "^3.1.0",

@@ -201,7 +201,12 @@ final class SessionManager
             );
 
             $this->event_dispatcher->dispatch(
-                new SessionWasRotated($user_id, $new_token_raw, $old_token)
+                new SessionWasRotated(
+                    $user_id,
+                    $new_token_raw,
+                    $old_token,
+                    $session->expiresAt()
+                )
             );
 
             $this->rotated_sessions[$old_token] = $new_token_hashed;

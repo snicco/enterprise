@@ -118,7 +118,14 @@ final class TwoFactorChallengeService
 
         return $challenge->user_id;
     }
-
+    
+    public function invalidate(string $challenge_id) :void
+    {
+        $this->challenge_repository->destroy(
+            $this->splitUserToken($challenge_id)[0]
+        );
+    }
+    
     private function getHashedValidator(string $plain_text_validator, int $user_id, int $expires_at): string
     {
         $json = json_encode([

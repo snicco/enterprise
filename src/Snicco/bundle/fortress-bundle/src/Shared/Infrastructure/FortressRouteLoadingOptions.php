@@ -7,12 +7,12 @@ namespace Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure;
 use Snicco\Component\HttpRouting\Routing\RouteLoader\RouteLoadingOptions;
 use Snicco\Component\HttpRouting\Routing\RoutingConfigurator\RoutingConfigurator;
 
-final class AuthRouteLoadingOptions implements RouteLoadingOptions
+final class FortressRouteLoadingOptions implements RouteLoadingOptions
 {
     /**
      * @var string
      */
-    public const AUTH_ROUTE_FILE_IDENTIFIER = 'snicco_auth';
+    public const ROUTE_FILE_IDENTIFIER = 'fortress';
 
     private RouteLoadingOptions $default_options;
 
@@ -26,7 +26,7 @@ final class AuthRouteLoadingOptions implements RouteLoadingOptions
 
     public function getApiRouteAttributes(string $file_basename, ?string $parsed_version): array
     {
-        if (self::AUTH_ROUTE_FILE_IDENTIFIER !== $file_basename) {
+        if (self::ROUTE_FILE_IDENTIFIER !== $file_basename) {
             return $this->default_options->getApiRouteAttributes(
                 $file_basename,
                 $parsed_version
@@ -35,13 +35,13 @@ final class AuthRouteLoadingOptions implements RouteLoadingOptions
 
         return [
             RoutingConfigurator::PREFIX_KEY => $this->auth_prefix . '/api',
-            RoutingConfigurator::NAME_KEY => 'snicco_auth',
+            RoutingConfigurator::NAME_KEY => 'fortress',
         ];
     }
 
     public function getRouteAttributes(string $file_basename): array
     {
-        if (self::AUTH_ROUTE_FILE_IDENTIFIER !== $file_basename) {
+        if (self::ROUTE_FILE_IDENTIFIER !== $file_basename) {
             return $this->default_options->getRouteAttributes(
                 $file_basename,
             );
@@ -49,7 +49,7 @@ final class AuthRouteLoadingOptions implements RouteLoadingOptions
 
         return [
             RoutingConfigurator::PREFIX_KEY => $this->auth_prefix,
-            RoutingConfigurator::NAME_KEY => self::AUTH_ROUTE_FILE_IDENTIFIER,
+            RoutingConfigurator::NAME_KEY => self::ROUTE_FILE_IDENTIFIER,
         ];
     }
 }

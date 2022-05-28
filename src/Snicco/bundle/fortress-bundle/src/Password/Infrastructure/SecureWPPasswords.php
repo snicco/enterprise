@@ -43,12 +43,13 @@ final class SecureWPPasswords
         $this->wp_hasher = $wp_hasher;
         $this->defuse_prefix = Hex::encode(Core::CURRENT_VERSION);
     }
-
-    public function alterTable(wpdb $wpdb): void
+    
+    public static function alterTable(wpdb $wpdb): void
     {
+        $users_table = $wpdb->users;
         // Can't use better wpdb here because it would crash due to the invalid default date value
         // for user_registered.
-        $wpdb->query(sprintf('ALTER TABLE `%s` MODIFY COLUMN user_pass VARCHAR(300);', $this->users_table));
+        $wpdb->query(sprintf('ALTER TABLE `%s` MODIFY COLUMN user_pass VARCHAR(300);', $users_table));
     }
 
     public function hash(string $plain_text_password): string

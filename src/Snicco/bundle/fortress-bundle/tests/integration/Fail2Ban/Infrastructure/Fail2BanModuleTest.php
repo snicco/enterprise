@@ -13,6 +13,8 @@ use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Domain\Syslogger;
 use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Infrastructure\BanworthyEvent;
+use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Infrastructure\Fail2BanModule;
+use Snicco\Enterprise\Bundle\Fortress\FortressOption;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\TestSysLogger;
 
 use function dirname;
@@ -74,7 +76,7 @@ final class Fail2BanModuleTest extends WPTestCase
 
         $test_syslogger->assertLogOpenedForFacility(LOG_AUTH);
         $test_syslogger->assertLogOpenedWithFlags(LOG_PID);
-        $test_syslogger->assertLogOpenedWithPrefix('snicco_auth');
+        $test_syslogger->assertLogOpenedWithPrefix('snicco_fortress');
 
         $test_syslogger->assertLogEntry(LOG_WARNING, $event1->message() . ' from ' . (string) $event1->ip());
         $test_syslogger->assertLogEntry(LOG_ERR, $event2->message() . ' from ' . (string) $event2->ip());
@@ -98,7 +100,7 @@ final class Fail2BanModuleTest extends WPTestCase
 
         $test_syslogger->assertLogOpenedForFacility(LOG_AUTH);
         $test_syslogger->assertLogOpenedWithFlags(LOG_PID);
-        $test_syslogger->assertLogOpenedWithPrefix('snicco_auth');
+        $test_syslogger->assertLogOpenedWithPrefix('snicco_fortress');
 
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
@@ -112,9 +114,10 @@ final class Fail2BanModuleTest extends WPTestCase
     {
         $test_syslogger = new TestSysLogger();
 
+        // Disable session module here to not create tables
         $this->kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
-            $config->set('snicco_auth.modules', [
-                'fail2ban',
+            $config->set('fortress.' . FortressOption::MODULES, [
+                Fail2BanModule::NAME,
             ]);
         });
 
@@ -135,7 +138,7 @@ final class Fail2BanModuleTest extends WPTestCase
 
         $test_syslogger->assertLogOpenedForFacility(LOG_AUTH);
         $test_syslogger->assertLogOpenedWithFlags(LOG_PID);
-        $test_syslogger->assertLogOpenedWithPrefix('snicco_auth');
+        $test_syslogger->assertLogOpenedWithPrefix('snicco_fortress');
 
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 

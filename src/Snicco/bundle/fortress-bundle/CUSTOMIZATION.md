@@ -12,3 +12,4 @@
 - Menu in sidebar
 - Admin views
 - Log location and log prefix for request and cli.
+- db tables

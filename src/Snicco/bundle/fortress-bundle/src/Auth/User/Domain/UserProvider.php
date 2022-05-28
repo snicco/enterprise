@@ -12,4 +12,6 @@ interface UserProvider
      * @throws UserNotFound
      */
     public function getUserByIdentifier(string $identifier): WP_User;
+
+    public function exists(string $identifier): bool;
 }

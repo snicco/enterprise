@@ -76,7 +76,7 @@ final class TwoFactorEventHandler implements EventSubscriber
             TwoFactorAuthenticator::CHALLENGE_ID => $challenge_id,
         ]);
 
-        $redirect_url = $this->url_generator->toRoute('snicco_auth.2fa.challenge', $route_args);
+        $redirect_url = $this->url_generator->toRoute('fortress.2fa.challenge', $route_args);
 
         $event = $this->event_dispatcher->dispatch(
             new WPAuthenticateChallengeRedirectShutdownPHP(

@@ -10,6 +10,7 @@ use Snicco\Bundle\Testing\Bundle\BundleTestHelpers;
 use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
+use Snicco\Enterprise\Bundle\Fortress\Password\Infrastructure\PasswordModuleOption;
 use stdClass;
 use WP_Error;
 use WP_User;
@@ -342,7 +343,10 @@ final class PasswordPolicy_InAdminAreaTest extends WPTestCase
     public function that_users_roles_can_be_excluded_from_the_policy(): void
     {
         $this->kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
-            $config->set('snicco_auth.password.password_policy_excluded_roles', ['administrator']);
+            $config->set(
+                'fortress.password.' . PasswordModuleOption::PASSWORD_POLICY_EXCLUDED_ROLES,
+                ['administrator']
+            );
         });
         $this->kernel->boot();
 

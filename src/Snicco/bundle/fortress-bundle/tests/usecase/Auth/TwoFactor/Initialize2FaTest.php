@@ -9,8 +9,10 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\Initialize2Fa\I
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\TwoFactorCommandHandler;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorSetupAlreadyCompleted;
+use Snicco\Enterprise\Bundle\Fortress\Auth\User\Domain\UserNotFound;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\InMemoryTwoFactorSettings;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\MD5OTPValidator;
+use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\StubUserExistsProvider;
 
 /**
  * @internal
@@ -27,6 +29,7 @@ final class Initialize2FaTest extends Unit
         $this->settings = new InMemoryTwoFactorSettings();
         $this->handler = new TwoFactorCommandHandler(
             $this->settings,
+            new StubUserExistsProvider([1]),
             new MD5OTPValidator($this->settings)
         );
     }
@@ -64,6 +67,20 @@ final class Initialize2FaTest extends Unit
 
         $this->expectException(TwoFactorSetupAlreadyCompleted::class);
         $this->expectExceptionMessage('user [1]');
+
+        $this->handler->initialize2Fa($command);
+    }
+
+    /**
+     * @test
+     */
+    public function that_an_exception_is_thrown_if_the_user_does_not_exist(): void
+    {
+        $codes = BackupCodes::generate();
+
+        $command = new Initialize2Fa(212, 'super-secret-key', $codes);
+
+        $this->expectException(UserNotFound::class);
 
         $this->handler->initialize2Fa($command);
     }

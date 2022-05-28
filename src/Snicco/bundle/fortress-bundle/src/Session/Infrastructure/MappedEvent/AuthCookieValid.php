@@ -11,8 +11,12 @@ use WP_User;
 
 use function time;
 use function wp_doing_ajax;
+use function wp_validate_auth_cookie;
 
-final class SessionActivityRecorded implements MappedHook
+/**
+ * @see wp_validate_auth_cookie()
+ */
+final class AuthCookieValid implements MappedHook
 {
     use ClassAsPayload;
     use ClassAsName;

@@ -18,6 +18,7 @@ use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Bundle\ApplicationLayer\Command\CommandBus;
 use Snicco\Enterprise\Bundle\Fortress\Auth\Authenticator\Domain\TwoFactorAuthenticator;
+use Snicco\Enterprise\Bundle\Fortress\Auth\AuthModuleOption;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\Complete2Fa\Complete2FaSetup;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Application\Initialize2Fa\Initialize2Fa;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\BackupCodes;
@@ -41,7 +42,7 @@ use const PHP_URL_QUERY;
 /**
  * @internal
  */
-final class TwoFactorChallenges_WP_signon_Test extends WPTestCase
+final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
 {
     use CreateWordPressUsers;
     use BundleTestHelpers;
@@ -60,8 +61,8 @@ final class TwoFactorChallenges_WP_signon_Test extends WPTestCase
             $this->directories
         );
         $this->kernel->afterConfigurationLoaded(function (WritableConfig $c): void {
-            $c->set('snicco_auth.authentication.table_names.2fa_settings', 'auth_2fa_settings');
-            $c->set('snicco_auth.authentication.table_names.2fa_challenges', 'auth_2fa_challenges');
+            $c->set('fortress.auth.' . AuthModuleOption::TWO_FACTOR_SETTINGS_TABLE_BASENAME, 'auth_2fa_settings');
+            $c->set('fortress.auth.' . AuthModuleOption::TWO_FACTOR_CHALLENGES_TABLE_BASENAME, 'auth_2fa_challenges');
         });
         $this->container = $this->kernel->container();
         parent::setUp();

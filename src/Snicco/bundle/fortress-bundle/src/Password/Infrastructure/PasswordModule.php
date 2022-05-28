@@ -6,23 +6,23 @@ namespace Snicco\Enterprise\Bundle\Fortress\Password\Infrastructure;
 
 use Defuse\Crypto\Key;
 use PasswordHash;
+use Snicco\Bundle\Encryption\Option\EncryptionOption;
 use Snicco\Component\BetterWPDB\BetterWPDB;
 use Snicco\Component\BetterWPHooks\EventMapping\EventMapper;
 use Snicco\Component\EventDispatcher\EventDispatcher;
 use Snicco\Component\Kernel\Configuration\ReadOnlyConfig;
-use Snicco\Component\Kernel\Configuration\WritableConfig;
 use Snicco\Component\Kernel\DIContainer;
 use Snicco\Component\Kernel\Kernel;
-use Snicco\Enterprise\Bundle\Fortress\Module;
 use Snicco\Enterprise\Bundle\Fortress\Password\Domain\PasswordPolicy;
 use Snicco\Enterprise\Bundle\Fortress\Password\Infrastructure\MappedEvent\ResettingPassword;
 use Snicco\Enterprise\Bundle\Fortress\Password\Infrastructure\MappedEvent\UpdatingUserInAdminArea;
 use Snicco\Enterprise\Bundle\Fortress\Password\Infrastructure\Pluggable\PasswordPluggable;
+use Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure\FortressModule;
 
 use const ABSPATH;
 use const WPINC;
 
-final class PasswordModule extends Module
+final class PasswordModule extends FortressModule
 {
     /**
      * @var string
@@ -34,11 +34,6 @@ final class PasswordModule extends Module
         return self::NAME;
     }
 
-    public function configure(WritableConfig $config, Kernel $kernel): void
-    {
-        $config->setIfMissing('snicco_auth.password.password_policy_excluded_roles', []);
-    }
-
     public function register(Kernel $kernel): void
     {
         $c = $kernel->container();
@@ -46,7 +41,7 @@ final class PasswordModule extends Module
 
         $c->shared(PasswordEventHandler::class, fn (): PasswordEventHandler => new PasswordEventHandler(
             new PasswordPolicy(),
-            $config->getListOfStrings('snicco_auth.password.password_policy_excluded_roles')
+            $config->getListOfStrings('fortress.password.' . PasswordModuleOption::PASSWORD_POLICY_EXCLUDED_ROLES)
         ));
     }
 
@@ -72,7 +67,11 @@ final class PasswordModule extends Module
         PasswordPluggable::set(
             new SecureWPPasswords(
                 $container[BetterWPDB::class],
-                Key::loadFromAsciiSafeString($config->getString('snicco_auth.encryption_secret')),
+                Key::loadFromAsciiSafeString(
+                    $config->getString(
+                        'encryption.' . EncryptionOption::KEY_ASCII
+                    )
+                ),
                 $wp_hasher
             )
         );
