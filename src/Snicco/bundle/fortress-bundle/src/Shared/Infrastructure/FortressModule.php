@@ -73,6 +73,7 @@ abstract class FortressModule
      */
     public function addCommands(WritableConfig $config, array $command_classes) :void
     {
+        $config->setIfMissing('better-wp-cli.' . BetterWPCLIOption::COMMANDS, []);
         $config->appendToList('better-wp-cli.'.BetterWPCLIOption::COMMANDS, $command_classes);
     }
     
