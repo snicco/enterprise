@@ -10,6 +10,8 @@ use Snicco\Enterprise\Component\Condition\All;
 use Snicco\Enterprise\Component\Condition\CallableCondition;
 use Snicco\Enterprise\Component\Condition\Tests\CreateContext;
 
+use const PHP_VERSION;
+
 /**
  * @internal
  */
@@ -44,4 +46,5 @@ final class AllTest extends Unit
 
         $this->assertFalse($condition->isTruthy($this->createContext()));
     }
+    
 }

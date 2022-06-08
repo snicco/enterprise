@@ -20,5 +20,6 @@ modules:
     WPCLI:
       path: "%E2E_TESTING_WP_ROOT_FOLDER%"
       throw: false
+      allow-root: true
       env:
         disable-auto-update: true

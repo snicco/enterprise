@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+
+  nginx:
+    ports:
+      - "80:80"
+      - "443:443"
+
+  mailhog:
+    ports:
+      - "8025:8025" # web ui
+
+  mariadb:
+    ports:
+      - "3306:3306"

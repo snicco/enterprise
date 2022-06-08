@@ -1,0 +1,99 @@
+version: "3.9"
+
+volumes:
+  wordpress:
+  wordpress_src:
+  db:
+
+services:
+
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: nginx.dockerfile
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/var/www/html
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    environment:
+      MARIADB_DATABASE: snicco_enterprise
+      MARIADB_USER: snicco
+      MARIADB_PASSWORD: snicco
+      MARIADB_ROOT_PASSWORD: root_password
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql snicco_enterprise -usnicco -psnicco -e 'SELECT 1;'  || exit 1" ]
+      interval: 0.1s
+      retries: 20
+    volumes:
+      - db:/var/lib/mysql
+
+  wordpress:
+    build:
+      context: docker/wordpress
+      dockerfile: wordpress.dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION:-7.4}
+        - WP_VERSION=${WP_VERSION:-6.0.0}
+    container_name: wordpress
+    depends_on:
+      mariadb:
+          condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: snicco_enterprise
+      WORDPRESS_DB_USER: snicco
+      WORDPRESS_DB_PASSWORD: snicco
+      XDEBUG_CONFIG: remote_host=host.docker.internal
+    volumes:
+      - wordpress:/var/www/html
+      # The WordPress image will download WordPress into /usr/src/wordpress on then mount that as a volume
+      # to /var/www/html the first time the image is built.
+      # We create a second volume only containing the WordPress core files.
+      # We do this because the default "wordpress" volume can be manipulated in the admin UI.
+      # See: https://github.com/docker-library/wordpress/blob/master/latest/php7.4/fpm-alpine/Dockerfile#L108
+      - wordpress_src:/usr/src/wordpress:cached
+
+  wp:
+    container_name: wp
+    build:
+      context: docker/wp
+      dockerfile: wp.dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION:-7.4}
+        - WP_CLI_VERSION=${WP_CLI_VERSION:-2.6.0}
+    depends_on:
+      - wordpress
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: snicco_enterprise
+      WORDPRESS_DB_USER: snicco
+      WORDPRESS_DB_PASSWORD: snicco
+    entrypoint: [ 'wp', '--allow-root' ]
+    volumes:
+      - wordpress:/var/www/html
+
+  codeception:
+    image: codeception/codeception
+    depends_on:
+      - wordpress
+    volumes:
+      - .:/project
+      - wordpress:/project/vendor/wordpress/wordpress
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025" # smtp server
+
+  lint:
+    build:
+      context: docker/lint
+      dockerfile: lint.dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION:-7.4}
+    volumes:
+      - .:/project

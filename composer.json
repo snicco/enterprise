@@ -61,7 +61,6 @@
         "lucatume/wp-browser": "3.1.6",
         "php-stubs/wordpress-stubs": "^5.9.3",
         "phpunit/phpunit": "9.5.13",
-        "rector/rector": "0.12.18",
         "snicco/debug-bundle": "^1.2.0",
         "snicco/event-dispatcher-testing": "^1.2.0",
         "snicco/testing-bundle": "^1.2.0",
@@ -124,6 +123,12 @@
         "allow-plugins": false
     },
     "scripts": {
+        "docker:local" : [
+            "docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build"
+        ],
+        "docker:down" : [
+            "docker compose -f docker-compose.yml down"
+        ],
         "merge": [
             "vendor/bin/monorepo-builder merge",
             "composer dump-autoload"
@@ -158,17 +163,17 @@
             "vendor/bin/codecept build"
         ],
         "test:unit": [
-            "vendor/bin/codecept run unit",
-            "vendor/bin/codecept run *::unit"
+            "docker compose run --rm -it codeception run unit",
+            "docker compose run --rm -it codeception run *::unit"
         ],
         "test:wpunit": [
-            "vendor/bin/codecept run *::wpunit"
+            "docker compose run --rm -it codeception run *::wpunit"
         ],
         "test:integration": [
-            "vendor/bin/codecept run *::integration"
+            "docker compose run --rm -it codeception run *::integration"
         ],
         "test:usecase": [
-            "vendor/bin/codecept run *::usecase"
+            "docker compose run --rm -it codeception run *::usecase"
         ],
         "test:coverage": [
             "@test:unit --coverage --coverage-xml unit-coverage.xml",
