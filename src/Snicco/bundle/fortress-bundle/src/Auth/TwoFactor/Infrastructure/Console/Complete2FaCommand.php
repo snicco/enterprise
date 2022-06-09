@@ -48,7 +48,7 @@ final class Complete2FaCommand extends Command
         
         $style = new SniccoStyle($input, $output);
         
-        $style->success("Two-Factor setup has been completed for user [$user_id].");
+        $style->success(sprintf('Two-Factor setup has been completed for user [%s].', $user_id));
         
         return self::SUCCESS;
     }

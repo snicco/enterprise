@@ -65,7 +65,7 @@ final class Delete2FaCommand extends Command
             )
         );
         
-        $style->success("Two-Factor-Authentication settings have been deleted for user with id [$id].");
+        $style->success(sprintf('Two-Factor-Authentication settings have been deleted for user with id [%d].', $id));
         
         return self::SUCCESS;
     }

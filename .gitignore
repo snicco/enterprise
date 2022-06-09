@@ -11,3 +11,6 @@ tests/.env.testing
 /src/Snicco/*/*/tests/_output/*
 /src/Snicco/*/*/vendor
 /src/Snicco/*/*/composer.lock
+
+## make
+make/.env

@@ -47,7 +47,6 @@ services:
       WORDPRESS_DB_NAME: snicco_enterprise
       WORDPRESS_DB_USER: snicco
       WORDPRESS_DB_PASSWORD: snicco
-      XDEBUG_CONFIG: remote_host=host.docker.internal
     volumes:
       - wordpress:/var/www/html
       # The WordPress image will download WordPress into /usr/src/wordpress on then mount that as a volume
@@ -77,7 +76,19 @@ services:
       - wordpress:/var/www/html
 
   codeception:
-    image: codeception/codeception
+    build:
+      context: docker/codeception
+      dockerfile: codeception.dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION:-7.4}
+    environment:
+      # The environment variables are also needed here because codeception
+      # will call wp-cli commands in a child process that inherits from
+      # the current env. If they are not passed here the wp-config values will be wrong.
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: snicco_enterprise
+      WORDPRESS_DB_USER: snicco
+      WORDPRESS_DB_PASSWORD: snicco
     depends_on:
       - wordpress
     volumes:
@@ -88,12 +99,3 @@ services:
     image: mailhog/mailhog
     ports:
       - "1025:1025" # smtp server
-
-  lint:
-    build:
-      context: docker/lint
-      dockerfile: lint.dockerfile
-      args:
-        - PHP_VERSION=${PHP_VERSION:-7.4}
-    volumes:
-      - .:/project

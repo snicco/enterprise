@@ -76,11 +76,11 @@ final class Initialize2FaCommand extends Command
             )
         );
         
-        $style->success("Two-Factor-Authentication has been setup for user with id [$id].");
+        $style->success(sprintf('Two-Factor-Authentication has been setup for user with id [%d].', $id));
         
         $style->note([
             "Copy the below secret into your Two-Factor-Authentication app.",
-             "Then run the '$this->application_name 2fa:complete' command to finish your setup.",
+             sprintf("Then run the '%s 2fa:complete' command to finish your setup.", $this->application_name),
             "You should copy the backup codes to a secure location. You will not be able to see them again."
         ]);
         

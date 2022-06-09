@@ -19,12 +19,12 @@ final class Delete2FaCest
     {
         $user = $I->haveUserInDatabase('foo_user');
         
-        $I->cli(['snicco/fortress 2fa:initialize', "$user"]);
+        $I->cli(['snicco/fortress 2fa:initialize', sprintf('%d', $user)]);
         $I->seeResultCodeIs(0);
         
         $I->canSeeInDatabase('wp_snicco_fortress_2fa_settings', ['user_id' => $user]);
         
-        $I->cli(['snicco/fortress 2fa:delete', "$user"]);
+        $I->cli(['snicco/fortress 2fa:delete', sprintf('%d', $user)]);
         $I->seeResultCodeIs(0);
         
         $I->cantSeeInDatabase('wp_snicco_fortress_2fa_settings', ['user_id' => $user]);
@@ -77,7 +77,7 @@ final class Delete2FaCest
     {
         $user = $I->haveUserInDatabase('foobaz');
         
-        $I->cli(['snicco/fortress 2fa:delete', "$user"]);
+        $I->cli(['snicco/fortress 2fa:delete', sprintf('%d', $user)]);
         $I->seeResultCodeIs(1);
         $I->seeInShellOutput('No 2FA-settings');
     }

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Snicco\Component\Kernel\Kernel;
 use Snicco\Bridge\Pimple\PimpleContainerAdapter;
 use Snicco\Component\BetterWPCLI\WPCLIApplication;
 use Snicco\Component\Kernel\ValueObject\Directories;
@@ -17,7 +18,7 @@ if (! $wp_browser) {
     return;
 }
 
-$kernel = new Snicco\Component\Kernel\Kernel(
+$kernel = new Kernel(
     new PimpleContainerAdapter(),
     Environment::testing(),
     Directories::fromDefaults(__DIR__)

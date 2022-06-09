@@ -102,7 +102,7 @@ final class TwoFactorEventHandler implements EventSubscriber
     {
         $redirect_to = null;
         $remember_me = null;
-        
+
         if (isset($_REQUEST['redirect_to']) && is_string($_REQUEST['redirect_to'])) {
             $redirect_to = $_REQUEST['redirect_to'];
         } elseif (isset($_SERVER['HTTP_REFERER']) && is_string($_SERVER['HTTP_REFERER'])) {
@@ -112,18 +112,19 @@ final class TwoFactorEventHandler implements EventSubscriber
         if (isset($_REQUEST['remember_me']) || isset($_REQUEST['rememberme']) || isset($_REQUEST['remember'])) {
             $remember_me = true;
         }
-        
+
         $context = $this->event_dispatcher->dispatch(
             new WPAuthenticateRedirectContext($redirect_to, $remember_me)
         );
-        
+
         if(null !== $context->redirect_to) {
             $args['redirect_to'] = $context->redirect_to;
         }
+
         if($context->remember_me) {
             $args['remember_me'] = 1;
         }
-        
+
         return $args;
     }
 

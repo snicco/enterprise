@@ -1,11 +1,15 @@
 {
     "name": "snicco/enterprise",
-    "description": "Snicco Enterprise WordPress solutions",
+    "description": "Snicco Enterprise",
     "license": "commercial",
     "authors": [
         {
             "name": "Calvin Alkan",
             "email": "calvin@snicco.de"
+        },
+        {
+            "name": "Marlon Alkan",
+            "email": "marlon@snicco.de"
         }
     ],
     "require": {
@@ -59,11 +63,11 @@
         "codeception/module-webdriver": "^1.0",
         "humbug/php-scoper": "^0.17.2",
         "lucatume/wp-browser": "3.1.6",
-        "php-stubs/wordpress-stubs": "^5.9.3",
+        "php-stubs/wordpress-stubs": "^6.0.0",
         "phpunit/phpunit": "9.5.13",
-        "snicco/debug-bundle": "^1.2.0",
-        "snicco/event-dispatcher-testing": "^1.2.0",
-        "snicco/testing-bundle": "^1.2.0",
+        "snicco/debug-bundle": "^1.2.1",
+        "snicco/event-dispatcher-testing": "^1.2.1",
+        "snicco/testing-bundle": "^1.2.1",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
         "symplify/monorepo-builder": "9.4.70",
@@ -163,8 +167,7 @@
             "vendor/bin/codecept build"
         ],
         "test:unit": [
-            "docker compose run --rm -it codeception run unit",
-            "docker compose run --rm -it codeception run *::unit"
+            "docker compose run --rm -it codeception run unit,*::unit"
         ],
         "test:wpunit": [
             "docker compose run --rm -it codeception run *::wpunit"
@@ -174,6 +177,9 @@
         ],
         "test:usecase": [
             "docker compose run --rm -it codeception run *::usecase"
+        ],
+        "test:cli": [
+            "docker compose run --rm -it codeception run *::cli"
         ],
         "test:coverage": [
             "@test:unit --coverage --coverage-xml unit-coverage.xml",

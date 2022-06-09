@@ -39,7 +39,7 @@ final class Initialize2FaCest
     {
         $calvin_id = $I->haveUserInDatabase('calvin', 'admin', ['user_email' => 'calvin@example.org']);
     
-        $I->cli(['snicco/fortress 2fa:initialize', "$calvin_id"]);
+        $I->cli(['snicco/fortress 2fa:initialize', sprintf('%d', $calvin_id)]);
     
         $I->seeInShellOutput('Secret: ');
         $I->seeInShellOutput('Backup-Codes: ');

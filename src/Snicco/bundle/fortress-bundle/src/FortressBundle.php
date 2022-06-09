@@ -123,9 +123,9 @@ final class FortressBundle implements Bundle
             )
         );
         
-        $container->shared(Clock::class, fn() => $container[TestClock::class] ?? SystemClock::fromUTC());
+        $container->shared(Clock::class, fn(): Clock => $container[TestClock::class] ?? SystemClock::fromUTC());
         
-        $container->shared(AcceptsJsonOnly::class, function () use ($container) {
+        $container->shared(AcceptsJsonOnly::class, function () use ($container): AcceptsJsonOnly {
             $negotiate_content = new NegotiateContent([get_locale()], [
                 'json' => [
                     'extension' => ['json'],
@@ -173,18 +173,24 @@ final class FortressBundle implements Bundle
         if ( ! $kernel->usesBundle(HttpRoutingBundle::ALIAS)) {
             throw new RuntimeException(self::ALIAS.' needs the '.HttpRoutingBundle::ALIAS.' to run.');
         }
-        
+
         if ( ! $kernel->usesBundle(ApplicationLayerBundle::ALIAS)) {
             throw new RuntimeException(self::ALIAS.' needs the '.ApplicationLayerBundle::ALIAS.' to run.');
         }
-        
+
         if ( ! $kernel->usesBundle(EncryptionBundle::ALIAS)) {
             throw new RuntimeException(self::ALIAS.' needs the '.EncryptionBundle::ALIAS.' to run.');
         }
-    
-        if ( ! $kernel->usesBundle(BetterWPCLIBundle::ALIAS) && $kernel->env()->isCli()) {
-            throw new RuntimeException(self::ALIAS.' needs the '.BetterWPCLIBundle::ALIAS.' to run.');
+
+        if ($kernel->usesBundle(BetterWPCLIBundle::ALIAS)) {
+            return;
         }
+
+        if (!$kernel->env()->isCli()) {
+            return;
+        }
+
+        throw new RuntimeException(self::ALIAS.' needs the '.BetterWPCLIBundle::ALIAS.' to run.');
     }
     
     private function copyConfiguration(Kernel $kernel) :void

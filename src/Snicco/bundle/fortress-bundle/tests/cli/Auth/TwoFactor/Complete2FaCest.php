@@ -28,7 +28,7 @@ final class Complete2FaCest
     {
         $user = $I->haveUserInDatabase('calvin');
         
-        $I->cli(['snicco/fortress 2fa:initialize', "$user"]);
+        $I->cli(['snicco/fortress 2fa:initialize', sprintf('%d', $user)]);
         
         $output = $I->grabLastShellOutput();
         $secret = trim(Str::betweenFirst($output, 'Secret: ', "\n"));
@@ -37,7 +37,7 @@ final class Complete2FaCest
         $google_fa = new Google2FA();
         $valid_otp = $google_fa->getCurrentOtp($secret);
     
-        $I->cli(['snicco/fortress 2fa:complete', "$user", $valid_otp]);
+        $I->cli(['snicco/fortress 2fa:complete', sprintf('%d', $user), $valid_otp]);
         $I->seeResultCodeIs(0);
         
         $I->canSeeInDatabase('wp_snicco_fortress_2fa_settings', ['user_id' => $user, 'completed' => 1]);
@@ -50,7 +50,7 @@ final class Complete2FaCest
     {
         $user = $I->haveUserInDatabase('calvin');
         
-        $I->cli(['snicco/fortress 2fa:initialize', "$user"]);
+        $I->cli(['snicco/fortress 2fa:initialize', sprintf('%d', $user)]);
         
         $output = $I->grabLastShellOutput();
         $secret = trim(Str::betweenFirst($output, 'Secret: ', "\n"));
@@ -62,7 +62,7 @@ final class Complete2FaCest
         $invalid = '123456';
         Assert::notSame($invalid, $valid_otp);
         
-        $I->cli(['snicco/fortress 2fa:complete', "$user", $invalid]);
+        $I->cli(['snicco/fortress 2fa:complete', sprintf('%d', $user), $invalid]);
         $I->seeResultCodeIs(1);
         $I->seeInShellOutput('Invalid OTP');
         
