@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  node:
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
+    build:
+      context: ../
+      dockerfile: ./images/node/node.dockerfile
+      target: ${ENV?}
+      args:
+        - NODE_VERSION=${NODE_VERSION?}
+        - ALPINE_VERSION=${ALPINE_VERSION?}
+    volumes:
+      - ../../.:/project

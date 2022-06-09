@@ -36,11 +36,16 @@ endif
 MAKEFLAGS += --warn-undefined-variables # display a warning if variables are used but not defined
 MAKEFLAGS += --no-builtin-rules # remove some "magic make behavior"
 
-
 #
 # =================================================================
 # Include the make env file
 # =================================================================
+#
+# The make/.env file configures the behaviour of make itself.
+# Variables defined in that file are not available to subcommands
+# like docker that are run with make.
+#
+# For that "export VAR_NAME" has to be used in the makefile.
 #
 # The leading "-" tells make to NOT fail if the file
 # does not exist.
@@ -59,9 +64,9 @@ MAKEFLAGS += --no-builtin-rules # remove some "magic make behavior"
 # The default goal must be defined before other Makefiles
 # are included.
 #
-DEFAULT_GOAL := help
+DEFAULT_GOAL=help
 help:
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z0-9_.\/-]+:.*?##/ { printf "  \033[36m%-40s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target> [-n=show full command but dont run it]\033[0m\n"} /^[a-zA-Z0-9_.\/-]+:.*?##/ { printf "  \033[36m%-40s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 #
 # =================================================================
@@ -75,7 +80,7 @@ help:
 # These makefiles cant be run on their own and targets
 # should always be relative to this main Makefile.
 #
-include make/*.mk
+include .make/*.mk
 
 #
 # =================================================================

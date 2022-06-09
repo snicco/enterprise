@@ -127,12 +127,7 @@
         "allow-plugins": false
     },
     "scripts": {
-        "docker:local" : [
-            "docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build"
-        ],
-        "docker:down" : [
-            "docker compose -f docker-compose.yml down"
-        ],
+        "show-help" : "make help",
         "merge": [
             "vendor/bin/monorepo-builder merge",
             "composer dump-autoload"
@@ -186,6 +181,9 @@
             "@test:wpunit --coverage --coverage-xml wpunit-coverage.xml",
             "@test:integration --coverage --coverage-xml integration-coverage.xml"
         ]
+    },
+    "scripts-descriptions": {
+        "show-help" : "We use make instead of comopser scripts. Run composer show-help or make to see all available scripts."
     },
     "replace": {
         "snicco/application-layer-bundle": "self.version",
