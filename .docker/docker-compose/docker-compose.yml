@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 
 services:
   node:
@@ -10,5 +10,28 @@ services:
       args:
         - NODE_VERSION=${NODE_VERSION?}
         - ALPINE_VERSION=${ALPINE_VERSION?}
+        - APP_GROUP_ID=${APP_GROUP_ID?}
+        - APP_GROUP_NAME=${APP_GROUP_NAME?}
+        - APP_USER_ID=${APP_USER_ID?}
+        - APP_USER_NAME=${APP_USER_NAME?}
     volumes:
       - ../../.:/project
+
+  app:
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:${TAG?}
+    build:
+      context: ../
+      dockerfile: ./images/php/app/app.dockerfile
+      target: ${ENV?}
+      args:
+        - PHP_VERSION=${PHP_VERSION?}
+        - ALPINE_VERSION=${ALPINE_VERSION?}
+        - COMPOSER_VERSION=${COMPOSER_VERSION?}
+        - APP_GROUP_ID=${APP_GROUP_ID?}
+        - APP_GROUP_NAME=${APP_GROUP_NAME?}
+        - APP_USER_ID=${APP_USER_ID?}
+        - APP_USER_NAME=${APP_USER_NAME?}
+        - APP_CODE_PATH=${CODE_PATH_HOST?}
+        - ENV=${ENV?}
+    volumes:
+      - ${CODE_PATH_HOST?}:${CODE_PATH_CONTAINER?}

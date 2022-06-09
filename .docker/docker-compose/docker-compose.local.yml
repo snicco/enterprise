@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  node:
+    # Keep the node container running locally.
+    # There are no long-running process defined as entrypoint for the container.
+    # Keeping the container running saves as time for frequently run commands.
+    # @see https://stackoverflow.com/a/55953120
+    tty: true

@@ -29,8 +29,23 @@ export DOCKER_BUILDKIT
 DOCKER_DIR:=./.docker
 DOCKER_ENV_FILE:=$(DOCKER_DIR)/.env
 DOCKER_COMPOSE_DIR:=$(DOCKER_DIR)/docker-compose
-DOCKER_COMPOSE_FILE:=$(DOCKER_COMPOSE_DIR)/docker-compose.yml
+ROOT_DOCKER_COMPOSE_FILE:=$(DOCKER_COMPOSE_DIR)/docker-compose.yml
+ROOT_DOCKER_COMPOSE_FILE_LOCAL:=$(DOCKER_COMPOSE_DIR)/docker-compose.local.yml
 DOCKER_COMPOSE_PROJECT_NAME:=snicco_enterprise_$(ENV)
+
+#
+# =================================================================
+# Parse compose files for environment
+# =================================================================
+#
+# We need to "assemble" the correct combination and order of
+# docker-compose files.
+#
+ifeq ($(ENV),local)
+	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE) -f $(ROOT_DOCKER_COMPOSE_FILE_LOCAL)
+else
+	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE)
+endif
 
 #
 # =================================================================
@@ -41,6 +56,7 @@ DOCKER_COMPOSE_PROJECT_NAME:=snicco_enterprise_$(ENV)
 # in the docker-compose files.
 #
 DOCKER_SERVICE_NODE_NAME:=node
+DOCKER_SERVICE_APP_NAME:=app
 
 #
 # =================================================================
@@ -63,7 +79,7 @@ _DOCKER_COMPOSE_COMMAND:=ENV=$(ENV) \
  APP_GROUP_ID=$(APP_GROUP_ID) \
  docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE)
 
-DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) -f $(DOCKER_COMPOSE_FILE)
+DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) $(ALL_DOCKER_COMPOSE_FILES)
 
 #
 # =================================================================
@@ -83,6 +99,7 @@ DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) -f $(DOCKER_COMPOSE_FILE)
 #
 FORCE_RUN_IN_CONTAINER?=
 MAYBE_RUN_NODE_IN_DOCKER?=
+MAYBE_RUN_APP_IN_DOCKER?=
 
 ifndef FORCE_RUN_IN_CONTAINER
 	# check if 'make' is executed in a docker container,
@@ -95,7 +112,8 @@ ifndef FORCE_RUN_IN_CONTAINER
 	endif
 endif
 ifeq ($(FORCE_RUN_IN_CONTAINER),true)
-	MAYBE_RUN_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) run --rm $(DOCKER_SERVICE_NODE_NAME)
+	MAYBE_RUN_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_NODE_NAME)
+	MAYBE_RUN_APP_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_APP_NAME)
 endif
 
 .PHONY: _validate-docker-env
@@ -131,14 +149,14 @@ docker-prune: ## Remove ALL unused docker resources, including volumes and image
 	@docker system prune -a -f --volumes
 
 .PHONY:docker-image
-docker-image: SERVICE_NAME?=
-docker-image: _validate-docker-env ## Build one or more docker image(s). Usage: make docker-build-image SERVICE_NAME=<service>.
-	$(DOCKER_COMPOSE) build $(SERVICE_NAME)
+docker-image: SERVICE?=
+docker-image: _validate-docker-env ## Build one or more docker image(s). Usage: make docker-build-image SERVICE=<service>.
+	$(DOCKER_COMPOSE) build $(SERVICE)
 
 .PHONY: docker-up
-docker-up: SERVICE_NAME?=
-docker-up: _validate-docker-env ## Create one or more docker container(s). Usage make docker-up SERVICE_NAME=<service>
-	$(DOCKER_COMPOSE) up $(SERVICE_NAME)
+docker-up: SERVICE?=
+docker-up: _validate-docker-env ## Create one or more docker container(s). Usage make docker-up SERVICE=<service...>
+	$(DOCKER_COMPOSE) up -d $(SERVICE)
 
 .PHONY: docker-down
 docker-down: _validate-docker-env ## Stop and remove docker all containers.
