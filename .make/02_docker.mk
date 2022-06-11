@@ -77,6 +77,8 @@ _DOCKER_COMPOSE_COMMAND:=ENV=$(ENV) \
  APP_GROUP_NAME=$(APP_GROUP_NAME) \
  APP_USER_ID=$(APP_USER_ID) \
  APP_GROUP_ID=$(APP_GROUP_ID) \
+ COMPOSER_AUTH_JSON_PATH=$(COMPOSER_AUTH_JSON_PATH) \
+ COMPOSER_CACHE_PATH=$(COMPOSER_CACHE_PATH) \
  docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE)
 
 DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) $(ALL_DOCKER_COMPOSE_FILES)
@@ -126,12 +128,14 @@ _validate-docker-env:
 	@$(if $(APP_GROUP_ID),,$(error APP_GROUP_ID is undefined - Did you run make setup?))
 	@$(if $(DOCKER_REGISTRY),,$(error DOCKER_REGISTRY is undefined - Did you run make setup?))
 	@$(if $(DOCKER_NAMESPACE),,$(error DOCKER_NAMESPACE is undefined - Did you run make setup?))
+	@$(if $(COMPOSER_AUTH_JSON_PATH),,$(error COMPOSER_AUTH_JSON_PATH is undefined - Did you run make setup?))
+	@$(if $(COMPOSER_CACHE_PATH),,$(error COMPOSER_CACHE_PATH is undefined - Did you run make setup?))
 	@echo "All docker variables are set."
 
 
 #
 # =================================================================
-# Genereal purpose docker commands
+# General purpose docker commands
 # =================================================================
 #
 # The following docker commands will all run automatically
@@ -145,19 +149,29 @@ docker-config: _validate-docker-env ## List the merged configuration for current
 	@$(DOCKER_COMPOSE) config
 
 .PHONY: docker-prune
-docker-prune: ## Remove ALL unused docker resources, including volumes and images.
+docker-prune: docker-down ## Remove ALL unused docker resources, including volumes and images.
 	@docker system prune -a -f --volumes
 
-.PHONY:docker-image
-docker-image: SERVICE?=
-docker-image: _validate-docker-env ## Build one or more docker image(s). Usage: make docker-build-image SERVICE=<service>.
+.PHONY: docker-build
+docker-build: SERVICE?=
+docker-build: _validate-docker-env ## Build one or more docker image(s). Usage: make docker-build-image SERVICE=<service...>.
 	$(DOCKER_COMPOSE) build $(SERVICE)
 
 .PHONY: docker-up
 docker-up: SERVICE?=
 docker-up: _validate-docker-env ## Create one or more docker container(s). Usage make docker-up SERVICE=<service...>
-	$(DOCKER_COMPOSE) up -d $(SERVICE)
+	$(DOCKER_COMPOSE) up --build -d $(SERVICE)
+
+.PHONY: docker-run
+docker-run: SERVICE?=
+docker-run: COMMAND?=/bin/sh
+docker-run: _validate-docker-env ## Run a command inside a docker container. Usage make docker-run SERVICE=app COMMAND="php -v".
+	$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) -it --rm  $(SERVICE) $(COMMAND)
 
 .PHONY: docker-down
 docker-down: _validate-docker-env ## Stop and remove docker all containers.
 	@$(DOCKER_COMPOSE) down
+
+.PHONY: docker-volume-prune
+docker-volume-prune: _validate-docker-env docker-down ## Delete all docker volumes.
+	@docker volume prune -f

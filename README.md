@@ -4,3 +4,16 @@
 [![Psalm Type-Coverage](https://shepherd.dev/github/snicco/enterprise/coverage.svg?)](https://shepherd.dev/github/snicco/enterprise)
 [![Psalm level](https://shepherd.dev/github/snicco/snicco/level.svg?)](https://psalm.dev/)
 ![PHP-Versions](https://img.shields.io/badge/PHP-%5E7.4%7C%5E8.0%7C%5E8.1-blue)
+
+Setup:
+
+Required locally:
+- docker 
+- make
+
+```shell
+make # Displays all commands
+make setup # Setup the dev environment or check if all files are up to date.
+
+make docker-up # Bring up docker
+```

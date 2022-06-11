@@ -7,3 +7,23 @@ services:
     # Keeping the container running saves as time for frequently run commands.
     # @see https://stackoverflow.com/a/55953120
     tty: true
+
+  app:
+    volumes:
+      # We need to persist the host composer cache with the docker container.
+      # Otherwise, each composer update will be extremely slow.
+      - ${COMPOSER_CACHE_PATH?}:/home/${APP_USER_NAME?}/.composer/cache
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025" # smtp server
+      - "8025:8025" # WEB UI
+
+  db:
+    ports:
+      # Expose the database in local environment so that we are able
+      # to connect to it using Sequel Ace / Table Plus
+      - "${DB_HOST_PORT:-3306}:3306"
+    volumes:
+      - db:/var/lib/mysql

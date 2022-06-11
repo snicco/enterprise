@@ -18,8 +18,8 @@ setup: .make/.env .docker/.env tests/.env.testing vendor composer.lock node_modu
 # dependencies.
 #
 vendor: composer.json $(wildcard composer.lock) ## Install composer dependencies (in docker)
-	composer install
-	touch vendor # Need to update file timestamp so that we dont run this again if composer has no new
+	$(MAYBE_RUN_APP_IN_DOCKER) composer install
+	@touch vendor # Need to update file timestamp so that we dont run this again if composer has no new
 				 # dependencies.
 
 #
@@ -33,7 +33,7 @@ vendor: composer.json $(wildcard composer.lock) ## Install composer dependencies
 #
 node_modules: package.json $(wildcard package-lock.json) ## Install npm dependencies in a docker container.
 	$(MAYBE_RUN_NODE_IN_DOCKER) npm install
-	touch node_modules # Need to update file timestamp so that we dont run this again if node has no new
+	@touch node_modules # Need to update file timestamp so that we dont run this again if node has no new
 				 # dependencies.
 
 #
@@ -45,8 +45,8 @@ node_modules: package.json $(wildcard package-lock.json) ## Install npm dependen
 # our composer.lock and composer.lock file and dependencies.
 #
 composer.lock: composer.json ## Update composer dependencies (in docker)
-	composer update
-	touch composer.lock # Need to update file timestamp so that we dont run this again if composer has no new
+	$(MAYBE_RUN_APP_IN_DOCKER) composer update
+	@touch composer.lock # Need to update file timestamp so that we dont run this again if composer has no new
 						# dependencies.
 
 #
@@ -71,7 +71,7 @@ package-lock.json: package.json ## Update npm dependencies in a docker container
 	@if [ -f .docker/.env ]; \
 		then\
 			echo 'The .env.dist docker file has changed. Please check your .env docker file and adjust the modified values (This message will not be displayed again)';\
-			touch .docker/.env.dist;\
+			touch .docker/.env;\
 			exit 1;\
 		else\
   			cp .docker/.env.dist .docker/.env;\

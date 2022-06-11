@@ -1,5 +1,8 @@
 version: '3.9'
 
+volumes:
+  db:
+
 services:
   node:
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
@@ -31,7 +34,26 @@ services:
         - APP_GROUP_NAME=${APP_GROUP_NAME?}
         - APP_USER_ID=${APP_USER_ID?}
         - APP_USER_NAME=${APP_USER_NAME?}
-        - APP_CODE_PATH=${CODE_PATH_HOST?}
+        - APP_CODE_PATH=${CODE_PATH_CONTAINER?}
         - ENV=${ENV?}
     volumes:
       - ${CODE_PATH_HOST?}:${CODE_PATH_CONTAINER?}
+    secrets:
+      - source: composer_auth_json
+        target: /home/${APP_USER_NAME?}/.composer/auth.json
+
+  db:
+    image: ${DB_IMAGE?}
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-snicco_enterprise}
+      MYSQL_USER: ${DB_USER:-snicco}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-snicco}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-snicco_root}
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql ${DB_NAME:-snicco_enterprise} -u${DB_USER:-snicco} -p${DB_PASSWORD:-snicco} -e 'SELECT 1;'  || exit 1" ]
+      interval: 0.1s
+      retries: 20
+
+secrets:
+  composer_auth_json:
+    file: ${COMPOSER_AUTH_JSON_PATH}
