@@ -15,3 +15,4 @@ tests/.env.testing
 
 .make/.env
 .docker/.env
+.docker/images/wordpress/nginx/certs

@@ -1,6 +1,9 @@
 ##@ [Development]
 
-.PHONY:npm node commit php
+.PHONY:npm node commit php wp dev-server
+
+dev-server: setup ## Start all development containers.
+	$(MAKE) docker-up SERVICE=wp
 
 node: ## Run any script in the node container. Usage: make npm ARGS="npm run dev".
 	$(MAYBE_RUN_NODE_IN_DOCKER) ${ARGS}
@@ -16,5 +19,9 @@ commit:  ## Launch the interactive commit tool (node required locally).
     fi
 	npm run commit;
 
-php: ## Run any php script in the app container. Usage; make php ARGS="foo.php"
+php: ## Run any php script in the app container. Usage: make php ARGS="foo.php"
 	$(MAYBE_RUN_APP_IN_DOCKER) php ${ARGS}
+
+wp: ARGS?=cli version
+wp: ## Run a wp-cli command in the wp container. Usage: make wp ARGS="plugin list"
+	docker exec -it --user $(APP_USER_NAME) wp wp ${ARGS}

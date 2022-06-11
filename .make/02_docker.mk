@@ -159,8 +159,9 @@ docker-build: _validate-docker-env ## Build one or more docker image(s). Usage: 
 
 .PHONY: docker-up
 docker-up: SERVICE?=
+docker-up: MODE?=--build --detach
 docker-up: _validate-docker-env ## Create one or more docker container(s). Usage make docker-up SERVICE=<service...>
-	$(DOCKER_COMPOSE) up --build -d $(SERVICE)
+	$(DOCKER_COMPOSE) up $(MODE) $(SERVICE)
 
 .PHONY: docker-run
 docker-run: SERVICE?=

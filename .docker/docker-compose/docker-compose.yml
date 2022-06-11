@@ -18,7 +18,7 @@ services:
         - APP_USER_ID=${APP_USER_ID?}
         - APP_USER_NAME=${APP_USER_NAME?}
     volumes:
-      - ../../.:/project
+      - ${CODE_PATH_HOST?}:/project
 
   app:
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:${TAG?}
@@ -53,6 +53,33 @@ services:
       test: [ "CMD-SHELL", "mysql ${DB_NAME:-snicco_enterprise} -u${DB_USER:-snicco} -p${DB_PASSWORD:-snicco} -e 'SELECT 1;'  || exit 1" ]
       interval: 0.1s
       retries: 20
+
+  wp:
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:${WP_VERSION?}-php-${PHP_VERSION?}
+    container_name: wp
+    build:
+      context: ${CODE_PATH_HOST}
+      dockerfile: ./.docker/images/wordpress/wordpress.dockerfile
+      args:
+        - WP_VERSION=${WP_VERSION?}
+        - WP_CLI_VERSION=${WP_CLI_VERSION?}
+        - NGINX_VERSION=${NGINX_VERSION?}
+        - PHP_VERSION=${PHP_VERSION?}
+        - ALPINE_VERSION=${ALPINE_VERSION?}
+        - APP_GROUP_ID=${APP_GROUP_ID?}
+        - APP_GROUP_NAME=${APP_GROUP_NAME?}
+        - APP_USER_ID=${APP_USER_ID?}
+        - APP_USER_NAME=${APP_USER_NAME?}
+        - APP_CODE_PATH=${CODE_PATH_CONTAINER?}
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${DB_USER:-snicco}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-snicco}
+      WORDPRESS_DB_NAME: ${DB_NAME:-snicco_enterprise}
+
+    depends_on:
+      db:
+        condition: service_healthy
 
 secrets:
   composer_auth_json:
