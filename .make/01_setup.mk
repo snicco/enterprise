@@ -6,7 +6,7 @@
 # =================================================================
 #
 .PHONY: setup
-setup: .make/.env .docker/.env tests/.env.testing ./.docker/images/wordpress/nginx/certs vendor composer.lock node_modules package-lock.json ## Initializes the repository or checks if everything is still up to date.
+setup: .make/.env .docker/.env tests/.env.testing ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json ## Initializes the repository or checks if everything is still up to date.
 
 #
 # =================================================================
@@ -115,9 +115,8 @@ tests/.env.testing: tests/.env.testing.dist ## Create a new codeception .env.tes
 # Create certificates with mkcert
 # =================================================================
 #
-#
-#
-./.docker/images/wordpress/nginx/certs:
-	@mkdir $(DOCKER_DIR)/images/wordpress/nginx/certs
+./.docker/images/nginx/certs:
 	@mkcert -install
-	@mkcert -key-file $(DOCKER_DIR)/images/wordpress/nginx/certs/snicco-enterprise.test-key.pem -cert-file $(DOCKER_DIR)/images/wordpress/nginx/certs/snicco-enterprise.test.pem snicco-enterprise.test
+	@mkdir $(DOCKER_DIR)/images/nginx/certs
+	@mkcert -key-file $(DOCKER_DIR)/images/nginx/certs/snicco-enterprise.test-key.pem -cert-file $(DOCKER_DIR)/images/nginx/certs/snicco-enterprise.test.pem snicco-enterprise.test
+

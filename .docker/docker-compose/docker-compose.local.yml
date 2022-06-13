@@ -28,9 +28,7 @@ services:
     volumes:
       - db:/var/lib/mysql
 
-  wp:
-    volumes:
-      - ${CODE_PATH_HOST}/.docker/images/wordpress/mu-plugins:/${CODE_PATH_CONTAINER}/wp-content/mu-plugins
+  nginx:
     ports:
       - "${NGINX_UNSECURE_PORT?}:8080"
       - "${NGINX_SECURE_PORT?}:8443"

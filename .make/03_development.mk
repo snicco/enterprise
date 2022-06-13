@@ -1,9 +1,11 @@
 ##@ [Development]
 
-.PHONY:npm node commit php wp dev-server
+.PHONY:npm node commit php wp dev-server sync-wp
 
 dev-server: setup ## Start all development containers.
-	$(MAKE) docker-up SERVICE=wp
+	$(MAKE) docker-up
+	@echo "Development server is running at https://snicco-enterprise.test"
+	$(MAKE) sync-wp
 
 node: ## Run any script in the node container. Usage: make npm ARGS="npm run dev".
 	$(MAYBE_RUN_NODE_IN_DOCKER) ${ARGS}
@@ -25,3 +27,8 @@ php: ## Run any php script in the app container. Usage: make php ARGS="foo.php"
 wp: ARGS?=cli version
 wp: ## Run a wp-cli command in the wp container. Usage: make wp ARGS="plugin list"
 	docker exec -it --user $(APP_USER_NAME) wp wp ${ARGS}
+
+sync-wp:  ## Get a fresh copy of all WordPress files in the wp container.
+	@docker cp wp:/var/www/html/ .wp
+	@echo "WordPress files have been copied to .wp/html"
+

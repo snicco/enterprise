@@ -13,6 +13,8 @@ The following software is needed on your local machine:
 - [docker](https://docs.docker.com/get-docker/)
 - [mkcert](https://github.com/FiloSottile/mkcert)
 
+**On Linux:** You have to adjust the `APP_XXX` values in [.make/.env](.make/.env.dist) so that they match the values on your current machine. Do this **BEFORE** running `make dev-server`.
+
 ```shell
 make # Displays all commands
 make dev-server # Setup the dev environment

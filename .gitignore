@@ -6,6 +6,7 @@ node_modules
 tests/_output/
 codeception.yml
 tests/.env.testing
+.wp/html
 
 ## repos
 /src/Snicco/*/*/tests/_output/*
@@ -15,4 +16,4 @@ tests/.env.testing
 
 .make/.env
 .docker/.env
-.docker/images/wordpress/nginx/certs
+.docker/images/nginx/certs

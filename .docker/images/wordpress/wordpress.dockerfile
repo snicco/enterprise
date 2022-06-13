@@ -29,38 +29,26 @@ FROM wordpress:${WP_VERSION} as wordpress
 # =================================================================
 #
 # Again the official WP-Cli image does not play nicely with our
-# setup as is also relies on a shared /var/www/html volume
-# between all containers.
-#
-# This just gets in our way.
+# setup for the same reasons as the WordPress image so we just
+# use the WP-CLI binary that it provides.
 #
 FROM wordpress:cli-${WP_CLI_VERSION}-php${PHP_VERSION} as wp_cli
 
 #
 # =================================================================
-# Install PHP-FPM and NGINX
+# Install PHP-FPM
 # =================================================================
 #
-# We run PHP-FPM and NGINX in the same container because
-# there is no easy way to share the code between separate
-# PHP and NGINX containers.
-#
-# For our needs this is perfectly fine as our main goals
-# with the docker setup are development flexibility and testability.
-#
-FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as php_nginx
+FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as php_fpm
 
-ARG APP_USER_ID
-ARG APP_GROUP_ID
-ARG APP_USER_NAME
-ARG APP_GROUP_NAME
-ARG APP_CODE_PATH
-ARG NGINX_VERSION
-
-# @todo use NGINX_VERSION to pin nginx. Setting a version breaks apk.
+#
+# =================================================================
+# Install system dependencies
+# =================================================================
+#
+# WP-CLI needs less and bash to work properly.
+#
 RUN apk update && \
-    apk add --no-cache nginx && \
-    apk add --no-cache openrc && \
     apk add --no-cache less && \
     apk add --no-cache bash
 
@@ -84,69 +72,78 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 # Copy WordPress source code and WP-CLI binary
 # =================================================================
 #
-COPY --from=wordpress /usr/src/wordpress $APP_CODE_PATH
+# We leverage docker multi stage builds here to copy just what
+# we need.
+#
+# We will also go ahead and remove bloat from the default
+# WordPress image that we dont need.
+#
+COPY --from=wordpress /usr/src/wordpress /usr/src/wordpress
 COPY --from=wp_cli /usr/local/bin/wp /usr/local/bin/wp
+
+RUN rm -rf /usr/src/wordpress/wp-content/plugins/akismet && \
+    rm -rf /usr/src/wordpress/wp-content/plugins/hello.php && \
+    rm -rf /usr/src/wordpress/wp-content/themes/twentytwenty && \
+    rm -rf /usr/src/wordpress/wp-content/themes/twentytwentyone
 
 #
 # =================================================================
-# Create user group in docker container and remove WP bloat
+# Copy our custom entrypoint script
+# =================================================================
+#
+# We need to copy our custom entrypoint script into the container.
+# Make sure to reference it based on the full path (from the repo root)
+# because this image has the entire monorepo has build context.
+#
+COPY ./.docker/images/wordpress/entrypoint.sh /etc/entrypoint.sh
+
+#
+# =================================================================
+# Create user group in docker container
 # =================================================================
 #
 # Its a good practive to chain all RUN commands in order
 # to reduce docker image layers.
 #
+ARG APP_USER_ID
+ARG APP_GROUP_ID
+ARG APP_USER_NAME
+ARG APP_GROUP_NAME
+ARG APP_CODE_PATH
+
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
     mkdir -p $APP_CODE_PATH && \
     chown -R $APP_USER_NAME: $APP_CODE_PATH && \
-    chmod +x /usr/local/bin/wp && \
-    mv $APP_CODE_PATH/wp-config-docker.php $APP_CODE_PATH/wp-config.php && \
-    rm -rf $APP_CODE_PATH/wp-content/plugins/akismet && \
-    rm -rf $APP_CODE_PATH/wp-content/plugins/hello.php && \
-    rm -rf $APP_CODE_PATH/wp-content/themes/twentytwenty && \
-    rm -rf $APP_CODE_PATH/wp-content/themes/twentytwentyone
+    chown -R $APP_USER_NAME: /usr/src/wordpress && \
+    chmod +x /usr/local/bin/wp
 
 #
 # =================================================================
 # Set the current user in the PHP-FPM config
 # =================================================================
 #
-# Instead of using a custom PHP-FPM file we just replace
+# For now, instead of using a custom PHP-FPM file we just replace
 # the values in the default configuration file.
 #
 RUN sed -i "s/user = www-data/user = ${APP_USER_NAME}/g" /usr/local/etc/php-fpm.d/www.conf && \
     sed -i "s/group = www-data/group = ${APP_GROUP_NAME}/g" /usr/local/etc/php-fpm.d/www.conf
-
-COPY ./.docker/images/wordpress/entrypoint.sh /etc/entrypoint.sh
 
 #
 # =================================================================
 # Copy PHP source files
 # =================================================================
 #
-COPY ./src/Snicco/plugin $APP_CODE_PATH/wp-content/plugins
-COPY ./src/Snicco/component $APP_CODE_PATH/wp-content/component
-COPY ./src/Snicco/bundle $APP_CODE_PATH/wp-content/bundle
-
-COPY ./.docker/images/wordpress/nginx/certs /etc/nginx/certs/self-signed
-# Default nginx installed via apk has looks for the config in http.d not conf.d
-COPY ./.docker/images/wordpress/nginx/default.conf /etc/nginx/http.d/default.conf
-
-RUN sed -i "s#root __NGINX_ROOT;#root $APP_CODE_PATH;#" /etc/nginx/http.d/default.conf
-RUN sed -i "s#user nginx;;#user $APP_USER_NAME;#" /etc/nginx/nginx.conf
-
-RUN mkdir -p /var/log/nginx /var/cache/nginx /var/lib/nginx/tmp /var/lib/nginx/logs && \
-    chown -R $APP_USER_NAME: /var/cache/nginx && \
-    chown -R $APP_USER_NAME: /var/log/nginx && \
-    chown -R $APP_USER_NAME: /etc/nginx/certs && \
-    chown -R $APP_USER_NAME: /var/lib/nginx && \
-    chown -R $APP_USER_NAME: /run/nginx
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/plugin $APP_CODE_PATH/wp-content/plugins
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/component $APP_CODE_PATH/wp-content/component
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/bundle $APP_CODE_PATH/wp-content/bundle
 
 WORKDIR $APP_CODE_PATH
 
 USER $APP_USER_NAME
 
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
+CMD ["php-fpm", "-F"]
 
-FROM php_nginx as local
+FROM php_fpm as local
 

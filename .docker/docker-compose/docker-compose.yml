@@ -2,13 +2,14 @@ version: '3.9'
 
 volumes:
   db:
+  wordpress:
 
 services:
   node:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
+    container_name: node
     build:
-      context: ../
-      dockerfile: ./images/node/node.dockerfile
+      context: ../images/node
+      dockerfile: node.dockerfile
       target: ${ENV?}
       args:
         - NODE_VERSION=${NODE_VERSION?}
@@ -21,7 +22,7 @@ services:
       - ${CODE_PATH_HOST?}:/project
 
   app:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:${TAG?}
+    container_name: app
     build:
       context: ../
       dockerfile: ./images/php/app/app.dockerfile
@@ -43,6 +44,7 @@ services:
         target: /home/${APP_USER_NAME?}/.composer/auth.json
 
   db:
+    container_name: db
     image: ${DB_IMAGE?}
     environment:
       MYSQL_DATABASE: ${DB_NAME:-snicco_enterprise}
@@ -55,7 +57,6 @@ services:
       retries: 20
 
   wp:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:${WP_VERSION?}-php-${PHP_VERSION?}
     container_name: wp
     build:
       context: ${CODE_PATH_HOST}
@@ -63,7 +64,6 @@ services:
       args:
         - WP_VERSION=${WP_VERSION?}
         - WP_CLI_VERSION=${WP_CLI_VERSION?}
-        - NGINX_VERSION=${NGINX_VERSION?}
         - PHP_VERSION=${PHP_VERSION?}
         - ALPINE_VERSION=${ALPINE_VERSION?}
         - APP_GROUP_ID=${APP_GROUP_ID?}
@@ -76,10 +76,28 @@ services:
       WORDPRESS_DB_USER: ${DB_USER:-snicco}
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-snicco}
       WORDPRESS_DB_NAME: ${DB_NAME:-snicco_enterprise}
-
+    volumes:
+      - wordpress:${CODE_PATH_CONTAINER?}
     depends_on:
       db:
         condition: service_healthy
+
+  nginx:
+    container_name: nginx
+    build:
+      context:  ../images/nginx
+      dockerfile: nginx.dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION?}
+        - APP_GROUP_ID=${APP_GROUP_ID?}
+        - APP_GROUP_NAME=${APP_GROUP_NAME?}
+        - APP_USER_ID=${APP_USER_ID?}
+        - APP_USER_NAME=${APP_USER_NAME?}
+        - APP_CODE_PATH=${CODE_PATH_CONTAINER?}
+    depends_on:
+      - wp
+    volumes:
+      - wordpress:${CODE_PATH_CONTAINER?}
 
 secrets:
   composer_auth_json:

@@ -3,6 +3,24 @@ set -e
 
 #
 # =================================================================
+# Copy fresh WordPress source files
+# =================================================================
+#
+# Since this container runs with a named volume (APP_CODE_PATH)
+# we need to copy the installed WordPress files in entrypoint
+# script to ensure that everything stays up to date.
+#
+# We can't run this code in the Dockerfile since it would
+# only apply the first time the image is build.
+# Subsequent builds would always use stale WordPress code
+# and stuff like updating the WordPress version would not work
+# properly.
+#
+tar --create --file - --directory /usr/src/wordpress . | tar --extract --file -
+mv ./wp-config-docker.php ./wp-config.php
+
+#
+# =================================================================
 # Install WordPress if its not installed already
 # =================================================================
 #
@@ -14,10 +32,18 @@ set -e
 # database access.
 #
 if ! wp --allow-root core is-installed; then
-    wp --allow-root core install --url="https://snicco-enterprise.test" --title="Snicco Enterprise" --admin_user=admin --admin_password=admin --admin_email=admin@test.com
-    # Permalink structure
-    wp --allow-root rewrite structure '/%postname%/' --hard
+  wp --allow-root core install --url="https://snicco-enterprise.test" --title="Snicco Enterprise" --admin_user=admin --admin_password=admin --admin_email=admin@test.com
+  # Permalink structure
+  wp --allow-root rewrite structure '/%postname%/' --hard
 fi
 
-php-fpm -D
-nginx -g 'daemon off;'
+#
+# =================================================================
+# Run container
+# =================================================================
+#
+# The value of "$@" is [php-fpm, -F] by default. But by not
+# hard-coding this here we leave ourselves the option to pass
+# a different command at runtime.
+#
+exec "$@"
