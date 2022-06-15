@@ -2,7 +2,7 @@
 
 .PHONY:npm node commit php wp dev-server get-files merge
 
-dev-server: check-changes ## Start all development containers.
+dev-server: update ## Start all development containers.
 	$(MAKE) docker-up
 	@echo "Development server is running at https://$(APP_HOST)"
 	$(MAKE) get-files
