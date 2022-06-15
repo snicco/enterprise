@@ -1,11 +1,12 @@
 version: '3.9'
 
 networks:
-  snicco:
+  network:
 
 volumes:
   db:
   wordpress:
+  wp_data:
 
 x-user-args: &user-args
   APP_GROUP_ID: ${APP_GROUP_ID?}
@@ -21,6 +22,24 @@ x-wp-env: &wp-env
   E2E_TEST_WORDPRESS_DB_NAME: ${DB_NAME:-snicco_enterprise_e2e_testing}
 
 services:
+
+  wp_data:
+    container_name: wp_data
+    build:
+      context: ${MONOREPO_ROOT} # Pass the entire repository as the build context
+      dockerfile: ./.docker/images/wordpress_data/wordpress_data.dockerfile
+      args:
+        <<: *user-args
+        WP_VERSION: ${WP_VERSION?}
+        WP_CLI_VERSION: ${WP_CLI_VERSION?}
+        PHP_VERSION: ${PHP_VERSION?}
+        ALPINE_VERSION: ${ALPINE_VERSION?}
+        APP_CODE_PATH: ${WORDPRESS_CODE_PATH_CONTAINER?}
+    tty: true
+    volumes:
+      - wp_data:${WORDPRESS_CODE_PATH_CONTAINER?}
+      - ${MONOREPO_ROOT?}/src/Snicco/bundle:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/bundle
+
   wp:
     container_name: wp
     build:
@@ -36,8 +55,11 @@ services:
     environment: *wp-env
     volumes:
       - wordpress:${WORDPRESS_CODE_PATH_CONTAINER?}
+      - ${MONOREPO_ROOT?}/src/Snicco/bundle:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/bundle
+#      - ${MONOREPO_ROOT?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/mu-plugins/fortress-test-mu-plugin
+#      - ${MONOREPO_ROOT?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin.php:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/mu-plugins/fortress-test-mu-plugin.php
     networks:
-      - snicco
+      - network
     depends_on:
       db:
         condition: service_healthy
@@ -46,7 +68,7 @@ services:
     container_name: app
     build:
       context: ../
-      dockerfile: ./images/php/app/app.dockerfile
+      dockerfile: ./images/app/app.dockerfile
       target: ${ENV?}
       args:
         <<: *user-args
@@ -61,21 +83,19 @@ services:
       WORDPRESS_DB_NAME: snicco_enterprise_e2e_testing
     volumes:
       - ${MONOREPO_ROOT?}:/project/monorepo
-#      - wordpress:/tmp/wordpress
-      - ${MONOREPO_ROOT?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin:/project/wordpress/wp-content/mu-plugins/fortress-test-mu-plugin
-      - ${MONOREPO_ROOT?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin.php:/project/wordpress/wp-content/mu-plugins/fortress-test-mu-plugin.php
+      - wordpress:/project/wordpress
     secrets:
       - source: composer_auth_json
         target: /home/${APP_USER_NAME?}/.composer/auth.json
-#    depends_on:
-#      - wpcd
+    depends_on:
+      - wp
     # Keep the app container running.
     # There is no long-running process defined as the entrypoint for the container.
     # Keeping the container running saves as time for frequently run commands since
     # we can use docker exec over docker run.
     # @see https://stackoverflow.com/a/55953120
     networks:
-      - snicco
+      - network
     tty: true
 
   nginx:
@@ -92,7 +112,7 @@ services:
     volumes:
       - wordpress:${WORDPRESS_CODE_PATH_CONTAINER?}
     networks:
-      - snicco
+      - network
 
   db:
     container_name: db
@@ -107,7 +127,7 @@ services:
       interval: 0.2s
       retries: 25
     networks:
-      - snicco
+      - network
   node:
     container_name: node
     build:
@@ -127,7 +147,7 @@ services:
     # @see https://stackoverflow.com/a/55953120
     tty: true
     networks:
-      - snicco
+      - network
 
   chrome:
     container_name: chrome
@@ -136,7 +156,7 @@ services:
     ports:
       - "4444:4444"
     networks:
-      - snicco
+      - network
 
 secrets:
   composer_auth_json:

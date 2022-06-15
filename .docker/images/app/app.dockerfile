@@ -54,8 +54,13 @@ ARG CONTAINER_CODE_PATH
 
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
-    mkdir -p $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH && \
-    chown $APP_USER_NAME: $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH
+    mkdir -p $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH \
+      $WORDPRESS_PATH/wp-content/plugins \
+      $WORDPRESS_PATH/wp-content/themes \
+      $WORDPRESS_PATH/wp-content/mu-plugins \
+      $WORDPRESS_PATH/wp-content/uploads \
+      && \
+    chown -R $APP_USER_NAME:$APP_GROUP_NAME $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH
 
 #
 # =================================================================
@@ -69,7 +74,7 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
 # since the official image installed composer as root
 # but we are not running the container as root.
 #
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME --from=composer /usr/bin/composer /usr/local/bin/composer
 RUN mkdir -p /home/$APP_USER_NAME/.composer && \
     chown -R $APP_USER_NAME /home/$APP_USER_NAME/.composer
 

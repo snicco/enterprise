@@ -13,7 +13,7 @@ services:
       - "1025:1025" # The SMTP server
       - "8025:8025" # The WEB UI
     networks:
-      - snicco
+      - network
 
   db:
     ports:
