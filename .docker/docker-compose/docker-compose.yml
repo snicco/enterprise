@@ -5,8 +5,8 @@ networks:
 
 volumes:
   db:
-  wordpress:
-  wp_data:
+  wordpress_app:
+  wordpress_src:
 
 x-user-args: &user-args
   APP_GROUP_ID: ${APP_GROUP_ID?}
@@ -16,48 +16,31 @@ x-user-args: &user-args
 
 x-wp-env: &wp-env
   WORDPRESS_DB_HOST: db
-  WORDPRESS_DB_USER: ${DB_USER:-root}
-  WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-root}
-  WORDPRESS_DB_NAME: ${DB_NAME:-snicco_enterprise}
-  E2E_TEST_WORDPRESS_DB_NAME: ${DB_NAME:-snicco_enterprise_e2e_testing}
+  WORDPRESS_DB_USER: root
+  WORDPRESS_DB_PASSWORD: root
+  WORDPRESS_DB_NAME: snicco_enterprise
+  E2E_TEST_WORDPRESS_DB_NAME: snicco_enterprise_e2e_testing
+  WORDPRESS_SITE_URL: "https://${APP_HOST?}"
 
 services:
-
-  wp_data:
-    container_name: wp_data
-    build:
-      context: ${MONOREPO_ROOT} # Pass the entire repository as the build context
-      dockerfile: ./.docker/images/wordpress_data/wordpress_data.dockerfile
-      args:
-        <<: *user-args
-        WP_VERSION: ${WP_VERSION?}
-        WP_CLI_VERSION: ${WP_CLI_VERSION?}
-        PHP_VERSION: ${PHP_VERSION?}
-        ALPINE_VERSION: ${ALPINE_VERSION?}
-        APP_CODE_PATH: ${WORDPRESS_CODE_PATH_CONTAINER?}
-    tty: true
-    volumes:
-      - wp_data:${WORDPRESS_CODE_PATH_CONTAINER?}
-      - ${MONOREPO_ROOT?}/src/Snicco/bundle:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/bundle
 
   wp:
     container_name: wp
     build:
-      context: ${MONOREPO_ROOT} # Pass the entire repository as the build context
-      dockerfile: ./.docker/images/wordpress/wordpress.dockerfile
+      context: ${MONOREPO_ROOT_HOST} # Pass the entire repository as the build context
+      dockerfile: ./.docker/images/wp/wordpress.dockerfile
       args:
         <<: *user-args
         WP_VERSION: ${WP_VERSION?}
         WP_CLI_VERSION: ${WP_CLI_VERSION?}
         PHP_VERSION: ${PHP_VERSION?}
         ALPINE_VERSION: ${ALPINE_VERSION?}
-        APP_CODE_PATH: ${WORDPRESS_CODE_PATH_CONTAINER?}
+        WP_APPLICATION_PATH: ${WORDPRESS_APP_PATH_CONTAINER?}
+        WP_SRC_PATH: ${WORDPRESS_SRC_PATH_CONTAINER?}
     environment: *wp-env
     volumes:
-      - wordpress:${WORDPRESS_CODE_PATH_CONTAINER?}
-      - ${MONOREPO_ROOT?}/src/Snicco/bundle:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/bundle
-#      - ${MONOREPO_ROOT?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/mu-plugins/fortress-test-mu-plugin
-#      - ${MONOREPO_ROOT?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin.php:${WORDPRESS_CODE_PATH_CONTAINER?}/wp-content/mu-plugins/fortress-test-mu-plugin.php
+      - wordpress_app:${WORDPRESS_APP_PATH_CONTAINER?}
+      - wordpress_src:${WORDPRESS_SRC_PATH_CONTAINER?}
     networks:
       - network
     depends_on:
@@ -75,15 +58,16 @@ services:
         PHP_VERSION: ${PHP_VERSION?}
         ALPINE_VERSION: ${ALPINE_VERSION?}
         COMPOSER_VERSION: ${COMPOSER_VERSION?}
-        CONTAINER_CODE_PATH: /project
-        MONOREPO_PATH: /project/monorepo
-        WORDPRESS_PATH: /project/wordpress
+        MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
+        WORDPRESS_APP_PATH: ${APP_CONTAINER_WP_APP_PATH?}
+        WORDPRESS_SRC_PATH: ${APP_CONTAINER_WP_SRC_PATH?}
     environment:
       <<: *wp-env
       WORDPRESS_DB_NAME: snicco_enterprise_e2e_testing
     volumes:
-      - ${MONOREPO_ROOT?}:/project/monorepo
-      - wordpress:/project/wordpress
+      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
+      - wordpress_app:${APP_CONTAINER_WP_APP_PATH?}
+      - wordpress_src:${APP_CONTAINER_WP_SRC_PATH?}
     secrets:
       - source: composer_auth_json
         target: /home/${APP_USER_NAME?}/.composer/auth.json
@@ -98,6 +82,21 @@ services:
       - network
     tty: true
 
+  db:
+    container_name: db
+    image: ${DB_IMAGE?}
+    environment:
+      MYSQL_DATABASE: snicco_enterprise
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ${MONOREPO_ROOT_HOST}/.docker/images/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql snicco_enterprise -uroot -proot -e 'SELECT 1;'  || exit 1" ]
+      interval: 0.1s
+      retries: 50
+    networks:
+      - network
+
   nginx:
     container_name: nginx
     build:
@@ -106,28 +105,14 @@ services:
       args:
         <<: *user-args
         NGINX_VERSION: ${NGINX_VERSION?}
-        APP_CODE_PATH: ${WORDPRESS_CODE_PATH_CONTAINER?}
+        WP_APPLICATION_PATH: ${WORDPRESS_APP_PATH_CONTAINER?}
     depends_on:
       - wp
     volumes:
-      - wordpress:${WORDPRESS_CODE_PATH_CONTAINER?}
+      - wordpress_app:${WORDPRESS_APP_PATH_CONTAINER?}
     networks:
       - network
 
-  db:
-    container_name: db
-    image: ${DB_IMAGE?}
-    environment:
-      MYSQL_DATABASE: snicco_enterprise
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
-    volumes:
-      - ${MONOREPO_ROOT}/.docker/images/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: [ "CMD-SHELL", "mysql ${DB_NAME:-snicco_enterprise} -u${DB_USER:-root} -p${DB_PASSWORD:-root} -e 'SELECT 1;'  || exit 1" ]
-      interval: 0.2s
-      retries: 25
-    networks:
-      - network
   node:
     container_name: node
     build:
@@ -138,8 +123,9 @@ services:
         <<: *user-args
         NODE_VERSION: ${NODE_VERSION?}
         ALPINE_VERSION: ${ALPINE_VERSION?}
+        MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
     volumes:
-      - ${MONOREPO_ROOT?}:/project
+      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
     # Keep the node container running.
     # There is no long-running process defined as the entrypoint for the container.
     # Keeping the container running saves as time for frequently run commands since

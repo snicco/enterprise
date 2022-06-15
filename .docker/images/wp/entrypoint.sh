@@ -16,9 +16,14 @@ set -e
 # and stuff like updating the WordPress version would not work
 # properly.
 #
-tar --create --file - --directory /usr/src/wordpress . | tar --extract --file -
-rm ./wp-config-docker.php
-rm ./wp-config-sample.php
+tar cf - -C "$WP_TMP_PATH" . | tar xpf - -C "$WP_APPLICATION_PATH"
+echo "Copied fresh WordPress files from $WP_TMP_PATH to $WP_APPLICATION_PATH"
+
+tar cf - -C "$WP_TMP_PATH" . | tar xpf - -C "$WP_SRC_PATH"
+echo "Copied fresh WordPress files from $WP_TMP_PATH to $WP_SRC_PATH"
+
+rm -rf "$WP_TMP_PATH"
+echo "Removed $WP_TMP_PATH"
 
 # =================================================================
 # Install WordPress if its not installed already
@@ -32,7 +37,7 @@ rm ./wp-config-sample.php
 # database access.
 #
 if ! wp --allow-root core is-installed; then
-  wp --allow-root core install --url="https://snicco-enterprise.test" --title="Snicco Enterprise" --admin_user=admin --admin_password=admin --admin_email=admin@test.com
+  wp --allow-root core install --url="$WORDPRESS_SITE_URL" --title="Snicco Enterprise" --admin_user=admin --admin_password=admin --admin_email=admin@test.com
   # Permalink structure
   wp --allow-root rewrite structure '/%postname%' --hard
 fi

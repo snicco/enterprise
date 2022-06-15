@@ -17,6 +17,7 @@ ARG APP_USER_ID
 ARG APP_GROUP_ID
 ARG APP_USER_NAME
 ARG APP_GROUP_NAME
+ARG MONOREPO_PATH
 
 #
 # =================================================================
@@ -33,9 +34,9 @@ ARG APP_GROUP_NAME
 RUN deluser --remove-home node && \
     addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
-    mkdir -p /project && \
-    chown $APP_USER_NAME: /project
+    mkdir -p $MONOREPO_PATH && \
+    chown $APP_USER_NAME: $MONOREPO_PATH
 
-WORKDIR /project
+WORKDIR $MONOREPO_PATH
 
 FROM base as local

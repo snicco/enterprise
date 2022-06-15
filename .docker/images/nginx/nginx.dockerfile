@@ -24,9 +24,9 @@ COPY ./default.conf /etc/nginx/conf.d/default.conf
 # to the value of APP_CODE_PATH.
 # We just need to point our default nginx config to that directory.
 #
-ARG APP_CODE_PATH
-RUN mkdir -p $APP_CODE_PATH && \
-    sed -i "s#root __NGINX_ROOT;#root $APP_CODE_PATH;#" /etc/nginx/conf.d/default.conf;
+ARG WP_APPLICATION_PATH
+RUN mkdir -p $WP_APPLICATION_PATH && \
+    sed -i "s#root __NGINX_ROOT;#root $WP_APPLICATION_PATH;#" /etc/nginx/conf.d/default.conf;
 
 #
 # =================================================================
@@ -42,7 +42,7 @@ RUN mkdir -p $APP_CODE_PATH && \
 # so we will use that one here.
 #
 RUN touch /var/run/nginx.pid && \
-    chown -R nginx:nginx $APP_CODE_PATH && \
+    chown -R nginx:nginx $WP_APPLICATION_PATH && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /etc/nginx/certs && \
     chown -R nginx:nginx /var/run/nginx.pid && \

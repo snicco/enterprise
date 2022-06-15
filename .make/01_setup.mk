@@ -6,7 +6,7 @@
 # =================================================================
 #
 .PHONY: setup
-setup: .make/.env .docker/.env tests/.env.testing ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json build-codeception ## Initializes the repository or checks if everything is still up to date.
+setup: .make/.env .docker/.env ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json build-codeception ## Initializes the repository or checks if everything is still up to date.
 
 #
 # =================================================================
@@ -76,22 +76,6 @@ package-lock.json: package.json
 		else\
   			cp .docker/.env.dist .docker/.env;\
 			echo 'Created new .env file for make for base';\
-	fi
-
-#
-# =================================================================
-# Create the .env.testing file for codeception
-# =================================================================
-#
-tests/.env.testing: tests/.env.testing.dist
-	@if [ -f tests/.env.testing ]; \
-		then\
-			echo 'The .env.testing.dist file has changed. Please check your .env.testing file and adjust the modified values (This message will not be displayed again)';\
-			touch tests/.env.testing;\
-			exit 1;\
-		else\
-  			cp tests/.env.testing.dist tests/.env.testing;\
-			echo 'Created new .env.testing file for codeception';\
 	fi
 
 #

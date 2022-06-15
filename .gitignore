@@ -5,7 +5,6 @@ package-lock.json
 node_modules
 tests/_output/
 codeception.yml
-tests/.env.testing
 .wp/html
 
 ## repos

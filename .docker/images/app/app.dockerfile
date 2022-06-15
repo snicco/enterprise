@@ -36,7 +36,7 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 
 #
 # =================================================================
-# Create user groups in docker container
+# Create user groups and permissions in docker container
 # =================================================================
 #
 # According to the docs (
@@ -49,18 +49,18 @@ ARG APP_GROUP_ID
 ARG APP_USER_NAME
 ARG APP_GROUP_NAME
 ARG MONOREPO_PATH
-ARG WORDPRESS_PATH
-ARG CONTAINER_CODE_PATH
+ARG WORDPRESS_APP_PATH
+ARG WORDPRESS_SRC_PATH
 
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
-    mkdir -p $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH \
-      $WORDPRESS_PATH/wp-content/plugins \
-      $WORDPRESS_PATH/wp-content/themes \
-      $WORDPRESS_PATH/wp-content/mu-plugins \
-      $WORDPRESS_PATH/wp-content/uploads \
-      && \
-    chown -R $APP_USER_NAME:$APP_GROUP_NAME $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH
+    mkdir -p $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH && \
+#      $WORDPRESS_PATH/wp-content/plugins \
+#      $WORDPRESS_PATH/wp-content/themes \
+#      $WORDPRESS_PATH/wp-content/mu-plugins \
+#      $WORDPRESS_PATH/wp-content/uploads \
+#      && \
+    chown -R $APP_USER_NAME:$APP_GROUP_NAME $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH
 
 #
 # =================================================================
@@ -77,22 +77,6 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
 COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME --from=composer /usr/bin/composer /usr/local/bin/composer
 RUN mkdir -p /home/$APP_USER_NAME/.composer && \
     chown -R $APP_USER_NAME /home/$APP_USER_NAME/.composer
-
-#
-# =================================================================
-# Create default directories and permissions
-# =================================================================
-#
-# We need to create all wp-content directories with the correct
-# permissions in the dockerfile.
-# Otherwise the docker daemon will copy bind-mounts with
-# permissions set to root:root.
-# https://github.com/moby/moby/issues/2259#issuecomment-223153276
-#
-#RUN mkdir -p /home/$APP_USER_NAME/.composer $WORDPRESS_PATH && \
-#    mkdir -p $WORDPRESS_PATH/wp-content/plugins $WORDPRESS_PATH/wp-content/themes $WORDPRESS_PATH/wp-content/mu-plugins && \
-#    chown -R $APP_USER_NAME:$APP_GROUP_NAME /home/$APP_USER_NAME/.composer && \
-#    chown -R $APP_USER_NAME:$APP_GROUP_NAME $WORDPRESS_PATH
 
 WORKDIR $MONOREPO_PATH
 

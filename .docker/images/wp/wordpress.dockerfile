@@ -57,7 +57,7 @@ RUN apk update && \
 # Install required PHP extensions for WordPress
 # =================================================================
 #
-# Again, we dont use the defaul docker-php-ext-install commands
+# We dont use the defaul docker-php-ext-install commands
 # because they do not handle installing system requirements for us.
 #
 # @see https://de.wordpress.org/about/requirements/
@@ -65,7 +65,26 @@ RUN apk update && \
 #
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod a+x /usr/local/bin/install-php-extensions && \
-    install-php-extensions json mysqli curl dom exif fileinfo hash imagick mbstring openssl pcre xml zip filter iconv intl simplexml sodium xmlreader zlib
+    install-php-extensions  json \
+                            mysqli \
+                            curl \
+                            dom \
+                            exif \
+                            fileinfo \
+                            hash \
+                            imagick \
+                            mbstring \
+                            openssl \
+                            pcre \
+                            xml \
+                            zip \
+                            filter \
+                            iconv \
+                            intl \
+                            simplexml \
+                            sodium \
+                            xmlreader \
+                            zlib
 
 #
 # =================================================================
@@ -73,22 +92,31 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 # =================================================================
 #
 # We leverage docker multi stage builds here to copy just what
-# we need.
+# we need from the default WordPress image.
 #
-# We will also go ahead and remove bloat from the default
-# WordPress image that we dont need.
+# We copy the WordPress source files to /tmp/wordpress.
+# This directory will be used in our custom entrypoint
+# to populate "WP_APPLICATION_PATH" and "WP_SRC_PATH"
+# with new WordPress source files.
 #
-# We also copy the source files to /tmp/wordpress
-# so that we can have a separate volume with just the
-# default WordPress files.
+# These two directories are supplied in the docker-compose.yml
+# file and are used to mount named volumes.
 #
-COPY --from=wordpress /usr/src/wordpress /usr/src/wordpress
+# We need to overwrite these named volumes each time this
+# container is run. Otherwise we will not be able to swithc
+# between different WordPress versions.
+#
+ARG WP_SRC_PATH
+ARG WP_APPLICATION_PATH
+ARG WP_TMP_PATH=/tmp/wordpress
+
+COPY --from=wordpress /usr/src/wordpress $WP_TMP_PATH
 COPY --from=wp_cli /usr/local/bin/wp /usr/local/bin/wp
 
-RUN rm -rf /usr/src/wordpress/wp-content/plugins/akismet && \
-    rm -rf /usr/src/wordpress/wp-content/plugins/hello.php && \
-    rm -rf /usr/src/wordpress/wp-content/themes/twentytwenty && \
-    rm -rf /usr/src/wordpress/wp-content/themes/twentytwentyone
+RUN rm -rf $WP_TMP_PATH/wp-content/plugins/akismet && \
+    rm -rf $WP_TMP_PATH/wp-content/plugins/hello.php && \
+    rm -rf $WP_TMP_PATH/wp-content/themes/twentytwenty && \
+    rm -rf $WP_TMP_PATH/wp-content/themes/twentytwentyone
 
 #
 # =================================================================
@@ -99,11 +127,11 @@ RUN rm -rf /usr/src/wordpress/wp-content/plugins/akismet && \
 # Make sure to reference it based on the full path (from the repo root)
 # because this image has the entire monorepo has build context.
 #
-COPY ./.docker/images/wordpress/entrypoint.sh /etc/entrypoint.sh
+COPY ./.docker/images/wp/entrypoint.sh /etc/entrypoint.sh
 
 #
 # =================================================================
-# Create user group in docker container
+# Create user group and file permissions.
 # =================================================================
 #
 # Its a good practive to chain all RUN commands in order
@@ -113,13 +141,13 @@ ARG APP_USER_ID
 ARG APP_GROUP_ID
 ARG APP_USER_NAME
 ARG APP_GROUP_NAME
-ARG APP_CODE_PATH
 
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
-    mkdir -p $APP_CODE_PATH && \
-    chown -R $APP_USER_NAME: $APP_CODE_PATH && \
-    chown -R $APP_USER_NAME: /usr/src/wordpress && \
+    mkdir -p $WP_APPLICATION_PATH $WP_SRC_PATH && \
+    chown -R $APP_USER_NAME: $WP_APPLICATION_PATH && \
+    chown -R $APP_USER_NAME: $WP_SRC_PATH && \
+    chown -R $APP_USER_NAME: $WP_TMP_PATH && \
     chmod +x /usr/local/bin/wp
 
 #
@@ -133,32 +161,69 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
 RUN sed -i "s/user = www-data/user = ${APP_USER_NAME}/g" /usr/local/etc/php-fpm.d/www.conf && \
     sed -i "s/group = www-data/group = ${APP_GROUP_NAME}/g" /usr/local/etc/php-fpm.d/www.conf
 
-USER $APP_USER_NAME
-
 #
 # =================================================================
 # Copy custom MU-Plugins
 # =================================================================
 #
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./.docker/images/wordpress/mu-plugins /usr/src/wordpress/wp-content/mu-plugins
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./.docker/images/wordpress/custom-wp-config.php /usr/src/wordpress/wp-config.php
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./.docker/images/wp/mu-plugins $WP_APPLICATION_PATH/wp-content/mu-plugins
+
+#
+# =================================================================
+# Copy custom wp-config.php
+# =================================================================
+#
+# We cant use the upstream wp-config from dockerhub
+# because it does not allow us to change databases dynamically
+# at runtime.
+#
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./.docker/images/wp/custom-wp-config.php $WP_APPLICATION_PATH/wp-config.php
 
 #
 # =================================================================
 # Copy PHP source files
 # =================================================================
 #
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/plugin /usr/src/wordpress/wp-content/plugins
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/component /usr/src/wordpress/wp-content/component
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/bundle /usr/src/wordpress/wp-content/bundle
+# We copy the bundle and component directory so that
+# composer symlinks keep working.
+#
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/plugin $WP_APPLICATION_PATH/wp-content/plugins
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/component $WP_APPLICATION_PATH/wp-content/component
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/bundle $WP_APPLICATION_PATH/wp-content/bundle
 
-WORKDIR $APP_CODE_PATH
+#
+# =================================================================
+# Expose environment variables
+# =================================================================
+#
+# We need to transform docker build args to env variables.
+# The /etc/entrypoint.sh entrypoint needs these variables
+# and ENV vars are the only ways to give access to them outside
+# the dockerfile.
+#
+ENV WP_TMP_PATH=$WP_TMP_PATH
+ENV WP_SRC_PATH=$WP_SRC_PATH
+ENV WP_APPLICATION_PATH=$WP_APPLICATION_PATH
+
+WORKDIR $WP_APPLICATION_PATH
+
+USER $APP_USER_NAME
 
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
+
 CMD ["php-fpm", "-F"]
 
 FROM php_fpm as local
 
+#
+# =================================================================
+# Switch to root user
+# =================================================================
+#
+# At this stage we are not running as root anymore but we need
+# root privalages to install apk packages that we want during
+# development
+#
 USER root
 
 #
