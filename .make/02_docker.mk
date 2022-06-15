@@ -79,6 +79,8 @@ _DOCKER_COMPOSE_COMMAND:=ENV=$(ENV) \
  APP_GROUP_ID=$(APP_GROUP_ID) \
  COMPOSER_AUTH_JSON_PATH=$(COMPOSER_AUTH_JSON_PATH) \
  COMPOSER_CACHE_PATH=$(COMPOSER_CACHE_PATH) \
+ APP_HOST=$(APP_HOST) \
+ WORDPRESS_APP_PATH_CONTAINER=$(WORDPRESS_APP_PATH_CONTAINER) \
  docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE)
 
 DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) $(ALL_DOCKER_COMPOSE_FILES)
@@ -134,6 +136,8 @@ _validate-docker-env:
 	@$(if $(DOCKER_NAMESPACE),,$(error DOCKER_NAMESPACE is undefined - Did you run make setup?))
 	@$(if $(COMPOSER_AUTH_JSON_PATH),,$(error COMPOSER_AUTH_JSON_PATH is undefined - Did you run make setup?))
 	@$(if $(COMPOSER_CACHE_PATH),,$(error COMPOSER_CACHE_PATH is undefined - Did you run make setup?))
+	@$(if $(APP_HOST),,$(error APP_HOST is undefined - Did you run make setup?))
+	@$(if $(WORDPRESS_APP_PATH_CONTAINER),,$(error WORDPRESS_APP_PATH_CONTAINER is undefined - Did you run make setup?))
 	@echo "All docker variables are set."
 
 #
@@ -181,5 +185,5 @@ docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
 	@docker volume prune -f
 
 .PHONY: dvp
-dvp: _validate-docker-env docker-down
+dvp: docker-v-prune
 	@docker volume prune -f

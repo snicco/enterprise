@@ -13,6 +13,6 @@ codeception.yml
 /src/Snicco/*/*/vendor
 /src/Snicco/*/*/composer.lock
 
-.make/.env
+.make/.mk.env
 .docker/.env
 .docker/images/nginx/certs

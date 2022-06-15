@@ -1,0 +1,11 @@
+#
+# =================================================================
+# Make/Docker configuration
+# =================================================================
+#
+# Values defined in this file are NOT TO BE CHANGED LOCALLY.
+#
+DOCKER_REGISTRY=docker.io
+DOCKER_NAMESPACE=snicco
+APP_HOST=snicco-enterprise.test
+WORDPRESS_APP_PATH_CONTAINER=/var/www/html

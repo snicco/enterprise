@@ -6,7 +6,7 @@
 # This is a default database of the db container after
 # running make dev-server.
 #
-# The site_url is already correctly set. No plugins are active.
+# The site_url is already correctly set to nginx:8443. No plugins are active.
 #
 USE snicco_enterprise_e2e_testing;
 

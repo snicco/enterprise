@@ -2,16 +2,17 @@
 
 .PHONY:npm node commit php wp dev-server get-files merge
 
-dev-server: setup ## Start all development containers.
+dev-server: check-changes ## Start all development containers.
 	$(MAKE) docker-up
-	@echo "Development server is running at https://snicco-enterprise.test"
+	@echo "Development server is running at https://$(APP_HOST)"
 	$(MAKE) get-files
 
+node: ARGS?=node -v
 node: ## Run any script in the node container. Usage: make npm ARGS="npm run dev".
-	$(MAYBE_RUN_NODE_IN_DOCKER) ${ARGS}
+	$(MAYBE_EXEC_NODE_IN_DOCKER) ${ARGS}
 
 npm: ## Run any npm script in the node container. Usage: make npm ARGS=dev".
-	$(MAYBE_RUN_NODE_IN_DOCKER) npm run ${ARGS}
+	$(MAYBE_EXEC_NODE_IN_DOCKER) npm run ${ARGS}
 
 commit:  ## Launch the interactive commit tool (node required locally).
 	@if ! command -v npm &> /dev/null; \
@@ -21,19 +22,20 @@ commit:  ## Launch the interactive commit tool (node required locally).
     fi
 	npm run commit;
 
+php: ARGS?=-v
 php: ## Run any php script in the app container. Usage: make php ARGS="foo.php"
-	$(MAYBE_RUN_APP_IN_DOCKER) php ${ARGS}
+	$(MAYBE_EXEC_APP_IN_DOCKER) php ${ARGS}
 
 wp: ARGS?=cli version
 wp: ## Run a wp-cli command in the wp container. Usage: make wp ARGS="plugin list"
 	docker exec -it --user $(APP_USER_NAME) wp wp ${ARGS}
 
 get-files:  ## Get a fresh copy of all WordPress files in the wp container.
-	@docker cp wp:/var/www/html/ .wp
+	@docker cp wp:$(WORDPRESS_APP_PATH_CONTAINER) .wp
 	@echo "WordPress files have been copied to .wp/html"
 
 merge: ## Merge all composer.json files of all packages
-	$(MAYBE_RUN_APP_IN_DOCKER) vendor/bin/monorepo-builder merge
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder merge
 
 propagate: ## Propagate dependencies from the main composer.json to packages
-	$(MAYBE_RUN_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate

@@ -6,7 +6,9 @@
 # =================================================================
 #
 .PHONY: setup
-setup: .make/.env .docker/.env ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json build-codeception ## Initializes the repository or checks if everything is still up to date.
+init: update build-codeception ## Initializes the repository.
+
+update: .make/.mk.env .docker/.env ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json ## Check if all files are still up to date (vendor, node_modules, etc.)
 
 #
 # =================================================================
@@ -83,14 +85,14 @@ package-lock.json: package.json
 # Create the .env file for make
 # =================================================================
 #
-.make/.env: .make/.env.dist
-	@if [ -f .make/.env ]; \
+.make/.mk.env: .make/.mk.env.dist
+	@if [ -f .make/.mk.env ]; \
 		then\
-			echo 'The .env.dist make file has changed. Please check your .make/.env file and adjust the modified values (This message will not be displayed again)';\
-			touch .make/.env;\
+			echo 'The .env.dist make file has changed. Please check your .make/.mk.env file and adjust the modified values (This message will not be displayed again)';\
+			touch .make/.mk.env;\
 			exit 1;\
 		else\
-  			cp .make/.env.dist .make/.env;\
+  			cp .make/.mk.env.dist .make/.mk.env;\
 			echo 'Created new .env file for make';\
 	fi
 
@@ -102,8 +104,8 @@ package-lock.json: package.json
 ./.docker/images/nginx/certs:
 	@mkcert -install
 	@mkdir $(DOCKER_DIR)/images/nginx/certs
-	@mkcert -key-file $(DOCKER_DIR)/images/nginx/certs/snicco-enterprise.test-key.pem -cert-file $(DOCKER_DIR)/images/nginx/certs/snicco-enterprise.test.pem snicco-enterprise.test
+	@mkcert -key-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST)-key.pem -cert-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST).pem $(APP_HOST)
 
 .PHONY: build-codeception
-build-codeception: ## Build codeception support classes
+build-codeception: ## Build codeception
 	$(MAYBE_RUN_APP_IN_DOCKER) vendor/bin/codecept build

@@ -43,7 +43,10 @@ return static function (ContainerConfigurator $configurator): void {
         __DIR__ . '/src/Snicco/bundle/fortress-bundle/tests/_support/_generated',
     ]);
 
-    $parameters->set(Option::PARALLEL, true);
+    $parameters->set(
+        Option::PARALLEL,
+        true
+    );
 
     $services = $configurator->services();
 

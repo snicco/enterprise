@@ -31,7 +31,7 @@ endif
 # -o pipefail 	- if any command in a pipeline fails, that return code will be used as the return code
 #				  of the whole pipeline. By default, the pipeline's return code is that of the last command - even if it succeeds.
 # -c            - Read and execute commands from string after processing the options. Otherwise, arguments are treated  as filed. Example:
-#                 bash -c "echo foo" # will excecute "echo foo"
+#                 bash -c "echo foo" # will execute "echo foo"
 #                 bash "echo foo"    # will try to open the file named "echo foo" and execute it
 MAKEFLAGS += --warn-undefined-variables # display a warning if variables are used but not defined
 MAKEFLAGS += --no-builtin-rules # remove some "magic make behavior"
@@ -50,7 +50,8 @@ MAKEFLAGS += --no-builtin-rules # remove some "magic make behavior"
 # The leading "-" tells make to NOT fail if the file
 # does not exist.
 #
--include .make/.env
+-include .make/.mk.env
+-include .make/.mk.configuration
 
 #
 # =================================================================

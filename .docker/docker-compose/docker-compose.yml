@@ -89,7 +89,7 @@ services:
       MYSQL_DATABASE: snicco_enterprise
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ${MONOREPO_ROOT_HOST}/.docker/images/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ${MONOREPO_ROOT_HOST}/.docker/images/db/imports:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD-SHELL", "mysql snicco_enterprise -uroot -proot -e 'SELECT 1;'  || exit 1" ]
       interval: 0.1s
