@@ -37,7 +37,6 @@ use function is_string;
 use function parse_str;
 use function parse_url;
 use function remove_all_filters;
-use function remove_filter;
 use function sprintf;
 use function wp_signon;
 
@@ -93,8 +92,7 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
         $this->kernel->boot();
         remove_all_filters('set_logged_in_cookie');
         remove_all_filters('set_auth_cookie');
-    
-    
+
         $user = $this->createAdmin([
             'user_pass' => 'pw',
         ]);
@@ -308,24 +306,24 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
 
         $this->assertSame('1', $query_vars['remember_me']);
     }
-    
+
     /**
      * @test
      */
-    public function that_the_redirect_and_remember_me_values_can_be_customized_at_runtime() :void
+    public function that_the_redirect_and_remember_me_values_can_be_customized_at_runtime(): void
     {
         $this->kernel->boot();
         remove_all_filters('set_logged_in_cookie');
-    
+
         /** @var TestableEventDispatcher $testable_dispatcher */
         $testable_dispatcher = $this->container->get(EventDispatcher::class);
-    
+
         $user = $this->createAdmin([
             'user_pass' => 'foobar',
         ]);
-    
+
         $this->userHasTwo2FaCompleted($user->ID);
-    
+
         $redirect_url = null;
         $testable_dispatcher->listen(function (WPAuthenticateChallengeRedirectShutdownPHP $event) use (
             &$redirect_url
@@ -333,40 +331,39 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
             $event->do_shutdown = false;
             $redirect_url = $event->redirect_url;
         });
-    
+
         $_REQUEST['redirect_to'] = '/dashboard';
-    
+
         add_filter(WPAuthenticateRedirectContext::class, function (WPAuthenticateRedirectContext $event) {
             $this->assertSame('/dashboard', $event->initial_parsed_redirect);
             $this->assertNull($event->initial_parsed_remember_me);
-            
+
             $event->redirect_to = '/dashboard-custom';
             $event->remember_me = true;
-            
         });
-        
+
         wp_signon([
             'user_login' => $user->user_login,
             'user_password' => 'foobar',
         ]);
-    
+
         $this->assertIsString($redirect_url);
-    
+
         parse_str((string) parse_url($redirect_url, PHP_URL_QUERY), $query_vars);
-    
+
         $this->assertTrue(
             isset($query_vars['redirect_to']) && is_string($query_vars['redirect_to']),
             'The redirect_to query param was not set even tho a HTTP Referrer was present.'
         );
         $this->assertSame('/dashboard-custom', $query_vars['redirect_to']);
-        
+
         $this->assertTrue(
             isset($query_vars['remember_me']) && is_string($query_vars['remember_me']),
             'The remember_me query param was not set.'
         );
         $this->assertSame('1', $query_vars['remember_me']);
     }
-    
+
     /**
      * @test
      */
@@ -400,7 +397,7 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
 
         $testable_dispatcher->assertNotDispatched(WPAuthenticateChallengeRedirectShutdownPHP::class);
     }
-    
+
     protected function fixturesDir(): string
     {
         return dirname(__DIR__, 4) . '/fixtures/test-app';

@@ -22,9 +22,7 @@ use Snicco\Component\TestableClock\SystemClock;
 use Snicco\Component\TestableClock\TestClock;
 use Snicco\Enterprise\Bundle\ApplicationLayer\ApplicationLayerBundle;
 use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIBundle;
-use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIOption;
 use Snicco\Enterprise\Bundle\Fortress\Auth\AuthModule;
-use Snicco\Enterprise\Bundle\Fortress\Auth\AuthModuleOption;
 use Snicco\Enterprise\Bundle\Fortress\Fail2Ban\Infrastructure\Fail2BanModule;
 use Snicco\Enterprise\Bundle\Fortress\Password\Infrastructure\PasswordModule;
 use Snicco\Enterprise\Bundle\Fortress\Session\Infrastructure\SessionModule;
@@ -35,23 +33,20 @@ use Snicco\Middleware\Negotiation\NegotiateContent;
 
 use function array_filter;
 use function array_map;
-use function bin2hex;
 use function copy;
 use function dirname;
 use function get_locale;
 use function in_array;
 use function is_file;
-use function random_bytes;
 use function sprintf;
 
 final class FortressBundle implements Bundle
 {
-    
     /**
      * @var string
      */
     public const ALIAS = 'snicco/fortress-bundle';
-    
+
     /**
      * @var array<class-string<FortressModule>>
      */
@@ -61,70 +56,73 @@ final class FortressBundle implements Bundle
         Fail2BanModule::class,
         AuthModule::class,
     ];
-    
+
     /**
      * @var FortressModule[]
      */
     private array $modules;
-    
+
     /**
      * @var FortressModule[]|null
      */
     private ?array $enabled_modules = null;
-    
+
     public function __construct()
     {
-        $this->modules = array_map(fn(string $class) :FortressModule => new $class(), self::MODULES);
+        $this->modules = array_map(fn (string $class): FortressModule => new $class(), self::MODULES);
     }
-    
-    public function shouldRun(Environment $env) :bool
+
+    public function shouldRun(Environment $env): bool
     {
         return true;
     }
-    
-    public function configure(WritableConfig $config, Kernel $kernel) :void
+
+    public function configure(WritableConfig $config, Kernel $kernel): void
     {
-        $config->mergeDefaultsFromFile(dirname(__DIR__).'/config/fortress.php');
-        
+        $config->mergeDefaultsFromFile(dirname(__DIR__) . '/config/fortress.php');
+
         $this->validateBundles($kernel);
-        
+
         if ($kernel->env()->isTesting()) {
             $config->setIfMissing(
-                'encryption.'.EncryptionOption::KEY_ASCII,
+                'encryption.' . EncryptionOption::KEY_ASCII,
                 DefuseEncryptor::randomAsciiKey()
             );
         }
-        
+
         foreach ($this->enabledModules($config) as $enabled_module) {
             $enabled_module->configure($config, $kernel);
         }
-        
+
         $this->copyConfiguration($kernel);
     }
-    
-    public function register(Kernel $kernel) :void
+
+    public function register(Kernel $kernel): void
     {
         $this->validateBundles($kernel);
-        
+
         foreach ($this->enabledModules($kernel->config()) as $enabled_module) {
             $enabled_module->register($kernel);
         }
-        
+
         $container = $kernel->container();
         $config = $kernel->config();
-        
+
         $container->shared(
             RouteLoadingOptions::class,
-            fn() :FortressRouteLoadingOptions => new FortressRouteLoadingOptions(
+            fn (): FortressRouteLoadingOptions => new FortressRouteLoadingOptions(
                 new DefaultRouteLoadingOptions(
-                    $config->getString('routing.'.RoutingOption::API_PREFIX)
+                    $config->getString('routing.' . RoutingOption::API_PREFIX)
                 ),
-                $config->getString('fortress.'.FortressOption::ROUTE_PATH_PREFIX)
+                $config->getString('fortress.' . FortressOption::ROUTE_PATH_PREFIX)
             )
         );
-        
-        $container->shared(Clock::class, fn(): Clock => $container[TestClock::class] ?? SystemClock::fromUTC());
-        
+
+        $container->shared(
+            Clock::class,
+            fn (): Clock => $container[TestClock::class] ?? SystemClock::fromUTC()
+        );
+
         $container->shared(AcceptsJsonOnly::class, function () use ($container): AcceptsJsonOnly {
             $negotiate_content = new NegotiateContent([get_locale()], [
                 'json' => [
@@ -134,81 +132,81 @@ final class FortressBundle implements Bundle
                 ],
             ]);
             $negotiate_content->setContainer($container);
-            
+
             return new AcceptsJsonOnly($negotiate_content);
         });
     }
-    
-    public function bootstrap(Kernel $kernel) :void
+
+    public function bootstrap(Kernel $kernel): void
     {
         foreach ($this->enabledModules($kernel->config()) as $enabled_module) {
             $enabled_module->boot($kernel);
         }
     }
-    
-    public function alias() :string
+
+    public function alias(): string
     {
         return self::ALIAS;
     }
-    
+
     /**
      * @return FortressModule[]
      */
-    private function enabledModules(Config $config) :array
+    private function enabledModules(Config $config): array
     {
         if (null === $this->enabled_modules) {
-            $enabled = $config->getListOfStrings('fortress.'.FortressOption::MODULES);
-            
+            $enabled = $config->getListOfStrings('fortress.' . FortressOption::MODULES);
+
             $this->enabled_modules = array_filter(
                 $this->modules,
-                fn(FortressModule $module) :bool => in_array($module->name(), $enabled, true)
+                fn (FortressModule $module): bool => in_array($module->name(), $enabled, true)
             );
         }
-        
+
         return $this->enabled_modules;
     }
-    
-    private function validateBundles(Kernel $kernel) :void
+
+    private function validateBundles(Kernel $kernel): void
     {
-        if ( ! $kernel->usesBundle(HttpRoutingBundle::ALIAS)) {
-            throw new RuntimeException(self::ALIAS.' needs the '.HttpRoutingBundle::ALIAS.' to run.');
+        if (! $kernel->usesBundle(HttpRoutingBundle::ALIAS)) {
+            throw new RuntimeException(self::ALIAS . ' needs the ' . HttpRoutingBundle::ALIAS . ' to run.');
         }
 
-        if ( ! $kernel->usesBundle(ApplicationLayerBundle::ALIAS)) {
-            throw new RuntimeException(self::ALIAS.' needs the '.ApplicationLayerBundle::ALIAS.' to run.');
+        if (! $kernel->usesBundle(ApplicationLayerBundle::ALIAS)) {
+            throw new RuntimeException(self::ALIAS . ' needs the ' . ApplicationLayerBundle::ALIAS . ' to run.');
         }
 
-        if ( ! $kernel->usesBundle(EncryptionBundle::ALIAS)) {
-            throw new RuntimeException(self::ALIAS.' needs the '.EncryptionBundle::ALIAS.' to run.');
+        if (! $kernel->usesBundle(EncryptionBundle::ALIAS)) {
+            throw new RuntimeException(self::ALIAS . ' needs the ' . EncryptionBundle::ALIAS . ' to run.');
         }
 
         if ($kernel->usesBundle(BetterWPCLIBundle::ALIAS)) {
             return;
         }
 
-        if (!$kernel->env()->isCli()) {
+        if (! $kernel->env()->isCli()) {
             return;
         }
 
-        throw new RuntimeException(self::ALIAS.' needs the '.BetterWPCLIBundle::ALIAS.' to run.');
+        throw new RuntimeException(self::ALIAS . ' needs the ' . BetterWPCLIBundle::ALIAS . ' to run.');
     }
-    
-    private function copyConfiguration(Kernel $kernel) :void
+
+    private function copyConfiguration(Kernel $kernel): void
     {
-        if ( ! $kernel->env()->isDevelop()) {
+        if (! $kernel->env()->isDevelop()) {
             return;
         }
-        
+
         $destination = $kernel->directories()
-                              ->configDir().'/fortress.php';
-        
+            ->configDir() . '/fortress.php';
+
         if (is_file($destination)) {
             return;
         }
-        
-        $copied = copy(dirname(__DIR__).'/config/fortress.php', $destination);
-        
-        if ( ! $copied) {
+
+        $copied = copy(dirname(__DIR__) . '/config/fortress.php', $destination);
+
+        if (! $copied) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException(
                 sprintf('Could not copy the default templating config to destination [%s]', $destination)
@@ -216,5 +214,4 @@ final class FortressBundle implements Bundle
             // @codeCoverageIgnoreEnd
         }
     }
-    
 }

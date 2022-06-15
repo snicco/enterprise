@@ -37,7 +37,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'symplify/monorepo-builder' => '9.4.70',
             'lucatume/wp-browser' => '3.1.6',
             'vimeo/psalm' => '4.22.0',
-            'rector/rector' => '0.12.18',
             'symplify/easy-coding-standard' => '10.1.2',
             'vlucas/phpdotenv' => '5.4.1',
             'php-stubs/wordpress-stubs' => '^5.9.3',

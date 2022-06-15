@@ -15,8 +15,6 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Event\WPAuth
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Event\WPAuthenticateRedirectContext;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\MappedEvent\WPAuthenticate;
 
-use function array_replace;
-use function filter_var;
 use function is_string;
 use function wp_authenticate;
 use function wp_safe_redirect;
@@ -117,11 +115,11 @@ final class TwoFactorEventHandler implements EventSubscriber
             new WPAuthenticateRedirectContext($redirect_to, $remember_me)
         );
 
-        if(null !== $context->redirect_to) {
+        if (null !== $context->redirect_to) {
             $args['redirect_to'] = $context->redirect_to;
         }
 
-        if($context->remember_me) {
+        if ($context->remember_me) {
             $args['remember_me'] = 1;
         }
 

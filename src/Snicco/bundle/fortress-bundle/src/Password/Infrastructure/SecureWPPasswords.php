@@ -43,7 +43,7 @@ final class SecureWPPasswords
         $this->wp_hasher = $wp_hasher;
         $this->defuse_prefix = Hex::encode(Core::CURRENT_VERSION);
     }
-    
+
     public static function alterTable(wpdb $wpdb): void
     {
         $users_table = $wpdb->users;

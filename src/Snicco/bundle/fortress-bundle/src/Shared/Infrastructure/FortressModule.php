@@ -67,14 +67,13 @@ abstract class FortressModule
         $config->setIfMissing('routing.' . RoutingOption::API_ROUTE_DIRECTORIES, []);
         $config->appendToList('routing.' . RoutingOption::API_ROUTE_DIRECTORIES, $route_dirs);
     }
-    
+
     /**
-     * @param  array<class-string<Command>>  $command_classes
+     * @param array<class-string<Command>> $command_classes
      */
-    public function addCommands(WritableConfig $config, array $command_classes) :void
+    public function addCommands(WritableConfig $config, array $command_classes): void
     {
         $config->setIfMissing('better-wp-cli.' . BetterWPCLIOption::COMMANDS, []);
-        $config->appendToList('better-wp-cli.'.BetterWPCLIOption::COMMANDS, $command_classes);
+        $config->appendToList('better-wp-cli.' . BetterWPCLIOption::COMMANDS, $command_classes);
     }
-    
 }

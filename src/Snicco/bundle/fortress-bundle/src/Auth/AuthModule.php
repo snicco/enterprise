@@ -63,9 +63,9 @@ final class AuthModule extends FortressModule
         $this->addCommands($config, [
             Initialize2FaCommand::class,
             Delete2FaCommand::class,
-            Complete2FaCommand::class
+            Complete2FaCommand::class,
         ]);
-        
+
         if ($kernel->env()->isTesting()) {
             $config->setIfMissing(
                 'fortress.auth.' . AuthModuleOption::TWO_FACTOR_CHALLENGE_HMAC_KEY,
@@ -165,31 +165,30 @@ final class AuthModule extends FortressModule
                 $container[OTPValidator::class],
             )
         );
-        
+
         // Commands
-        $container->shared(Initialize2FaCommand::class, function () use($container, $config){
+        $container->shared(Initialize2FaCommand::class, function () use ($container, $config) {
             return new Initialize2FaCommand(
                 $container[CommandBus::class],
                 $container[UserProvider::class],
                 $container[TwoFactorSecretGenerator::class],
-                $config->getString('better-wp-cli.'.BetterWPCLIOption::NAME)
+                $config->getString('better-wp-cli.' . BetterWPCLIOption::NAME)
             );
         });
-        
-        $container->shared(Delete2FaCommand::class, function () use($container){
+
+        $container->shared(Delete2FaCommand::class, function () use ($container) {
             return new Delete2FaCommand(
                 $container[CommandBus::class],
                 $container[UserProvider::class],
             );
         });
-    
-        $container->shared(Complete2FaCommand::class, function () use($container){
+
+        $container->shared(Complete2FaCommand::class, function () use ($container) {
             return new Complete2FaCommand(
                 $container[CommandBus::class],
                 $container[UserProvider::class],
             );
         });
-        
     }
 
     public function boot(Kernel $kernel): void

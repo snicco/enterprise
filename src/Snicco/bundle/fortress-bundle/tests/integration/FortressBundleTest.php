@@ -118,7 +118,7 @@ final class FortressBundleTest extends WPTestCase
 
         $kernel->boot();
     }
-    
+
     /**
      * @test
      */
@@ -129,7 +129,7 @@ final class FortressBundleTest extends WPTestCase
             Environment::testing(),
             $this->directories
         );
-        
+
         $kernel->afterConfigurationLoaded(function (WritableConfig $config): void {
             $config->set('kernel.bundles', [
                 Environment::ALL => [
@@ -142,13 +142,13 @@ final class FortressBundleTest extends WPTestCase
                 ],
             ]);
         });
-        
+
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('snicco/better-wp-cli-bundle');
-        
+
         $kernel->boot();
     }
-    
+
     /**
      * @test
      */

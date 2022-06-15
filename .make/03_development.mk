@@ -1,11 +1,11 @@
 ##@ [Development]
 
-.PHONY:npm node commit php wp dev-server sync-wp
+.PHONY:npm node commit php wp dev-server get-files merge
 
 dev-server: setup ## Start all development containers.
 	$(MAKE) docker-up
 	@echo "Development server is running at https://snicco-enterprise.test"
-	$(MAKE) sync-wp
+	$(MAKE) get-files
 
 node: ## Run any script in the node container. Usage: make npm ARGS="npm run dev".
 	$(MAYBE_RUN_NODE_IN_DOCKER) ${ARGS}
@@ -28,7 +28,12 @@ wp: ARGS?=cli version
 wp: ## Run a wp-cli command in the wp container. Usage: make wp ARGS="plugin list"
 	docker exec -it --user $(APP_USER_NAME) wp wp ${ARGS}
 
-sync-wp:  ## Get a fresh copy of all WordPress files in the wp container.
+get-files:  ## Get a fresh copy of all WordPress files in the wp container.
 	@docker cp wp:/var/www/html/ .wp
 	@echo "WordPress files have been copied to .wp/html"
 
+merge: ## Merge all composer.json files of all packages
+	$(MAYBE_RUN_APP_IN_DOCKER) vendor/bin/monorepo-builder merge
+
+propagate: ## Propagate dependencies from the main composer.json to packages
+	$(MAYBE_RUN_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate

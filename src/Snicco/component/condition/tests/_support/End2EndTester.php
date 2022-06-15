@@ -1,10 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Snicco\Enterprise\Component\Condition;
 
 use Codeception\Actor;
 use Snicco\Enterprise\Component\Condition\_generated\End2EndTesterActions;
+
 /**
- * Inherited Methods
+ * Inherited Methods.
+ *
  * @method void wantToTest($text)
  * @method void wantTo($text)
  * @method void execute($callable)
@@ -17,12 +22,10 @@ use Snicco\Enterprise\Component\Condition\_generated\End2EndTesterActions;
  * @method void pause()
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 final class End2EndTester extends Actor
 {
     use End2EndTesterActions;
 
-    /**
-     * Define custom actions here
-     */
+    // Define custom actions here
 }

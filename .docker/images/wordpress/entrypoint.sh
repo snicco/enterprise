@@ -17,9 +17,9 @@ set -e
 # properly.
 #
 tar --create --file - --directory /usr/src/wordpress . | tar --extract --file -
-mv ./wp-config-docker.php ./wp-config.php
+rm ./wp-config-docker.php
+rm ./wp-config-sample.php
 
-#
 # =================================================================
 # Install WordPress if its not installed already
 # =================================================================
@@ -34,7 +34,7 @@ mv ./wp-config-docker.php ./wp-config.php
 if ! wp --allow-root core is-installed; then
   wp --allow-root core install --url="https://snicco-enterprise.test" --title="Snicco Enterprise" --admin_user=admin --admin_password=admin --admin_email=admin@test.com
   # Permalink structure
-  wp --allow-root rewrite structure '/%postname%/' --hard
+  wp --allow-root rewrite structure '/%postname%' --hard
 fi
 
 #

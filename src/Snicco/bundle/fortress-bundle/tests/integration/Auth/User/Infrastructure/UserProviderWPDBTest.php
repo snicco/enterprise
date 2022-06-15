@@ -93,7 +93,8 @@ final class UserProviderWPDBTest extends WPTestCase
         $this->assertTrue($provider->exists($default_admin->user_login));
         $this->assertTrue($provider->exists($default_admin->user_email));
 
-        $this->assertFalse($provider->exists('12'));
+        // @todo There is a shared fixture conflict somewhere here.
+        $this->assertFalse($provider->exists('1232143234324'));
         $this->assertFalse($provider->exists('bogus'));
         $this->assertFalse($provider->exists('bogus@web.de'));
     }

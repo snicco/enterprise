@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Plugin Name: Foo Plugin
  * Plugin Description: Foo Plugin
@@ -7,4 +9,4 @@
  */
 $version = '1.0.3';
 
-die("foo");
+die('foo');

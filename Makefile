@@ -61,12 +61,18 @@ MAKEFLAGS += --no-builtin-rules # remove some "magic make behavior"
 #
 # The description is parsed from the text after an '## ' string on
 # the right of the make target.
+#
+# If a goal should not be displayed in the usage instructions there
+# are two ways to exclude it:
+# 	1) Prefix it with "_"
+# 	2) Dont add a comment starting with "## " next to the target.
+#
 # The default goal must be defined before other Makefiles
 # are included.
 #
 DEFAULT_GOAL=help
 help:
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target> [-n=show full command but dont run it]\033[0m\n"} /^[a-zA-Z0-9_.\/-]+:.*?##/ { printf "  \033[36m%-40s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target> [-n=show full command but dont run it]\033[0m\n"} /^[^_][a-zA-Z0-9_.\/-]+:.*?##/ { printf "  \033[36m%-40s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 #
 # =================================================================

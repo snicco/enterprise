@@ -63,11 +63,11 @@
         "codeception/module-webdriver": "^1.0",
         "humbug/php-scoper": "^0.17.2",
         "lucatume/wp-browser": "3.1.6",
-        "php-stubs/wordpress-stubs": "^6.0.0",
+        "php-stubs/wordpress-stubs": "^5.9.3",
         "phpunit/phpunit": "9.5.13",
-        "snicco/debug-bundle": "^1.2.1",
-        "snicco/event-dispatcher-testing": "^1.2.1",
-        "snicco/testing-bundle": "^1.2.1",
+        "snicco/debug-bundle": "^1.2.0",
+        "snicco/event-dispatcher-testing": "^1.2.0",
+        "snicco/testing-bundle": "^1.2.0",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
         "symplify/monorepo-builder": "9.4.70",
@@ -127,63 +127,10 @@
         "allow-plugins": false
     },
     "scripts": {
-        "show-help" : "make help",
-        "merge": [
-            "vendor/bin/monorepo-builder merge",
-            "composer dump-autoload"
-        ],
-        "propagate": [
-            "vendor/bin/monorepo-builder propagate"
-        ],
-        "lint:fix": [
-            "vendor/bin/rector process",
-            "vendor/bin/ecs --fix"
-        ],
-        "lint": [
-            "vendor/bin/rector process --dry-run",
-            "vendor/bin/ecs check"
-        ],
-        "lint:clear-cache": [
-            "vendor/bin/rector process --clear-cache",
-            "vendor/bin/ecs check --clear-cache"
-        ],
-        "psalm": "vendor/bin/psalm",
-        "psalm:clear-cache": [
-            "vendor/bin/psalm --clear-cache",
-            "vendor/bin/psalm --clear-global-cache"
-        ],
-        "test": [
-            "@test:unit",
-            "@test:usecase",
-            "@test:wpunit",
-            "@test:integration"
-        ],
-        "test:build": [
-            "vendor/bin/codecept build"
-        ],
-        "test:unit": [
-            "docker compose run --rm -it codeception run unit,*::unit"
-        ],
-        "test:wpunit": [
-            "docker compose run --rm -it codeception run *::wpunit"
-        ],
-        "test:integration": [
-            "docker compose run --rm -it codeception run *::integration"
-        ],
-        "test:usecase": [
-            "docker compose run --rm -it codeception run *::usecase"
-        ],
-        "test:cli": [
-            "docker compose run --rm -it codeception run *::cli"
-        ],
-        "test:coverage": [
-            "@test:unit --coverage --coverage-xml unit-coverage.xml",
-            "@test:wpunit --coverage --coverage-xml wpunit-coverage.xml",
-            "@test:integration --coverage --coverage-xml integration-coverage.xml"
-        ]
+        "show-help": "make help"
     },
     "scripts-descriptions": {
-        "show-help" : "We use make instead of comopser scripts. Run composer show-help or make to see all available scripts."
+        "show-help": "We use make instead of comopser scripts. Run composer show-help or make to see all available scripts."
     },
     "replace": {
         "snicco/application-layer-bundle": "self.version",

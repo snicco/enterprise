@@ -6,7 +6,7 @@
 # =================================================================
 #
 .PHONY: setup
-setup: .make/.env .docker/.env tests/.env.testing ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json ## Initializes the repository or checks if everything is still up to date.
+setup: .make/.env .docker/.env tests/.env.testing ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json build-codeception ## Initializes the repository or checks if everything is still up to date.
 
 #
 # =================================================================
@@ -17,7 +17,7 @@ setup: .make/.env .docker/.env tests/.env.testing ./.docker/images/nginx/certs v
 # is newer than the vendor folder we need to install composer
 # dependencies.
 #
-vendor: composer.json $(wildcard composer.lock) ## Install composer dependencies (in docker)
+vendor: composer.json $(wildcard composer.lock)
 	$(MAYBE_RUN_APP_IN_DOCKER) composer install
 	@touch vendor # Need to update file timestamp so that we dont run this again if composer has no new
 				 # dependencies.
@@ -31,7 +31,7 @@ vendor: composer.json $(wildcard composer.lock) ## Install composer dependencies
 # is newer than the vendor folder we need to install node
 # dependencies.
 #
-node_modules: package.json $(wildcard package-lock.json) ## Install npm dependencies in a docker container.
+node_modules: package.json $(wildcard package-lock.json)
 	$(MAYBE_RUN_NODE_IN_DOCKER) npm install
 	@touch node_modules # Need to update file timestamp so that we dont run this again if node has no new
 				 # dependencies.
@@ -44,7 +44,7 @@ node_modules: package.json $(wildcard package-lock.json) ## Install npm dependen
 # If the composer.json file is modified we need to update
 # our composer.lock and composer.lock file and dependencies.
 #
-composer.lock: composer.json ## Update composer dependencies (in docker)
+composer.lock: composer.json
 	$(MAYBE_RUN_APP_IN_DOCKER) composer update
 	@touch composer.lock # Need to update file timestamp so that we dont run this again if composer has no new
 						# dependencies.
@@ -57,7 +57,7 @@ composer.lock: composer.json ## Update composer dependencies (in docker)
 # If the package.json file is modified we need to update
 # our package.lock file and node dependencies.
 #
-package-lock.json: package.json ## Update npm dependencies in a docker container.
+package-lock.json: package.json
 	$(MAYBE_RUN_NODE_IN_DOCKER) npm update
 	touch package-lock.json # Need to update file timestamp so that we dont run this again if node has no new
 				 # dependencies.
@@ -67,7 +67,7 @@ package-lock.json: package.json ## Update npm dependencies in a docker container
 # Create the .env file for docker
 # =================================================================
 #
-.docker/.env: .docker/.env.dist ## Create a new docker .env file or check if the current one is up to date
+.docker/.env: .docker/.env.dist
 	@if [ -f .docker/.env ]; \
 		then\
 			echo 'The .env.dist docker file has changed. Please check your .env docker file and adjust the modified values (This message will not be displayed again)';\
@@ -83,7 +83,7 @@ package-lock.json: package.json ## Update npm dependencies in a docker container
 # Create the .env.testing file for codeception
 # =================================================================
 #
-tests/.env.testing: tests/.env.testing.dist ## Create a new codeception .env.testing file or check if the current one is up to date
+tests/.env.testing: tests/.env.testing.dist
 	@if [ -f tests/.env.testing ]; \
 		then\
 			echo 'The .env.testing.dist file has changed. Please check your .env.testing file and adjust the modified values (This message will not be displayed again)';\
@@ -99,7 +99,7 @@ tests/.env.testing: tests/.env.testing.dist ## Create a new codeception .env.tes
 # Create the .env file for make
 # =================================================================
 #
-.make/.env: .make/.env.dist ## Create a new make .env file or check if the current one is up to date
+.make/.env: .make/.env.dist
 	@if [ -f .make/.env ]; \
 		then\
 			echo 'The .env.dist make file has changed. Please check your .make/.env file and adjust the modified values (This message will not be displayed again)';\
@@ -120,3 +120,6 @@ tests/.env.testing: tests/.env.testing.dist ## Create a new codeception .env.tes
 	@mkdir $(DOCKER_DIR)/images/nginx/certs
 	@mkcert -key-file $(DOCKER_DIR)/images/nginx/certs/snicco-enterprise.test-key.pem -cert-file $(DOCKER_DIR)/images/nginx/certs/snicco-enterprise.test.pem snicco-enterprise.test
 
+.PHONY: build-codeception
+build-codeception: ## Build codeception support classes
+	$(MAYBE_RUN_APP_IN_DOCKER) vendor/bin/codecept build

@@ -6,7 +6,5 @@ use Snicco\Bundle\Encryption\DefuseEncryptor;
 use Snicco\Bundle\Encryption\Option\EncryptionOption;
 
 return [
-  
     EncryptionOption::KEY_ASCII => DefuseEncryptor::randomAsciiKey(),
-    
 ];

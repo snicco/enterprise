@@ -48,13 +48,14 @@ ARG APP_USER_ID
 ARG APP_GROUP_ID
 ARG APP_USER_NAME
 ARG APP_GROUP_NAME
-ARG APP_CODE_PATH
-ARG ENV
+ARG MONOREPO_PATH
+ARG WORDPRESS_PATH
+ARG CONTAINER_CODE_PATH
 
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
-    mkdir -p $APP_CODE_PATH && \
-    chown $APP_USER_NAME: $APP_CODE_PATH
+    mkdir -p $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH && \
+    chown $APP_USER_NAME: $CONTAINER_CODE_PATH $MONOREPO_PATH $WORDPRESS_PATH
 
 #
 # =================================================================
@@ -70,11 +71,51 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
 #
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 RUN mkdir -p /home/$APP_USER_NAME/.composer && \
-    chown $APP_USER_NAME: /home/$APP_USER_NAME/.composer
+    chown -R $APP_USER_NAME /home/$APP_USER_NAME/.composer
 
-WORKDIR $APP_CODE_PATH
+#
+# =================================================================
+# Create default directories and permissions
+# =================================================================
+#
+# We need to create all wp-content directories with the correct
+# permissions in the dockerfile.
+# Otherwise the docker daemon will copy bind-mounts with
+# permissions set to root:root.
+# https://github.com/moby/moby/issues/2259#issuecomment-223153276
+#
+#RUN mkdir -p /home/$APP_USER_NAME/.composer $WORDPRESS_PATH && \
+#    mkdir -p $WORDPRESS_PATH/wp-content/plugins $WORDPRESS_PATH/wp-content/themes $WORDPRESS_PATH/wp-content/mu-plugins && \
+#    chown -R $APP_USER_NAME:$APP_GROUP_NAME /home/$APP_USER_NAME/.composer && \
+#    chown -R $APP_USER_NAME:$APP_GROUP_NAME $WORDPRESS_PATH
+
+WORKDIR $MONOREPO_PATH
+
+USER $APP_USER_NAME
 
 FROM base as local
+
+USER root
+
+#
+# =================================================================
+# Install local development tools
+# =================================================================
+#
+# In the local target we can go ahead and install some
+# system librariers that make development easier for us.
+#
+# We dont add them to the base target so that they
+# dont end up in the CI stage.
+#
+RUN apk add --update --no-cache \
+        bash \
+        make \
+        sudo \
+        vim
+
+# make bash default shell
+RUN sed -e 's;/bin/ash$;/bin/bash;g' -i /etc/passwd
 
 #
 # =================================================================
@@ -87,9 +128,7 @@ FROM base as local
 # if they are defined before the first "FROM" statement. So we need
 # to declare them here aswell.
 #
-ARG APP_CODE_PATH
 ARG APP_USER_NAME
 
-WORKDIR $APP_CODE_PATH
-
 USER $APP_USER_NAME
+

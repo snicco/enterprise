@@ -20,11 +20,17 @@
         <ignoreFiles>
             <directory name="vendor"/>
             <directory name="src/Snicco/skeleton"/>
+            <directory name=".wp"/>
+            <directory name="src/Snicco/bundle/fortress-bundle/tests/_support"/>
         </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
-
+        <InvalidDocblock>
+            <errorLevel type="suppress">
+                <file name="vendor/php-stubs/wordpress-stubs/wordpress-stubs.php"/>
+            </errorLevel>
+        </InvalidDocblock>
     </issueHandlers>
 
     <globals>

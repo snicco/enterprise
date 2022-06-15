@@ -20,9 +20,9 @@ namespace Snicco\Enterprise\Bundle\Fortress\Tests;
  *
  * @SuppressWarnings(PHPMD)
  */
-class WPCLITester extends \Codeception\Actor
+class End2EndTester extends \Codeception\Actor
 {
-    use _generated\WPCLITesterActions;
+    use _generated\End2EndTesterActions;
 
     // Define custom actions here
 }

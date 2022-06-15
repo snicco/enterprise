@@ -102,6 +102,8 @@ DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) $(ALL_DOCKER_COMPOSE_FILES)
 FORCE_RUN_IN_CONTAINER?=
 MAYBE_RUN_NODE_IN_DOCKER?=
 MAYBE_RUN_APP_IN_DOCKER?=
+MAYBE_EXEC_APP_IN_DOCKER?=
+MAYBE_EXEC_NODE_IN_DOCKER?=
 
 ifndef FORCE_RUN_IN_CONTAINER
 	# check if 'make' is executed in a docker container,
@@ -116,6 +118,8 @@ endif
 ifeq ($(FORCE_RUN_IN_CONTAINER),true)
 	MAYBE_RUN_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_NODE_NAME)
 	MAYBE_RUN_APP_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_APP_NAME)
+	MAYBE_EXEC_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) exec -it --user $(APP_USER_NAME) $(DOCKER_SERVICE_NODE_NAME)
+	MAYBE_EXEC_APP_IN_DOCKER:=$(DOCKER_COMPOSE) exec -it --user $(APP_USER_NAME) $(DOCKER_SERVICE_APP_NAME)
 endif
 
 .PHONY: _validate-docker-env
@@ -131,7 +135,6 @@ _validate-docker-env:
 	@$(if $(COMPOSER_AUTH_JSON_PATH),,$(error COMPOSER_AUTH_JSON_PATH is undefined - Did you run make setup?))
 	@$(if $(COMPOSER_CACHE_PATH),,$(error COMPOSER_CACHE_PATH is undefined - Did you run make setup?))
 	@echo "All docker variables are set."
-
 
 #
 # =================================================================
@@ -149,7 +152,7 @@ docker-config: _validate-docker-env ## List the merged configuration for current
 	@$(DOCKER_COMPOSE) config
 
 .PHONY: docker-prune
-docker-prune: docker-down ## Remove ALL unused docker resources, including volumes and images.
+docker-prune: docker-down ## Remove ALL docker resources, including volumes and images.
 	@docker system prune -a -f --volumes
 
 .PHONY: docker-build
@@ -173,6 +176,10 @@ docker-run: _validate-docker-env ## Run a command inside a docker container. Usa
 docker-down: _validate-docker-env ## Stop and remove docker all containers.
 	@$(DOCKER_COMPOSE) down
 
-.PHONY: docker-volume-prune
-docker-volume-prune: _validate-docker-env docker-down ## Delete all docker volumes.
+.PHONY: docker-v-prune
+docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
+	@docker volume prune -f
+
+.PHONY: dvp
+dvp: _validate-docker-env docker-down
 	@docker volume prune -f

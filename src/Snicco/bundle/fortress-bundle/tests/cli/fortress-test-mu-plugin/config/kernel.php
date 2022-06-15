@@ -13,7 +13,6 @@ use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIBundle;
 use Snicco\Enterprise\Bundle\Fortress\FortressBundle;
 
 return [
-    
     KernelOption::BUNDLES => [
         Environment::ALL => [
             HttpRoutingBundle::class,
@@ -22,8 +21,7 @@ return [
             BetterWPCLIBundle::class,
             EncryptionBundle::class,
             FortressBundle::class,
-            ApplicationLayerBundle::class
+            ApplicationLayerBundle::class,
         ],
     ],
-    
 ];

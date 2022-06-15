@@ -126,11 +126,11 @@ final class SessionModuleTest extends WPTestCase
         $session = $session_manager->getSession($hashed_token);
 
         $this->assertSame($first_timestamp = time(), $session->lastActivity());
-        
+
         sleep(1);
-    
+
         wp_validate_auth_cookie($cookie, 'auth');
-    
+
         // Should not be updated twice in the same request.
         $session = $session_manager->getSession($hashed_token);
         $this->assertSame($first_timestamp, $session->lastActivity());

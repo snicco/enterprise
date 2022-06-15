@@ -33,3 +33,13 @@ Running `make dev-server` will create a WP installation with version 6.0 and PHP
 These settings (and many more) can be customized by passing arguments to make:
 
 - Runtime: `make dev-server WP_VERSION=5.9.3 PHP_VERSION=8.0`
+
+### Utility functions
+
+For convenience, you can add the contents of [.docker/bash_profile.sh](.docker/bash_profile.sh) to your bash profile:
+
+On MacOs:
+
+```shell
+cat .docker/bash_profile.sh >> ~/.zshrc
+```

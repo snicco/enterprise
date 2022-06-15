@@ -78,6 +78,10 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 # We will also go ahead and remove bloat from the default
 # WordPress image that we dont need.
 #
+# We also copy the source files to /tmp/wordpress
+# so that we can have a separate volume with just the
+# default WordPress files.
+#
 COPY --from=wordpress /usr/src/wordpress /usr/src/wordpress
 COPY --from=wp_cli /usr/local/bin/wp /usr/local/bin/wp
 
@@ -129,21 +133,53 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
 RUN sed -i "s/user = www-data/user = ${APP_USER_NAME}/g" /usr/local/etc/php-fpm.d/www.conf && \
     sed -i "s/group = www-data/group = ${APP_GROUP_NAME}/g" /usr/local/etc/php-fpm.d/www.conf
 
+USER $APP_USER_NAME
+
+#
+# =================================================================
+# Copy custom MU-Plugins
+# =================================================================
+#
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./.docker/images/wordpress/mu-plugins /usr/src/wordpress/wp-content/mu-plugins
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./.docker/images/wordpress/custom-wp-config.php /usr/src/wordpress/wp-config.php
+
 #
 # =================================================================
 # Copy PHP source files
 # =================================================================
 #
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/plugin $APP_CODE_PATH/wp-content/plugins
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/component $APP_CODE_PATH/wp-content/component
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/bundle $APP_CODE_PATH/wp-content/bundle
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/plugin /usr/src/wordpress/wp-content/plugins
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/component /usr/src/wordpress/wp-content/component
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/bundle /usr/src/wordpress/wp-content/bundle
 
 WORKDIR $APP_CODE_PATH
-
-USER $APP_USER_NAME
 
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
 CMD ["php-fpm", "-F"]
 
 FROM php_fpm as local
+
+USER root
+
+#
+# =================================================================
+# Install local development tools
+# =================================================================
+#
+# In the local target we can go ahead and install some
+# system librariers that make development easier for us.
+#
+# We dont add them to the base target so that they
+# dont end up in the CI stage.
+#
+RUN apk add --update --no-cache \
+        bash \
+        sudo \
+        vim \
+        nano
+
+# make bash default shell
+RUN sed -e 's;/bin/ash$;/bin/bash;g' -i /etc/passwd
+
+USER $APP_USER_NAME
 

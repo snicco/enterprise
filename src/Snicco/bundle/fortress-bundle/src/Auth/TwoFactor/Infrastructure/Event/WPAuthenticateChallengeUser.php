@@ -10,8 +10,6 @@ use Snicco\Component\EventDispatcher\ClassAsPayload;
 use Snicco\Component\EventDispatcher\Event;
 use WP_User;
 
-use function wp_authenticate;
-
 final class WPAuthenticateChallengeUser implements Event, ExposeToWP
 {
     use ClassAsName;
