@@ -7,6 +7,7 @@ use PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer;
 
 use PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
+use PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer;
 use PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer;
 use PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer;
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
@@ -42,11 +43,8 @@ return static function (ContainerConfigurator $configurator): void {
     $parameters->set(Option::SKIP, [
         __DIR__ . '/src/Snicco/bundle/fortress-bundle/tests/_support/_generated',
     ]);
-
-    $parameters->set(
-        Option::PARALLEL,
-        true
-    );
+    $parameters->set(Option::PARALLEL, true);
+    $parameters->set(Option::CACHE_DIRECTORY, '/tmp/snicco-qa/ecs');
 
     $services = $configurator->services();
 

@@ -39,5 +39,10 @@ fix: ## Fix linting errors.
 	# $(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process # @todo Enable rector once its compatible with codeception
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs --fix $(ARGS)
 
+clear-qa-cache: ## Clear all caches of QA tools
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-cache
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-global-cache
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --clear-cache
+
 psalm: ## Run psalm on the entire codebase.
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm $(ARGS)

@@ -14,6 +14,7 @@
         sealAllMethods="true"
         sealAllProperties="true"
         autoloader="psalm/bootstrap.php"
+        cacheDirectory="/tmp/snicco-qa/psalm"
 >
     <projectFiles>
         <directory name="src"/>
