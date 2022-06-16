@@ -91,8 +91,7 @@ final class TwoFactorAuthenticator extends Authenticator
         string $provided_code,
         ?bool $remember,
         ?string $ip
-    ): LoginResult
-    {
+    ): LoginResult {
         $user_backup_codes = $this->two_factor_settings->getBackupCodes($user->ID);
 
         try {

@@ -106,6 +106,7 @@ MAYBE_RUN_NODE_IN_DOCKER?=
 MAYBE_RUN_APP_IN_DOCKER?=
 MAYBE_EXEC_APP_IN_DOCKER?=
 MAYBE_EXEC_NODE_IN_DOCKER?=
+DOCKER_EXEC_ARGS?=-it
 
 ifndef FORCE_RUN_IN_CONTAINER
 	# check if 'make' is executed in a docker container,
@@ -120,8 +121,8 @@ endif
 ifeq ($(FORCE_RUN_IN_CONTAINER),true)
 	MAYBE_RUN_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_NODE_NAME)
 	MAYBE_RUN_APP_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_APP_NAME)
-	MAYBE_EXEC_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) exec -it --user $(APP_USER_NAME) $(DOCKER_SERVICE_NODE_NAME)
-	MAYBE_EXEC_APP_IN_DOCKER:=$(DOCKER_COMPOSE) exec -it --user $(APP_USER_NAME) $(DOCKER_SERVICE_APP_NAME)
+	MAYBE_EXEC_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_NODE_NAME)
+	MAYBE_EXEC_APP_IN_DOCKER:=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_APP_NAME)
 endif
 
 .PHONY: _validate-docker-env
@@ -174,7 +175,7 @@ docker-up: _validate-docker-env ## Create one or more docker container(s). Usage
 docker-run: SERVICE?=
 docker-run: COMMAND?=/bin/sh
 docker-run: _validate-docker-env ## Run a command inside a docker container. Usage make docker-run SERVICE=app COMMAND="php -v".
-	$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) -it --rm  $(SERVICE) $(COMMAND)
+	$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) $(DOCKER_EXEC_ARGS) --rm  $(SERVICE) $(COMMAND)
 
 .PHONY: docker-down
 docker-down: _validate-docker-env ## Stop and remove docker all containers.
