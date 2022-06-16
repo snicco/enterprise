@@ -71,8 +71,6 @@ services:
     secrets:
       - source: composer_auth_json
         target: /home/${APP_USER_NAME?}/.composer/auth.json
-    depends_on:
-      - wp
     # Keep the app container running.
     # There is no long-running process defined as the entrypoint for the container.
     # Keeping the container running saves as time for frequently run commands since

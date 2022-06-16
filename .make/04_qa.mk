@@ -2,13 +2,24 @@
 
 #
 # =================================================================
-# Cores
+# Quality assurance tools:
 # =================================================================
 #
-# Determine the number of cores to use for parallel execution.
-# A value can also be set in the configuration and overwrites
-# this one.
+# We split the usage of our QA tools into two categories:
 #
+# 1) Critical QA tools that need tight version constraints and configuration
+# 2) Other tools that are "run and forget"
+#
+# Tools from category 1) are including as composer dependencies
+# and run in the "app" container.
+#
+# Tools from category 1) are run using the docker image of
+# https://github.com/jakzal/phpqa
+#
+# 1) rector, ecs, codeception, psalm
+# 2) anything else in this file
+#
+
 CORES?=$(shell (nproc  || sysctl -n hw.ncpu) 2> /dev/null)
 QA_PHP_VERSION?=8.1
 QA_DOCKER_RUN_OPTIONS=-it
@@ -22,15 +33,15 @@ PSALM_ARGS?=
 ECS_ARGS?=
 COMPOSER_UNUSED_ARGS?=
 
-NO_PROGRESS?=false
-ifeq ($(NO_PROGRESS),true)
-    ECS_ARGS+= --no-ansi --no-progress-bar
-    PSALM_ARGS+= --no-progress
-    COMPOSER_UNUSED_ARGS+= --no-progress --ansi
-endif
+QUIET?=false
+#ifeq ($(QUIET),true)
+#    ECS_ARGS+= --no-ansi --no-progress-bar
+#    PSALM_ARGS+= --no-progress
+#    COMPOSER_UNUSED_ARGS+= --no-progress --ansi
+#endif
 
 define execute
-    if [ "$(NO_PROGRESS)" = "false" ]; then \
+    if [ "$(QUIET)" = "false" ]; then \
         eval "$(MAYBE_EXEC_APP_IN_DOCKER) $(1) $(2)"; \
     else \
         START=$$(date +%s); \
@@ -52,13 +63,15 @@ define execute
     fi
 endef
 
-define execute_in_external_docker_container
-    if [ "$(NO_PROGRESS)" = "false" ]; then \
-        eval "$(1)"; \
+EXTERNAL_TOOL_COMMAND="docker run -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)-alpine"
+
+define run_external_tool
+    if [ "$(QUIET)" = "false" ]; then \
+        eval "$(EXTERNAL_TOOL_COMMAND) $(1)"; \
     else \
         START=$$(date +%s); \
         printf "%-35s" "$@"; \
-        if OUTPUT=$$(eval "$(1)" 2>&1); then \
+        if OUTPUT=$$(eval "$(EXTERNAL_TOOL_COMMAND) $(1)" 2>&1); then \
             printf " $(GREEN)%-6s$(NO_COLOR)" "Ok"; \
             END=$$(date +%s); \
             RUNTIME=$$((END-START)) ;\
@@ -82,35 +95,36 @@ ecs: ## Lint the codebase without applying fixes.
 psalm: ## Run psalm on the entire codebase.
 	@$(call execute, vendor/bin/psalm , $(PSALM_ARGS))
 
-composer-unused: ## Check for unused composer packages
-	@$(call execute, composer-unused , $(COMPOSER_UNUSED_ARGS))
+composer-unused: ## Check for unused composer packages.
+	@$(call run_external_tool, composer-unused $(ARGS))
 
-copy-paste-detector: ## Checks for copy-paste occurrences
-	@$(call execute, phpcpd , ./src --exclude ./src/Snicco/bundle/fortress-bundle/tests/_support/_generated --exclude ./src/Snicco/skeleton/)
+copy-paste-detector: ## Checks for copy-paste occurrences.
+	@$(call run_external_tool, phpcpd ./src $(ARGS) --exclude ./src/Snicco/bundle/fortress-bundle/tests/_support/_generated --exclude ./src/Snicco/skeleton/ )
+
+parallel-lint: ## Checks the syntax of all files.
+	@$(call run_external_tool, parallel-lint . $(ARGS) \
+								--exclude .git \
+                              	--exclude vendor \
+                              	--exclude wp \
+                              	--exclude docker \
+                              	--exclude github \
+                              	--exclude psalm \
+                              	)
 
 phploc: DIR?=src
 phploc: ## Shows metrics about size and structure or the codebase
-	$(MAYBE_EXEC_APP_IN_DOCKER) phploc $(DIR) $(ARGS)
-
-parallel-lint: ## Checks the syntax of all files.
-	@$(call execute_in_external_docker_container,  docker run -i --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine parallel-lint . \
-                                                  	--exclude .git \
-                                                  	--exclude vendor \
-                                                  	--exclude .wp \
-                                                  	--exclude .docker \
-                                                  	--exclude .github \
-                                                  	--exclude .psalm \
-                                                  	)
+	@$(call run_external_tool, phploc $(DIR) $(ARGS))
 
 composer-require-checker: ## Check that all dependencies are declared in composer.json.
 ifeq ($(QA_PHP_VERSION),7.4)
-	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine composer-require-checker-3)
+	@$(call run_external_tool, composer-require-checker-3 $(ARGS))
 else
-	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine composer-require-checker)
+	@$(call run_external_tool, composer-require-checker $(ARGS))
 endif
 
+bc-check: roave-backward-compatibility-check ## Check that all changes in the current working tree are backwards compatible.
 roave-backward-compatibility-check:
-	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine roave-backward-compatibility-check)
+	@$(call run_external_tool, roave-backward-compatibility-check $(ARGS))
 
 numbers:
 	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project \

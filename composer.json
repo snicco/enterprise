@@ -47,7 +47,7 @@
         "nyholm/psr7": "^1.5.0",
         "php-stubs/wordpress-stubs": "^5.9.3",
         "phpunit/phpunit": "9.5.13",
-        "rector/rector": "^0.13.5",
+        "rector/rector": "0.13.5",
         "snicco/event-dispatcher-testing": "^1.2.0",
         "snicco/pimple-bridge": "^1.2.1",
         "snicco/testing-bundle": "^1.2.0",

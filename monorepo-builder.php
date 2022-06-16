@@ -26,20 +26,23 @@ return static function (ContainerConfigurator $containerConfigurator) :void {
             'php' => '^7.4|^8.0',
         ],
         ComposerJsonSection::REQUIRE_DEV => [
+            // Codeception dependencies
             'codeception/codeception' => '4.2',
             "codeception/module-cli" => "^1.0",
             "codeception/module-db" => "^1.0",
             "codeception/module-webdriver" => "^1.0",
             'phpunit/phpunit' => '9.5.13',
-            'symplify/monorepo-builder' => '9.4.70',
             'lucatume/wp-browser' => '3.1.6',
+            // QA dependencies
             'vimeo/psalm' => '4.22.0',
             'symplify/easy-coding-standard' => '10.1.2',
+            'rector/rector' => '0.13.5',
+            // Monorepo dependencies,
+            'symplify/monorepo-builder' => '9.4.70',
             'vlucas/phpdotenv' => '5.4.1',
             'php-stubs/wordpress-stubs' => '^5.9.3',
             'symfony/console' => '5.4.7',
             'symplify/composer-json-manipulator' => '9.3.26',
-            'webmozart/assert' => '^1.10.0',
         ],
         ComposerJsonSection::AUTOLOAD_DEV => [
             'psr-4' => [
