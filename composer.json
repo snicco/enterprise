@@ -14,16 +14,22 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "ext-hash": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "bjeavons/zxcvbn-php": "^1.3",
+        "defuse/php-encryption": "^2.3",
         "league/tactician": "^1.1.0",
         "league/tactician-logger": "^0.11.0",
+        "paragonie/constant_time_encoding": "^2.6.3",
         "paragonie/password_lock": "^3.1.0",
         "pragmarx/google2fa": "^8.0.0",
         "psr/container": "^1.1.2",
+        "psr/http-message": "^1.0.0",
         "psr/log": "^1.1.4",
+        "snicco/better-wp-api": "^1.2.1",
         "snicco/better-wp-cli": "^1.2.1",
+        "snicco/better-wp-hooks": "^1.2.1",
         "snicco/better-wpdb": "^1.2.1",
         "snicco/content-negotiation-middleware": "^1.2.1",
         "snicco/encryption-bundle": "^1.2.1",
@@ -32,6 +38,7 @@
         "snicco/http-routing-bundle": "^1.2.1",
         "snicco/kernel": "^1.2.1",
         "snicco/payload-middleware": "^1.2.1",
+        "snicco/psr7-error-handler": "^1.2.1",
         "snicco/signed-url": "^1.2.1",
         "snicco/str-arr": "^1.2.1",
         "snicco/testable-clock": "^1.2.1",
@@ -39,6 +46,7 @@
         "webmozart/assert": "^1.10.0"
     },
     "require-dev": {
+        "ext-curl": "*",
         "codeception/codeception": "4.2",
         "codeception/module-cli": "^1.0",
         "codeception/module-db": "^1.0",
@@ -51,13 +59,13 @@
         "snicco/event-dispatcher-testing": "^1.2.0",
         "snicco/pimple-bridge": "^1.2.1",
         "snicco/testing-bundle": "^1.2.0",
+        "sniccowp/php-scoper-wordpress-excludes": "^5.9.3",
         "symfony/console": "5.4.7",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
         "symplify/monorepo-builder": "9.4.70",
         "vimeo/psalm": "4.22.0",
-        "vlucas/phpdotenv": "5.4.1",
-        "ext-curl": "*"
+        "vlucas/phpdotenv": "5.4.1"
     },
     "autoload": {
         "psr-4": {

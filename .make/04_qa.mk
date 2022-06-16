@@ -102,7 +102,7 @@ psalm: ## Run psalm on the codebase without applying fixes.
 
 .PHONY: rector
 rector: ## Run rector on the codebase without applying fixes.
-	@$(call execute_qa_tool_in_app_container, vendor/bin/rector process --dry-run --ansi)
+	@$(call execute_qa_tool_in_app_container, vendor/bin/rector process --dry-run --ansi $(ARGS))
 
 .PHONY: composer-unused
 composer-unused: ## Check for unused composer packages.
@@ -120,9 +120,9 @@ phploc: ## Shows metrics about size and structure or the codebase
 .PHONY: composer-require-checker
 composer-require-checker: ## Check that all dependencies are declared in composer.json.
 ifeq ($(QA_PHP_VERSION),7.4)
-	@$(call execute_qa_tool_in_external_container, composer-require-checker-3 $(ARGS))
+	@$(call execute_qa_tool_in_external_container, composer-require-checker-3 --config-file=/project/composer-require-checker.json $(ARGS))
 else
-	@$(call execute_qa_tool_in_external_container, composer-require-checker $(ARGS))
+	@$(call execute_qa_tool_in_external_container, composer-require-checker --config-file=/project/composer-require-checker.json $(ARGS))
 endif
 
 .PHONY: bc-check
@@ -164,9 +164,10 @@ fix: ## Apply automatic fixes for the entire codebase.
 
 .PHONY: clear-qa-cache
 clear-qa-cache: ## Clear all caches of QA tools
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-cache
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-global-cache
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --clear-cache
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-cache || true
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-global-cache || true
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --clear-cache || true
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector --dry-run --clear-cache || true
 
 .PHONY: commitlint
 commitlint: ## Check a commit message against our commit message rules. Usage make commitlint MSG="chore(monorepo): is this valid"

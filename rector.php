@@ -10,6 +10,9 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/rector.php',
     ]);
 
+    $rectorConfig->cacheDirectory('/tmp/snicco-qa/rector');
+    $rectorConfig->parallel();
+
     $tokens = [];
     $token = 4;
     $tokens[] = $token;

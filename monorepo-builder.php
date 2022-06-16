@@ -38,6 +38,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'symplify/easy-coding-standard' => '10.1.2',
             'rector/rector' => '0.13.5',
             // Monorepo dependencies,
+            'sniccowp/php-scoper-wordpress-excludes' => '^5.9.3',
             'symplify/monorepo-builder' => '9.4.70',
             'vlucas/phpdotenv' => '5.4.1',
             'php-stubs/wordpress-stubs' => '^5.9.3',
