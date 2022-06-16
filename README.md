@@ -12,7 +12,7 @@ This monorepo is 100% managed by make/docker and can be setup locally with only 
 
 To get started you need on your local machine:
 
-- [make](https://www.gnu.org/software/make/)
+- [make](https://www.gnu.org/software/make/) (Version 4+)
 - [docker](https://docs.docker.com/get-docker/)
 - [mkcert](https://github.com/FiloSottile/mkcert) (To access the development site with ssl)
 

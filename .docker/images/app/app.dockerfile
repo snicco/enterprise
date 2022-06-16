@@ -36,6 +36,31 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 
 #
 # =================================================================
+# Add PHIVE to install QA Tools
+# =================================================================
+#
+RUN apk add gnupg ncurses
+
+RUN wget -O phive.phar "https://phar.io/releases/phive.phar" && \
+    wget -O phive.phar.asc "https://phar.io/releases/phive.phar.asc" && \
+    gpg --keyserver hkps://keys.openpgp.org --recv-keys 0x6AF725270AB81E04D79442549D8A98B29B2D5D79 && \
+    gpg --verify phive.phar.asc phive.phar && \
+    rm phive.phar.asc && \
+    chmod +x phive.phar && \
+    mv phive.phar /usr/local/bin/phive
+
+#
+# =================================================================
+# Install QA Tools
+# =================================================================
+#
+#RUN #phive install -g --trust-gpg-keys D2CCAC42F6295E7D composer-require-checker@3.8.0
+RUN phive install -g --trust-gpg-keys F4D32E2C9343B2AE composer-unused
+RUN phive install -g --trust-gpg-keys 4AA394086372C20A phpcpd
+RUN phive install -g --trust-gpg-keys 4AA394086372C20A phploc
+
+#
+# =================================================================
 # Create user groups and permissions in docker container
 # =================================================================
 #
@@ -55,11 +80,6 @@ ARG WORDPRESS_SRC_PATH
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
     mkdir -p $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH && \
-#      $WORDPRESS_PATH/wp-content/plugins \
-#      $WORDPRESS_PATH/wp-content/themes \
-#      $WORDPRESS_PATH/wp-content/mu-plugins \
-#      $WORDPRESS_PATH/wp-content/uploads \
-#      && \
     chown -R $APP_USER_NAME:$APP_GROUP_NAME $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH
 
 #

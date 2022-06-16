@@ -18,7 +18,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/src/Snicco/bundle',
         __DIR__ . '/src/Snicco/component',
         __DIR__ . '/src/Snicco/plugin',
-        __DIR__ . '/src/Snicco/skeleton',
+        //__DIR__ . '/src/Snicco/skeleton',
     ]);
 
     $parameters->set(Option::DATA_TO_APPEND, [

@@ -316,24 +316,11 @@ final class SessionRepositoryTest extends WPTestCase
     {
         $session_repo = $session_repo(new TestClock());
         $calvin_session1 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
-        $calvin_session2 = $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
+        $this->aPersistedSessionForUser($session_repo, $this->calvin_id);
+
+        $this->assertCount(2, $session_repo->getAllForUser($this->calvin_id));
 
         $marlon_session1 = $this->aPersistedSessionForUser($session_repo, $this->marlon_id);
-
-        $this->assertEquals([
-            $calvin_session1->hashedToken() => [
-                'expires_at' => $calvin_session1->expiresAt(),
-                'last_activity' => $calvin_session1->lastActivity(),
-                'last_rotation' => $calvin_session1->lastRotation(),
-                'data' => $calvin_session1->data(),
-            ],
-            $calvin_session2->hashedToken() => [
-                'expires_at' => $calvin_session2->expiresAt(),
-                'last_activity' => $calvin_session2->lastActivity(),
-                'last_rotation' => $calvin_session2->lastRotation(),
-                'data' => $calvin_session2->data(),
-            ],
-        ], $session_repo->getAllForUser($this->calvin_id));
 
         $session_repo->destroyOtherSessionsForUser($this->calvin_id, $calvin_session1->hashedToken());
 
