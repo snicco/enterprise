@@ -9,24 +9,27 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesR
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateReplaceReleaseWorker;
 use Symplify\MonorepoBuilder\ValueObject\Option;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
+return static function (ContainerConfigurator $containerConfigurator) :void {
     $parameters = $containerConfigurator->parameters();
-
+    
     $parameters->set(Option::DEFAULT_BRANCH_NAME, 'master');
-
+    
     $parameters->set(Option::PACKAGE_DIRECTORIES, [
-        __DIR__ . '/src/Snicco/bundle',
-        __DIR__ . '/src/Snicco/component',
-        __DIR__ . '/src/Snicco/plugin',
+        __DIR__.'/src/Snicco/bundle',
+        __DIR__.'/src/Snicco/component',
+        __DIR__.'/src/Snicco/plugin',
         //__DIR__ . '/src/Snicco/skeleton',
     ]);
-
+    
     $parameters->set(Option::DATA_TO_APPEND, [
         ComposerJsonSection::REQUIRE => [
             'php' => '^7.4|^8.0',
         ],
         ComposerJsonSection::REQUIRE_DEV => [
             'codeception/codeception' => '4.2',
+            "codeception/module-cli" => "^1.0",
+            "codeception/module-db" => "^1.0",
+            "codeception/module-webdriver" => "^1.0",
             'phpunit/phpunit' => '9.5.13',
             'symplify/monorepo-builder' => '9.4.70',
             'lucatume/wp-browser' => '3.1.6',
@@ -47,9 +50,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'minimum-stability' => 'dev',
         'prefer-stable' => true,
     ]);
-
+    
     $services = $containerConfigurator->services();
-
+    
     /*
      * We do only need these three release workers which run during the prepare command of the semantic release
      * node package. Before the release commit is added we update:
