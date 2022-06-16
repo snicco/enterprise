@@ -63,6 +63,8 @@ final class TwoFactorChallengeService
 
     public function createChallenge(int $user_id, int $lifetime_in_seconds = 300): string
     {
+        Assert::positiveInteger($user_id);
+
         $selector = Base64UrlSafe::encode(random_bytes(self::SELECTOR_BYTES));
         $verifier = Base64UrlSafe::encode(random_bytes(self::VALIDATOR_BYTES));
 

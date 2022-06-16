@@ -17,6 +17,8 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorChallengeRe
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
 use Snicco\Enterprise\Bundle\Fortress\Tests\fixtures\TwoFactorChallengeRepositoryInMemory;
 
+use Webmozart\Assert\Assert;
+
 use function time;
 use function wp_create_user;
 
@@ -112,6 +114,7 @@ final class TwoFactorChallengeRepositoryTest extends WPTestCase
         $now = $clock->currentTimestamp();
 
         $other_id = wp_create_user('foo', 'bar');
+        Assert::positiveInteger($other_id);
 
         $challenges->store('selector1', $c1 = new TwoFactorChallenge('hashed1', 1, $now + 1));
         $challenges->store('selector2', $c2 = new TwoFactorChallenge('hashed2', $other_id, $now + 2));

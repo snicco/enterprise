@@ -75,8 +75,6 @@ final class SessionEventHandler implements EventSubscriber
     {
         /**
          * @var string $cookie_domain
-         *
-         * @psalm-suppress UndefinedConstant
          */
         $cookie_domain = COOKIE_DOMAIN ?: '';
 

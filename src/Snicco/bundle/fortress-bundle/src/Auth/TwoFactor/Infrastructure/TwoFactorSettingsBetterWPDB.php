@@ -13,6 +13,8 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorS
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
 
+use Webmozart\Assert\Assert;
+
 use function base64_decode;
 use function base64_encode;
 use function iterator_to_array;
@@ -126,10 +128,14 @@ final class TwoFactorSettingsBetterWPDB implements TwoFactorSettings
     public function getSecretKey(int $user_id): string
     {
         try {
-            return (string) $this->db->selectValue(
-                sprintf('select `secret` from `%s` where `user_id` = ?', $this->table_name),
+            $secret = $this->db->selectValue(
+                "select `secret` from `{$this->table_name}` where `user_id` = ?",
                 [$user_id]
             );
+
+            Assert::stringNotEmpty($secret);
+
+            return $secret;
         } catch (NoMatchingRowFound $e) {
             throw No2FaSettingsFound::forUser($user_id);
         }
@@ -138,11 +144,12 @@ final class TwoFactorSettingsBetterWPDB implements TwoFactorSettings
     public function lastUsedTimestamp(int $user_id): ?int
     {
         try {
-            /** @var int|null $value */
             $value = $this->db->selectValue(
-                sprintf('select `last_used` from `%s` where `user_id` = ?', $this->table_name),
+                "select `last_used` from `{$this->table_name}` where `user_id` = ?",
                 [$user_id]
             );
+
+            Assert::nullOrInteger($value);
 
             return $value ?? null;
         } catch (NoMatchingRowFound $e) {
@@ -181,7 +188,7 @@ final class TwoFactorSettingsBetterWPDB implements TwoFactorSettings
         }
 
         $codes = (string) $this->db->selectValue(
-            sprintf('select `backup_codes` from `%s` where `user_id` = ?', $this->table_name),
+            "select `backup_codes` from `{$this->table_name}` where `user_id` = ?",
             [$user_id]
         );
 

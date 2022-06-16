@@ -7,6 +7,7 @@ namespace Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure;
 use Snicco\Bundle\Encryption\DefuseEncryptor;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\BackupCodes;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Webmozart\Assert\Assert;
 
 final class EncryptedTwoFactorSettings implements TwoFactorSettings
 {
@@ -34,6 +35,8 @@ final class EncryptedTwoFactorSettings implements TwoFactorSettings
     {
         $encrypted_secret_key = $this->defuse_encryptor->encrypt($secret_key);
 
+        Assert::stringNotEmpty($encrypted_secret_key, 'Encrypting the secret key returned an empty string.');
+
         $this->two_factor_setup->initiateSetup($user_id, $encrypted_secret_key, $backup_codes);
     }
 
@@ -46,7 +49,10 @@ final class EncryptedTwoFactorSettings implements TwoFactorSettings
     {
         $encrypted_secret_key = $this->two_factor_setup->getSecretKey($user_id);
 
-        return $this->defuse_encryptor->decrypt($encrypted_secret_key);
+        $decrypted = $this->defuse_encryptor->decrypt($encrypted_secret_key);
+        Assert::stringNotEmpty($decrypted, 'Decrypting the secret key returned empty-string.');
+
+        return $decrypted;
     }
 
     public function lastUsedTimestamp(int $user_id): ?int

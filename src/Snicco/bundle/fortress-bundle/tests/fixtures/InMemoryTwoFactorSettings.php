@@ -10,11 +10,12 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorS
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsAlreadyInitialized;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\TwoFactorSetupIsNotInitialized;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
+use Webmozart\Assert\Assert;
 
 final class InMemoryTwoFactorSettings implements TwoFactorSettings
 {
     /**
-     * @var array<int,array{is_complete: bool, is_pending: bool, secret_key: string, backup_codes: BackupCodes, last_used?: ?int }>
+     * @var array<int,array{is_complete: bool, is_pending: bool, secret_key: non-empty-string, backup_codes: BackupCodes, last_used?: ?int }>
      */
     private array $user_settings = [];
 
@@ -35,6 +36,8 @@ final class InMemoryTwoFactorSettings implements TwoFactorSettings
     public function add(int $user_id, array $settings): void
     {
         $is_complete = $settings['complete'] ?? true;
+
+        Assert::stringNotEmpty($settings['secret']);
 
         $this->user_settings[$user_id] = [
             'is_complete' => $is_complete,

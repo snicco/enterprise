@@ -57,6 +57,7 @@ final class BackupCodesTest extends Unit
 
         $this->expectException(InvalidArgumentException::class);
 
+        /** @var non-empty-list<non-empty-string> $codes_array */
         BackupCodes::fromHashedCodes($codes_array);
     }
 }

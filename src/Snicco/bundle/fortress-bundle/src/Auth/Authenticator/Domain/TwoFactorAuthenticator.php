@@ -80,22 +80,26 @@ final class TwoFactorAuthenticator extends Authenticator
         $backup_code = (string) $request->post(self::BACKUP_CODE_KEY);
 
         if (! empty($backup_code)) {
-            return $this->authenticateWithBackupCode($user, $backup_code, $remember);
+            return $this->authenticateWithBackupCode($user, $backup_code, $remember, $request->ip());
         }
 
         return $this->authenticateWithOTP($request, $user, $remember);
     }
 
-    private function authenticateWithBackupCode(WP_User $user, string $provided_code, ?bool $remember): LoginResult
+    private function authenticateWithBackupCode(
+        WP_User $user,
+        string $provided_code,
+        ?bool $remember,
+        ?string $ip
+    ): LoginResult
     {
-        $request = null;
         $user_backup_codes = $this->two_factor_settings->getBackupCodes($user->ID);
 
         try {
             $user_backup_codes->revoke($provided_code);
         } catch (InvalidBackupCode $e) {
             $this->event_dispatcher->dispatch(
-                new FailedTwoFactorAuthentication((string) $request->ip(), (string) $user->ID)
+                new FailedTwoFactorAuthentication($ip, (string) $user->ID)
             );
 
             return LoginResult::failed();

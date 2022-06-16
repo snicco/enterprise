@@ -31,6 +31,8 @@ use Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure\FortressModule;
 use Snicco\Enterprise\Bundle\Fortress\Shared\Infrastructure\FortressRouteLoadingOptions;
 use Snicco\Middleware\Negotiation\NegotiateContent;
 
+use Webmozart\Assert\Assert;
+
 use function array_filter;
 use function array_map;
 use function copy;
@@ -131,6 +133,11 @@ final class FortressBundle implements Bundle
                     'charset' => true,
                 ],
             ]);
+            /**
+             * @psalm-suppress InternalMethod
+             *
+             * @todo Decide how to handle this upstream in snicco/snicco
+             */
             $negotiate_content->setContainer($container);
 
             return new AcceptsJsonOnly($negotiate_content);
@@ -206,12 +213,9 @@ final class FortressBundle implements Bundle
 
         $copied = copy(dirname(__DIR__) . '/config/fortress.php', $destination);
 
-        if (! $copied) {
-            // @codeCoverageIgnoreStart
-            throw new RuntimeException(
-                sprintf('Could not copy the default templating config to destination [%s]', $destination)
-            );
-            // @codeCoverageIgnoreEnd
-        }
+        Assert::true(
+            $copied,
+            sprintf('Could not copy the default fortress config to destination [%s]', $destination)
+        );
     }
 }

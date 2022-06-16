@@ -28,7 +28,9 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Event\WPAuth
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\Event\WPAuthenticateRedirectContext;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Infrastructure\TwoFactorSettingsBetterWPDB;
+use Webmozart\Assert\Assert;
 use WP_Error;
+use WP_UnitTest_Factory;
 use WP_UnitTest_Factory_For_User;
 
 use function add_filter;
@@ -56,6 +58,7 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->bundle_test = new BundleTest($this->fixturesDir());
         $this->directories = $this->bundle_test->setUpDirectories();
         $this->kernel = new Kernel(
@@ -68,7 +71,6 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
             $c->set('fortress.auth.' . AuthModuleOption::TWO_FACTOR_CHALLENGES_TABLE_BASENAME, 'auth_2fa_challenges');
         });
         $this->container = $this->kernel->container();
-        parent::setUp();
         TwoFactorSettingsBetterWPDB::createTable(BetterWPDB::fromWpdb(), 'wp_auth_2fa_settings');
         TwoFactorChallengeRepositoryBetterWPDB::createTable(BetterWPDB::fromWpdb(), 'wp_auth_2fa_challenges');
         unset($_SERVER['HTTP_REFERER'], $_REQUEST['redirect_to'], $_REQUEST['remember_me'], $_REQUEST['rememberme'], $_REQUEST['remember']);
@@ -140,8 +142,8 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
     /**
      * @test
      */
-    public function that_nothing_happens_for_a_user_with_completed_2fa_setup_but_invalid_credentials_passed_to_wp_signon(): void
-    {
+    public function that_nothing_happens_for_a_user_with_completed_2fa_setup_but_invalid_credentials_passed_to_wp_signon(
+        ): void {
         $this->kernel->boot();
         remove_all_filters('set_logged_in_cookie');
 
@@ -405,12 +407,16 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
 
     protected function userFactory(): WP_UnitTest_Factory_For_User
     {
-        return $this->factory()
-            ->user;
+        $factory = $this->factory();
+        Assert::isInstanceOf($factory, WP_UnitTest_Factory::class);
+
+        return $factory->user;
     }
 
     private function userHasTwo2FaCompleted(int $user_id): void
     {
+        Assert::positiveInteger($user_id);
+
         /** @var CommandBus $bus */
         $bus = $this->kernel->container()
             ->get(CommandBus::class);

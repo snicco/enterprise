@@ -16,8 +16,8 @@ final class ExampleCest
         $I->amOnPage('/');
         $I->click('Hello world');
 
-        $I->makeScreenshot('latest');
-        $I->makeHtmlSnapshot('latest-html');
+        $I->makeScreenshot();
+        $I->makeHtmlSnapshot();
 
         $I->seeCurrentUrlEquals('/hello-world');
     }

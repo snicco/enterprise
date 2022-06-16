@@ -7,7 +7,6 @@ use PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer;
 
 use PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
-use PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer;
 use PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer;
 use PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer;
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;

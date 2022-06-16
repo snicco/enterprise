@@ -35,9 +35,6 @@ final class TwoFactorChallengeRepositoryBetterWPDB implements TwoFactorChallenge
         $this->clock = $clock ?: SystemClock::fromUTC();
     }
 
-    /**
-     * @param non-empty-string $table_name
-     */
     public static function createTable(BetterWPDB $db, string $table_name): void
     {
         $users_table = $GLOBALS['wpdb']->users;
@@ -56,11 +53,12 @@ final class TwoFactorChallengeRepositoryBetterWPDB implements TwoFactorChallenge
 
     public function get(string $selector): TwoFactorChallenge
     {
-        $sql = sprintf('SELECT * FROM `%s` WHERE `selector` = ?', $this->table_name);
-
         try {
             /** @var array{selector: string, hashed_validator: string, user_id: positive-int, expires_at: int} $row */
-            $row = $this->db->selectRow($sql, [$selector]);
+            $row = $this->db->selectRow(
+                "SELECT * FROM `{$this->table_name}` WHERE `selector` = ?",
+                [$selector]
+            );
         } catch (NoMatchingRowFound $e) {
             throw CouldNotFindChallengeToken::forSelector($selector);
         }

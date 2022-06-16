@@ -25,7 +25,6 @@ use function hash;
 use function implode;
 use function is_int;
 use function random_bytes;
-use function sprintf;
 use function time;
 use function wp_create_user;
 use function wp_delete_user;
@@ -55,7 +54,10 @@ final class SessionRepositoryTest extends WPTestCase
         } else {
             $marlon_id = wp_create_user('marlon', 'foobar');
             if (! is_int($marlon_id)) {
-                throw new RuntimeException(implode(',', $marlon_id->get_error_messages()));
+                /** @var string[] $messages */
+                $messages = $marlon_id->get_error_messages();
+
+                throw new RuntimeException(implode(',', $messages));
             }
 
             $this->marlon_id = $marlon_id;
@@ -64,7 +66,7 @@ final class SessionRepositoryTest extends WPTestCase
 
     protected function tearDown(): void
     {
-        BetterWPDB::fromWpdb()->unprepared(sprintf('DROP TABLE IF EXISTS %s', self::TABLE_NAME));
+        BetterWPDB::fromWpdb()->unprepared('DROP TABLE IF EXISTS ' . self::TABLE_NAME);
         $res = wp_delete_user($this->marlon_id);
         if (! $res) {
             throw new RuntimeException('Could not delete user');

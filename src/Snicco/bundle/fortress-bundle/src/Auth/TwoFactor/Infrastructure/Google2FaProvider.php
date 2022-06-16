@@ -11,6 +11,8 @@ use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\OTPValidator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSecretGenerator;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\TwoFactorSettings;
 
+use Webmozart\Assert\Assert;
+
 use function sprintf;
 use function time;
 
@@ -57,6 +59,9 @@ final class Google2FaProvider implements TwoFactorSecretGenerator, OTPValidator
 
     public function generate(): string
     {
-        return $this->google_2fa->generateSecretKey();
+        $secret = $this->google_2fa->generateSecretKey();
+        Assert::stringNotEmpty($secret);
+
+        return $secret;
     }
 }

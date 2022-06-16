@@ -249,6 +249,7 @@ final class TwoFactorSettingsTest extends WPTestCase
 
     /**
      * @test
+     *
      * @dataProvider nonEncryptedSetups
      *
      * @param Closure():TwoFactorSettings $two_factor_setup
@@ -258,6 +259,8 @@ final class TwoFactorSettingsTest extends WPTestCase
         $two_factor_setup = $two_factor_setup();
 
         $google_2fa = new Google2FA();
+
+        /** @var non-empty-string $secret */
         $secret = $google_2fa->generateSecretKey();
 
         $encrypted_two_factor_setup = new EncryptedTwoFactorSettings(

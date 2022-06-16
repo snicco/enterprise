@@ -10,7 +10,7 @@ final class FailedTwoFactorAuthentication extends FailedAuthenticationAttempt
 {
     private string $user_id;
 
-    public function __construct(string $ip, string $user_id)
+    public function __construct(?string $ip, string $user_id)
     {
         parent::__construct($ip);
         $this->user_id = $user_id;

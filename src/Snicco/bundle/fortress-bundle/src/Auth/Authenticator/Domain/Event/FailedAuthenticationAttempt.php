@@ -17,9 +17,9 @@ abstract class FailedAuthenticationAttempt implements Event, ExposeToWP, Banwort
     use ClassAsPayload;
     use ClassAsName;
 
-    private string $ip;
+    private ?string $ip;
 
-    public function __construct(string $ip)
+    public function __construct(?string $ip)
     {
         $this->ip = $ip;
     }
@@ -31,6 +31,6 @@ abstract class FailedAuthenticationAttempt implements Event, ExposeToWP, Banwort
 
     public function ip(): ?string
     {
-        return $this->ip;
+        return '' === $this->ip ? null : $this->ip;
     }
 }

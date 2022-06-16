@@ -8,7 +8,6 @@ use ArrayIterator;
 use InvalidArgumentException;
 use IteratorAggregate;
 use Snicco\Enterprise\Bundle\Fortress\Auth\TwoFactor\Domain\Exception\InvalidBackupCode;
-
 use Webmozart\Assert\Assert;
 
 use function array_map;
@@ -35,7 +34,7 @@ final class BackupCodes implements IteratorAggregate
     private array $hashed_codes;
 
     /**
-     * @param non-empty-array<non-empty-string> $hashed_codes
+     * @param non-empty-list<non-empty-string> $hashed_codes
      */
     private function __construct(array $hashed_codes)
     {
