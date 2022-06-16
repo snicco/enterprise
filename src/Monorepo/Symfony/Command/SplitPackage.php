@@ -31,7 +31,9 @@ final class SplitPackage extends Command
     private PackageRepository $package_repo;
 
     private ?SymfonyStyle $output = null;
-
+    
+    private string $default_branch = 'master';
+    
     public function __construct(PackageRepository $package_repo)
     {
         parent::__construct('split-package');
@@ -47,7 +49,7 @@ final class SplitPackage extends Command
         $api_token = (string) ($_SERVER['GH_TOKEN'] ?? '');
         $commit_message = (string) ($_SERVER['COMMIT_MESSAGE'] ?? '');
         $tag = (string) ($_SERVER['TAG'] ?? '');
-        $branch_name = (string) ($_SERVER['BRANCH'] ?? 'master');
+        $branch_name = (string) ($_SERVER['BRANCH'] ?? $this->default_branch);
 
         Assert::stringNotEmpty($package_dir, 'package directory cant be empty string');
         Assert::stringNotEmpty($api_token, '$_SERVER["GH_TOKEN"] can not be empty.');

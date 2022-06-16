@@ -20,33 +20,32 @@
 # 2) anything else in this file
 #
 
+# Constants
 CORES?=$(shell (nproc  || sysctl -n hw.ncpu) 2> /dev/null)
 QA_PHP_VERSION?=8.1
-QA_DOCKER_RUN_OPTIONS=-it
+JAZKAL_PHP_QA_IMAGE_VERSION=1.72.2
 
 #
 # =================================================================
-# CLI Tool configurations
+# Define a helper function for parallel execution
 # =================================================================
 #
-PSALM_ARGS?=
-ECS_ARGS?=
-COMPOSER_UNUSED_ARGS?=
-
+# We want to run qa targets in parallel using make.
+# For this, we define two functions that only print the full command
+# output for a non-zero exit code.
+#
+# For successful execution only a short summary is printed.
+# This behaviour can be controlled with the QUIET argument.
+#
 QUIET?=false
-#ifeq ($(QUIET),true)
-#    ECS_ARGS+= --no-ansi --no-progress-bar
-#    PSALM_ARGS+= --no-progress
-#    COMPOSER_UNUSED_ARGS+= --no-progress --ansi
-#endif
 
-define execute
+define execute_qa_tool_in_app_container
     if [ "$(QUIET)" = "false" ]; then \
-        eval "$(MAYBE_EXEC_APP_IN_DOCKER) $(1) $(2)"; \
+        eval "$(MAYBE_EXEC_APP_IN_DOCKER) $(1)"; \
     else \
         START=$$(date +%s); \
         printf "%-35s" "$@"; \
-        if OUTPUT=$$(eval "$(MAYBE_EXEC_APP_IN_DOCKER) $(1) $(2)" 2>&1); then \
+        if OUTPUT=$$(eval "$(MAYBE_EXEC_APP_IN_DOCKER) $(1)" 2>&1); then \
             printf " $(GREEN)%-6s$(NO_COLOR)" "Ok"; \
             END=$$(date +%s); \
             RUNTIME=$$((END-START)) ;\
@@ -63,9 +62,14 @@ define execute
     fi
 endef
 
-EXTERNAL_TOOL_COMMAND="docker run -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)-alpine"
+EXTERNAL_TOOL_COMMAND_OPTIONS=-i #interacitve.
+ifeq ($(QUIET),false)
+	EXTERNAL_TOOL_COMMAND_OPTIONS+= -t #pseudo tty. Needs to be disabled if running make commands in parallel.
+endif
 
-define run_external_tool
+EXTERNAL_TOOL_COMMAND?=docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/project" -w /project -v $(SNICCO_QA_CACHE_DIR):/tmp jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)
+
+define execute_qa_tool_in_external_container
     if [ "$(QUIET)" = "false" ]; then \
         eval "$(EXTERNAL_TOOL_COMMAND) $(1)"; \
     else \
@@ -88,75 +92,88 @@ define run_external_tool
     fi
 endef
 
-# @todo Add rector once compatible with codeception
-ecs: ## Lint the codebase without applying fixes.
-	@$(call execute, vendor/bin/ecs check, $(ECS_ARGS))
+.PHONY: ecs
+ecs: ## Run easy coding standards on the codebase without applying fixes.
+	@$(call execute_qa_tool_in_app_container, vendor/bin/ecs check --ansi)
 
-psalm: ## Run psalm on the entire codebase.
-	@$(call execute, vendor/bin/psalm , $(PSALM_ARGS))
+.PHONY: psalm
+psalm: ## Run psalm on the codebase without applying fixes.
+	@$(call execute_qa_tool_in_app_container, vendor/bin/psalm --threads=$(CORES) $(ARGS))
 
+.PHONY: rector
+rector: ## Run rector on the codebase without applying fixes.
+	@$(call execute_qa_tool_in_app_container, vendor/bin/rector process --dry-run --ansi)
+
+.PHONY: composer-unused
 composer-unused: ## Check for unused composer packages.
-	@$(call run_external_tool, composer-unused $(ARGS))
+	@$(call execute_qa_tool_in_external_container, composer-unused $(ARGS))
 
+.PHONY: copy-paste-detector
 copy-paste-detector: ## Checks for copy-paste occurrences.
-	@$(call run_external_tool, phpcpd ./src $(ARGS) --exclude ./src/Snicco/bundle/fortress-bundle/tests/_support/_generated --exclude ./src/Snicco/skeleton/ )
+	@$(call execute_qa_tool_in_external_container, phpcpd ./src $(ARGS) --exclude ./src/Snicco/bundle/fortress-bundle/tests/_support/_generated --exclude ./src/Snicco/skeleton/ )
 
-parallel-lint: ## Checks the syntax of all files.
-	@$(call run_external_tool, parallel-lint . $(ARGS) \
-								--exclude .git \
-                              	--exclude vendor \
-                              	--exclude wp \
-                              	--exclude docker \
-                              	--exclude github \
-                              	--exclude psalm \
-                              	)
-
+.PHONY: phploc
 phploc: DIR?=src
 phploc: ## Shows metrics about size and structure or the codebase
-	@$(call run_external_tool, phploc $(DIR) $(ARGS))
+	@$(call execute_qa_tool_in_external_container, phploc $(DIR) $(ARGS))
 
+.PHONY: composer-require-checker
 composer-require-checker: ## Check that all dependencies are declared in composer.json.
 ifeq ($(QA_PHP_VERSION),7.4)
-	@$(call run_external_tool, composer-require-checker-3 $(ARGS))
+	@$(call execute_qa_tool_in_external_container, composer-require-checker-3 $(ARGS))
 else
-	@$(call run_external_tool, composer-require-checker $(ARGS))
+	@$(call execute_qa_tool_in_external_container, composer-require-checker $(ARGS))
 endif
 
+.PHONY: bc-check
 bc-check: roave-backward-compatibility-check ## Check that all changes in the current working tree are backwards compatible.
-roave-backward-compatibility-check:
-	@$(call run_external_tool, roave-backward-compatibility-check $(ARGS))
 
-numbers:
-	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project \
-		jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)-alpine /bin/sh \
-	)
+.PHONY: roave-backward-compatibility-check
+# We have to use a different docker image here. The other one throws a fatal error for the tool.
+roave-backward-compatibility-check: EXTERNAL_TOOL_COMMAND="docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(PWD):/app" -v $(SNICCO_QA_CACHE_DIR):/tmp nyholm/roave-bc-check:stable"
+roave-backward-compatibility-check:
+	@$(call execute_qa_tool_in_external_container, $(ARGS) --ansi)
+
+.PHONY: magic-number-detector
+magic-number-detector: ## Checks that the codebase does not contain magic numbers.
+	@$(call execute_qa_tool_in_external_container, phpmnd ./ $(ARGS) \
+		--exclude-path=psalm \
+		--exclude-path=src/Snicco/bundle/fortress-bundle/tests/_support/_generated \
+		--include-numeric-string \
+		--non-zero-exit-on-violation \
+	) # '--non-zero-exit-on-violation' might be removed in the future (https://github.com/povils/phpmnd/commit/028e0e0d1e9ed73d9468b8b724453401e9a7400c)
 
 .PHONY: qa
 qa: ## Run code quality tools on all files.
-	@"$(MAKE)" --jobs $(CORES) --keep-going --no-print-directory --output-sync qa_all NO_PROGRESS=true
+	@"$(MAKE)" --jobs $(CORES) --keep-going --no-print-directory --output-sync qa_all QUIET=true
 
-.PHONY: _qa_all
+.PHONY: qa_all
 qa_all: ecs \
+	rector \
     psalm \
     composer-unused \
     copy-paste-detector \
-    parallel-lint \
+    magic-number-detector \
     roave-backward-compatibility-check \
     composer-require-checker
 
-# @todo Add rector once compatible with codeception
-fix: ## Fix linting errors.
+.PHONY: fix
+fix: ## Apply automatic fixes for the entire codebase.
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process $(ARGS)
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs --fix $(ARGS)
 
+.PHONY: clear-qa-cache
 clear-qa-cache: ## Clear all caches of QA tools
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-cache
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-global-cache
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --clear-cache
 
+.PHONY: commitlint
 commitlint: ## Check a commit message against our commit message rules. Usage make commitlint MSG="chore(monorepo): is this valid"
 	@$(if $(MSG),,$(error "Usage: make commitlint MSG=chore(monorepo): is this valid?"))
 	$(MAYBE_EXEC_NODE_IN_DOCKER) echo ${MSG} | npx commitlint
 
+.PHONY: commitlint-from
 commitlint-from: ## Checks all commit message after the provided commit sha. Usage: make commitlint-from COMMIT_SHA=4234235423123.
 	@$(if $(COMMIT_SHA),,$(error "Usage: make commitlint-from: COMMIT_SHA=4234235423123"))
 	$(MAYBE_EXEC_NODE_IN_DOCKER) npx commitlint --from ${COMMIT_SHA}

@@ -56,7 +56,8 @@
         "symplify/easy-coding-standard": "10.1.2",
         "symplify/monorepo-builder": "9.4.70",
         "vimeo/psalm": "4.22.0",
-        "vlucas/phpdotenv": "5.4.1"
+        "vlucas/phpdotenv": "5.4.1",
+        "ext-curl": "*"
     },
     "autoload": {
         "psr-4": {

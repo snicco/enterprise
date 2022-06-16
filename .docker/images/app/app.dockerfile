@@ -32,7 +32,8 @@ FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as base
 #
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod a+x /usr/local/bin/install-php-extensions && \
-    install-php-extensions pdo_mysql mysqli bcmath zip
+    install-php-extensions pdo_mysql mysqli bcmath zip \
+                           pcntl posix #Required for psalm threads
 
 #
 # =================================================================

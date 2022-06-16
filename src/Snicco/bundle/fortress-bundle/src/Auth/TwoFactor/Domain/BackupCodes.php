@@ -28,6 +28,10 @@ use const PASSWORD_BCRYPT;
  */
 final class BackupCodes implements IteratorAggregate
 {
+    private const CHARS_PER_BACKUP_CODE_SIDE = 8;
+
+    private const HASH_EXPECTED_LENGTH = 60;
+
     /**
      * @var non-empty-list<non-empty-string>
      */
@@ -39,7 +43,7 @@ final class BackupCodes implements IteratorAggregate
     private function __construct(array $hashed_codes)
     {
         foreach ($hashed_codes as $hashed_code) {
-            if (60 !== strlen($hashed_code)) {
+            if (self::HASH_EXPECTED_LENGTH !== strlen($hashed_code)) {
                 throw new InvalidArgumentException('One code does not have the expected length');
             }
         }
@@ -53,14 +57,14 @@ final class BackupCodes implements IteratorAggregate
     public static function generate(): array
     {
         return [
-            self::random8CharString() . '-' . self::random8CharString(),
-            self::random8CharString() . '-' . self::random8CharString(),
-            self::random8CharString() . '-' . self::random8CharString(),
-            self::random8CharString() . '-' . self::random8CharString(),
-            self::random8CharString() . '-' . self::random8CharString(),
-            self::random8CharString() . '-' . self::random8CharString(),
-            self::random8CharString() . '-' . self::random8CharString(),
-            self::random8CharString() . '-' . self::random8CharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
+            self::randomCharString() . '-' . self::randomCharString(),
         ];
     }
 
@@ -76,7 +80,9 @@ final class BackupCodes implements IteratorAggregate
                 throw new InvalidArgumentException(sprintf('Invalid key [%s].', $key));
             }
 
-            if (8 !== strlen($parts[0]) || 8 !== strlen($parts[1])) {
+            if (self::CHARS_PER_BACKUP_CODE_SIDE !== strlen($parts[0]) || self::CHARS_PER_BACKUP_CODE_SIDE !== strlen(
+                $parts[1]
+            )) {
                 throw new InvalidArgumentException(sprintf('Invalid key [%s].', $key));
             }
 
@@ -115,14 +121,13 @@ final class BackupCodes implements IteratorAggregate
         throw new InvalidBackupCode(sprintf('The backup code %s is not valid.', $user_provided_code));
     }
 
-    private static function random8CharString(): string
+    private static function randomCharString(): string
     {
-        $length = 8;
         $string = '';
 
-        while (($len = strlen($string)) < $length) {
+        while (($len = strlen($string)) < self::CHARS_PER_BACKUP_CODE_SIDE) {
             /** @var positive-int $size */
-            $size = $length - $len;
+            $size = self::CHARS_PER_BACKUP_CODE_SIDE - $len;
 
             $bytes = random_bytes($size);
 
