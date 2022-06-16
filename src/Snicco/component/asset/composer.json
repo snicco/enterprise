@@ -7,17 +7,11 @@
             "email": "calvin@snicco.de"
         }
     ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/snicco/codeception"
-    }
-  ],
-  "require": {
-    "ext-json": "*"
-  },
+    "require": {
+        "ext-json": "*"
+    },
     "require-dev": {
-        "codeception/codeception": "4.1.x-dev"
+        "codeception/codeception": "4.2"
     },
     "autoload": {
         "psr-4": {

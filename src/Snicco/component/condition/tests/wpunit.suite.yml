@@ -10,4 +10,3 @@ modules:
       dbUser: "%TEST_DB_USER%"
       dbPassword: "%TEST_DB_PASSWORD%"
       tablePrefix: "%TEST_DB_PREFIX%"
-      isolatedInstall: false

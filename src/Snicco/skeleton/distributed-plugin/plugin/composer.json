@@ -17,10 +17,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/snicco/codeception"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/snicco/application-layer-bundle"
         },
         {
@@ -56,7 +52,7 @@
         "webmozart/assert": "^1.10.0"
     },
     "require-dev": {
-        "codeception/codeception": "4.1.x-dev",
+        "codeception/codeception": "4.2",
         "codeception/module-cli": "^1.0",
         "codeception/module-db": "^1.0",
         "codeception/module-webdriver": "^1.0",

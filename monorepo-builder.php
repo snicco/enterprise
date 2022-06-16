@@ -22,17 +22,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ]);
 
     $parameters->set(Option::DATA_TO_APPEND, [
-        ComposerJsonSection::REPOSITORIES => [
-            [
-                'type' => 'vcs',
-                'url' => 'https://github.com/snicco/codeception',
-            ],
-        ],
         ComposerJsonSection::REQUIRE => [
             'php' => '^7.4|^8.0',
         ],
         ComposerJsonSection::REQUIRE_DEV => [
-            'codeception/codeception' => '4.1.x-dev',
+            'codeception/codeception' => '4.2',
             'phpunit/phpunit' => '9.5.13',
             'symplify/monorepo-builder' => '9.4.70',
             'lucatume/wp-browser' => '3.1.6',
