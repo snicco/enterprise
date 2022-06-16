@@ -144,6 +144,8 @@ services:
     networks:
       - network
 
+
+
 secrets:
   composer_auth_json:
     file: ${COMPOSER_AUTH_JSON_PATH}

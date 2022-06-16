@@ -1,24 +1,5 @@
 ##@ [Quality Assurance]
 
-.PHONY: commitlint \
-		commitlint-from \
-		unit-tests \
-		wpunit-tests \
-		usecase-tests \
-		integration-tests \
-		cli-tests \
-		browser-tests \
-		tests \
-		lint \
-		lint-fix \
-		psalm \
-		codecept \
-		composer-unused \
-		copy-paste-detector \
-		phploc \
-		parallel-lint \
-		composer-require-checker
-
 #
 # =================================================================
 # Cores
@@ -29,7 +10,8 @@
 # this one.
 #
 CORES?=$(shell (nproc  || sysctl -n hw.ncpu) 2> /dev/null)
-QA_PHP_VERSION?=7.4
+QA_PHP_VERSION?=8.1
+QA_DOCKER_RUN_OPTIONS=-it
 
 #
 # =================================================================
@@ -45,7 +27,6 @@ ifeq ($(NO_PROGRESS),true)
     ECS_ARGS+= --no-ansi --no-progress-bar
     PSALM_ARGS+= --no-progress
     COMPOSER_UNUSED_ARGS+= --no-progress --ansi
-else
 endif
 
 define execute
@@ -123,13 +104,18 @@ parallel-lint: ## Checks the syntax of all files.
 
 composer-require-checker: ## Check that all dependencies are declared in composer.json.
 ifeq ($(QA_PHP_VERSION),7.4)
-	@$(call execute_in_external_docker_container,  docker run --init -i --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine composer-require-checker-3)
+	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine composer-require-checker-3)
 else
-	@$(call execute_in_external_docker_container,  docker run --init -i --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine composer-require-checker)
+	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine composer-require-checker)
 endif
 
-new:
-	@$(call execute_in_external_docker_container,  docker run --init -i --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine rector process --dry-run)
+roave-backward-compatibility-check:
+	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project jakzal/phpqa:php$(QA_PHP_VERSION)-alpine roave-backward-compatibility-check)
+
+numbers:
+	@$(call execute_in_external_docker_container,  docker run --init -it --rm -v "$$(pwd):/project:ro" -w /project \
+		jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)-alpine /bin/sh \
+	)
 
 .PHONY: qa
 qa: ## Run code quality tools on all files.
@@ -141,32 +127,8 @@ qa_all: ecs \
     composer-unused \
     copy-paste-detector \
     parallel-lint \
-#    composer-requirechecker \
-
-codecept: ## Run codeception for a set of files. Usage: make codecept FILES=src/Snicco/component/asset/tests/unit/AssetFactoryTest.
-	@$(if $(FILES),,$(error "Usage: make codecept FILES=src/Snicco/component/asset/tests/unit/AssetFactoryTest"))
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run $(FILES) $(ARGS)
-
-tests: unit-tests wpunit-tests usecase-tests integration-tests cli-tests browser-tests ## Run all tests for all packages.
-	@echo "All tests done."
-
-unit-tests: ## Run all unit suites for all packages.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run unit,*::unit $(ARGS)
-
-wpunit-tests: ## Run all wp-unit suites for all packages.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run wpunit,*::wpunit $(ARGS)
-
-usecase-tests: ## Run all usecase test suites for all packages.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run usecase,*::usecase $(ARGS)
-
-integration-tests: ## Run all integration suites for all packages.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run integration,*::integration $(ARGS)
-
-browser-tests: ## Run all browser test suites for all packages.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run browser,*::browser $(ARGS)
-
-cli-tests: ## Run all cli test suites for all packages.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run cli,*::cli $(ARGS)
+    roave-backward-compatibility-check \
+    composer-require-checker
 
 # @todo Add rector once compatible with codeception
 fix: ## Fix linting errors.

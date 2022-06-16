@@ -34,7 +34,10 @@ return static function (ContainerConfigurator $configurator): void {
         __DIR__ . '/rector.php',
         __DIR__ . '/ecs.php',
     ]);
-
+    $parameters->set(Option::SKIP, [
+        __DIR__ . '/src/Snicco/bundle/fortress-bundle/tests/_support/_generated',
+    ]);
+    
     $parameters->set(Option::PARALLEL, true);
     $parameters->set(Option::PHP_VERSION_FEATURES, '7.4');
     $parameters->set(Option::AUTO_IMPORT_NAMES, true);
