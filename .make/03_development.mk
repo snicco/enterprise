@@ -39,3 +39,21 @@ merge: ## Merge all composer.json files of all packages
 
 propagate: ## Propagate dependencies from the main composer.json to packages
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate
+
+.PHONY: xdebug-on
+xdebug-on: ## Enable xdebug in the php-fpm container.
+	@$(DOCKER_COMPOSE) exec --user "root" $(DOCKER_SERVICE_PHP_FPM_NAME) sed -i 's/.*zend_extension=xdebug/zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
+	@"$(MAKE)" restart-php-fpm
+	@echo "XDebug is now enabled."
+
+.PHONY: xdebug-off
+xdebug-off: ## Disable xdebug in the php-fpm container.
+	@$(DOCKER_COMPOSE) exec --user "root" $(DOCKER_SERVICE_PHP_FPM_NAME) sed -i 's/.*zend_extension=xdebug/;zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
+	@"$(MAKE)" restart-php-fpm
+	@echo "XDebug is now disabled."
+
+# @see https://stackoverflow.com/a/43076457
+.PHONY: restart-php-fpm
+restart-php-fpm: ## Restar php-fpm without killing the container.
+	@$(DOCKER_COMPOSE) exec --user $(APP_USER_NAME) $(DOCKER_SERVICE_PHP_FPM_NAME) kill -USR2 1
+	@echo "PHP-FPM restarted"

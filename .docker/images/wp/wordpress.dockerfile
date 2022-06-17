@@ -243,6 +243,12 @@ RUN apk add --update --no-cache \
         vim \
         nano
 
+RUN install-php-extensions xdebug \
+    # ensure that xdebug is not enabled by default
+    && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+COPY ./.docker/images/zz-app.ini /usr/local/etc/php/conf.d/zz-app.ini
+
 # make bash default shell
 RUN sed -e 's;/bin/ash$;/bin/bash;g' -i /etc/passwd
 

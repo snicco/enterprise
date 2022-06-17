@@ -19,6 +19,10 @@ services:
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/foo-plugin:${WP_CONTAINER_WP_APP_PATH?}/wp-content/plugins/foo-plugin
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin:${WP_CONTAINER_WP_APP_PATH?}/wp-content/mu-plugins/fortress-test-mu-plugin
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin.php:${WP_CONTAINER_WP_APP_PATH?}/wp-content/mu-plugins/fortress-test-mu-plugin.php
+    environment:
+      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG?}
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   app:
     volumes:
@@ -30,12 +34,19 @@ services:
         # We need to persist the host composer cache with the docker container.
         # Otherwise, each composer update will be extremely slow.
       - ${COMPOSER_CACHE_PATH?}:/home/${APP_USER_NAME?}/.composer/cache
+    build:
+      args:
+        - APP_SSH_PASSWORD=${APP_SSH_PASSWORD?}
+    ports:
+      - ${SSH_PORT?}:22
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   mailhog:
     image: mailhog/mailhog
     ports:
-      - ${MAILHOG_SMTP_PORT}:1025
-      - ${MAILHOG_UI_PORT}:8025
+      - ${MAILHOG_SMTP_PORT?}:1025
+      - ${MAILHOG_UI_PORT?}:8025
     networks:
       - network
 

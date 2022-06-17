@@ -7,6 +7,7 @@ declare(strict_types=1);
  * Description: Runs only during WP-CLI tests.
  */
 if (! (\defined(WP_CLI::class))) {
+    $foo = 'bar';
     return;
 }
 

@@ -57,6 +57,7 @@ endif
 #
 DOCKER_SERVICE_NODE_NAME:=node
 DOCKER_SERVICE_APP_NAME:=app
+DOCKER_SERVICE_PHP_FPM_NAME:=wp
 
 #
 # =================================================================

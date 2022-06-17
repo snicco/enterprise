@@ -103,21 +103,30 @@ RUN apk add --update --no-cache \
         sudo \
         vim
 
+RUN install-php-extensions xdebug \
+    # ensure that xdebug is not enabled by default
+    && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+COPY ./images/zz-app.ini /usr/local/etc/php/conf.d/zz-app.ini
+
 # make bash default shell
 RUN sed -e 's;/bin/ash$;/bin/bash;g' -i /etc/passwd
 
-#
-# =================================================================
-# Shared multi-stage variables
-# =================================================================
-#
-# According to the docs (
-#   @see https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-# ), multi-stage variables are only visible to other stages
-# if they are defined before the first "FROM" statement. So we need
-# to declare them here aswell.
-#
-ARG APP_USER_NAME
+RUN apk add --no-cache --update \
+        openssh
 
-USER $APP_USER_NAME
+ARG APP_SSH_PASSWORD
+RUN echo "$APP_USER_NAME:$APP_SSH_PASSWORD" | chpasswd 2>&1
+
+# Required to start sshd, otherwise the container will error out on startup with the message
+# "sshd: no hostkeys available -- exiting."
+# @see https://stackoverflow.com/a/65348102/413531
+RUN ssh-keygen -A
+
+# we use SSH deployment configuration in PhpStorm for local development
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
+
+
 
