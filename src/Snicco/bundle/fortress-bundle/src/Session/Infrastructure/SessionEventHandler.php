@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Bundle\Fortress\Session\Infrastructure;
 
+use Closure;
 use Snicco\Component\EventDispatcher\EventSubscriber;
 use Snicco\Enterprise\Bundle\Fortress\Session\Domain\Event\SessionWasIdle;
 use Snicco\Enterprise\Bundle\Fortress\Session\Domain\Event\SessionWasRotated;
@@ -237,7 +238,7 @@ final class SessionEventHandler implements EventSubscriber
         return is_string($cookie_domain) ? $cookie_domain : '';
     }
 
-    private function ensureSessionExpirationStaysTheSame(int $expires_at): callable
+    private function ensureSessionExpirationStaysTheSame(int $expires_at): Closure
     {
         add_filter('auth_cookie_expiration', $cb = fn (): int => $expires_at - time(), PHP_INT_MAX);
 

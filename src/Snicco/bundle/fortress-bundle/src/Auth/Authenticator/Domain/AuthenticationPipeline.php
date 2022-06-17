@@ -39,7 +39,7 @@ final class AuthenticationPipeline
      *
      * @return Closure(Request):LoginResult
      */
-    private function buildBuildPipeline(array $authenticators): callable
+    private function buildBuildPipeline(array $authenticators): Closure
     {
         $next = fn (): LoginResult => LoginResult::failed();
 

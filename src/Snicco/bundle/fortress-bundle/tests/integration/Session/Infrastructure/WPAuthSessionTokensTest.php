@@ -190,7 +190,7 @@ final class WPAuthSessionTokensTest extends WPTestCase
      */
     public function that_all_sessions_for_a_user_can_be_retrieved(): void
     {
-        add_filter('attach_session_information', fn () => [
+        add_filter('attach_session_information', fn (): array => [
             'foo' => 'bar',
         ]);
 

@@ -19,6 +19,11 @@ use function array_map;
  */
 final class WPAuthSessionTokens extends WP_Session_Tokens
 {
+    /**
+     * @var int
+     */
+    protected $user_id;
+
     private static SessionManager $session_manager;
 
     /**
@@ -39,7 +44,7 @@ final class WPAuthSessionTokens extends WP_Session_Tokens
     protected function get_sessions(): array
     {
         return array_map(
-            fn (array $session) => $session['data'],
+            fn (array $session): array => $session['data'],
             self::$session_manager->getAllForUser($this->user_id)
         );
     }

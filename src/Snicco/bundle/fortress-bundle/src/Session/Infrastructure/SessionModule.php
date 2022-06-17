@@ -50,15 +50,18 @@ final class SessionModule extends FortressModule
 
         $c->shared(
             SessionEventHandler::class,
-            fn () => new SessionEventHandler($c[SessionManager::class], 'snicco_fortress_remember_me')
+            fn (): SessionEventHandler => new SessionEventHandler(
+                $c[SessionManager::class],
+                'snicco_fortress_remember_me'
+            )
         );
 
         $c->shared(
             SessionCommandHandler::class,
-            fn () => new SessionCommandHandler($c[SessionManager::class])
+            fn (): SessionCommandHandler => new SessionCommandHandler($c[SessionManager::class])
         );
 
-        $c->shared(SessionRepository::class, function () use ($c, $config) {
+        $c->shared(SessionRepository::class, function () use ($c, $config): SessionRepositoryBetterWPDB {
             $table_name = $GLOBALS['wpdb']->prefix
                           . $config->getString('fortress.session.' . SessionModuleOption::DB_TABLE_BASENAME);
 
@@ -71,7 +74,7 @@ final class SessionModule extends FortressModule
             );
         });
 
-        $c->shared(SessionManager::class, fn () => new SessionManager(
+        $c->shared(SessionManager::class, fn (): SessionManager => new SessionManager(
             $c[EventDispatcher::class],
             new TimeoutConfig(
                 $config->getInteger('fortress.session.' . SessionModuleOption::IDLE_TIMEOUT),

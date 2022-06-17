@@ -167,19 +167,19 @@ final class AuthModule extends FortressModule
         );
 
         // Commands
-        $container->shared(Initialize2FaCommand::class, fn () => new Initialize2FaCommand(
+        $container->shared(Initialize2FaCommand::class, fn (): Initialize2FaCommand => new Initialize2FaCommand(
             $container[CommandBus::class],
             $container[UserProvider::class],
             $container[TwoFactorSecretGenerator::class],
             $config->getString('better-wp-cli.' . BetterWPCLIOption::NAME)
         ));
 
-        $container->shared(Delete2FaCommand::class, fn () => new Delete2FaCommand(
+        $container->shared(Delete2FaCommand::class, fn (): Delete2FaCommand => new Delete2FaCommand(
             $container[CommandBus::class],
             $container[UserProvider::class],
         ));
 
-        $container->shared(Complete2FaCommand::class, fn () => new Complete2FaCommand(
+        $container->shared(Complete2FaCommand::class, fn (): Complete2FaCommand => new Complete2FaCommand(
             $container[CommandBus::class],
             $container[UserProvider::class],
         ));

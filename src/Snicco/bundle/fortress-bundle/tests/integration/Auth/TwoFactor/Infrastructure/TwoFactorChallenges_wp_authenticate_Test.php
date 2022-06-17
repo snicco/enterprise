@@ -336,7 +336,7 @@ final class TwoFactorChallenges_wp_authenticate_Test extends WPTestCase
 
         $_REQUEST['redirect_to'] = '/dashboard';
 
-        add_filter(WPAuthenticateRedirectContext::class, function (WPAuthenticateRedirectContext $event) {
+        add_filter(WPAuthenticateRedirectContext::class, function (WPAuthenticateRedirectContext $event): void {
             $this->assertSame('/dashboard', $event->initial_parsed_redirect);
             $this->assertNull($event->initial_parsed_remember_me);
 
