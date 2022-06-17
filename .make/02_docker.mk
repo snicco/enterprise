@@ -80,7 +80,7 @@ _DOCKER_COMPOSE_COMMAND:=ENV=$(ENV) \
  COMPOSER_AUTH_JSON_PATH=$(COMPOSER_AUTH_JSON_PATH) \
  COMPOSER_CACHE_PATH=$(COMPOSER_CACHE_PATH) \
  APP_HOST=$(APP_HOST) \
- WORDPRESS_APP_PATH_CONTAINER=$(WORDPRESS_APP_PATH_CONTAINER) \
+ WP_CONTAINER_WP_APP_PATH=$(WP_CONTAINER_WP_APP_PATH) \
  docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE)
 
 DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) $(ALL_DOCKER_COMPOSE_FILES)
@@ -138,7 +138,7 @@ _validate-docker-env:
 	@$(if $(COMPOSER_AUTH_JSON_PATH),,$(error COMPOSER_AUTH_JSON_PATH is undefined - Did you run make setup?))
 	@$(if $(COMPOSER_CACHE_PATH),,$(error COMPOSER_CACHE_PATH is undefined - Did you run make setup?))
 	@$(if $(APP_HOST),,$(error APP_HOST is undefined - Did you run make setup?))
-	@$(if $(WORDPRESS_APP_PATH_CONTAINER),,$(error WORDPRESS_APP_PATH_CONTAINER is undefined - Did you run make setup?))
+	@$(if $(WP_CONTAINER_WP_APP_PATH),,$(error WP_CONTAINER_WP_APP_PATH is undefined - Did you run make setup?))
 	@echo "All docker variables are set."
 
 #
@@ -163,7 +163,7 @@ docker-prune: docker-down ## Remove ALL docker resources, including volumes and 
 .PHONY: docker-build
 docker-build: SERVICE?=
 docker-build: _validate-docker-env ## Build one or more docker image(s). Usage: make docker-build-image SERVICE=<service...>.
-	$(DOCKER_COMPOSE) build $(SERVICE)
+	$(DOCKER_COMPOSE) build $(SERVICE) $(ARGS)
 
 .PHONY: docker-up
 docker-up: SERVICE?=

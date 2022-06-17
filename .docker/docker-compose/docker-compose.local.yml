@@ -14,17 +14,17 @@ services:
 
   wp:
     volumes:
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/bundle
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/component
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/foo-plugin:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/plugins/foo-plugin
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/mu-plugins/fortress-test-mu-plugin
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin.php:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/mu-plugins/fortress-test-mu-plugin.php
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${WP_CONTAINER_WP_APP_PATH?}/wp-content/bundle
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${WP_CONTAINER_WP_APP_PATH?}/wp-content/component
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/foo-plugin:${WP_CONTAINER_WP_APP_PATH?}/wp-content/plugins/foo-plugin
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin:${WP_CONTAINER_WP_APP_PATH?}/wp-content/mu-plugins/fortress-test-mu-plugin
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin.php:${WP_CONTAINER_WP_APP_PATH?}/wp-content/mu-plugins/fortress-test-mu-plugin.php
 
   app:
     volumes:
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${APP_CONTAINER_WP_APP_PATH?}/wp-content/bundle
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${APP_CONTAINER_WP_APP_PATH?}/wp-content/component
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/foo-plugin:${APP_CONTAINER_WP_APP_PATH?}/wp-content/foo-plugin
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/foo-plugin:${APP_CONTAINER_WP_APP_PATH?}/wp-content/plugins/foo-plugin
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin:${APP_CONTAINER_WP_APP_PATH?}/wp-content/mu-plugins/fortress-test-mu-plugin
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle/fortress-bundle/tests/cli/fortress-test-mu-plugin.php:${APP_CONTAINER_WP_APP_PATH?}/wp-content/mu-plugins/fortress-test-mu-plugin.php
         # We need to persist the host composer cache with the docker container.
@@ -49,9 +49,9 @@ services:
 
   nginx:
     volumes:
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/bundle
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/component
-      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin:${WORDPRESS_APP_PATH_CONTAINER?}/wp-content/plugin
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${WP_CONTAINER_WP_APP_PATH?}/wp-content/bundle
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${WP_CONTAINER_WP_APP_PATH?}/wp-content/component
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin:${WP_CONTAINER_WP_APP_PATH?}/wp-content/plugin
     ports:
       # The NGINX container is not running as root
       # which is why we can't listen on ports below

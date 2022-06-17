@@ -35,12 +35,12 @@ services:
         WP_CLI_VERSION: ${WP_CLI_VERSION?}
         PHP_VERSION: ${PHP_VERSION?}
         ALPINE_VERSION: ${ALPINE_VERSION?}
-        WP_APPLICATION_PATH: ${WORDPRESS_APP_PATH_CONTAINER?}
-        WP_SRC_PATH: ${WORDPRESS_SRC_PATH_CONTAINER?}
+        WP_APPLICATION_PATH: ${WP_CONTAINER_WP_APP_PATH?}
+        WP_SRC_PATH: ${WP_CONTAINER_WP_SRC_PATH?}
     environment: *wp-env
     volumes:
-      - wordpress_app:${WORDPRESS_APP_PATH_CONTAINER?}
-      - wordpress_src:${WORDPRESS_SRC_PATH_CONTAINER?}
+      - wordpress_app:${WP_CONTAINER_WP_APP_PATH?}
+      - wordpress_src:${WP_CONTAINER_WP_SRC_PATH?}
     networks:
       - network
     depends_on:
@@ -67,10 +67,18 @@ services:
     volumes:
       - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
       - wordpress_app:${APP_CONTAINER_WP_APP_PATH?}
-      - wordpress_src:${APP_CONTAINER_WP_SRC_PATH?}
+      - wordpress_src:${APP_CONTAINER_WP_SRC_PATH?}:nocopy
     secrets:
       - source: composer_auth_json
         target: /home/${APP_USER_NAME?}/.composer/auth.json
+    depends_on:
+      # The app container must start after the WordPress one due to the way shared volumes are populated.
+      # If the app container is started before the wp container the "wordpress_app" named volume does
+      # not receive the correct contents.
+      # We might change this in the future, but then we would probably need to put php-fpm and
+      # nginx into one container to facility sharing the code.
+      - wp
+
     # Keep the app container running.
     # There is no long-running process defined as the entrypoint for the container.
     # Keeping the container running saves as time for frequently run commands since
@@ -90,7 +98,7 @@ services:
       - ${MONOREPO_ROOT_HOST}/.docker/images/db/imports:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD-SHELL", "mysql snicco_enterprise -uroot -proot -e 'SELECT 1;'  || exit 1" ]
-      interval: 0.1s
+      interval: 0.2s
       retries: 50
     networks:
       - network
@@ -103,11 +111,11 @@ services:
       args:
         <<: *user-args
         NGINX_VERSION: ${NGINX_VERSION?}
-        WP_APPLICATION_PATH: ${WORDPRESS_APP_PATH_CONTAINER?}
+        WP_APPLICATION_PATH: ${WP_CONTAINER_WP_APP_PATH?}
     depends_on:
       - wp
     volumes:
-      - wordpress_app:${WORDPRESS_APP_PATH_CONTAINER?}
+      - wordpress_app:${WP_CONTAINER_WP_APP_PATH?}
     networks:
       - network
 
@@ -141,8 +149,6 @@ services:
       - "4444:4444"
     networks:
       - network
-
-
 
 secrets:
   composer_auth_json:

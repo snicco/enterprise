@@ -8,5 +8,5 @@
 DOCKER_REGISTRY=docker.io
 DOCKER_NAMESPACE=snicco
 APP_HOST=snicco-enterprise.test
-WORDPRESS_APP_PATH_CONTAINER=/var/www/html
+WP_CONTAINER_WP_APP_PATH=/var/www/html
 SNICCO_QA_CACHE_DIR=/tmp/snicco-qa

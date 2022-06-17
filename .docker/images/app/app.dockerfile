@@ -40,10 +40,13 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 # Create user groups and permissions in docker container
 # =================================================================
 #
-# According to the docs (
-#   @see https://docs.docker.com/engine/reference/builder/#impact-on-build-caching
+# We need to make sure that all directories in the container
+# that are targets of bind mounts exist and have the correct
+# permissions.
+#
+# Otherwise we get weird permission issues (
+# https://github.com/docker/for-mac/issues/5480
 # )
-# Arg values will cause cache misses at the line where they are first used.
 #
 ARG APP_USER_ID
 ARG APP_GROUP_ID
@@ -56,6 +59,7 @@ ARG WORDPRESS_SRC_PATH
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
     mkdir -p $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH && \
+    mkdir -p $WORDPRESS_APP_PATH/wp-content/plugins $WORDPRESS_APP_PATH/wp-content/mu-plugins && \
     chown -R $APP_USER_NAME:$APP_GROUP_NAME $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH
 
 #

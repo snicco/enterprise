@@ -19,12 +19,11 @@ set -e
 tar cf - -C "$WP_TMP_PATH" . | tar xpf - -C "$WP_APPLICATION_PATH"
 echo "Copied fresh WordPress files from $WP_TMP_PATH to $WP_APPLICATION_PATH"
 
+
 tar cf - -C "$WP_TMP_PATH" . | tar xpf - -C "$WP_SRC_PATH"
 echo "Copied fresh WordPress files from $WP_TMP_PATH to $WP_SRC_PATH"
 
-rm -rf "$WP_TMP_PATH"
-echo "Removed $WP_TMP_PATH"
-
+#
 # =================================================================
 # Install WordPress if its not installed already
 # =================================================================

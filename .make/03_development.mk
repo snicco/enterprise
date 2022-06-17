@@ -31,7 +31,7 @@ wp: ## Run a wp-cli command in the wp container. Usage: make wp ARGS="plugin lis
 	docker exec -it --user $(APP_USER_NAME) wp wp ${ARGS}
 
 get-files:  ## Get a fresh copy of all WordPress files in the wp container.
-	@docker cp wp:$(WORDPRESS_APP_PATH_CONTAINER) .wp
+	@docker cp wp:$(WP_CONTAINER_WP_APP_PATH) .wp
 	@echo "WordPress files have been copied to .wp/html"
 
 merge: ## Merge all composer.json files of all packages
