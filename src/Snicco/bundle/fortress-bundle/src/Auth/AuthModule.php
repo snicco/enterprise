@@ -167,28 +167,22 @@ final class AuthModule extends FortressModule
         );
 
         // Commands
-        $container->shared(Initialize2FaCommand::class, function () use ($container, $config) {
-            return new Initialize2FaCommand(
-                $container[CommandBus::class],
-                $container[UserProvider::class],
-                $container[TwoFactorSecretGenerator::class],
-                $config->getString('better-wp-cli.' . BetterWPCLIOption::NAME)
-            );
-        });
+        $container->shared(Initialize2FaCommand::class, fn () => new Initialize2FaCommand(
+            $container[CommandBus::class],
+            $container[UserProvider::class],
+            $container[TwoFactorSecretGenerator::class],
+            $config->getString('better-wp-cli.' . BetterWPCLIOption::NAME)
+        ));
 
-        $container->shared(Delete2FaCommand::class, function () use ($container) {
-            return new Delete2FaCommand(
-                $container[CommandBus::class],
-                $container[UserProvider::class],
-            );
-        });
+        $container->shared(Delete2FaCommand::class, fn () => new Delete2FaCommand(
+            $container[CommandBus::class],
+            $container[UserProvider::class],
+        ));
 
-        $container->shared(Complete2FaCommand::class, function () use ($container) {
-            return new Complete2FaCommand(
-                $container[CommandBus::class],
-                $container[UserProvider::class],
-            );
-        });
+        $container->shared(Complete2FaCommand::class, fn () => new Complete2FaCommand(
+            $container[CommandBus::class],
+            $container[UserProvider::class],
+        ));
     }
 
     public function boot(Kernel $kernel): void

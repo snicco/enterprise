@@ -71,17 +71,15 @@ final class SessionModule extends FortressModule
             );
         });
 
-        $c->shared(SessionManager::class, function () use ($c, $config) {
-            return new SessionManager(
-                $c[EventDispatcher::class],
-                new TimeoutConfig(
-                    $config->getInteger('fortress.session.' . SessionModuleOption::IDLE_TIMEOUT),
-                    $config->getInteger('fortress.session.' . SessionModuleOption::ROTATION_INTERVAL),
-                ),
-                $c[SessionRepository::class],
-                SystemClock::fromUTC()
-            );
-        });
+        $c->shared(SessionManager::class, fn () => new SessionManager(
+            $c[EventDispatcher::class],
+            new TimeoutConfig(
+                $config->getInteger('fortress.session.' . SessionModuleOption::IDLE_TIMEOUT),
+                $config->getInteger('fortress.session.' . SessionModuleOption::ROTATION_INTERVAL),
+            ),
+            $c[SessionRepository::class],
+            SystemClock::fromUTC()
+        ));
     }
 
     public function boot(Kernel $kernel): void

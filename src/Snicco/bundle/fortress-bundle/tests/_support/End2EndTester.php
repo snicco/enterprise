@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Bundle\Fortress\Tests;
 
+use Codeception\Actor;
+use Snicco\Enterprise\Bundle\Fortress\Tests\_generated\End2EndTesterActions;
+
 /**
  * Inherited Methods.
  *
@@ -20,9 +23,9 @@ namespace Snicco\Enterprise\Bundle\Fortress\Tests;
  *
  * @SuppressWarnings(PHPMD)
  */
-class End2EndTester extends \Codeception\Actor
+class End2EndTester extends Actor
 {
-    use _generated\End2EndTesterActions;
+    use End2EndTesterActions;
 
     // Define custom actions here
 }

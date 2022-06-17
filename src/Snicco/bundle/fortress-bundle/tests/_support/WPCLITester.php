@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Snicco\Enterprise\Bundle\Fortress\Tests;
 
+use Codeception\Actor;
+use Snicco\Enterprise\Bundle\Fortress\Tests\_generated\WPCLITesterActions;
+
 /**
  * Inherited Methods.
  *
@@ -20,9 +23,9 @@ namespace Snicco\Enterprise\Bundle\Fortress\Tests;
  *
  * @SuppressWarnings(PHPMD)
  */
-class WPCLITester extends \Codeception\Actor
+class WPCLITester extends Actor
 {
-    use _generated\WPCLITesterActions;
+    use WPCLITesterActions;
 
     // Define custom actions here
 }

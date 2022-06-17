@@ -42,9 +42,9 @@ final class GetAffectedPackages extends Command
         }
 
         $affected_packages = $this->package_repo->getAffected($files);
-        $affected_packages = $affected_packages->filter(function (Package $package) {
-            return !Str::containsAny($package->absolute_directory_path, ['src/Snicco/skeleton']);
-        });
+        $affected_packages = $affected_packages->filter(
+            fn(Package $package) => !Str::containsAny($package->absolute_directory_path, ['src/Snicco/skeleton'])
+        );
         
         $output->writeln($affected_packages->toJson(fn (Package $package): array => [
                     'short_name' => $package->short_name,

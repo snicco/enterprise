@@ -68,7 +68,7 @@ final class WPAuthSessionTokensTest extends WPTestCase
                 $session_repository
             )
         );
-        add_filter('session_token_manager', fn (): string => WPAuthSessionTokens::class, 9999999);
+        add_filter('session_token_manager', fn (): string => WPAuthSessionTokens::class, 9_999_999);
 
         $this->default_user_id = (new WP_User(1))->ID;
         $other_user_id = wp_create_user('foo', 'bar');
@@ -190,11 +190,9 @@ final class WPAuthSessionTokensTest extends WPTestCase
      */
     public function that_all_sessions_for_a_user_can_be_retrieved(): void
     {
-        add_filter('attach_session_information', function () {
-            return [
-                'foo' => 'bar',
-            ];
-        });
+        add_filter('attach_session_information', fn () => [
+            'foo' => 'bar',
+        ]);
 
         $sessions_1 = WPAuthSessionTokens::get_instance($this->default_user_id);
 
