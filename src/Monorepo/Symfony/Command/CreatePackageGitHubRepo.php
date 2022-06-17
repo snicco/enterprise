@@ -36,10 +36,21 @@ use const JSON_THROW_ON_ERROR;
 
 final class CreatePackageGitHubRepo extends Command
 {
+    /**
+     * @var int
+     */
     private const HTTP_NOT_FOUND = 404;
+
+    /**
+     * @var int
+     */
     private const HTTP_CREATED = 201;
+
+    /**
+     * @var int
+     */
     private const HTTP_OK = 200;
-    
+
     private PackageRepository $package_repo;
 
     public function __construct(PackageRepository $package_repo)

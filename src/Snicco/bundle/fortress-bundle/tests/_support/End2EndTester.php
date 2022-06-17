@@ -23,7 +23,7 @@ use Snicco\Enterprise\Bundle\Fortress\Tests\_generated\End2EndTesterActions;
  *
  * @SuppressWarnings(PHPMD)
  */
-class End2EndTester extends Actor
+final class End2EndTester extends Actor
 {
     use End2EndTesterActions;
 

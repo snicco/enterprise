@@ -16,7 +16,7 @@ final class StubUrlGenerator implements UrlGenerator
     /**
      * @var array<string,string>
      */
-    private array $routes;
+    private array $routes = [];
 
     /**
      * @param array<string,string> $routes

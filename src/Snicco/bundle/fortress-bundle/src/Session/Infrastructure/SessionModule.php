@@ -29,6 +29,9 @@ use const PHP_INT_MAX;
 
 final class SessionModule extends FortressModule
 {
+    /**
+     * @var string
+     */
     public const NAME = 'session';
 
     public function name(): string

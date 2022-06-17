@@ -135,14 +135,14 @@ roave-backward-compatibility-check:
 	@$(call execute_qa_tool_in_external_container, $(ARGS) --ansi)
 
 #.PHONY: magic-number-detector Currently broken ?
-#magic-number-detector: ## Checks that the codebase does not contain magic numbers.
-#	@$(call execute_qa_tool_in_external_container, phpmnd ./ $(ARGS) \
-#		--exclude-path=psalm \
-#		--exclude-path=src/Snicco/bundle/fortress-bundle/tests/_support/_generated \
-#		--exclude-path=.wp \
-#		--include-numeric-string \
-#		--non-zero-exit-on-violation \
-#	) # '--non-zero-exit-on-violation' might be removed in the future (https://github.com/povils/phpmnd/commit/028e0e0d1e9ed73d9468b8b724453401e9a7400c)
+magic-number-detector: ## Checks that the codebase does not contain magic numbers.
+	@$(call execute_qa_tool_in_external_container, phpmnd ./ $(ARGS) \
+		--exclude-path=psalm \
+		--exclude-path=src/Snicco/bundle/fortress-bundle/tests/_support/_generated \
+		--exclude-path=.wp \
+		--include-numeric-string \
+		--non-zero-exit-on-violation \
+	) # '--non-zero-exit-on-violation' might be removed in the future (https://github.com/povils/phpmnd/commit/028e0e0d1e9ed73d9468b8b724453401e9a7400c)
 
 .PHONY: qa
 qa: ## Run code quality tools on all files.
@@ -155,6 +155,7 @@ qa_all: ecs \
     composer-unused \
     copy-paste-detector \
     roave-backward-compatibility-check \
+    magic-number-detector \
     composer-require-checker
 
 .PHONY: fix

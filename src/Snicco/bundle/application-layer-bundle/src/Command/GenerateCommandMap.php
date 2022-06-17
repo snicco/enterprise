@@ -24,7 +24,7 @@ final class GenerateCommandMap
     /**
      * @var class-string[]
      */
-    private array $application_services;
+    private array $application_services = [];
 
     /**
      * @param class-string[] $application_services

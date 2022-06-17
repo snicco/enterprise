@@ -59,6 +59,7 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
         $response = $browser->lastResponse();
 
         $response->assertOk();
+
         $view_response = $response->getPsrResponse();
         $this->assertInstanceOf(ViewResponse::class, $view_response);
 
@@ -103,6 +104,7 @@ final class TwoFactorChallengeControllerTest extends FortressWebTestCase
         $response = $browser->lastResponse();
 
         $response->assertOk();
+
         $view_response = $response->getPsrResponse();
         $this->assertInstanceOf(ViewResponse::class, $view_response);
 

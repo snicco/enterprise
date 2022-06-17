@@ -40,7 +40,7 @@ final class Package
     /**
      * @var string[]
      */
-    public array $first_party_dependencies;
+    public array $first_party_dependencies = [];
 
     /**
      * @var non-empty-string

@@ -78,6 +78,7 @@ final class WPAuthSessionTokensTest extends WPTestCase
 
             throw new RuntimeException(implode(',', $errors));
         }
+
         $this->other_user_id = $other_user_id;
     }
 

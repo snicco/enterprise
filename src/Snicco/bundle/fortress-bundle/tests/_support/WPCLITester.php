@@ -23,7 +23,7 @@ use Snicco\Enterprise\Bundle\Fortress\Tests\_generated\WPCLITesterActions;
  *
  * @SuppressWarnings(PHPMD)
  */
-class WPCLITester extends Actor
+final class WPCLITester extends Actor
 {
     use WPCLITesterActions;
 

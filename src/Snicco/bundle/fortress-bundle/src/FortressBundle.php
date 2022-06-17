@@ -62,7 +62,7 @@ final class FortressBundle implements Bundle
     /**
      * @var FortressModule[]
      */
-    private array $modules;
+    private array $modules = [];
 
     /**
      * @var FortressModule[]|null

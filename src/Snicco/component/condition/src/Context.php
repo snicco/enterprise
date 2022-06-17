@@ -21,24 +21,24 @@ final class Context
     /**
      * @var array<string,string>
      */
-    private array $_server;
+    private array $_server = [];
 
     private ?string $path = null;
 
     /**
      * @var array<string,string|string[]>
      */
-    private array $_get;
+    private array $_get = [];
 
     /**
      * @var array<string,string|string[]>
      */
-    private array $_post;
+    private array $_post = [];
 
     /**
      * @var array<string,string|string[]>
      */
-    private array    $_cookie;
+    private array    $_cookie = [];
 
     private ?WP_User $user;
 

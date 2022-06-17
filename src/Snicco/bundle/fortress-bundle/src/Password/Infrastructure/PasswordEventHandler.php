@@ -23,7 +23,7 @@ final class PasswordEventHandler implements EventSubscriber
     /**
      * @var string[]
      */
-    private array $excluded_roles;
+    private array $excluded_roles = [];
 
     private PasswordPolicy $policy;
 

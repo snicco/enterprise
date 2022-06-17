@@ -28,8 +28,14 @@ use const PASSWORD_BCRYPT;
  */
 final class BackupCodes implements IteratorAggregate
 {
+    /**
+     * @var int
+     */
     private const CHARS_PER_BACKUP_CODE_SIDE = 8;
 
+    /**
+     * @var int
+     */
     private const HASH_EXPECTED_LENGTH = 60;
 
     /**

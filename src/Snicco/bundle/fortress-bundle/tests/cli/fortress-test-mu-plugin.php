@@ -13,4 +13,5 @@ if (! (\defined(WP_CLI::class))) {
 if (! (\getenv('WPBROWSER_HOST_REQUEST'))) {
     return;
 }
+
 require_once __DIR__ . '/fortress-test-mu-plugin/index.php';

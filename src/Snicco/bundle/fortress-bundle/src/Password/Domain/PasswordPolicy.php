@@ -14,10 +14,19 @@ use ZxcvbnPhp\Zxcvbn;
 
 final class PasswordPolicy
 {
+    /**
+     * @var int
+     */
     private const MIN_PASSWORD_LENGTH = 12;
 
+    /**
+     * @var int
+     */
     private const MAX_PASSWORD_LENGTH = 4096;
 
+    /**
+     * @var int
+     */
     private const MIN_ZXCVBN_SCORE = 3;
 
     private Zxcvbn $zxcvbn;

@@ -14,7 +14,7 @@ final class RequestMethod implements Condition
     /**
      * @var string[]
      */
-    private array $methods;
+    private array $methods = [];
 
     /**
      * @param string|string[] $methods
