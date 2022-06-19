@@ -36,7 +36,7 @@ services:
       - ${COMPOSER_CACHE_PATH?}:/home/${APP_USER_NAME?}/.composer/cache
     build:
       args:
-        - APP_SSH_PASSWORD=${APP_SSH_PASSWORD?}
+        - SSH_PASSWORD=${SSH_PASSWORD?}
     ports:
       - ${SSH_PORT?}:22
     extra_hosts:

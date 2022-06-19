@@ -52,8 +52,14 @@ xdebug-off: ## Disable xdebug in the php-fpm container.
 	@"$(MAKE)" restart-php-fpm
 	@echo "XDebug is now disabled."
 
+.PHONY:
+xdebug-path: ## Get the path to the xdebug extension in the app container.
+	@$(MAYBE_EXEC_APP_IN_DOCKER) sh -c 'echo "$$(php-config --extension-dir)/xdebug.so"'
+
 # @see https://stackoverflow.com/a/43076457
 .PHONY: restart-php-fpm
 restart-php-fpm: ## Restar php-fpm without killing the container.
 	@$(DOCKER_COMPOSE) exec --user $(APP_USER_NAME) $(DOCKER_SERVICE_PHP_FPM_NAME) kill -USR2 1
 	@echo "PHP-FPM restarted"
+
+
