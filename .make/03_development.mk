@@ -41,15 +41,24 @@ propagate: ## Propagate dependencies from the main composer.json to packages
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate
 
 .PHONY: xdebug-on
-xdebug-on: ## Enable xdebug in the php-fpm container.
-	@$(DOCKER_COMPOSE) exec --user "root" $(DOCKER_SERVICE_PHP_FPM_NAME) sed -i 's/.*zend_extension=xdebug/zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
-	@"$(MAKE)" restart-php-fpm
+xdebug-on: SERVICE?=$(DOCKER_SERVICE_PHP_FPM_NAME)
+xdebug-on: ## Enable xdebug in the a container. Usage: make xdebug-on SERVICE=app
+	@$(if $(SERVICE),,$(error SERVICE is undefined.))
+	@$(DOCKER_COMPOSE) exec --user "root" $(SERVICE) sed -i 's/.*zend_extension=xdebug/zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
+	@if [ $(SERVICE) = $(DOCKER_SERVICE_PHP_FPM_NAME) ]; \
+	then\
+      	$(MAKE) restart-php-fpm;\
+    fi
 	@echo "XDebug is now enabled."
 
 .PHONY: xdebug-off
-xdebug-off: ## Disable xdebug in the php-fpm container.
-	@$(DOCKER_COMPOSE) exec --user "root" $(DOCKER_SERVICE_PHP_FPM_NAME) sed -i 's/.*zend_extension=xdebug/;zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
-	@"$(MAKE)" restart-php-fpm
+xdebug-off: SERVICE?=$(DOCKER_SERVICE_PHP_FPM_NAME)
+xdebug-off: ## Disable xdebug in a container.
+	@$(if $(SERVICE),,$(error SERVICE is undefined.))
+	@$(DOCKER_COMPOSE) exec --user "root" $(SERVICE) sed -i 's/.*zend_extension=xdebug/;zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
+	@if [ $(SERVICE) = $(DOCKER_SERVICE_PHP_FPM_NAME) ]; then \
+      	$(MAKE) restart-php-fpm; \
+    fi
 	@echo "XDebug is now disabled."
 
 .PHONY:

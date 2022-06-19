@@ -31,8 +31,8 @@ final class Complete2FaCest
 
         $output = $I->grabLastShellOutput();
 
+        Assert::startsWith($output, 'Secret: ');
         $secret = trim(Str::betweenFirst($output, 'Secret: ', "\n"), );
-        Assert::startsWith($secret, 'Secret: ');
         Assert::stringNotEmpty($secret, '2FA Secret not found in shell output');
 
         $google_fa = new Google2FA();

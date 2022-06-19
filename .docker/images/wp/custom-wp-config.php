@@ -4,7 +4,7 @@
  * We use a modified version of the wp-config-docker.php file of the official docker image.
  * (@see https://github.com/docker-library/wordpress/blob/master/latest/php7.4/fpm-alpine/wp-config-docker.php)
  *
- * The official one is good, but we need to be able to change DB_NAME based on the current scenario (dev,e2e tests).
+ * The official one is ok, but we need to be able to change DB_NAME based on the current scenario (dev,e2e tests).
  * Its not easily possible to achieve this with environment variables because we run e2e tests
  * from the "app" container but the env values need to be set in the "nginx" container.
  *
@@ -30,22 +30,25 @@ if (!function_exists('getenv_docker')) {
     }
 }
 
-// ** Database settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-if( getenv( 'WPBROWSER_HOST_REQUEST' ) || 'snicco-e2e-tester' === ($_SERVER['HTTP_USER_AGENT'] ?? '') ) {
-    define( 'DB_NAME', getenv_docker('E2E_TEST_WORDPRESS_DB_NAME', 'wordpress') );
-}else {
-    define( 'DB_NAME', getenv_docker('WORDPRESS_DB_NAME', 'wordpress') );
+/*
+ * WP Browser sets the WPBROWSER_HOST_REQUEST variable for wp-cli tests.
+ * We set the "snicco-e2e-tester" username for all selenium tests.
+ * We use valid credentials here as a default so that we can also run tests from PhpStorm (via SSH)
+ * without needing to configure special environment variables every time. PhpStorm, unlike tests run via make, does
+ * not know anything about settings the correct ENV variables for cli tests.
+ */
+if(getenv('WPBROWSER_HOST_REQUEST') || 'snicco-e2e-tester' === ($_SERVER['HTTP_USER_AGENT'] ?? '')) {
+    define( 'DB_NAME', getenv_docker('E2E_TEST_WORDPRESS_DB_NAME', 'snicco_enterprise_e2e_testing'));
+    define( 'DB_USER', getenv_docker('WORDPRESS_DB_USER', 'root'));
+    define( 'DB_PASSWORD', getenv_docker('WORDPRESS_DB_PASSWORD', 'root'));
+    define( 'DB_HOST', getenv_docker('WORDPRESS_DB_HOST', 'db'));
+} else {
+    define( 'DB_NAME', getenv_docker('WORDPRESS_DB_NAME', 'wordpresss'));
+    define( 'DB_USER', getenv_docker('WORDPRESS_DB_USER', 'example username') );
+    define( 'DB_PASSWORD', getenv_docker('WORDPRESS_DB_PASSWORD', 'example password') );
+    define( 'DB_HOST', getenv_docker('WORDPRESS_DB_HOST', 'mysql') );
 }
 
-/** Database username */
-define( 'DB_USER', getenv_docker('WORDPRESS_DB_USER', 'example username') );
-
-/** Database password */
-define( 'DB_PASSWORD', getenv_docker('WORDPRESS_DB_PASSWORD', 'example password') );
-
-/** Database hostname */
-define( 'DB_HOST', getenv_docker('WORDPRESS_DB_HOST', 'mysql') );
 
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', getenv_docker('WORDPRESS_DB_CHARSET', 'utf8') );

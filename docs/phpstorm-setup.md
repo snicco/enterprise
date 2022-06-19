@@ -32,12 +32,14 @@ by launching new containers each time through the PhpStorm UI.
 ## Configuring Codeception
 
 1. Go to `PHP | Test Frameworks` and click the + icon to add a new configuration. Select `Codeception by Remote Interpreter`.
-2. Select the `Snicco App` interpreter that we just created. PhpStorm should now automatically detect the path to the codeception executable.
-3. Under `Test Runner > Default configuration file` enter `/snicco/enterprise/codeception.dist.yml`
-4. Go to `Run | Edit Configurations` and click `edit configuration templates` in the bottom-left corner
-5. Select `Codeception` and choose `Defined in the configuration file`.
+2. Select the `Snicco App` interpreter that we just created. PhpStorm should now automatically detect the path to the codeception executable. If PhpStorm does not set the path to the codeception executable automatically you need to set it to `/snicco/enterprise/vendor/codeception/codeception/codecept`.
+3. Go to `Run | Edit Configurations` and click `edit configuration templates` in the bottom-left corner
+4. Select `Codeception` and choose `Defined in the configuration file`.
     - Check the box `Alternative configuration file`
     - Set the value to the full **LOCAL PATH** of the `codeception.dist.yml` file in the repository root.
+5. Lastly, go to `PHP | Debug` and set the Xdebug settings to the following:
+   <br>   
+   ![](images/xdebug-configuration.png)
 
 You should now be able to run tests through the PhpStorm UI and also debug them through the UI.
 
@@ -48,6 +50,8 @@ You should now be able to run tests through the PhpStorm UI and also debug them 
     - Port: `80`
     - Check `Use path mappings`
 2. Map the full **local path** to [.wp/html](.wp/html) to `/var/www/html` (the value of `WP_CONTAINER_WP_APP_PATH` in [.mk.configuration](.make/.mk.configuration))
+   <br>   
+   ![](images/server-configuration.png)
 3. Optionally, map the path to the plugins you are working on to `var/www/html/wp-content/plugins/$PLUGIN_NAME`
 4. Run `make xdebug-on` to enable Xdebug for the php-fpm container.
 5. Set a breakpoint in [.wp/html/index.php](.wp/html/index.php) and click `Start Listening to debug connections` in the PhpStorm UI.
