@@ -9,7 +9,7 @@ dev-server: update ## Start all development containers.
 
 node: ARGS?=node -v
 node: ## Run any script in the node container. Usage: make npm ARGS="npm run dev".
-	$(MAYBE_EXEC_NODE_IN_DOCKER) ${ARGS}
+	@$(MAYBE_EXEC_NODE_IN_DOCKER) ${ARGS}
 
 npm: ## Run any npm script in the node container. Usage: make npm ARGS=dev".
 	$(MAYBE_EXEC_NODE_IN_DOCKER) npm run ${ARGS}
@@ -42,24 +42,26 @@ propagate: ## Propagate dependencies from the main composer.json to packages
 
 .PHONY: xdebug-on
 xdebug-on: SERVICE?=$(DOCKER_SERVICE_PHP_FPM_NAME)
+xdebug-on: APP_USER_NAME=root
 xdebug-on: ## Enable xdebug in the a container. Usage: make xdebug-on SERVICE=app
 	@$(if $(SERVICE),,$(error SERVICE is undefined.))
-	@$(DOCKER_COMPOSE) exec --user "root" $(SERVICE) sed -i 's/.*zend_extension=xdebug/zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
+	@$(MAYBE_EXEC_IN_DOCKER) sed -i 's/.*zend_extension=xdebug/zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
 	@if [ $(SERVICE) = $(DOCKER_SERVICE_PHP_FPM_NAME) ]; \
 	then\
       	$(MAKE) restart-php-fpm;\
     fi
-	@echo "XDebug is now enabled."
+	@echo "XDebug is now enabled in the $(SERVICE) container."
 
 .PHONY: xdebug-off
 xdebug-off: SERVICE?=$(DOCKER_SERVICE_PHP_FPM_NAME)
+xdebug-off: APP_USER_NAME=root
 xdebug-off: ## Disable xdebug in a container.
 	@$(if $(SERVICE),,$(error SERVICE is undefined.))
-	@$(DOCKER_COMPOSE) exec --user "root" $(SERVICE) sed -i 's/.*zend_extension=xdebug/;zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
+	@$(MAYBE_EXEC_IN_DOCKER) sed -i 's/.*zend_extension=xdebug/;zend_extension=xdebug/' '/usr/local/etc/php/conf.d/zz-app.ini'
 	@if [ $(SERVICE) = $(DOCKER_SERVICE_PHP_FPM_NAME) ]; then \
       	$(MAKE) restart-php-fpm; \
     fi
-	@echo "XDebug is now disabled."
+	@echo "XDebug is now disabled in the $(SERVICE) container."
 
 .PHONY:
 xdebug-path: ## Get the path to the xdebug extension in the app container.
@@ -69,6 +71,6 @@ xdebug-path: ## Get the path to the xdebug extension in the app container.
 .PHONY: restart-php-fpm
 restart-php-fpm: ## Restar php-fpm without killing the container.
 	@$(DOCKER_COMPOSE) exec --user $(APP_USER_NAME) $(DOCKER_SERVICE_PHP_FPM_NAME) kill -USR2 1
-	@echo "PHP-FPM restarted"
+	@echo "PHP-FPM restarted."
 
 

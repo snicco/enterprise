@@ -6,9 +6,11 @@
 # @see https://stackoverflow.com/a/14777895/413531 for the
 # OS detection logic.
 #
-OS?=undefined
+
+# OS is defined for WIN systems, so "uname" will not be executed
+OS?=$(shell uname)
 ifeq ($(OS),Windows_NT)
-	# Windows requires the .exe extension, otherwise the entry is ignored
+	# Windows requires the .exe extension.
 	# @see https://stackoverflow.com/a/60318554/413531
     SHELL := bash.exe
 else

@@ -11,5 +11,5 @@
 # (https://github.com/docker/compose/issues/5696)
 #
 #
-make lint DOCKER_EXEC_ARGS=-T || { echo "\033[0;31mPlease run 'make fix' and 'git commit --amend --no-edit' before pushing your changes.\033[0m" && exit 1; }
+make lint DOCKER_EXEC_ARGS=--no-TTY || { echo "\033[0;31mPlease run 'make fix' and 'git commit --amend --no-edit' before pushing your changes.\033[0m" && exit 1; }
 

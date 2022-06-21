@@ -15,7 +15,7 @@ final class Initialize2FaCest
     {
         putenv('COLUMNS=144');
     }
-    
+
     /**
      * @test
      */

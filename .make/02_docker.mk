@@ -70,7 +70,7 @@ DOCKER_SERVICE_PHP_FPM_NAME:=wp
 # This will export the current environment variables and then
 # run docker composer.
 #
-_DOCKER_COMPOSE_COMMAND:=ENV=$(ENV) \
+DOCKER_COMPOSE:=ENV=$(ENV) \
  TAG=$(TAG) \
  DOCKER_REGISTRY=$(DOCKER_REGISTRY) \
  DOCKER_NAMESPACE=$(DOCKER_NAMESPACE) \
@@ -82,9 +82,7 @@ _DOCKER_COMPOSE_COMMAND:=ENV=$(ENV) \
  COMPOSER_CACHE_PATH=$(COMPOSER_CACHE_PATH) \
  APP_HOST=$(APP_HOST) \
  WP_CONTAINER_WP_APP_PATH=$(WP_CONTAINER_WP_APP_PATH) \
- docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE)
-
-DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) $(ALL_DOCKER_COMPOSE_FILES)
+ docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE) $(ALL_DOCKER_COMPOSE_FILES)
 
 #
 # =================================================================
@@ -99,15 +97,16 @@ DOCKER_COMPOSE:=$(_DOCKER_COMPOSE_COMMAND) $(ALL_DOCKER_COMPOSE_FILES)
 # If FORCE_RUN_IN_CONTAINER=true is passed we will always run
 # commands inside new docker containers.
 #
-# This is needed because for example Github Actions is run in docker
+# This is needed because for example GitLab Actions is run in docker
 # but we need to run in OUR docker container.
 #
 FORCE_RUN_IN_CONTAINER?=
 MAYBE_RUN_NODE_IN_DOCKER?=
 MAYBE_RUN_APP_IN_DOCKER?=
+MAYBE_EXEC_IN_DOCKER?=
 MAYBE_EXEC_APP_IN_DOCKER?=
 MAYBE_EXEC_NODE_IN_DOCKER?=
-DOCKER_EXEC_ARGS?=-it
+DOCKER_EXEC_ARGS?=
 
 ifndef FORCE_RUN_IN_CONTAINER
 	# check if 'make' is executed in a docker container,
@@ -122,6 +121,7 @@ endif
 ifeq ($(FORCE_RUN_IN_CONTAINER),true)
 	MAYBE_RUN_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_NODE_NAME)
 	MAYBE_RUN_APP_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_APP_NAME)
+	MAYBE_EXEC_IN_DOCKER=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(SERVICE) # This needs to use "=" so that service does not evaluate to ""
 	MAYBE_EXEC_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_NODE_NAME)
 	MAYBE_EXEC_APP_IN_DOCKER:=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_APP_NAME)
 endif

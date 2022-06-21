@@ -39,13 +39,18 @@ JAZKAL_PHP_QA_IMAGE_VERSION=1.72.2
 #
 QUIET?=false
 
-define execute_qa_tool_in_app_container
+EXTERNAL_TOOL_COMMAND_OPTIONS=-i #interacitve.
+ifeq ($(QUIET),false)
+	EXTERNAL_TOOL_COMMAND_OPTIONS+= -t #disable pseudo tty. Needs to be disabled if running make commands in parallel.
+endif
+
+define parallel_execute_helper
     if [ "$(QUIET)" = "false" ]; then \
-        eval "$(MAYBE_EXEC_APP_IN_DOCKER) $(1)"; \
+        eval "$(1) $(2)"; \
     else \
         START=$$(date +%s); \
         printf "%-35s" "$@"; \
-        if OUTPUT=$$(eval "$(MAYBE_EXEC_APP_IN_DOCKER) $(1)" 2>&1); then \
+        if OUTPUT=$$(eval "$(1) $(2)" 2>&1); then \
             printf " $(GREEN)%-6s$(NO_COLOR)" "Ok"; \
             END=$$(date +%s); \
             RUNTIME=$$((END-START)) ;\
@@ -62,34 +67,13 @@ define execute_qa_tool_in_app_container
     fi
 endef
 
-EXTERNAL_TOOL_COMMAND_OPTIONS=-i #interacitve.
-ifeq ($(QUIET),false)
-	EXTERNAL_TOOL_COMMAND_OPTIONS+= -t #pseudo tty. Needs to be disabled if running make commands in parallel.
-endif
+define execute_qa_tool_in_app_container
+	$(call parallel_execute_helper, $(MAYBE_EXEC_APP_IN_DOCKER), $(1))
+endef
 
 EXTERNAL_TOOL_COMMAND?=docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/project" -w /project -v $(SNICCO_QA_CACHE_DIR):/tmp jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)
-
 define execute_qa_tool_in_external_container
-    if [ "$(QUIET)" = "false" ]; then \
-        eval "$(EXTERNAL_TOOL_COMMAND) $(1)"; \
-    else \
-        START=$$(date +%s); \
-        printf "%-35s" "$@"; \
-        if OUTPUT=$$(eval "$(EXTERNAL_TOOL_COMMAND) $(1)" 2>&1); then \
-            printf " $(GREEN)%-6s$(NO_COLOR)" "Ok"; \
-            END=$$(date +%s); \
-            RUNTIME=$$((END-START)) ;\
-            printf " took $(YELLOW)$${RUNTIME}s$(NO_COLOR)\n"; \
-        else \
-            printf " $(RED)%-6s$(NO_COLOR)" "fail"; \
-            END=$$(date +%s); \
-            RUNTIME=$$((END-START)) ;\
-            printf " took $(YELLOW)$${RUNTIME}s$(NO_COLOR)\n"; \
-            echo "$$OUTPUT"; \
-            printf "\n"; \
-            exit 1; \
-        fi; \
-    fi
+    $(call parallel_execute_helper, $(EXTERNAL_TOOL_COMMAND), $(1))
 endef
 
 .PHONY: ecs
@@ -134,7 +118,7 @@ roave-backward-compatibility-check: EXTERNAL_TOOL_COMMAND="docker run $(EXTERNAL
 roave-backward-compatibility-check:
 	@$(call execute_qa_tool_in_external_container, $(ARGS) --ansi)
 
-#.PHONY: magic-number-detector Currently broken ?
+.PHONY: magic-number-detector
 magic-number-detector: ## Checks that the codebase does not contain magic numbers.
 	@$(call execute_qa_tool_in_external_container, phpmnd ./ $(ARGS) \
 		--exclude-path=psalm \
@@ -146,7 +130,8 @@ magic-number-detector: ## Checks that the codebase does not contain magic number
 
 .PHONY: qa
 qa: ## Run code quality tools on all files.
-	@"$(MAKE)" --jobs $(CORES) --keep-going --no-print-directory --output-sync qa_all QUIET=true
+	@printf "$(GREEN)Running QA tools in parallel...$(NO_COLOR)\n"
+	@$(MAKE) --jobs $(CORES) --keep-going --no-print-directory --output-sync qa_all QUIET=true
 
 .PHONY: qa_all
 qa_all: ecs \
@@ -160,22 +145,22 @@ qa_all: ecs \
 
 .PHONY: fix
 fix: ## Apply automatic fixes for the entire codebase.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process $(ARGS)
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs --fix $(ARGS)
+	@$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process $(ARGS)
+	@$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs --fix $(ARGS)
 
 .PHONY: clear-qa-cache
 clear-qa-cache: ## Clear all caches of QA tools
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-cache || true
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-global-cache || true
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --clear-cache || true
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector --dry-run --clear-cache || true
+	@$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-cache || true
+	@$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/psalm --clear-global-cache || true
+	@$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --clear-cache || true
+	@$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector --dry-run --clear-cache || true
 
 .PHONY: commitlint
 commitlint: ## Check a commit message against our commit message rules. Usage make commitlint MSG="chore(monorepo): is this valid"
 	@$(if $(MSG),,$(error "Usage: make commitlint MSG=chore(monorepo): is this valid?"))
-	$(MAYBE_EXEC_NODE_IN_DOCKER) echo ${MSG} | npx commitlint
+	@$(MAYBE_EXEC_NODE_IN_DOCKER) echo ${MSG} | npx commitlint
 
 .PHONY: commitlint-from
 commitlint-from: ## Checks all commit message after the provided commit sha. Usage: make commitlint-from COMMIT_SHA=4234235423123.
 	@$(if $(COMMIT_SHA),,$(error "Usage: make commitlint-from: COMMIT_SHA=4234235423123"))
-	$(MAYBE_EXEC_NODE_IN_DOCKER) npx commitlint --from ${COMMIT_SHA}
+	@$(MAYBE_EXEC_NODE_IN_DOCKER) npx commitlint --from ${COMMIT_SHA}
