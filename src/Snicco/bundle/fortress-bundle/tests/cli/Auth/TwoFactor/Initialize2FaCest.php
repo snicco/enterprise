@@ -15,7 +15,10 @@ final class Initialize2FaCest
     {
         putenv('COLUMNS=144');
     }
-
+    
+    /**
+     * @test
+     */
     public function that_two_factor_settings_can_not_be_created_for_an_invalid_user(WPCLITester $I): void
     {
         $I->cli(['snicco/fortress 2fa:initialize', '2']);

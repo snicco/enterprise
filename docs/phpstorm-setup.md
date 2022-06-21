@@ -57,6 +57,15 @@ You should now be able to run tests through the PhpStorm UI and also debug them 
 5. Set a breakpoint in [.wp/html/index.php](.wp/html/index.php) and click `Start Listening to debug connections` in the PhpStorm UI.
 6. Go to [https://snicco-enterprise.test](https://snicco-enterprise.test), you should now hit the breakpoint inside PhpStorm.
 
+## Debugging WP-CLI requests
+
+1. Go to `PHP | Servers | snicco` and add a new path mapping:
+   - `$PROJECT_ROOT/vendor/wp-cli` => `/usr/local/bin/wp/vendor/wp-cli`
+
+You should now be able to debug requests started via `make wp`
+
+Note: You can not set breakpoints inside the wp-cli code itself because it's a PHAR in the docker container which does not seem supported currently.
+
 ## Configuring directories
 
 We need to exclude some duplicate directories from indexing in PhpStorm:
