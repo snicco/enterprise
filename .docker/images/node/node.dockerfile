@@ -40,3 +40,5 @@ RUN deluser --remove-home node && \
 WORKDIR $MONOREPO_PATH
 
 FROM base as local
+
+FROM base as ci

@@ -14,9 +14,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1' ]
+        wp: [ '5.8', '5.9', '6.0' ]
+
     steps:
       - uses: actions/checkout@v3
-
       - name: start timer
         run: |
           echo "START_TOTAL=$(date +%s)" > $GITHUB_ENV
@@ -35,19 +40,14 @@ jobs:
         run: |
           docker compose version
           docker --version
+          echo $(id)
 
-      - name: SETUP DOCKER
+      - name: Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}
         run: |
-          make init
-          make docker-build
-          make dev-server
+          make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
 
-      - name: QA
+      - name: Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}
         run: |
-          # Run the tests and qa tools but only store the error instead of failing immediately
-          # @see https://stackoverflow.com/a/59200738/413531
-          make qa || echo "FAILED=qa" >> $GITHUB_ENV
-
-      - name: TEST
-        run: |
-          make tests || echo "FAILED=test $FAILED" >> $GITHUB_ENV
+          make tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 || echo "FAILED=test $FAILED" >> $GITHUB_ENV PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}

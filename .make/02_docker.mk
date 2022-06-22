@@ -1,10 +1,5 @@
 ##@ [Docker]
 
-# For local builds we always want to use "latest" as tag per default
-ifeq ($(ENV),local)
-	TAG:=latest
-endif
-
 #
 # =================================================================
 # Enable Buildkit for docker
@@ -44,7 +39,8 @@ DOCKER_COMPOSE_PROJECT_NAME:=snicco_enterprise_$(ENV)
 ifeq ($(ENV),local)
 	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE) -f $(ROOT_DOCKER_COMPOSE_FILE_LOCAL)
 else
-	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE)
+	# todo fix files for ci
+	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE) -f $(ROOT_DOCKER_COMPOSE_FILE_LOCAL)
 endif
 
 #
@@ -97,7 +93,7 @@ DOCKER_COMPOSE:=ENV=$(ENV) \
 # If FORCE_RUN_IN_CONTAINER=true is passed we will always run
 # commands inside new docker containers.
 #
-# This is needed because for example GitLab Actions is run in docker
+# This is needed because for example GitHub Actions is run in docker
 # but we need to run in OUR docker container.
 #
 FORCE_RUN_IN_CONTAINER?=
@@ -107,6 +103,10 @@ MAYBE_EXEC_IN_DOCKER?=
 MAYBE_EXEC_APP_IN_DOCKER?=
 MAYBE_EXEC_NODE_IN_DOCKER?=
 DOCKER_EXEC_ARGS?=
+
+ifeq ($(ENV),ci)
+	DOCKER_EXEC_ARGS+= -T # avoid "the input device is not a TTY" in GitHub Actions
+endif
 
 ifndef FORCE_RUN_IN_CONTAINER
 	# check if 'make' is executed in a docker container,

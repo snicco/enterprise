@@ -15,4 +15,3 @@ codeception.yml
 
 .make/.mk.env
 .docker/.env
-.docker/images/nginx/certs

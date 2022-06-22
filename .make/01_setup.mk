@@ -8,7 +8,7 @@
 .PHONY: setup
 init: update build-codeception ## Initializes the repository.
 
-update: .make/.mk.env .docker/.env ./.docker/images/nginx/certs vendor composer.lock node_modules package-lock.json ## Check if all files are still up to date (vendor, node_modules, etc.)
+update: .make/.mk.env .docker/.env generate-certs vendor composer.lock node_modules package-lock.json ## Check if all files are still up to date (vendor, node_modules, etc.)
 
 #
 # =================================================================
@@ -77,7 +77,7 @@ package-lock.json: package.json
 			exit 1;\
 		else\
   			cp .docker/.env.dist .docker/.env;\
-			echo 'Created new .env file for make for base';\
+			echo 'Created new docker .env file.';\
 	fi
 
 #
@@ -93,7 +93,7 @@ package-lock.json: package.json
 			exit 1;\
 		else\
   			cp .make/.mk.env.dist .make/.mk.env;\
-			echo 'Created new .env file for make';\
+			echo 'Created new make .env file.';\
 	fi
 
 #
@@ -101,10 +101,15 @@ package-lock.json: package.json
 # Create certificates with mkcert
 # =================================================================
 #
-./.docker/images/nginx/certs:
-	@mkcert -install
-	@mkdir $(DOCKER_DIR)/images/nginx/certs
-	@mkcert -key-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST)-key.pem -cert-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST).pem $(APP_HOST)
+.PHONY: generate-certs
+generate-certs:
+	@if [ $(ENV) = ci ]; then \
+        echo "Skipping mkcert installation in CI..."; \
+    else \
+        mkcert -install; \
+        mkcert -key-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST)-key.pem -cert-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST).pem $(APP_HOST); \
+    fi
+
 
 .PHONY: build-codeception
 build-codeception: ## Build codeception

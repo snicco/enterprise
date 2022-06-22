@@ -51,3 +51,5 @@ RUN touch /var/run/nginx.pid && \
 USER nginx
 
 FROM base as local
+
+FROM base as ci

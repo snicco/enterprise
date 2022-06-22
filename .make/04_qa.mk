@@ -114,7 +114,7 @@ bc-check: roave-backward-compatibility-check ## Check that all changes in the cu
 
 .PHONY: roave-backward-compatibility-check
 # We have to use a different docker image here. The other one throws a fatal error for the tool.
-roave-backward-compatibility-check: EXTERNAL_TOOL_COMMAND="docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(PWD):/app" -v $(SNICCO_QA_CACHE_DIR):/tmp nyholm/roave-bc-check:stable"
+roave-backward-compatibility-check: EXTERNAL_TOOL_COMMAND="docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/app" -v $(SNICCO_QA_CACHE_DIR):/tmp nyholm/roave-bc-check:stable"
 roave-backward-compatibility-check:
 	@$(call execute_qa_tool_in_external_container, $(ARGS) --ansi)
 

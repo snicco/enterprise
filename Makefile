@@ -53,7 +53,7 @@ MAKEFLAGS += --no-builtin-rules # remove some "magic make behavior"
 # does not exist.
 #
 -include .make/.mk.env
--include .make/.mk.configuration
+include .make/.mk.configuration
 
 #
 # =================================================================

@@ -254,3 +254,4 @@ RUN sed -e 's;/bin/ash$;/bin/bash;g' -i /etc/passwd
 
 USER $APP_USER_NAME
 
+FROM php_fpm as ci
