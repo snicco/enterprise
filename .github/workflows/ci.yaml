@@ -1,0 +1,38 @@
+name: CI build and test
+
+on:
+  # automatically run for pull request and for pushes to branch "part-7-ci-pipeline-docker-php-gitlab-github"
+  # @see https://stackoverflow.com/a/58142412/413531
+  push:
+  pull_request: {}
+  # enable to trigger the action manually
+  # @see https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+  # CAUTION: there is a known bug that makes the "button to trigger the run" not show up
+  # @see https://github.community/t/workflow-dispatch-workflow-not-showing-in-actions-tab/130088/29
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: start timer
+        run: |
+          echo "START_TOTAL=$(date +%s)" > $GITHUB_ENV
+
+      - name: SETUP TOOLS
+        run : |
+          DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+          # install docker compose
+          # @see https://docs.docker.com/compose/cli-command/#install-on-linux
+          # @see https://github.com/docker/compose/issues/8630#issuecomment-1073166114
+          mkdir -p $DOCKER_CONFIG/cli-plugins 
+          curl -sSL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose
+          chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+
+      - name: DEBUG
+        run: |
+          docker compose version
+          docker --version
+          cat /etc/*-release
