@@ -35,4 +35,19 @@ jobs:
         run: |
           docker compose version
           docker --version
-          cat /etc/*-release
+
+      - name: SETUP DOCKER
+        run: |
+          make init
+          make docker-build
+          make dev-server
+
+      - name: QA
+        run: |
+          # Run the tests and qa tools but only store the error instead of failing immediately
+          # @see https://stackoverflow.com/a/59200738/413531
+          make qa || echo "FAILED=qa" >> $GITHUB_ENV
+
+      - name: TEST
+        run: |
+          make tests || echo "FAILED=test $FAILED" >> $GITHUB_ENV
