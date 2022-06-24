@@ -11,14 +11,17 @@ on:
   # @see https://github.community/t/workflow-dispatch-workflow-not-showing-in-actions-tab/130088/29
   workflow_dispatch: {}
 
+env:
+  CACHE_PREFIX: snicco_1
+
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4', '8.0', '8.1' ]
-        wp: [ '5.8', '5.9', '6.0' ]
+        php: [ '7.4']
+        wp: [ '5.8']
 
     steps:
       - uses: actions/checkout@v3
@@ -42,12 +45,18 @@ jobs:
           docker --version
           echo $(id)
 
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        with:
+          key: ${{ env.CACHE_PREFIX }}-{hash}
+          restore-keys: |
+            ${{ env.CACHE_PREFIX }}-
+
       - name: Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}
         run: |
-          make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
-          make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
-          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121
+          make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121
+          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach
 
       - name: Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}
         run: |
-          make tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 || echo "FAILED=test $FAILED" >> $GITHUB_ENV PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }} || echo "FAILED=test $FAILED" >> $GITHUB_ENV
