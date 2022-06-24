@@ -59,4 +59,4 @@ jobs:
 
       - name: Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}
         run: |
-          make tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }} || echo "FAILED=test $FAILED" >> $GITHUB_ENV
+          make unit-tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 || echo "FAILED=test $FAILED" >> $GITHUB_ENV
