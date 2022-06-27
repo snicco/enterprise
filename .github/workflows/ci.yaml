@@ -70,7 +70,7 @@ jobs:
 
       - name: Save docker images
         run: |
-          mkdir -p /tmp/snicco-docker || true
+          mkdir -p /tmp/snicco-docker/snicco || true
           docker image save ${{ env.APP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
           docker image save ${{ env.WP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar
 
