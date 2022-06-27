@@ -1,15 +1,9 @@
 name: CI build and test
 
 on:
-  # automatically run for pull request and for pushes to branch "part-7-ci-pipeline-docker-php-gitlab-github"
-  # @see https://stackoverflow.com/a/58142412/413531
   push:
-  pull_request: {}
-  # enable to trigger the action manually
-  # @see https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
-  # CAUTION: there is a known bug that makes the "button to trigger the run" not show up
-  # @see https://github.community/t/workflow-dispatch-workflow-not-showing-in-actions-tab/130088/29
-  workflow_dispatch: {}
+  pull_request:
+  workflow_dispatch:
 
 env:
   CACHE_PREFIX: snicco_1
@@ -52,9 +46,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/snicco-docker
-          key: ${{ env.CACHE_PREFIX}}-php${{ matrix.php }}-wp${{ matrix.wp }}-{{ github.sha }}
+          key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-${{ github.sha }}
           restore-keys: |
-            ${{ env.CACHE_PREFIX}}-php${{ matrix.php }}-wp${{ matrix.wp }}-
+            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-
             ${{ env.CACHE_PREFIX}}-
 
       - name: Load Docker images
