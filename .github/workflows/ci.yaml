@@ -38,11 +38,16 @@ jobs:
       - name: 'Restore cache'
         uses: actions/cache@v3
         with:
-          path: /tmp/snicco-docker
-          key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-${{ github.sha }}
+          path: | 
+            /tmp/snicco-docker
+            vendor
+            node_modules
+          key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-composer-${{ hashFiles('**/composer.lock') }}-npm-${{ hashFiles('**/package-lock.json') }}-sha${{ github.sha }}
           restore-keys: |
+            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-composer-${{ hashFiles('**/composer.lock') }}-npm-${{ hashFiles('**/package-lock.json') }}
+            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-composer-${{ hashFiles('**/composer.lock') }}
             ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-
-            ${{ env.CACHE_PREFIX }}-
+            ${{ env.CACHE_PREFIX }}- 
 
       - name: 'Load docker images'
         run: |
