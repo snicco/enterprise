@@ -23,8 +23,8 @@ jobs:
         php: [ '7.4' ]
         wp: [ '5.8' ]
     env:
-      APP_IMAGE_NAME: app-ci-php${{ matrix.php }}
-      WP_IMAGE_NAME: wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
+      APP_IMAGE_NAME: snicco/app-ci-php${{ matrix.php }}
+      WP_IMAGE_NAME: snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
 
     steps:
       - uses: actions/checkout@v3
@@ -67,9 +67,6 @@ jobs:
           make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
           make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
 #          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Save docker images
         run: |
