@@ -48,9 +48,9 @@ FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as php_fpm
 #
 # WP-CLI needs less and bash to work properly.
 #
-RUN apk update && \
-    apk add --no-cache less && \
-    apk add --no-cache bash
+RUN apk add --update --no-cache \
+        less \
+        bash
 
 #
 # =================================================================
@@ -239,9 +239,8 @@ USER root
 #
 RUN apk add --update --no-cache \
         bash \
-        sudo \
         vim \
-        nano
+        make
 
 RUN install-php-extensions xdebug \
     # ensure that xdebug is not enabled by default

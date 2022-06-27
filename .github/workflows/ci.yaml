@@ -20,8 +20,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4']
-        wp: [ '5.8']
+        php: [ '7.4' ]
+        wp: [ '5.8' ]
+    env:
+      APP_IMAGE_NAME: app-ci-php${{ matrix.php }}
+      WP_IMAGE_NAME: wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
 
     steps:
       - uses: actions/checkout@v3
@@ -43,19 +46,32 @@ jobs:
         run: |
           docker compose version
           docker --version
-          echo $(id)
+          docker buildx version
 
-      - uses: satackey/action-docker-layer-caching@v0.0.11
+      - name: Restore Cache
+        uses: actions/cache@v3
         with:
-          key: ${{ env.CACHE_PREFIX }}-{hash}
+          path: /tmp/snicco-docker
+          key: ${{ env.CACHE_PREFIX}}-php${{ matrix.php }}-wp${{ matrix.wp }}-{{ github.sha }}
           restore-keys: |
-            ${{ env.CACHE_PREFIX }}-
+            ${{ env.CACHE_PREFIX}}-php${{ matrix.php }}-wp${{ matrix.wp }}-
+            ${{ env.CACHE_PREFIX}}-
+
+      - name: Load Docker images
+        run: |
+          docker image load < /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar || true
+          docker image load < /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar || true
 
       - name: Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}
         run: |
-          make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121
-          make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121
-          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach
+          make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+
+      - name: Save docker images
+        run: |
+          docker image save ${{ env.APP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
+          docker image save ${{ env.WP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar
 
       - name: Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}
         run: |

@@ -2,19 +2,18 @@
 
 #
 # =================================================================
-# Enable Buildkit for docker
+# Enable BuildKit for docker
 # =================================================================
 #
-# Export Buildkit settings for docker and docker-compose to
+# Export BuildKit settings for docker and docker-compose to
 # subshells.
-# For specific environments (e.g. MacBook with Apple Silicon M1 CPU)
-# it should be turned off to work stable.
-# This can be done by configuring the local make/.env file.
 #
 COMPOSE_DOCKER_CLI_BUILD?=1
 DOCKER_BUILDKIT?=1
+BUILDKIT_INLINE_CACHE?=1
 export COMPOSE_DOCKER_CLI_BUILD
 export DOCKER_BUILDKIT
+export BUILDKIT_INLINE_CACHE
 
 #
 # =================================================================

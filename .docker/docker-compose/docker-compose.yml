@@ -8,6 +8,9 @@ volumes:
   wordpress_app:
   wordpress_src:
 
+x-shared-args: &shared-args
+  BUILDKIT_INLINE_CACHE: ${BUILDKIT_INLINE_CACHE?}
+
 x-user-args: &user-args
   APP_GROUP_ID: ${APP_GROUP_ID?}
   APP_GROUP_NAME: ${APP_GROUP_NAME?}
@@ -26,12 +29,16 @@ services:
 
   wp:
     container_name: wp
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}:${TAG?}
     build:
-      context: ${MONOREPO_ROOT_HOST} # Pass the entire repository as the build context
+      context: ${MONOREPO_ROOT_HOST}
       dockerfile: ./.docker/images/wp/wordpress.dockerfile
       target: ${ENV?}
+      cache_from:
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}:${TAG?}
       args:
         <<: *user-args
+        <<: *shared-args
         WP_VERSION: ${WP_VERSION?}
         WP_CLI_VERSION: ${WP_CLI_VERSION?}
         PHP_VERSION: ${PHP_VERSION?}
@@ -50,12 +57,16 @@ services:
 
   app:
     container_name: app
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:${TAG?}
     build:
       context: ../
       dockerfile: ./images/app/app.dockerfile
       target: ${ENV?}
+      cache_from:
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:${TAG?}
       args:
         <<: *user-args
+        <<: *shared-args
         PHP_VERSION: ${PHP_VERSION?}
         ALPINE_VERSION: ${ALPINE_VERSION?}
         COMPOSER_VERSION: ${COMPOSER_VERSION?}
@@ -68,7 +79,7 @@ services:
     volumes:
       - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
       - wordpress_app:${APP_CONTAINER_WP_APP_PATH?}
-      - wordpress_src:${APP_CONTAINER_WP_SRC_PATH?}:nocopy
+      - wordpress_src:${APP_CONTAINER_WP_SRC_PATH?}
     secrets:
       - source: composer_auth_json
         target: /home/${APP_USER_NAME?}/.composer/auth.json
