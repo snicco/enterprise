@@ -14,44 +14,35 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4' ]
-        wp: [ '5.8' ]
+        php: [ '7.4', '8.0', '8.1' ]
+        wp: [ '5.8', '5.9', '6.0' ]
     env:
       APP_IMAGE_NAME: snicco/app-ci-php${{ matrix.php }}
       WP_IMAGE_NAME: snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
 
     steps:
       - uses: actions/checkout@v3
-      - name: start timer
-        run: |
-          echo "START_TOTAL=$(date +%s)" > $GITHUB_ENV
 
-      - name: SETUP TOOLS
+      - name: 'Install docker'
         run : |
           DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-          # install docker compose
-          # @see https://docs.docker.com/compose/cli-command/#install-on-linux
-          # @see https://github.com/docker/compose/issues/8630#issuecomment-1073166114
           mkdir -p $DOCKER_CONFIG/cli-plugins 
           curl -sSL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose
           chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
-
-      - name: DEBUG
-        run: |
           docker compose version
           docker --version
           docker buildx version
 
-      - name: Restore Cache
+      - name: 'Restore cache'
         uses: actions/cache@v3
         with:
           path: /tmp/snicco-docker
           key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-${{ github.sha }}
           restore-keys: |
             ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-
-            ${{ env.CACHE_PREFIX}}-
+            ${{ env.CACHE_PREFIX }}-
 
-      - name: Load Docker images
+      - name: 'Load docker images'
         run: |
           docker image load < /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar || true
           docker image load < /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar || true
@@ -60,14 +51,14 @@ jobs:
         run: |
           make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
           make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
-#          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
 
-      - name: Save docker images
+      - name: 'Save docker images'
         run: |
           mkdir -p /tmp/snicco-docker/snicco || true
           docker image save ${{ env.APP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
           docker image save ${{ env.WP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar
 
-      - name: Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}
+      - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
-          make unit-tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 || echo "FAILED=test $FAILED" >> $GITHUB_ENV
+          make tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121
