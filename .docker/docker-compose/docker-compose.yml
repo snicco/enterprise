@@ -100,44 +100,15 @@ services:
       - network
     tty: true
 
-  db:
-    container_name: db
-    image: ${DB_IMAGE?}
-    environment:
-      MYSQL_DATABASE: snicco_enterprise
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - ${MONOREPO_ROOT_HOST}/.docker/images/db/imports:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: [ "CMD-SHELL", "mysql snicco_enterprise -uroot -proot -e 'SELECT 1;'  || exit 1" ]
-      interval: 0.2s
-      retries: 50
-    networks:
-      - network
-
-  nginx:
-    container_name: nginx
-    build:
-      context: ../images/nginx
-      dockerfile: nginx.dockerfile
-      target: ${ENV?}
-      args:
-        <<: *user-args
-        NGINX_VERSION: ${NGINX_VERSION?}
-        WP_APPLICATION_PATH: ${WP_CONTAINER_WP_APP_PATH?}
-    depends_on:
-      - wp
-    volumes:
-      - wordpress_app:${WP_CONTAINER_WP_APP_PATH?}
-    networks:
-      - network
-
   node:
     container_name: node
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
     build:
       context: ../images/node
       dockerfile: node.dockerfile
       target: ${ENV?}
+      cache_from:
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
       args:
         <<: *user-args
         NODE_VERSION: ${NODE_VERSION?}
@@ -151,6 +122,41 @@ services:
     # we can use docker exec over docker run.
     # @see https://stackoverflow.com/a/55953120
     tty: true
+    networks:
+      - network
+
+  nginx:
+    container_name: nginx
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:${TAG?}
+    build:
+      context: ../images/nginx
+      dockerfile: nginx.dockerfile
+      target: ${ENV?}
+      cache_from:
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:${TAG?}
+      args:
+        <<: *user-args
+        NGINX_VERSION: ${NGINX_VERSION?}
+        WP_APPLICATION_PATH: ${WP_CONTAINER_WP_APP_PATH?}
+    depends_on:
+      - wp
+    volumes:
+      - wordpress_app:${WP_CONTAINER_WP_APP_PATH?}
+    networks:
+      - network
+
+  db:
+    container_name: db
+    image: ${DB_IMAGE?}
+    environment:
+      MYSQL_DATABASE: snicco_enterprise
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ${MONOREPO_ROOT_HOST}/.docker/images/db/imports:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql snicco_enterprise -uroot -proot -e 'SELECT 1;'  || exit 1" ]
+      interval: 0.2s
+      retries: 50
     networks:
       - network
 

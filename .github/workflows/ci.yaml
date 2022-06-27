@@ -19,6 +19,8 @@ jobs:
     env:
       APP_IMAGE_NAME: snicco/app-ci-php${{ matrix.php }}
       WP_IMAGE_NAME: snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
+      NGINX_IMAGE_NAME: snicco/nginx-ci
+      NODE_IMAGE_NAME: snicco/node-ci
 
     steps:
       - uses: actions/checkout@v3
@@ -46,8 +48,10 @@ jobs:
         run: |
           docker image load < /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar || true
           docker image load < /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar || true
+          docker image load < /tmp/snicco-docker/${{ env.NGINX_IMAGE_NAME }}.tar || true
+          docker image load < /tmp/snicco-docker/${{ env.NODE_IMAGE_NAME }}.tar || true
 
-      - name: Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}
+      - name: 'Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
           make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
@@ -58,7 +62,9 @@ jobs:
           mkdir -p /tmp/snicco-docker/snicco || true
           docker image save ${{ env.APP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
           docker image save ${{ env.WP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar
+          docker image save ${{ env.NGINX_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.NGINX_IMAGE_NAME }}.tar
+          docker image save ${{ env.NODE_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.NODE_IMAGE_NAME }}.tar
 
       - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
-          make tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121
+          make unit-tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121
