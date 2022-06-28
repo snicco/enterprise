@@ -48,6 +48,12 @@ jobs:
           path: vendor
           key: ${{ env.CACHE_PREFIX }}-npm-${{ hashFiles('**/composer.lock') }}
 
+      - name: 'Restore npm cache'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ env.CACHE_PREFIX }}-npm-${{ hashFiles('**/package-lock.json') }}
+
       - name: 'Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
