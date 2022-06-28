@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4']
-        wp: [ '6.0']
+        php: [ '8.0', '7.4']
+        wp: [ '6.0', '5.9', '5.8']
     env:
       APP_IMAGE_NAME: ghcr.io/snicco/app-ci-php${{ matrix.php }}
       WP_IMAGE_NAME: ghcr.io/snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
