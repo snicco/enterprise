@@ -72,7 +72,6 @@ jobs:
       - name: 'Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make init
-          make docker-pull ARGS="db chrome mailhog"
           make docker-up
           make update
         env:
