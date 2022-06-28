@@ -58,8 +58,7 @@ jobs:
         run: |
           make init
           make docker-pull || true
-          make docker-build
-          make docker-up MODE=--detach
+          make docker-up
           make update
         env:
           ENV: ci
@@ -72,7 +71,7 @@ jobs:
 
       - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
-          make unit-tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
+          make integration-tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
 
       - name: EVALUATE
         run: |
