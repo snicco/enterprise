@@ -46,7 +46,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor
-          key: ${{ env.CACHE_PREFIX }}-npm-${{ hashFiles('**/composer.lock') }}
+          key: ${{ env.CACHE_PREFIX }}-composer-${{ hashFiles('**/composer.lock') }}-php-${{ matrix.php }}
 
       - name: 'Restore npm cache'
         uses: actions/cache@v3
