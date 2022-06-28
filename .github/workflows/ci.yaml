@@ -35,12 +35,16 @@ jobs:
           docker --version
           docker buildx version
 
+      - name: 'Set ./docker directory hash'
+        run: echo "DOCKER_DIR_HASH=$(./.docker/scripts/dir_hash.sh ./docker)" >> $GITHUB_ENV
+
       - name: 'Restore docker cache'
         uses: actions/cache@v3
+        id: docker_cache
         with:
           path: | 
             /tmp/snicco-docker
-          key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-sha${{ github.sha }}
+          key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-${{ env.DOCKER_DIR_HASH }}
           restore-keys: |
             ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}
             ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-
@@ -95,6 +99,7 @@ jobs:
           if [ ! -z "$FAILED" ]; then echo "Failed at step $FAILED" && exit 1; fi
 
       - name: 'Save docker images'
+        if: steps.docker_cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p /tmp/snicco-docker/ghcr.io/snicco || true
           docker image save ${{ env.APP_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
