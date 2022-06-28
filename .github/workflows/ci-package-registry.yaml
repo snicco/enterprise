@@ -57,7 +57,9 @@ jobs:
       - name: 'Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make init
-          make docker-up
+          make docker-pull || true
+          make docker-build
+          make docker-up MODE=--detach
           make update
         env:
           ENV: ci
