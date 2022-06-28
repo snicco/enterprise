@@ -1,0 +1,64 @@
+name: CI package registry
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CACHE_PREFIX: snicco_1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4']
+        wp: [ '6.0']
+    env:
+      APP_IMAGE_NAME: ghcr.io/snicco/app-ci-php${{ matrix.php }}
+      WP_IMAGE_NAME: ghcr.io/snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
+      NGINX_IMAGE_NAME: ghcr.io/snicco/nginx-ci
+      NODE_IMAGE_NAME: ghcr.io/snicco/node-ci
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Install docker'
+        run : |
+          DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+          mkdir -p $DOCKER_CONFIG/cli-plugins 
+          curl -sSL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose
+          chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+          docker compose version
+          docker --version
+          docker buildx version
+
+      - name: 'Login to docker'
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}'
+        run: |
+          make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+
+      - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
+        run: |
+          make unit-tests ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
+
+      - name: EVALUATE
+        run: |
+          if [ ! -z "$FAILED" ]; then echo "Failed at step $FAILED" && exit 1; fi
+
+      - name: 'Push docker images'
+        run: |
+          docker push ${{ env.APP_IMAGE_NAME }}
+          docker push ${{ env.WP_IMAGE_NAME }}
+          docker push ${{ env.NGINX_IMAGE_NAME }}
+          docker push ${{ env.NODE_IMAGE_NAME }}

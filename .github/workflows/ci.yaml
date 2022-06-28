@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4', '8.0', '8.1' ]
-        wp: [ '5.8', '5.9', '6.0' ]
+        php: [ '7.4']
+        wp: [ '6.0']
     env:
       APP_IMAGE_NAME: snicco/app-ci-php${{ matrix.php }}
       WP_IMAGE_NAME: snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
@@ -59,10 +59,10 @@ jobs:
           make docker-build ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
           make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 MODE=--detach PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
 
-      - name: 'QA'
-        if: matrix.php == '7.4' && matrix.wp == '6.0' # We only need to run QA once.
-        run:
-          make qa || echo "FAILED=QA" >> $GITHUB_ENV
+#      - name: 'QA'
+#        if: matrix.php == '7.4' && matrix.wp == '6.0' # We only need to run QA once.
+#        run:
+#          make qa || echo "FAILED=QA" >> $GITHUB_ENV
 
       - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |

@@ -5,7 +5,7 @@
 #
 # Values defined in this file are NOT TO BE CHANGED LOCALLY.
 #
-DOCKER_REGISTRY=docker.io
+DOCKER_REGISTRY=ghcr.io
 DOCKER_NAMESPACE=snicco
 APP_HOST=snicco-enterprise.test
 WP_CONTAINER_WP_APP_PATH=/var/www/html
