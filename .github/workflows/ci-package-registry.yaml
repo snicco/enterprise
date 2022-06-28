@@ -56,10 +56,18 @@ jobs:
 
       - name: 'Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
-          make init ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
-          make docker-pull ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
-          make docker-up ENV=ci APP_USER_NAME=runner APP_USER_ID=1001 APP_GROUP_NAME=docker APP_GROUP_ID=121 PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
+          make init
+          make docker-pull
+          make docker-up
           make update
+        env:
+          ENV: ci
+          APP_USER_NAME: runner
+          APP_USER_ID: 1001
+          APP_GROUP_NAME: 1001
+          APP_GROUP_ID: 1001
+          PHP_VERSION: ${{ matrix.php }}
+          WP_VERSION: ${{ matrix.wp }}
 
       - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |

@@ -20,7 +20,7 @@ update: .make/.mk.env .docker/.env generate-certs vendor composer.lock node_modu
 # dependencies.
 #
 vendor: composer.json $(wildcard composer.lock)
-	$(MAYBE_RUN_APP_IN_DOCKER) composer install
+	$(MAYBE_EXEC_APP_IN_DOCKER) composer install
 	@touch vendor # Need to update file timestamp so that we dont run this again if composer has no new
 				 # dependencies.
 
@@ -34,7 +34,7 @@ vendor: composer.json $(wildcard composer.lock)
 # dependencies.
 #
 node_modules: package.json $(wildcard package-lock.json)
-	$(MAYBE_RUN_NODE_IN_DOCKER) npm install
+	$(MAYBE_EXEC_NODE_IN_DOCKER) npm install
 	@touch node_modules # Need to update file timestamp so that we dont run this again if node has no new
 				 # dependencies.
 
@@ -47,7 +47,7 @@ node_modules: package.json $(wildcard package-lock.json)
 # our composer.lock and composer.lock file and dependencies.
 #
 composer.lock: composer.json
-	$(MAYBE_RUN_APP_IN_DOCKER) composer update
+	$(MAYBE_EXEC_APP_IN_DOCKER) composer update
 	@touch composer.lock # Need to update file timestamp so that we dont run this again if composer has no new
 						# dependencies.
 
@@ -60,7 +60,7 @@ composer.lock: composer.json
 # our package.lock file and node dependencies.
 #
 package-lock.json: package.json
-	$(MAYBE_RUN_NODE_IN_DOCKER) npm update
+	$(MAYBE_EXEC_NODE_IN_DOCKER) npm update
 	touch package-lock.json # Need to update file timestamp so that we dont run this again if node has no new
 				 # dependencies.
 
@@ -113,4 +113,4 @@ generate-certs:
 
 .PHONY: build-codeception
 build-codeception: ## Build codeception
-	$(MAYBE_RUN_APP_IN_DOCKER) vendor/bin/codecept build
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept build

@@ -183,11 +183,11 @@ docker-down: _validate-docker-env ## Stop and remove docker all containers.
 
 .PHONY: docker-push
 docker-push: _validate-docker-env ## Push image to a remote registry.
-	@$(DOCKER_COMPOSE) push
+	@$(DOCKER_COMPOSE) pull $(ARGS)
 
 .PHONY: docker-pull
 docker-pull: _validate-docker-env ## Push image to a remote registry.
-	@$(DOCKER_COMPOSE) pull
+	@$(DOCKER_COMPOSE) pull $(ARGS)
 
 .PHONY: docker-v-prune
 docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
