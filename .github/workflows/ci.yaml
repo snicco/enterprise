@@ -36,7 +36,7 @@ jobs:
           docker buildx version
 
       - name: 'Set ./docker directory hash'
-        run: echo "DOCKER_DIR_HASH=$(./.docker/scripts/dir_hash.sh ./docker)" >> $GITHUB_ENV
+        run: echo "DOCKER_DIR_HASH=$( sh .docker/scripts/dir_hash.sh .docker)" >> $GITHUB_ENV || exit 1
 
       - name: 'Restore docker cache'
         uses: actions/cache@v3
