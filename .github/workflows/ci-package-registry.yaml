@@ -58,7 +58,4 @@ jobs:
 
       - name: 'Push docker images'
         run: |
-          docker push ${{ env.APP_IMAGE_NAME }}
-          docker push ${{ env.WP_IMAGE_NAME }}
-          docker push ${{ env.NGINX_IMAGE_NAME }}
-          docker push ${{ env.NODE_IMAGE_NAME }}
+          make docker-push ENV=ci PHP_VERSION=${{ matrix.php }} WP_VERSION=${{ matrix.wp }}
