@@ -1,4 +1,4 @@
-name: CI build and test
+name: CI actions/cache
 
 on:
   push:
@@ -17,10 +17,10 @@ jobs:
         php: [ '7.4']
         wp: [ '6.0']
     env:
-      APP_IMAGE_NAME: snicco/app-ci-php${{ matrix.php }}
-      WP_IMAGE_NAME: snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
-      NGINX_IMAGE_NAME: snicco/nginx-ci
-      NODE_IMAGE_NAME: snicco/node-ci
+      APP_IMAGE_NAME: ghcr.io/snicco/app-ci-php${{ matrix.php }}
+      WP_IMAGE_NAME: ghcr.io/snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
+      NGINX_IMAGE_NAME: ghcr.io/snicco/nginx-ci
+      NODE_IMAGE_NAME: ghcr.io/snicco/node-ci
 
     steps:
       - uses: actions/checkout@v3
@@ -74,7 +74,7 @@ jobs:
 
       - name: 'Save docker images'
         run: |
-          mkdir -p /tmp/snicco-docker/snicco || true
+          mkdir -p /tmp/snicco-docker/ghcr.io/snicco || true
           docker image save ${{ env.APP_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
           docker image save ${{ env.WP_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar
           docker image save ${{ env.NGINX_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.NGINX_IMAGE_NAME }}.tar
