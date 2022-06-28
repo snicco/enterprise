@@ -6,9 +6,9 @@
 # =================================================================
 #
 .PHONY: setup
-init: update build-codeception ## Initializes the repository.
+init: .make/.mk.env .docker/.env generate-certs ## Initializes the repository.
 
-update: .make/.mk.env .docker/.env generate-certs vendor composer.lock node_modules package-lock.json ## Check if all files are still up to date (vendor, node_modules, etc.)
+update: .make/.mk.env .docker/.env generate-certs vendor composer.lock node_modules package-lock.json build-codeception ## Check if all files are still up to date (vendor, node_modules, etc.)
 
 #
 # =================================================================
