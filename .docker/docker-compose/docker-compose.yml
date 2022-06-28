@@ -111,6 +111,7 @@ services:
         - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
       args:
         <<: *user-args
+        <<: *shared-args
         NODE_VERSION: ${NODE_VERSION?}
         ALPINE_VERSION: ${ALPINE_VERSION?}
         MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
@@ -136,6 +137,7 @@ services:
         - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:${TAG?}
       args:
         <<: *user-args
+        <<: *shared-args
         NGINX_VERSION: ${NGINX_VERSION?}
         WP_APPLICATION_PATH: ${WP_CONTAINER_WP_APP_PATH?}
     depends_on:

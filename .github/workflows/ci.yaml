@@ -40,13 +40,10 @@ jobs:
         with:
           path: | 
             /tmp/snicco-docker
-            vendor
-            node_modules
-          key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-composer-${{ hashFiles('**/composer.lock') }}-npm-${{ hashFiles('**/package-lock.json') }}-sha${{ github.sha }}
+          key: ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-sha${{ github.sha }}
           restore-keys: |
-            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-composer-${{ hashFiles('**/composer.lock') }}-npm-${{ hashFiles('**/package-lock.json') }}
-            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-composer-${{ hashFiles('**/composer.lock') }}
-            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}-
+            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-wp${{ matrix.wp }}
+            ${{ env.CACHE_PREFIX }}-php${{ matrix.php }}-
             ${{ env.CACHE_PREFIX }}- 
 
       - name: 'Load docker images'
@@ -69,7 +66,7 @@ jobs:
       - name: 'Save docker images'
         run: |
           mkdir -p /tmp/snicco-docker/snicco || true
-          docker image save ${{ env.APP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
-          docker image save ${{ env.WP_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar
-          docker image save ${{ env.NGINX_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.NGINX_IMAGE_NAME }}.tar
-          docker image save ${{ env.NODE_IMAGE_NAME }} > /tmp/snicco-docker/${{ env.NODE_IMAGE_NAME }}.tar
+          docker image save ${{ env.APP_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.APP_IMAGE_NAME }}.tar
+          docker image save ${{ env.WP_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.WP_IMAGE_NAME }}.tar
+          docker image save ${{ env.NGINX_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.NGINX_IMAGE_NAME }}.tar
+          docker image save ${{ env.NODE_IMAGE_NAME }} --output /tmp/snicco-docker/${{ env.NODE_IMAGE_NAME }}.tar
