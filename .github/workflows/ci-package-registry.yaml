@@ -20,7 +20,7 @@ jobs:
       NGINX_IMAGE: ghcr.io/snicco/nginx-ci
       NODE_IMAGE: ghcr.io/snicco/node-ci
       ENV: ci
-      APP_USER_NAME: runner
+      APP_USER_NAME: $(id -un)
       APP_USER_ID: 1001
       APP_GROUP_NAME: docker
       APP_GROUP_ID: 121
