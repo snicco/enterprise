@@ -17,7 +17,7 @@ npm: ## Run any npm script in the node container. Usage: make npm ARGS=dev".
 commit:  ## Launch the interactive commit tool (node required locally).
 	@if ! command -v npm &> /dev/null; \
     then \
-        printf "This make target can currently not run in docker and requires node + npm on your local machine.\n";\
+        printf "$(RED)'make commit' can currently not run in docker and requires Node.js + npm on your local machine.\n$(NO_COLOR)";\
         exit 1;\
     fi
 	npm run commit;
@@ -63,13 +63,13 @@ xdebug-off: ## Disable xdebug in a container.
     fi
 	@echo "XDebug is now disabled in the $(SERVICE) container."
 
-.PHONY:
+.PHONY: xdebug-path
 xdebug-path: ## Get the path to the xdebug extension in the app container.
 	@$(MAYBE_EXEC_APP_IN_DOCKER) sh -c 'echo "$$(php-config --extension-dir)/xdebug.so"'
 
 # @see https://stackoverflow.com/a/43076457
 .PHONY: restart-php-fpm
-restart-php-fpm: ## Restar php-fpm without killing the container.
+restart-php-fpm: ## Restart php-fpm without killing the container.
 	@$(DOCKER_COMPOSE) exec --user $(APP_USER_NAME) $(DOCKER_SERVICE_PHP_FPM_NAME) kill -USR2 1
 	@echo "PHP-FPM restarted."
 

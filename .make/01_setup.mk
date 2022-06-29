@@ -6,9 +6,9 @@
 # =================================================================
 #
 .PHONY: setup
-init: .make/.mk.env .docker/.env generate-certs ## Initializes the repository.
+init: .make/.mk.env .docker/.env mkcert ## Initializes the repository.
 
-update: .make/.mk.env .docker/.env generate-certs vendor composer.lock node_modules package-lock.json build-codeception ## Check if all files are still up to date (vendor, node_modules, etc.)
+update: .make/.mk.env .docker/.env vendor composer.lock node_modules package-lock.json build-codeception ## Check if all files are still up to date (vendor, node_modules, etc.)
 
 #
 # =================================================================
@@ -101,16 +101,15 @@ package-lock.json: package.json
 # Create certificates with mkcert
 # =================================================================
 #
-.PHONY: generate-certs
-generate-certs:
+.PHONY: mkcert
+mkcert:
 	@if [ $(ENV) = ci ]; then \
         echo "Skipping mkcert installation in CI..."; \
     else \
         mkcert -install; \
-        mkcert -key-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST)-key.pem -cert-file $(DOCKER_DIR)/images/nginx/certs/$(APP_HOST).pem $(APP_HOST); \
     fi
 
 
 .PHONY: build-codeception
-build-codeception: ## Build codeception
+build-codeception: ## Build codeception actors/helpers/testers.
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept build

@@ -203,4 +203,3 @@ docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
 
 .PHONY: dvp
 dvp: docker-v-prune
-	docker volume prune -f
