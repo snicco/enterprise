@@ -24,7 +24,7 @@ jobs:
       ENV: ci
       PHP_VERSION: ${{ matrix.php }}
       WP_VERSION: ${{ matrix.wp }}
-      TAG: foobar
+      TAG: some-branch
       FORCE_RUN_IN_CONTAINER: 1
 
     steps:
