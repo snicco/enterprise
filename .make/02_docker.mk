@@ -186,8 +186,9 @@ docker-push: _validate-docker-env ## Push image to a remote registry.
 	$(DOCKER_COMPOSE) pull $(ARGS)
 
 .PHONY: docker-pull
+docker-pull: SERVICE?=
 docker-pull: _validate-docker-env ## Push image to a remote registry.
-	$(DOCKER_COMPOSE) pull $(ARGS)
+	$(DOCKER_COMPOSE) pull $(SERVICE)
 
 .PHONY: docker-v-prune
 docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
