@@ -15,10 +15,10 @@ jobs:
         wp: [ '6.0', '5.9', '5.8']
     env:
       CACHE_PREFIX: snicco_1
-      APP_IMAGE_NAME: ghcr.io/snicco/app-ci-php${{ matrix.php }}
-      WP_IMAGE_NAME: ghcr.io/snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
-      NGINX_IMAGE_NAME: ghcr.io/snicco/nginx-ci
-      NODE_IMAGE_NAME: ghcr.io/snicco/node-ci
+      APP_IMAGE: ghcr.io/snicco/app-ci-php${{ matrix.php }}
+      WP_IMAGE: ghcr.io/snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
+      NGINX_IMAGE: ghcr.io/snicco/nginx-ci
+      NODE_IMAGE: ghcr.io/snicco/node-ci
       ENV: ci
       APP_USER_NAME: runner
       APP_USER_ID: 1001
@@ -77,7 +77,7 @@ jobs:
 
       - name: 'Push docker images'
         run: |
-          docker push ${{ env.APP_IMAGE_NAME }}
-          docker push ${{ env.WP_IMAGE_NAME }}
-          docker push ${{ env.NODE_IMAGE_NAME }}
-          docker push ${{ env.NGINX_IMAGE_NAME }}
+          docker push ${{ env.APP_IMAGE }}:${{ env.TAG }}
+          docker push ${{ env.WP_IMAGE }}:${{ env.TAG }}
+          docker push ${{ env.NODE_IMAGE }}:${{ env.TAG }}
+          docker push ${{ env.NGINX_IMAGE }}:${{ env.TAG }}
