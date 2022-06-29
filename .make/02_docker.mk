@@ -22,9 +22,10 @@ export BUILDKIT_INLINE_CACHE
 #
 DOCKER_DIR:=./.docker
 DOCKER_ENV_FILE:=$(DOCKER_DIR)/.env
-DOCKER_COMPOSE_DIR:=$(DOCKER_DIR)/docker-compose
+DOCKER_COMPOSE_DIR:=$(DOCKER_DIR)/compose
 ROOT_DOCKER_COMPOSE_FILE:=$(DOCKER_COMPOSE_DIR)/docker-compose.yml
 ROOT_DOCKER_COMPOSE_FILE_LOCAL:=$(DOCKER_COMPOSE_DIR)/docker-compose.local.yml
+ROOT_DOCKER_COMPOSE_FILE_CI:=$(DOCKER_COMPOSE_DIR)/docker-compose.ci.yml
 DOCKER_COMPOSE_PROJECT_NAME:=snicco_enterprise_$(ENV)
 
 #
@@ -37,9 +38,8 @@ DOCKER_COMPOSE_PROJECT_NAME:=snicco_enterprise_$(ENV)
 #
 ifeq ($(ENV),local)
 	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE) -f $(ROOT_DOCKER_COMPOSE_FILE_LOCAL)
-else
-	# todo fix files for ci
-	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE) -f $(ROOT_DOCKER_COMPOSE_FILE_LOCAL)
+else ifeq ($(ENV),ci)
+	ALL_DOCKER_COMPOSE_FILES:=-f $(ROOT_DOCKER_COMPOSE_FILE) -f $(ROOT_DOCKER_COMPOSE_FILE_CI)
 endif
 
 #
@@ -114,10 +114,10 @@ ifndef FORCE_RUN_IN_CONTAINER
 	# @see https://www.gnu.org/software/make/manual/html_node/Wildcard-Function.html
 	# i.e. if the result is "empty" then $file does NOT exist => we are NOT in a container
 	ifeq ("$(wildcard /.dockerenv)","")
-		FORCE_RUN_IN_CONTAINER=true
+		FORCE_RUN_IN_CONTAINER=1
 	endif
 endif
-ifeq ($(FORCE_RUN_IN_CONTAINER),true)
+ifeq ($(FORCE_RUN_IN_CONTAINER),1)
 	MAYBE_RUN_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_NODE_NAME)
 	MAYBE_RUN_APP_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_APP_NAME)
 	MAYBE_EXEC_IN_DOCKER=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(SERVICE) # This needs to use "=" so that service does not evaluate to ""
