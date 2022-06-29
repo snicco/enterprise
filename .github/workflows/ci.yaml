@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.1']
+        php: [ '7.4']
 #        php: [ '8.1', '8.0', '7.4']
 #        wp: [ '6.0', '5.9', '5.8']
         wp: [ '6.0']
@@ -37,7 +37,7 @@ jobs:
           echo "APP_GROUP_NAME=$(id -gn)" >> $GITHUB_ENV
           echo "APP_GROUP_ID=$(id -g)" >> $GITHUB_ENV
 
-      - name: 'Install docker'
+      - name: 'Install docker compose'
         run : |
           DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
           mkdir -p $DOCKER_CONFIG/cli-plugins 
@@ -59,15 +59,15 @@ jobs:
           make init
           make docker-pull || true
           make docker-up
+
+      - name: 'QA'
+        if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
+        run: make qa
+
+      - name: 'Tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
+        run: |
           make build-codeception
-
-      - name: 'Fast tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
-        run: |
-          make unit-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
-
-      - name: EVALUATE
-        run: |
-          if [ ! -z "$FAILED" ]; then echo "Failed at step $FAILED" && exit 1; fi
+          make unit-tests
 
       - name: 'Docker push'
         run: |
