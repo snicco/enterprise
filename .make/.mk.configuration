@@ -9,4 +9,5 @@ DOCKER_REGISTRY=ghcr.io
 DOCKER_NAMESPACE=snicco
 APP_HOST=snicco-enterprise.test
 WP_CONTAINER_WP_APP_PATH=/var/www/html
+APP_CONTAINER_MONOREPO_PATH=/snicco/enterprise
 SNICCO_QA_CACHE_DIR=/tmp/snicco-qa

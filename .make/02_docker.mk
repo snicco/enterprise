@@ -77,6 +77,7 @@ DOCKER_COMPOSE:=ENV=$(ENV) \
  COMPOSER_CACHE_PATH=$(COMPOSER_CACHE_PATH) \
  APP_HOST=$(APP_HOST) \
  WP_CONTAINER_WP_APP_PATH=$(WP_CONTAINER_WP_APP_PATH) \
+ APP_CONTAINER_MONOREPO_PATH=$(APP_CONTAINER_MONOREPO_PATH) \
  docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE) $(ALL_DOCKER_COMPOSE_FILES)
 
 #
@@ -139,6 +140,7 @@ _validate-docker-env:
 	@$(if $(COMPOSER_CACHE_PATH),,$(error COMPOSER_CACHE_PATH is undefined - Did you run make setup?))
 	@$(if $(APP_HOST),,$(error APP_HOST is undefined - Did you run make setup?))
 	@$(if $(WP_CONTAINER_WP_APP_PATH),,$(error WP_CONTAINER_WP_APP_PATH is undefined - Did you run make setup?))
+	@$(if $(APP_CONTAINER_MONOREPO_PATH),,$(error APP_CONTAINER_MONOREPO_PATH is undefined - Did you run make setup?))
 	@echo "All docker variables are set."
 
 .PHONY: _is_ci
@@ -196,6 +198,7 @@ docker-push: _validate-docker-env _is_ci ## Push image to a remote registry.
 docker-pull: SERVICE?=
 docker-pull: _validate-docker-env ## Push image to a remote registry.
 	$(DOCKER_COMPOSE) pull $(SERVICE)
+	docker pull $(EXTERNAL_TOOL_IMAGE)
 
 .PHONY: docker-v-prune
 docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
@@ -203,3 +206,14 @@ docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
 
 .PHONY: dvp
 dvp: docker-v-prune
+
+.PHONY: docker-copy
+docker-copy: ## Copy files from a docker container to the host.
+	@$(if $(CONTAINER),,$(error CONTAINER is undefined))
+	@$(if $(FROM),,$(error FROM is undefined))
+	@$(if $(TO),,$(error TO is undefined))
+	docker cp $(CONTAINER):$(FROM) $(TO)
+
+.PHONY: docker-copy-vendor
+docker-copy-vendor: _is_ci
+	$(MAKE) CONTAINER=$(DOCKER_SERVICE_APP_NAME) FROM=$(APP_CONTAINER_MONOREPO_PATH)/vendor TO=vendor docker-copy

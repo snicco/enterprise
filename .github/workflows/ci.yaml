@@ -60,7 +60,9 @@ jobs:
           make docker-pull || true
 
       - name: 'Start containers'
-        run: make docker-up
+        run: |
+          make docker-up MODE=--detach
+          make docker-copy-vendor
 
       - name: 'Restore QA cache'
         uses: actions/cache@v3
