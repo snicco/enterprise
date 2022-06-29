@@ -26,6 +26,7 @@ jobs:
       APP_GROUP_ID: 121
       PHP_VERSION: ${{ matrix.php }}
       WP_VERSION: ${{ matrix.wp }}
+      TAG: foobar
 
     steps:
       - uses: actions/checkout@v3
