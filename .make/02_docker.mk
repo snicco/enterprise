@@ -141,6 +141,13 @@ _validate-docker-env:
 	@$(if $(WP_CONTAINER_WP_APP_PATH),,$(error WP_CONTAINER_WP_APP_PATH is undefined - Did you run make setup?))
 	@echo "All docker variables are set."
 
+.PHONY: _is_ci
+_is_ci:
+	@if [ $(ENV) != ci ]; then \
+            printf "$(RED) make '$(MAKECMDGOALS)' should only be run in CI.\n$(NO_COLOR)";\
+            exit 1;\
+    fi
+
 #
 # =================================================================
 # General purpose docker commands
@@ -182,8 +189,8 @@ docker-down: _validate-docker-env ## Stop and remove docker all containers.
 	$(DOCKER_COMPOSE) down
 
 .PHONY: docker-push
-docker-push: _validate-docker-env ## Push image to a remote registry.
-	$(DOCKER_COMPOSE) pull $(ARGS)
+docker-push: _validate-docker-env _is_ci ## Push image to a remote registry.
+	$(DOCKER_COMPOSE) push $(ARGS)
 
 .PHONY: docker-pull
 docker-pull: SERVICE?=

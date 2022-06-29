@@ -57,23 +57,13 @@ jobs:
       - name: 'Docker setup: ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make init
-          make docker-pull SERVICE="db app wp" || true
-          make docker-up SERVICE="db app wp"
+          make docker-pull || true
+          make docker-up
+          make build-codeception
 
       - name: 'Fast tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
-          make build-codeception
           make unit-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
-          make wpunit-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
-          make usecase-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
-          make integration-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
-
-      - name: 'Slow tests tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
-        run: |
-          make docker-pull SERVICE="nginx node chrome"
-          make docker-up SERVICE="nginx node chrome"
-          make cli-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
-          make browser-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
 
       - name: EVALUATE
         run: |
@@ -81,7 +71,4 @@ jobs:
 
       - name: 'Docker push'
         run: |
-          docker push ${{ env.APP_IMAGE }}:${{ env.TAG }}
-          docker push ${{ env.WP_IMAGE }}:${{ env.TAG }}
-          docker push ${{ env.NODE_IMAGE }}:${{ env.TAG }}
-          docker push ${{ env.NGINX_IMAGE }}:${{ env.TAG }}
+          make docker-push
