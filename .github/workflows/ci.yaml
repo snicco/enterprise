@@ -62,7 +62,6 @@ jobs:
       - name: 'Start containers'
         run: |
           make docker-up MODE=--detach
-          make docker-copy-vendor
 
       - name: 'Restore QA cache'
         uses: actions/cache@v3
@@ -76,6 +75,7 @@ jobs:
         if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
         run: |
           make build-codeception
+          make docker-copy-vendor
           make composer-unused
 
       - name: 'Tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
