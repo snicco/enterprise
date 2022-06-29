@@ -20,16 +20,19 @@ jobs:
       NGINX_IMAGE: ghcr.io/snicco/nginx-ci
       NODE_IMAGE: ghcr.io/snicco/node-ci
       ENV: ci
-      APP_USER_NAME: $(id -un)
-      APP_USER_ID: 1001
-      APP_GROUP_NAME: docker
-      APP_GROUP_ID: 121
       PHP_VERSION: ${{ matrix.php }}
       WP_VERSION: ${{ matrix.wp }}
       TAG: foobar
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: 'Set user env variables'
+        run: |
+          echo "APP_USER_NAME=$(id -un)" >> $GITHUB_ENV
+          echo "APP_USER_ID=$(id -u)" >> $GITHUB_ENV
+          echo "APP_GROUP_NAME=$(id -gn)" >> $GITHUB_ENV
+          echo "APP_GROUP_ID=$(id -g)" >> $GITHUB_ENV
 
       - name: 'Install docker'
         run : |
