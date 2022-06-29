@@ -54,11 +54,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Docker setup: ${{ matrix.php }}, WP ${{ matrix.wp }}'
+      - name: 'Pull docker images'
         run: |
           make init
           make docker-pull || true
-          make docker-up
+
+      - name: 'Start containers'
+        run: make docker-up
+
+      - name: 'Restore QA cache'
+        uses: actions/cache@v3
+        with:
+          path: /tmp/snicco-qa
+          key: ${{ env.CACHE_PREFIX }}-qa-tools-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ env.CACHE_PREFIX }}-qa-tools-composer-
 
       - name: 'QA'
         if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
