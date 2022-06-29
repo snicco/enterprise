@@ -26,6 +26,7 @@ services:
 
   app:
     volumes:
+      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${APP_CONTAINER_WP_APP_PATH?}/wp-content/bundle
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${APP_CONTAINER_WP_APP_PATH?}/wp-content/component
       - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/foo-plugin:${APP_CONTAINER_WP_APP_PATH?}/wp-content/plugins/foo-plugin
@@ -70,3 +71,7 @@ services:
       # 1000.
       - ${NGINX_UNSECURE_PORT?}:8080
       - ${NGINX_SECURE_PORT?}:8443
+
+  node:
+    volumes:
+      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}

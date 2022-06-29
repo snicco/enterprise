@@ -79,7 +79,6 @@ services:
       <<: *wp-env
       WORDPRESS_DB_NAME: snicco_enterprise_e2e_testing
     volumes:
-      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
       - wordpress_app:${APP_CONTAINER_WP_APP_PATH?}
       - wordpress_src:${APP_CONTAINER_WP_SRC_PATH?}
     secrets:
@@ -118,8 +117,6 @@ services:
         NODE_VERSION: ${NODE_VERSION?}
         ALPINE_VERSION: ${ALPINE_VERSION?}
         MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
-    volumes:
-      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
     # Keep the node container running.
     # There is no long-running process defined as the entrypoint for the container.
     # Keeping the container running saves as time for frequently run commands since
