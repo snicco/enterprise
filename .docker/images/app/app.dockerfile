@@ -70,7 +70,7 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     mkdir -p $WORDPRESS_APP_PATH/wp-content/plugins $WORDPRESS_APP_PATH/wp-content/mu-plugins && \
     chown -R $APP_USER_NAME:$APP_GROUP_NAME $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH && \
     mkdir -p /home/$APP_USER_NAME/.composer && \
-    chown -R $APP_USER_NAME /home/$APP_USER_NAME/.composer
+    chown -R $APP_USER_NAME:$APP_GROUP_NAME /home/$APP_USER_NAME/.composer
 
 #
 # =================================================================
@@ -116,7 +116,7 @@ RUN install-php-extensions xdebug \
     # ensure that xdebug is not enabled by default
     && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-COPY ./images/zz-app.ini /usr/local/etc/php/conf.d/zz-app.ini
+COPY ./.docker/images/zz-app.ini /usr/local/etc/php/conf.d/zz-app.ini
 
 # make bash default shell
 RUN sed -e 's;/bin/ash$;/bin/bash;g' -i /etc/passwd
@@ -133,4 +133,10 @@ EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 
 FROM base as ci
+
+COPY ./composer.json $MONOREPO_PATH
+COPY ./composer.lock $MONOREPO_PATH
+
+RUN composer install
+
 

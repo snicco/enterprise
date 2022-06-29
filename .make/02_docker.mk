@@ -154,11 +154,11 @@ _validate-docker-env:
 
 .PHONY: docker-config
 docker-config: _validate-docker-env ## List the merged configuration for current environment.
-	@$(DOCKER_COMPOSE) config
+	$(DOCKER_COMPOSE) config
 
 .PHONY: docker-prune
 docker-prune: docker-down ## Remove ALL docker resources, including volumes and images.
-	@docker system prune -a -f --volumes
+	docker system prune -a -f --volumes
 
 .PHONY: docker-build
 docker-build: SERVICE?=
@@ -179,20 +179,20 @@ docker-run: _validate-docker-env ## Run a command inside a docker container. Usa
 
 .PHONY: docker-down
 docker-down: _validate-docker-env ## Stop and remove docker all containers.
-	@$(DOCKER_COMPOSE) down
+	$(DOCKER_COMPOSE) down
 
 .PHONY: docker-push
 docker-push: _validate-docker-env ## Push image to a remote registry.
-	@$(DOCKER_COMPOSE) pull $(ARGS)
+	$(DOCKER_COMPOSE) pull $(ARGS)
 
 .PHONY: docker-pull
 docker-pull: _validate-docker-env ## Push image to a remote registry.
-	@$(DOCKER_COMPOSE) pull $(ARGS)
+	$(DOCKER_COMPOSE) pull $(ARGS)
 
 .PHONY: docker-v-prune
 docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
-	@docker volume prune -f
+	docker volume prune -f
 
 .PHONY: dvp
 dvp: docker-v-prune
-	@docker volume prune -f
+	docker volume prune -f

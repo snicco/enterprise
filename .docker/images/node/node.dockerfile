@@ -42,3 +42,10 @@ WORKDIR $MONOREPO_PATH
 FROM base as local
 
 FROM base as ci
+
+ENV CI=1
+
+COPY package.json $MONOREPO_PATH
+COPY package-lock.json $MONOREPO_PATH
+
+RUN npm ci

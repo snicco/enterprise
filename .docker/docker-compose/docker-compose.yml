@@ -60,8 +60,8 @@ services:
     container_name: app
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:${TAG?}
     build:
-      context: ../
-      dockerfile: ./images/app/app.dockerfile
+      context: ${MONOREPO_ROOT_HOST}
+      dockerfile: ./.docker/images/app/app.dockerfile
       target: ${ENV?}
       cache_from:
         - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:${TAG?}
@@ -106,8 +106,8 @@ services:
     container_name: node
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
     build:
-      context: ../images/node
-      dockerfile: node.dockerfile
+      context: ${MONOREPO_ROOT_HOST}
+      dockerfile: ./.docker/images/node/node.dockerfile
       target: ${ENV?}
       cache_from:
         - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
