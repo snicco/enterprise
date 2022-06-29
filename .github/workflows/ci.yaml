@@ -72,11 +72,12 @@ jobs:
 
       - name: 'QA'
         if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
-        run: make qa
+        run: |
+          make build-codeception
+          make qa
 
       - name: 'Tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
-          make build-codeception
           make unit-tests
 
       - name: 'Docker push'
