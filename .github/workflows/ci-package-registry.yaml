@@ -57,10 +57,13 @@ jobs:
           make init
           make docker-pull || true
           make docker-up
-          make build-codeception
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: 'Tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
+          make build-codeception
           make unit-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
 
       - name: EVALUATE
