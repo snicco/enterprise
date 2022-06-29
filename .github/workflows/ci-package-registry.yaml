@@ -68,7 +68,7 @@ jobs:
           make init
           make docker-pull || true
           make docker-up
-          make build_codeception
+          make build-codeception
 
       - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |

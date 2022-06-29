@@ -15,7 +15,7 @@
   },
   "scripts": {
     "commit": "cz",
-    "prepare": "node bin/node/prepare.js && chmod ug+x .husky/* || echo Skipping npm prepare",
+    "_disabled_prepare": "node bin/node/prepare.js && chmod ug+x .husky/*",
     "semantic-release": "semantic-release"
   },
   "config": {
