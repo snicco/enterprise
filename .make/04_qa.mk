@@ -71,7 +71,8 @@ define execute_qa_tool_in_app_container
 	$(call parallel_execute_helper, $(MAYBE_EXEC_APP_IN_DOCKER), $(1))
 endef
 
-EXTERNAL_TOOL_COMMAND?=docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/project" -w /project -v $(SNICCO_QA_CACHE_DIR):/tmp jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)
+EXTERNAL_TOOL_IMAGE:=jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)
+EXTERNAL_TOOL_COMMAND?=docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/project" -w /project -v $(SNICCO_QA_CACHE_DIR):$(SNICCO_QA_CACHE_DIR) $(EXTERNAL_TOOL_IMAGE)
 define execute_qa_tool_in_external_container
     $(call parallel_execute_helper, $(EXTERNAL_TOOL_COMMAND), $(1))
 endef
@@ -114,7 +115,7 @@ bc-check: roave-backward-compatibility-check ## Check that all changes in the cu
 
 .PHONY: roave-backward-compatibility-check
 # We have to use a different docker image here. The other one throws a fatal error for the tool.
-roave-backward-compatibility-check: EXTERNAL_TOOL_COMMAND="docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/app" -v $(SNICCO_QA_CACHE_DIR):/tmp nyholm/roave-bc-check:stable"
+roave-backward-compatibility-check: EXTERNAL_TOOL_COMMAND="docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/app" -v $(SNICCO_QA_CACHE_DIR):$(SNICCO_QA_CACHE_DIR) nyholm/roave-bc-check:stable"
 roave-backward-compatibility-check:
 	@if [ $(shell git tag -l) ]; then \
   		$(call execute_qa_tool_in_external_container, $(ARGS) --ansi); \

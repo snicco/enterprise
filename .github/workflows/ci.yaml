@@ -74,7 +74,7 @@ jobs:
         if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
         run: |
           make build-codeception
-          make qa
+          make composer-unused
 
       - name: 'Tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
