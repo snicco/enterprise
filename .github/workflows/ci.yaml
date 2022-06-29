@@ -71,10 +71,13 @@ jobs:
           restore-keys: |
             ${{ env.CACHE_PREFIX }}-qa-tools-composer-
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: 'QA'
         if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
         run: |
-          make build-codeception
+          make build-codeception 
           make docker-copy-vendor
           make composer-unused
 
