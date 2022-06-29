@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: 'Set user env variables'
+      - name: 'Set ENV variables'
         run: |
           echo "APP_USER_NAME=$(id -un)" >> $GITHUB_ENV
           echo "APP_USER_ID=$(id -u)" >> $GITHUB_ENV
@@ -44,33 +44,21 @@ jobs:
           docker --version
           docker buildx version
 
-      - name: 'Login to docker'
+      - name: 'Docker login'
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Restore composer cache'
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ env.CACHE_PREFIX }}-composer-${{ hashFiles('**/composer.lock') }}-php-${{ matrix.php }}
-
-      - name: 'Restore npm cache'
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ env.CACHE_PREFIX }}-npm-${{ hashFiles('**/package-lock.json') }}
-
-      - name: 'Docker setup ${{ matrix.php }}, WP ${{ matrix.wp }}'
+      - name: 'Docker setup: ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make init
           make docker-pull || true
           make docker-up
           make build-codeception
 
-      - name: 'Tests, PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
+      - name: 'Tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make unit-tests || echo "FAILED=Tests $FAILED" >> $GITHUB_ENV
 
@@ -78,7 +66,7 @@ jobs:
         run: |
           if [ ! -z "$FAILED" ]; then echo "Failed at step $FAILED" && exit 1; fi
 
-      - name: 'Push docker images'
+      - name: 'Docker push'
         run: |
           docker push ${{ env.APP_IMAGE }}:${{ env.TAG }}
           docker push ${{ env.WP_IMAGE }}:${{ env.TAG }}
