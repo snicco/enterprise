@@ -49,3 +49,5 @@ COPY package.json $MONOREPO_PATH
 COPY package-lock.json $MONOREPO_PATH
 
 RUN npm ci
+
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME . $MONOREPO_PATH

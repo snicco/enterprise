@@ -139,4 +139,4 @@ COPY ./composer.lock $MONOREPO_PATH
 
 RUN composer install
 
-
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME . $MONOREPO_PATH
