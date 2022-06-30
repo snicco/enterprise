@@ -39,7 +39,7 @@ FROM wordpress:cli-${WP_CLI_VERSION}-php${PHP_VERSION} as wp_cli
 # Install PHP-FPM
 # =================================================================
 #
-FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as php_fpm
+FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as base
 
 #
 # =================================================================
@@ -63,7 +63,7 @@ RUN apk add --update --no-cache \
 # @see https://de.wordpress.org/about/requirements/
 # @todo: Install bcmath extension. Currently breaking with install-php-extensions command.
 #
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/archive/refs/tags/1.5.29.tar.gz /usr/local/bin/
 RUN chmod a+x /usr/local/bin/install-php-extensions && \
     install-php-extensions  json \
                             mysqli \
@@ -144,10 +144,10 @@ ARG APP_GROUP_NAME
 
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
-    mkdir -p $WP_APPLICATION_PATH $WP_SRC_PATH && \
-    chown -R $APP_USER_NAME: $WP_APPLICATION_PATH && \
-    chown -R $APP_USER_NAME: $WP_SRC_PATH && \
-    chown -R $APP_USER_NAME: $WP_TMP_PATH && \
+    mkdir -p $WP_APPLICATION_PATH/wp-content/plugins $WP_SRC_PATH/wp-content/plugins && \
+    chown -R $APP_USER_NAME:$APP_GROUP_NAME $WP_APPLICATION_PATH && \
+    chown -R $APP_USER_NAME:$APP_GROUP_NAME $WP_SRC_PATH && \
+    chown -R $APP_USER_NAME:$APP_GROUP_NAME $WP_TMP_PATH && \
     chmod +x /usr/local/bin/wp
 
 #
@@ -181,18 +181,6 @@ COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./.docker/images/wp/custom-wp-config
 
 #
 # =================================================================
-# Copy PHP source files
-# =================================================================
-#
-# We copy the bundle and component directory so that
-# composer symlinks keep working.
-#
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/plugin $WP_APPLICATION_PATH/wp-content/plugins
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/component $WP_APPLICATION_PATH/wp-content/component
-COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME ./src/Snicco/bundle $WP_APPLICATION_PATH/wp-content/bundle
-
-#
-# =================================================================
 # Expose environment variables
 # =================================================================
 #
@@ -213,7 +201,7 @@ ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
 
 CMD ["php-fpm", "-F"]
 
-FROM php_fpm as local
+FROM base as local
 
 #
 # =================================================================
@@ -253,4 +241,5 @@ RUN sed -e 's;/bin/ash$;/bin/bash;g' -i /etc/passwd
 
 USER $APP_USER_NAME
 
-FROM php_fpm as ci
+FROM base as ci
+

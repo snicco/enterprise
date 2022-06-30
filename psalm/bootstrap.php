@@ -16,7 +16,7 @@ const COOKIEPATH = 'example.test';
 const SITECOOKIEPATH = 'example.test';
 const COOKIEHASH = 'secret_hash';
 
-define("SNICCO_FORTRESS_ENCRYPTION_SECRET", bin2hex(random_bytes(32)));
+define("SECURE_AUTH_SALT", bin2hex(random_bytes(32)));
 
 $false_or_string = (random_int(1,3) > 2) ? 'string' : false;
 define('COOKIE_DOMAIN',  $false_or_string);

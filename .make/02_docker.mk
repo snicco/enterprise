@@ -165,10 +165,6 @@ _is_ci:
 docker-config: _validate-docker-env ## List the merged configuration for current environment.
 	$(DOCKER_COMPOSE) config
 
-.PHONY: docker-prune
-docker-prune: docker-down ## Remove ALL docker resources, including volumes and images.
-	docker system prune -a -f --volumes
-
 .PHONY: docker-build
 docker-build: SERVICE?=
 docker-build: _validate-docker-env ## Build one or more docker image(s). Usage: make docker-build-image SERVICE=<service...>.
@@ -180,31 +176,35 @@ docker-up: MODE?=--build --detach
 docker-up: _validate-docker-env ## Create one or more docker container(s). Usage make docker-up SERVICE=<service...>
 	$(DOCKER_COMPOSE) up $(MODE) $(SERVICE)
 
+.PHONY: docker-down
+docker-down: _validate-docker-env ## Stop and remove docker all containers.
+	$(DOCKER_COMPOSE) down $(ARGS)
+
+.PHONY: docker-restart
+docker-restart: docker-down docker-up ## Restart all containers.
+
 .PHONY: docker-run
 docker-run: SERVICE?=
-docker-run: COMMAND?=/bin/sh
+docker-run: COMMAND?=/bin/sh DOCKER_EXEC_ARGS?=-i
 docker-run: _validate-docker-env ## Run a command inside a docker container. Usage make docker-run SERVICE=app COMMAND="php -v".
 	$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) $(DOCKER_EXEC_ARGS) --rm  $(SERVICE) $(COMMAND)
 
-.PHONY: docker-down
-docker-down: _validate-docker-env ## Stop and remove docker all containers.
-	$(DOCKER_COMPOSE) down
-
 .PHONY: docker-push
+docker-push: SERVICE?=
 docker-push: _validate-docker-env _is_ci ## Push image to a remote registry.
-	$(DOCKER_COMPOSE) push $(ARGS)
+	$(DOCKER_COMPOSE) push $(SERVICE)
 
 .PHONY: docker-pull
 docker-pull: SERVICE?=
 docker-pull: _validate-docker-env ## Push image to a remote registry.
 	$(DOCKER_COMPOSE) pull $(SERVICE)
 
-.PHONY: docker-v-prune
-docker-v-prune: _validate-docker-env docker-down ## Delete all docker volumes.
+.PHONY: docker-prune-v
+docker-prune-v: _validate-docker-env docker-down ## Delete all docker volumes.
 	docker volume prune -f
 
 .PHONY: dvp
-dvp: docker-v-prune
+dvp: docker-prune-v
 
 .PHONY: docker-copy
 docker-copy: ## Copy files from a docker container to the host.

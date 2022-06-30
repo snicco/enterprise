@@ -1,19 +1,21 @@
 ##@ [Development]
 
-.PHONY:npm node commit php wp dev-server get-files merge
-
+.PHONY: dev-server
 dev-server: update ## Start all development containers.
 	$(MAKE) docker-up
 	@echo "Development server is running at https://$(APP_HOST)"
-	$(MAKE) get-files
+	$(MAKE) get-wp-files
 
+.PHONY: node
 node: ARGS?=node -v
 node: ## Run any script in the node container. Usage: make npm ARGS="npm run dev".
 	@$(MAYBE_EXEC_NODE_IN_DOCKER) ${ARGS}
 
+.PHONY: npm
 npm: ## Run any npm script in the node container. Usage: make npm ARGS=dev".
 	$(MAYBE_EXEC_NODE_IN_DOCKER) npm run ${ARGS}
 
+.PHONY: commit
 commit:  ## Launch the interactive commit tool (node required locally).
 	@if ! command -v npm &> /dev/null; \
     then \
@@ -22,22 +24,34 @@ commit:  ## Launch the interactive commit tool (node required locally).
     fi
 	npm run commit;
 
-php: ARGS?=-v
+.PHONY: php
+php: ARGS?=--help
 php: ## Run any php script in the app container. Usage: make php ARGS="foo.php"
 	$(MAYBE_EXEC_APP_IN_DOCKER) php ${ARGS}
 
+.PHONY: composer
+composer: ARGS?=-v
+composer: ## Run any composer script in the app container. Usage: make composer ARGS="install"
+	$(MAYBE_EXEC_APP_IN_DOCKER) composer ${ARGS}
+
+.PHONY: wp
 wp: ARGS?=cli version
 wp: ## Run a wp-cli command in the wp container. Usage: make wp ARGS="plugin list"
 	docker exec -it --user $(APP_USER_NAME) wp wp ${ARGS}
 
-get-files:  ## Get a fresh copy of all WordPress files in the wp container.
-	@docker cp wp:$(WP_CONTAINER_WP_APP_PATH) .wp
+.PHONY: get-wp-files
+get-wp-files:  ## Get a fresh copy of all WordPress files in the wp container.
+	docker cp wp:$(WP_CONTAINER_WP_APP_PATH) .wp
 	@echo "WordPress files have been copied to .wp/html"
 
-merge: ## Merge all composer.json files of all packages
+.PHONY: composer-merge
+composer-merge: ## Merge all composer.json files of all packages
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder merge
+	$(MAYBE_EXEC_APP_IN_DOCKER) sed -i 's#"url": "../../#"url": "src/Snicco/#g' 'composer.json'
+	$(MAYBE_EXEC_APP_IN_DOCKER) composer dump-autoload
 
-propagate: ## Propagate dependencies from the main composer.json to packages
+.PHONY: composer-propagate
+composer-propagate: ## Propagate dependencies from the main composer.json to packages
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate
 
 .PHONY: xdebug-on
@@ -73,4 +87,10 @@ restart-php-fpm: ## Restart php-fpm without killing the container.
 	@$(DOCKER_COMPOSE) exec --user $(APP_USER_NAME) $(DOCKER_SERVICE_PHP_FPM_NAME) kill -USR2 1
 	@echo "PHP-FPM restarted."
 
+.PHONY: build-dev
+build-dev:
+	@$(MAYBE_EXEC_APP_IN_DOCKER) composer update --working-dir=src/Snicco/plugin/snicco-fortress $(ARGS)
 
+.PHONY: build-prod
+build-prod:
+	@sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh src/Snicco/plugin/snicco-fortress .build/snicco-fortress

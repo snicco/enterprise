@@ -82,6 +82,10 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
 #
 COPY --from=composer --chown=$APP_USER_NAME:$APP_GROUP_NAME /usr/bin/composer /usr/local/bin/composer
 
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME .docker/images/app/bin $MONOREPO_PATH/.docker/images/app/bin
+
+RUN chmod a+x $MONOREPO_PATH/.docker/images/app/bin
+
 WORKDIR $MONOREPO_PATH
 
 USER $APP_USER_NAME
