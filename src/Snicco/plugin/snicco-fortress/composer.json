@@ -35,6 +35,7 @@
         "snicco/signed-url": "^1.2.1",
         "snicco/encryption-bundle": "^1.2.1",
         "snicco/better-wpdb": "^1.2.1",
+        "snicco/better-wpdb-bundle": "^1.2.1",
         "snicco/testable-clock": "^1.2.1",
         "snicco/content-negotiation-middleware": "^1.2.1",
         "snicco/payload-middleware": "^1.2.1",
@@ -48,7 +49,6 @@
     "require-dev": {
         "nyholm/psr7": "^1.5.0",
         "snicco/event-dispatcher-testing": "^1.2.0",
-        "snicco/testing-bundle": "^1.2.0",
         "wp-cli/wp-cli-bundle": "v2.6.0"
     },
     "autoload": {

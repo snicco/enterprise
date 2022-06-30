@@ -53,6 +53,7 @@
         "snicco/testing-bundle": "^1.2.0",
         "sniccowp/php-scoper-wordpress-excludes": "^5.9.3",
         "symfony/console": "5.4.7",
+        "symfony/finder": "^5.4",
         "symplify/composer-json-manipulator": "9.3.26",
         "symplify/easy-coding-standard": "10.1.2",
         "symplify/monorepo-builder": "9.4.70",

@@ -60,10 +60,11 @@ RUN apk add --update --no-cache \
 # We dont use the defaul docker-php-ext-install commands
 # because they do not handle installing system requirements for us.
 #
+# @see https://github.com/mlocati/docker-php-extension-installer
 # @see https://de.wordpress.org/about/requirements/
 # @todo: Install bcmath extension. Currently breaking with install-php-extensions command.
 #
-ADD https://github.com/mlocati/docker-php-extension-installer/archive/refs/tags/1.5.29.tar.gz /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/1.5.29/install-php-extensions /usr/local/bin
 RUN chmod a+x /usr/local/bin/install-php-extensions && \
     install-php-extensions  json \
                             mysqli \

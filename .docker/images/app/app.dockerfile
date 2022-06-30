@@ -30,7 +30,7 @@ FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as base
 # Loosly based on
 # @see https://github.com/Codeception/Codeception/blob/5.0/Dockerfile
 #
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/1.5.29/install-php-extensions /usr/local/bin
 RUN chmod a+x /usr/local/bin/install-php-extensions && \
     install-php-extensions pdo_mysql \
                            mysqli \
@@ -39,17 +39,17 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
                            pcntl \
                            posix #Required for psalm threads
 
-
 #
 # =================================================================
 # Install PHP-Scoper
 # =================================================================
 #
-# Until php-scoper signs its PHAR with PHIVE there is nothing
-# better we can do than grap the release from GitHub
+# Until php-scoper signs its PHAR with PHIVE we must keep a local
+# version around in our repo since its crucial for our release
+# process. Better save than sorry.
 # @see (https://github.com/humbug/php-scoper/issues/307)
 #
-ADD https://github.com/humbug/php-scoper/archive/refs/tags/0.17.5.tar.gz /usr/local/bin/php-scoper
+COPY ./bin/php-scoper.phar /usr/local/bin/php-scoper
 RUN chmod a+x /usr/local/bin/php-scoper
 
 #

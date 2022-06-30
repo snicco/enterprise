@@ -43,6 +43,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'vlucas/phpdotenv' => '5.4.1',
             'php-stubs/wordpress-stubs' => '^5.9.3',
             'symfony/console' => '5.4.7',
+            'symfony/finder' => '5.4.7',
             'symplify/composer-json-manipulator' => '9.3.26',
         ],
         ComposerJsonSection::AUTOLOAD_DEV => [

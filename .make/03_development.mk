@@ -93,4 +93,5 @@ build-dev:
 
 .PHONY: build-prod
 build-prod:
-	@sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh src/Snicco/plugin/snicco-fortress .build/plugins/snicco-fortress
+	@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.))
+	@$(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh src/Snicco/plugin/snicco-fortress .build/plugins/snicco-fortress $(BUILD_VERSION)
