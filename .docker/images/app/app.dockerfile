@@ -39,6 +39,19 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
                            pcntl \
                            posix #Required for psalm threads
 
+
+#
+# =================================================================
+# Install PHP-Scoper
+# =================================================================
+#
+# Until php-scoper signs its PHAR with PHIVE there is nothing
+# better we can do than grap the release from GitHub
+# @see (https://github.com/humbug/php-scoper/issues/307)
+#
+ADD https://github.com/humbug/php-scoper/archive/refs/tags/0.17.5.tar.gz /usr/local/bin/php-scoper
+RUN chmod a+x /usr/local/bin/php-scoper
+
 #
 # =================================================================
 # Create user groups and permissions in docker container

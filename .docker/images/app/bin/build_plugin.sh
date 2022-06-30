@@ -24,16 +24,12 @@ fi
 
 echo "$GREEN Starting build for plugin $PLUGIN_DIR in $OUTPUT_DIR $NC"
 
-cp -r "$PLUGIN_DIR" "$OUTPUT_DIR"
-
-echo "$YELLOW Copied contents of $PLUGIN_DIR to $OUTPUT_DIR $NC"
-
-rm -rf "$OUTPUT_DIR/vendor"
+rm -rf "$PLUGIN_DIR/vendor"
 
 echo "$YELLOW Removed vendor directory.$NC"
 
 composer install \
-	--working-dir="$OUTPUT_DIR" \
+	--working-dir="$PLUGIN_DIR" \
 	--no-dev \
  	--classmap-authoritative \
  	--no-scripts \
@@ -41,7 +37,14 @@ composer install \
  	--no-interaction \
  	--quiet
 
-echo "$YELLOW Installed composer dependencies. $NC"
+echo "$YELLOW Installed composer production dependencies. $NC"
+
+php-scoper add-prefix --force -c ./scoper.inc.php --output-dir "$OUTPUT_DIR"
+
+#cp -a "$PLUGIN_DIR/." "$OUTPUT_DIR/"
+#
+#echo "$YELLOW Copied contents of $PLUGIN_DIR to $OUTPUT_DIR $NC"
+
 
 #
 #composer install --no-dev --prefer-dist --no-interaction

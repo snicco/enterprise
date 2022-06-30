@@ -93,4 +93,4 @@ build-dev:
 
 .PHONY: build-prod
 build-prod:
-	@sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh src/Snicco/plugin/snicco-fortress .build/snicco-fortress
+	@sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh src/Snicco/plugin/snicco-fortress .build/plugins/snicco-fortress
