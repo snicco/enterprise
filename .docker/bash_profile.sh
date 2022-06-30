@@ -28,6 +28,6 @@ function din() {
     shell=$3
   fi
 
-  docker exec -it ${user} $(docker ps --filter name=${filter} -q | head -1) ${shell}
+  docker exec -it "$user" "$(docker ps --filter name="$filter" -q | head -1)" "$shell"
 }
 ### End Snicco
