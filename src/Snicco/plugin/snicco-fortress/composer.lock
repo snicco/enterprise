@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e048faf845eea5021d7a88ccad501452",
+    "content-hash": "1ed379d8310566a47529edf04bce4052",
     "packages": [
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1316,11 +1316,11 @@
         },
         {
             "name": "snicco/application-layer-bundle",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "../../bundle/application-layer-bundle",
-                "reference": "a18122f2557da9502f937fe01a626135748cc493"
+                "reference": "dac3a7a15f3b377412969af246c72b06ca41ece3"
             },
             "require": {
                 "league/tactician": "^1.1.0",
@@ -1360,7 +1360,7 @@
             ],
             "description": "An application layer for building enterprise WordPress plugins.",
             "transport-options": {
-                "symlink": true,
+                "symlink": false,
                 "relative": true
             }
         },
@@ -1575,11 +1575,11 @@
         },
         {
             "name": "snicco/better-wp-cli-bundle",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "../../bundle/better-wp-cli-bundle",
-                "reference": "defe366b330ffc26922913176602e5398be8f262"
+                "reference": "37001caa36bb0fd8299f955637433bec26915d71"
             },
             "require": {
                 "snicco/better-wp-cli": "^1.2.1",
@@ -1614,7 +1614,7 @@
             ],
             "description": "Integrates better-wp-cli into snicco/kernel",
             "transport-options": {
-                "symlink": true,
+                "symlink": false,
                 "relative": true
             }
         },

@@ -90,11 +90,19 @@ restart-php-fpm: ## Restart php-fpm without killing the container.
 PLUGINS_SRC=$(wildcard src/Snicco/plugin/*)
 PLUGIN_BUILDS=$(wildcard ./.build/plugins/*)
 
-ifeq ($(ENV),local)
-	BUILD_COMMAND=$(MAYBE_EXEC_APP_IN_DOCKER) composer update --working-dir=$@ $(ARGS)
-else ifeq ($(ENV),ci)
-	BUILD_COMMAND=@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.)) \
-                  @$(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@) $(subst src/Snicco/plugin/,,$@)-$(BUILD_VERSION)
+PROD_BUILD_COMMAND=@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.)) \
+                   @$(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@) $(subst src/Snicco/plugin/,,$@)-$(BUILD_VERSION)
+
+ifdef FORCE_PROD_BUILD
+	BUILD_COMMAND=$(PROD_BUILD_COMMAND)
+endif
+
+ifndef BUILD_COMMAND
+	ifeq ($(ENV),local)
+		BUILD_COMMAND=$(MAYBE_EXEC_APP_IN_DOCKER) composer update --working-dir=$@ $(ARGS)
+	else
+		BUILD_COMMAND=$(PROD_BUILD_COMMAND)
+	endif
 endif
 
 .PHONY: build $(PLUGINS_SRC)

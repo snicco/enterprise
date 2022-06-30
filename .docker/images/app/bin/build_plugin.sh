@@ -41,11 +41,14 @@ if [ ! -f "$PLUGIN_SRC_DIR/php-scoper.php" ]; then
   exit 1
 fi
 
+# @see https://github.com/composer/composer/issues/9368#issuecomment-718112361
+# @see https://github.com/composer/composer/issues/9368#issuecomment-718198161
+export COMPOSER_ROOT_VERSION="dev-master"
+
 # @todo this seems to be a bug with composer. guzzlehttp/psr7 is installed even tho
 # its not required anywhere.
 composer remove --dev snicco/testing-bundle \
   --working-dir="$PLUGIN_SRC_DIR" \
-  --quiet
 
 composer install \
   --working-dir="$PLUGIN_SRC_DIR" \
@@ -55,7 +58,6 @@ composer install \
   --no-plugins \
   --prefer-dist \
   --no-interaction \
-  --quiet
 
 echo -e "$YELLOW Installed composer production dependencies. $NC"
 
@@ -63,7 +65,6 @@ php-scoper add-prefix -c "$PLUGIN_SRC_DIR/php-scoper.php" \
   --force \
   --output-dir "$OUTPUT_DIR" \
   --no-interaction \
-  --quiet
 
 mkdir -p "$OUTPUT_DIR"/var/cache
 mkdir -p "$OUTPUT_DIR"/var/log
@@ -80,7 +81,6 @@ composer dump-autoload \
   --no-scripts \
   --no-plugins \
   --no-interaction \
-  --quiet
 
 rm "$OUTPUT_DIR/composer.json"
 

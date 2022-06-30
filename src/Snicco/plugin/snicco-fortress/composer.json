@@ -13,14 +13,14 @@
             "type": "path",
             "url": "../../bundle/application-layer-bundle",
             "options": {
-                "symlink": true
+                "symlink": false
             }
         },
          {
             "type": "path",
             "url": "../../bundle/better-wp-cli-bundle",
             "options": {
-                "symlink": true
+                "symlink": false
             }
         }
     ],
