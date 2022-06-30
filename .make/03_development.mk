@@ -87,11 +87,24 @@ restart-php-fpm: ## Restart php-fpm without killing the container.
 	@$(DOCKER_COMPOSE) exec --user $(APP_USER_NAME) $(DOCKER_SERVICE_PHP_FPM_NAME) kill -USR2 1
 	@echo "PHP-FPM restarted."
 
-.PHONY: build-dev
-build-dev:
-	@$(MAYBE_EXEC_APP_IN_DOCKER) composer update --working-dir=src/Snicco/plugin/snicco-fortress $(ARGS)
+PLUGINS_SRC=$(wildcard src/Snicco/plugin/*)
+PLUGIN_BUILDS=$(wildcard ./.build/plugins/*)
 
-.PHONY: build-prod
-build-prod:
-	@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.))
-	@$(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh src/Snicco/plugin/snicco-fortress .build/plugins/snicco-fortress $(BUILD_VERSION)
+ifeq ($(ENV),local)
+	BUILD_COMMAND=$(MAYBE_EXEC_APP_IN_DOCKER) composer update --working-dir=$@ $(ARGS)
+else ifeq ($(ENV),ci)
+	BUILD_COMMAND=@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.)) \
+                  @$(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@) $(subst src/Snicco/plugin/,,$@)-$(BUILD_VERSION)
+endif
+
+.PHONY: build $(PLUGINS_SRC)
+build: $(PLUGINS_SRC)
+$(PLUGINS_SRC):
+	@$(BUILD_COMMAND)
+
+.PHONY: copy-prod-plugins $(PLUGIN_BUILDS)
+copy-prod-plugins: $(PLUGIN_BUILDS)
+$(PLUGIN_BUILDS): _is_ci
+	$(eval OUTPUT_DIR := /var/www/html/wp-content/plugins/$(subst .build/plugins/,,$@))
+	docker cp $@ $(DOCKER_SERVICE_PHP_FPM_NAME):$(OUTPUT_DIR)
+	docker exec --user root $(DOCKER_SERVICE_PHP_FPM_NAME) chown -R $(APP_USER_NAME):$(APP_GROUP_NAME) $(OUTPUT_DIR)

@@ -30,7 +30,7 @@ else
   export BUILD_VERSION
 fi
 
-echo -e "$GREEN Starting production build for plugin $PLUGIN_SRC_DIR in $OUTPUT_DIR.$NC"
+echo -e "$GREEN Starting production build for plugin $PLUGIN_SRC_DIR in $OUTPUT_DIR with build-version $BUILD_VERSION .$NC"
 
 rm -rf "$PLUGIN_SRC_DIR/vendor"
 
@@ -70,8 +70,11 @@ mkdir -p "$OUTPUT_DIR"/var/log
 
 echo -e "$YELLOW Scoped plugin $PLUGIN_SRC_DIR in. $OUTPUT_DIR $NC"
 
+# We need the composer.json file to dump the autoloader.
+cp "$PLUGIN_SRC_DIR/composer.json" "$OUTPUT_DIR/composer.json"
+
 composer dump-autoload \
-  --working-dir="$PLUGIN_SRC_DIR" \
+  --working-dir="$OUTPUT_DIR" \
   --no-dev \
   --classmap-authoritative \
   --no-scripts \
@@ -79,8 +82,12 @@ composer dump-autoload \
   --no-interaction \
   --quiet
 
+rm "$OUTPUT_DIR/composer.json"
+
 echo -e "$YELLOW Dumped composer autoloader.$NC"
 
 php .docker/images/app/bin/fix-static-file-autoloader.php "$OUTPUT_DIR/vendor/composer"
 
 echo -e "$YELLOW Fixed static file autoloader.$NC"
+
+echo -e "$GREEN Finished build for plugin in $OUTPUT_DIR.$NC"

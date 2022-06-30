@@ -49,7 +49,7 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 # process. Better save than sorry.
 # @see (https://github.com/humbug/php-scoper/issues/307)
 #
-COPY ./bin/php-scoper.phar /usr/local/bin/php-scoper
+COPY ./bin/php-scoper-0.17.5.phar /usr/local/bin/php-scoper
 RUN chmod a+x /usr/local/bin/php-scoper
 
 #
