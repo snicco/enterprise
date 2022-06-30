@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Isolated\Symfony\Component\Finder\Finder;
-use Snicco\Enterprise\Monorepo\PHPScoper\BuildVersion;
+use Snicco\Enterprise\Monorepo\PHPScoper\ScoperPrefix;
 use Snicco\Enterprise\Monorepo\PHPScoper\StubList;
 
 $monorepo_root = dirname(__DIR__, 4);
@@ -13,7 +13,7 @@ $parent_config = require_once $monorepo_root.'/php-scoper.php';
 $stub_list = new StubList($monorepo_root);
 
 $plugin_config = [
-    'prefix' => (string) new BuildVersion(),
+    'prefix' => (string) new ScoperPrefix(),
     'finders' => [
         Finder::create()->files()->in(__DIR__.'/src'),
         Finder::create()
@@ -29,6 +29,7 @@ $plugin_config = [
         Finder::create()->files()
               ->in(__DIR__.'/boot')
               ->append([__DIR__.'/main.php', __DIR__.'/snicco-fortress.php']),
+        Finder::create()->files()->in(__DIR__.'/config')
     ],
     
     'exclude-files' => $stub_list->symfonyPolyFills(__DIR__),

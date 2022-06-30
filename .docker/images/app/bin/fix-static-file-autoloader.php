@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Snicco\Enterprise\Monorepo\PHPScoper\BuildVersion;
+use Snicco\Enterprise\Monorepo\PHPScoper\ScoperPrefix;
 
-require_once dirname(__DIR__, 4).'/src/Monorepo/PHPScoper/BuildVersion.php';
+require_once dirname(__DIR__, 4).'/src/Monorepo/PHPScoper/ScoperPrefix.php';
 
 /**
  * Composer handles autoloaded files by generating a hash based on the package-name
@@ -69,7 +69,7 @@ if ( ! \is_dir($composer_directory) || ! is_file($composer_directory.'/autoload_
     exit(1);
 }
 
-$prefix = (string) new BuildVersion();
+$prefix = (string) new ScoperPrefix();
 
 $static_loader_path = $composer_directory.'/autoload_static.php';
 $static_loader_contents = \getFileContents($static_loader_path);

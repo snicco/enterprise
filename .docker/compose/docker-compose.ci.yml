@@ -1,2 +1,6 @@
 version: '3.9'
 
+services:
+  app:
+    volumes:
+      - ${MONOREPO_ROOT_HOST?}/.build:${APP_CONTAINER_MONOREPO_PATH?}/.build
