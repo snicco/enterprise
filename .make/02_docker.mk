@@ -216,3 +216,14 @@ docker-copy: ## Copy files from a docker container to the host.
 .PHONY: docker-copy-vendor
 docker-copy-vendor: _is_ci
 	$(MAKE) CONTAINER=$(DOCKER_SERVICE_APP_NAME) FROM=$(APP_CONTAINER_MONOREPO_PATH)/vendor TO=vendor docker-copy
+
+PLUGINS=$(wildcard ./.build/plugins/*)
+
+.PHONY: copy-prod-plugins
+copy-prod-plugins: $(PLUGINS)
+
+.PHONY: $(PLUGINS)
+$(PLUGINS): _is_ci
+	$(eval OUTPUT_DIR := /var/www/html/wp-content/plugins/$(subst .build/plugins/,,$@))
+	docker cp $@ $(DOCKER_SERVICE_PHP_FPM_NAME):$(OUTPUT_DIR)
+	docker exec --user root $(DOCKER_SERVICE_PHP_FPM_NAME) chown -R $(APP_USER_NAME):$(APP_GROUP_NAME) $(OUTPUT_DIR)

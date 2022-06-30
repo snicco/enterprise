@@ -95,11 +95,3 @@ build-dev:
 build-prod:
 	@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.))
 	@$(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh src/Snicco/plugin/snicco-fortress .build/plugins/snicco-fortress $(BUILD_VERSION)
-
-.PHONY: copy-prod-plugins
-copy-prod-plugins: PLUGINS := $(wildcard ./.build/plugins/*)
-copy-prod-plugins:
-	@for dir in $(PLUGINS); do \
-            echo "Copying plugin: "$$dir;\
-            docker cp
-    done
