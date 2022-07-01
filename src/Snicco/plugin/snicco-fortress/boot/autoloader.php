@@ -6,7 +6,6 @@ if (\file_exists($scoper_autoloader = \dirname(__DIR__) . '/vendor/scoper-autolo
     require_once $scoper_autoloader;
 } elseif (\file_exists($composer_autoloader = \dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once $composer_autoloader;
-}
-else {
+} else {
     throw new RuntimeException('Snicco Fortress was not installed correctly. Autoloader is missing.');
 }

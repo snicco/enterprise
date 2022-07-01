@@ -28,7 +28,8 @@ final class WPCLITester extends Actor
 {
     use WPCLITesterActions;
 
-    public function haveFortressActivated() :void {
+    public function haveFortressActivated(): void
+    {
         $this->cli(['plugin', 'activate', 'snicco-fortress']);
         $output = $this->grabLastShellOutput();
         Assert::contains($output, 'activated');

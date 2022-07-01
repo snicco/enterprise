@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ed379d8310566a47529edf04bce4052",
+    "content-hash": "5165bd0d1271a6b2f3b231b0e9606ea0",
     "packages": [
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1316,11 +1316,11 @@
         },
         {
             "name": "snicco/application-layer-bundle",
-            "version": "dev-master",
+            "version": "dev-feat/auth-bundle",
             "dist": {
                 "type": "path",
                 "url": "../../bundle/application-layer-bundle",
-                "reference": "dac3a7a15f3b377412969af246c72b06ca41ece3"
+                "reference": "f0c1d0f5fefc31f55ee28f395bce555da763f7d2"
             },
             "require": {
                 "league/tactician": "^1.1.0",
@@ -1336,7 +1336,7 @@
                 "codeception/codeception": "4.2",
                 "lucatume/wp-browser": "3.1.6",
                 "phpunit/phpunit": "9.5.13",
-                "snicco/testing-bundle": "^1.2.0"
+                "snicco/testing-bundle": "^1.2.1"
             },
             "type": "library",
             "autoload": {
@@ -1575,11 +1575,11 @@
         },
         {
             "name": "snicco/better-wp-cli-bundle",
-            "version": "dev-master",
+            "version": "dev-feat/auth-bundle",
             "dist": {
                 "type": "path",
                 "url": "../../bundle/better-wp-cli-bundle",
-                "reference": "37001caa36bb0fd8299f955637433bec26915d71"
+                "reference": "e908ada78a7368e45a17c3f99c8ea63896cc28ef"
             },
             "require": {
                 "snicco/better-wp-cli": "^1.2.1",
@@ -1590,7 +1590,7 @@
                 "lucatume/wp-browser": "3.1.6",
                 "phpunit/phpunit": "9.5.13",
                 "snicco/pimple-bridge": "^1.2.1",
-                "snicco/testing-bundle": "^1.2.0"
+                "snicco/testing-bundle": "^1.2.1"
             },
             "type": "library",
             "autoload": {
@@ -3655,6 +3655,609 @@
     ],
     "packages-dev": [
         {
+            "name": "antecedent/patchwork",
+            "version": "2.1.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/antecedent/patchwork.git",
+                "reference": "25c1fa0cd9a6e6d0d13863d8df8f050b6733f16d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/25c1fa0cd9a6e6d0d13863d8df8f050b6733f16d",
+                "reference": "25c1fa0cd9a6e6d0d13863d8df8f050b6733f16d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignas Rudaitis",
+                    "email": "ignas.rudaitis@gmail.com"
+                }
+            ],
+            "description": "Method redefinition (monkey-patching) functionality for PHP.",
+            "homepage": "http://patchwork2.org/",
+            "keywords": [
+                "aop",
+                "aspect",
+                "interception",
+                "monkeypatching",
+                "redefinition",
+                "runkit",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/antecedent/patchwork/issues",
+                "source": "https://github.com/antecedent/patchwork/tree/2.1.21"
+            },
+            "time": "2022-02-07T07:28:34+00:00"
+        },
+        {
+            "name": "behat/gherkin",
+            "version": "v4.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Behat/Gherkin.git",
+                "reference": "0bc8d1e30e96183e4f36db9dc79caead300beff4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/0bc8d1e30e96183e4f36db9dc79caead300beff4",
+                "reference": "0bc8d1e30e96183e4f36db9dc79caead300beff4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.2|~8.0"
+            },
+            "require-dev": {
+                "cucumber/cucumber": "dev-gherkin-22.0.0",
+                "phpunit/phpunit": "~8|~9",
+                "symfony/yaml": "~3|~4|~5"
+            },
+            "suggest": {
+                "symfony/yaml": "If you want to parse features, represented in YAML files"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Behat\\Gherkin": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Konstantin Kudryashov",
+                    "email": "ever.zet@gmail.com",
+                    "homepage": "http://everzet.com"
+                }
+            ],
+            "description": "Gherkin DSL parser for PHP",
+            "homepage": "http://behat.org/",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "Cucumber",
+                "DSL",
+                "gherkin",
+                "parser"
+            ],
+            "support": {
+                "issues": "https://github.com/Behat/Gherkin/issues",
+                "source": "https://github.com/Behat/Gherkin/tree/v4.9.0"
+            },
+            "time": "2021-10-12T13:05:09+00:00"
+        },
+        {
+            "name": "bordoni/phpass",
+            "version": "0.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bordoni/phpass.git",
+                "reference": "12f8f5cc03ebb7efd69554f104afe9aa1aa46e1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bordoni/phpass/zipball/12f8f5cc03ebb7efd69554f104afe9aa1aa46e1a",
+                "reference": "12f8f5cc03ebb7efd69554f104afe9aa1aa46e1a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "replace": {
+                "hautelook/phpass": "0.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Hautelook": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Public Domain"
+            ],
+            "authors": [
+                {
+                    "name": "Solar Designer",
+                    "email": "solar@openwall.com",
+                    "homepage": "http://openwall.com/phpass/"
+                },
+                {
+                    "name": "Gustavo Bordoni",
+                    "email": "gustavo@bordoni.me",
+                    "homepage": "https://bordoni.me"
+                }
+            ],
+            "description": "Portable PHP password hashing framework",
+            "homepage": "http://github.com/bordoni/phpass/",
+            "keywords": [
+                "blowfish",
+                "crypt",
+                "password",
+                "security"
+            ],
+            "support": {
+                "issues": "https://github.com/bordoni/phpass/issues",
+                "source": "https://github.com/bordoni/phpass/tree/0.3.6"
+            },
+            "time": "2012-08-31T00:00:00+00:00"
+        },
+        {
+            "name": "cache/simple-cache-bridge",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/simple-cache-bridge.git",
+                "reference": "63c0179d9afeb34ed383870a64d19eb9a3fea0c1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/simple-cache-bridge/zipball/63c0179d9afeb34ed383870a64d19eb9a3fea0c1",
+                "reference": "63c0179d9afeb34ed383870a64d19eb9a3fea0c1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "psr/cache": "^1.0 || ^2.0",
+                "psr/simple-cache": "^1.0"
+            },
+            "provide": {
+                "psr/simple-cache-implementation": "^1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.17",
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^7.5.20 || ^9.5.10",
+                "symfony/cache": "^3.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Bridge\\SimpleCache\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Magnus Nordlander",
+                    "email": "magnus@fervo.se",
+                    "homepage": "https://github.com/magnusnordlander"
+                }
+            ],
+            "description": "A PSR-6 bridge to PSR-16. This will make any PSR-6 cache compatible with SimpleCache.",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "Bridge",
+                "cache",
+                "psr-16",
+                "psr-6"
+            ],
+            "support": {
+                "source": "https://github.com/php-cache/simple-cache-bridge/tree/1.2.0"
+            },
+            "time": "2022-01-15T15:47:19+00:00"
+        },
+        {
+            "name": "cache/tag-interop",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/tag-interop.git",
+                "reference": "b062b1d735357da50edf8387f7a8696f3027d328"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/tag-interop/zipball/b062b1d735357da50edf8387f7a8696f3027d328",
+                "reference": "b062b1d735357da50edf8387f7a8696f3027d328",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0 || ^8.0",
+                "psr/cache": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\TagInterop\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                },
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com",
+                    "homepage": "https://github.com/nicolas-grekas"
+                }
+            ],
+            "description": "Framework interoperable interfaces for tags",
+            "homepage": "https://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr6",
+                "tag"
+            ],
+            "support": {
+                "issues": "https://github.com/php-cache/tag-interop/issues",
+                "source": "https://github.com/php-cache/tag-interop/tree/1.1.0"
+            },
+            "time": "2021-12-31T10:03:23+00:00"
+        },
+        {
+            "name": "cache/taggable-cache",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/taggable-cache.git",
+                "reference": "2c67d5170f5ccc858b4819da75fd91a4f6c1b1ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/taggable-cache/zipball/2c67d5170f5ccc858b4819da75fd91a4f6c1b1ec",
+                "reference": "2c67d5170f5ccc858b4819da75fd91a4f6c1b1ec",
+                "shasum": ""
+            },
+            "require": {
+                "cache/tag-interop": "^1.0",
+                "php": ">=7.4",
+                "psr/cache": "^1.0 || ^2.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.17",
+                "phpunit/phpunit": "^7.5.20 || ^9.5.10",
+                "symfony/cache": "^3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Taggable\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Magnus Nordlander",
+                    "email": "magnus@fervo.se",
+                    "homepage": "https://github.com/magnusnordlander"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                }
+            ],
+            "description": "Add tag support to your PSR-6 cache implementation",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "Taggable",
+                "cache",
+                "psr6",
+                "tag"
+            ],
+            "support": {
+                "source": "https://github.com/php-cache/taggable-cache/tree/1.2.0"
+            },
+            "time": "2022-01-15T15:47:19+00:00"
+        },
+        {
+            "name": "codeception/codeception",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/Codeception.git",
+                "reference": "e646d160bf1223d3595b227b69d903777fbcfb5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/e646d160bf1223d3595b227b69d903777fbcfb5f",
+                "reference": "e646d160bf1223d3595b227b69d903777fbcfb5f",
+                "shasum": ""
+            },
+            "require": {
+                "behat/gherkin": "^4.4.0",
+                "codeception/lib-asserts": "^1.0 | 2.0.*@dev",
+                "codeception/phpunit-wrapper": ">6.0.15 <6.1.0 | ^6.6.1 | ^7.7.1 | ^8.1.1 | ^9.0",
+                "codeception/stub": "^2.0 | ^3.0 | ^4.0",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "guzzlehttp/psr7": "^1.4 | ^2.0",
+                "php": ">=5.6.0 <9.0",
+                "symfony/console": ">=2.7 <6.0",
+                "symfony/css-selector": ">=2.7 <6.0",
+                "symfony/event-dispatcher": ">=2.7 <6.0",
+                "symfony/finder": ">=2.7 <6.0",
+                "symfony/yaml": ">=2.7 <6.0"
+            },
+            "require-dev": {
+                "codeception/module-asserts": "^1.0 | 2.0.*@dev",
+                "codeception/module-cli": "^1.0 | 2.0.*@dev",
+                "codeception/module-db": "^1.0 | 2.0.*@dev",
+                "codeception/module-filesystem": "^1.0 | 2.0.*@dev",
+                "codeception/module-phpbrowser": "^1.0 | 2.0.*@dev",
+                "codeception/specify": "~0.3",
+                "codeception/util-universalframework": "*@dev",
+                "monolog/monolog": "~1.8",
+                "squizlabs/php_codesniffer": "~2.0",
+                "symfony/process": ">=2.7 <6.0",
+                "vlucas/phpdotenv": "^2.0 | ^3.0 | ^4.0 | ^5.0"
+            },
+            "suggest": {
+                "codeception/specify": "BDD-style code blocks",
+                "codeception/verify": "BDD-style assertions",
+                "hoa/console": "For interactive console functionality",
+                "stecman/symfony-console-completion": "For BASH autocompletion",
+                "symfony/phpunit-bridge": "For phpunit-bridge support"
+            },
+            "bin": [
+                "codecept"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": []
+            },
+            "autoload": {
+                "files": [
+                    "functions.php"
+                ],
+                "psr-4": {
+                    "Codeception\\": "src/Codeception",
+                    "Codeception\\Extension\\": "ext"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Bodnarchuk",
+                    "email": "davert@mail.ua",
+                    "homepage": "https://codegyre.com"
+                }
+            ],
+            "description": "BDD-style testing framework",
+            "homepage": "https://codeception.com/",
+            "keywords": [
+                "BDD",
+                "TDD",
+                "acceptance testing",
+                "functional testing",
+                "unit testing"
+            ],
+            "support": {
+                "issues": "https://github.com/Codeception/Codeception/issues",
+                "source": "https://github.com/Codeception/Codeception/tree/4.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/codeception",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2022-06-16T05:33:39+00:00"
+        },
+        {
+            "name": "codeception/lib-asserts",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/lib-asserts.git",
+                "reference": "df9c8346722ddde4a20e6372073c09c8df87c296"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/lib-asserts/zipball/df9c8346722ddde4a20e6372073c09c8df87c296",
+                "reference": "df9c8346722ddde4a20e6372073c09c8df87c296",
+                "shasum": ""
+            },
+            "require": {
+                "codeception/phpunit-wrapper": "^7.7.1 | ^8.0.3 | ^9.0",
+                "ext-dom": "*",
+                "php": "^7.4 | ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Bodnarchuk",
+                    "email": "davert@mail.ua",
+                    "homepage": "http://codegyre.com"
+                },
+                {
+                    "name": "Gintautas Miselis"
+                },
+                {
+                    "name": "Gustavo Nieves",
+                    "homepage": "https://medium.com/@ganieves"
+                }
+            ],
+            "description": "Assertion methods used by Codeception core and Asserts module",
+            "homepage": "https://codeception.com/",
+            "keywords": [
+                "codeception"
+            ],
+            "support": {
+                "issues": "https://github.com/Codeception/lib-asserts/issues",
+                "source": "https://github.com/Codeception/lib-asserts/tree/2.0.0"
+            },
+            "time": "2021-12-03T12:40:37+00:00"
+        },
+        {
+            "name": "codeception/phpunit-wrapper",
+            "version": "9.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/phpunit-wrapper.git",
+                "reference": "7439a53ae367986e9c22b2ac00f9d7376bb2f8cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/7439a53ae367986e9c22b2ac00f9d7376bb2f8cf",
+                "reference": "7439a53ae367986e9c22b2ac00f9d7376bb2f8cf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "phpunit/phpunit": "^9.0"
+            },
+            "require-dev": {
+                "codeception/specify": "*",
+                "consolidation/robo": "^3.0.0-alpha3",
+                "vlucas/phpdotenv": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codeception\\PHPUnit\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Davert",
+                    "email": "davert.php@resend.cc"
+                },
+                {
+                    "name": "Naktibalda"
+                }
+            ],
+            "description": "PHPUnit classes used by Codeception",
+            "support": {
+                "issues": "https://github.com/Codeception/phpunit-wrapper/issues",
+                "source": "https://github.com/Codeception/phpunit-wrapper/tree/9.0.9"
+            },
+            "time": "2022-05-23T06:24:11+00:00"
+        },
+        {
+            "name": "codeception/stub",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/Stub.git",
+                "reference": "18a148dacd293fc7b044042f5aa63a82b08bff5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/Stub/zipball/18a148dacd293fc7b044042f5aa63a82b08bff5d",
+                "reference": "18a148dacd293fc7b044042f5aa63a82b08bff5d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0",
+                "phpunit/phpunit": "^8.4 | ^9.0 | ^10.0 | 10.0.x-dev"
+            },
+            "require-dev": {
+                "consolidation/robo": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codeception\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Flexible Stub wrapper for PHPUnit's Mock Builder",
+            "support": {
+                "issues": "https://github.com/Codeception/Stub/issues",
+                "source": "https://github.com/Codeception/Stub/tree/4.0.2"
+            },
+            "time": "2022-01-31T19:25:15+00:00"
+        },
+        {
             "name": "composer/ca-bundle",
             "version": "1.3.2",
             "source": {
@@ -3732,16 +4335,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.3.7",
+            "version": "2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "10cd375cf85dede2ff417ceab517ef9a0dc55407"
+                "reference": "f69e63262dadd02b3b6edade339c7badda2939c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/10cd375cf85dede2ff417ceab517ef9a0dc55407",
-                "reference": "10cd375cf85dede2ff417ceab517ef9a0dc55407",
+                "url": "https://api.github.com/repos/composer/composer/zipball/f69e63262dadd02b3b6edade339c7badda2939c2",
+                "reference": "f69e63262dadd02b3b6edade339c7badda2939c2",
                 "shasum": ""
             },
             "require": {
@@ -3822,7 +4425,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.3.7"
+                "source": "https://github.com/composer/composer/tree/2.3.8"
             },
             "funding": [
                 {
@@ -3838,7 +4441,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-06T14:43:28+00:00"
+            "time": "2022-07-01T10:10:47+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -4208,6 +4811,140 @@
             "time": "2022-02-25T21:32:43+00:00"
         },
         {
+            "name": "dg/mysql-dump",
+            "version": "v1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dg/MySQL-dump.git",
+                "reference": "e0e287b715b43293773a8b0edf8514f606e01780"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dg/MySQL-dump/zipball/e0e287b715b43293773a8b0edf8514f606e01780",
+                "reference": "e0e287b715b43293773a8b0edf8514f606e01780",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "http://davidgrudl.com"
+                }
+            ],
+            "description": "MySQL database dump.",
+            "homepage": "https://github.com/dg/MySQL-dump",
+            "keywords": [
+                "mysql"
+            ],
+            "support": {
+                "source": "https://github.com/dg/MySQL-dump/tree/master"
+            },
+            "time": "2019-09-10T21:36:25+00:00"
+        },
+        {
+            "name": "doctrine/inflector",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/inflector.git",
+                "reference": "8b7ff3e4b7de6b2c84da85637b59fd2880ecaa89"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/8b7ff3e4b7de6b2c84da85637b59fd2880ecaa89",
+                "reference": "8b7ff3e4b7de6b2c84da85637b59fd2880ecaa89",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^8.2",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "vimeo/psalm": "^4.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Inflector\\": "lib/Doctrine/Inflector"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "PHP Doctrine Inflector is a small library that can perform string manipulations with regard to upper/lowercase and singular/plural forms of words.",
+            "homepage": "https://www.doctrine-project.org/projects/inflector.html",
+            "keywords": [
+                "inflection",
+                "inflector",
+                "lowercase",
+                "manipulation",
+                "php",
+                "plural",
+                "singular",
+                "strings",
+                "uppercase",
+                "words"
+            ],
+            "support": {
+                "issues": "https://github.com/doctrine/inflector/issues",
+                "source": "https://github.com/doctrine/inflector/tree/2.0.4"
+            },
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finflector",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-10-22T20:16:43+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.4.1",
             "source": {
@@ -4491,6 +5228,337 @@
             "time": "2021-11-11T17:30:39+00:00"
         },
         {
+            "name": "guzzlehttp/psr7",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/psr7.git",
+                "reference": "13388f00956b1503577598873fffb5ae994b5737"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/13388f00956b1503577598873fffb5ae994b5737",
+                "reference": "13388f00956b1503577598873fffb5ae994b5737",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2.5 || ^8.0",
+                "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0",
+                "ralouphie/getallheaders": "^3.0"
+            },
+            "provide": {
+                "psr/http-factory-implementation": "1.0",
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.4.1",
+                "http-interop/http-factory-tests": "^0.9",
+                "phpunit/phpunit": "^8.5.8 || ^9.3.10"
+            },
+            "suggest": {
+                "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Psr7\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graham Campbell",
+                    "email": "hello@gjcampbell.co.uk",
+                    "homepage": "https://github.com/GrahamCampbell"
+                },
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "George Mponos",
+                    "email": "gmponos@gmail.com",
+                    "homepage": "https://github.com/gmponos"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/Nyholm"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com",
+                    "homepage": "https://github.com/sagikazarmark"
+                },
+                {
+                    "name": "Tobias Schultze",
+                    "email": "webmaster@tubo-world.de",
+                    "homepage": "https://github.com/Tobion"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com",
+                    "homepage": "https://sagikazarmark.hu"
+                }
+            ],
+            "description": "PSR-7 message implementation that also provides common utility methods",
+            "keywords": [
+                "http",
+                "message",
+                "psr-7",
+                "request",
+                "response",
+                "stream",
+                "uri",
+                "url"
+            ],
+            "support": {
+                "issues": "https://github.com/guzzle/psr7/issues",
+                "source": "https://github.com/guzzle/psr7/tree/2.4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/GrahamCampbell",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/Nyholm",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/guzzlehttp/psr7",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-06-20T21:43:11+00:00"
+        },
+        {
+            "name": "illuminate/collections",
+            "version": "v8.83.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/collections.git",
+                "reference": "705a4e1ef93cd492c45b9b3e7911cccc990a07f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/collections/zipball/705a4e1ef93cd492c45b9b3e7911cccc990a07f4",
+                "reference": "705a4e1ef93cd492c45b9b3e7911cccc990a07f4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.0",
+                "illuminate/macroable": "^8.0",
+                "php": "^7.3|^8.0"
+            },
+            "suggest": {
+                "symfony/var-dumper": "Required to use the dump method (^5.4)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
+                "psr-4": {
+                    "Illuminate\\Support\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate Collections package.",
+            "homepage": "https://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2022-06-23T15:29:49+00:00"
+        },
+        {
+            "name": "illuminate/contracts",
+            "version": "v8.83.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/contracts.git",
+                "reference": "5e0fd287a1b22a6b346a9f7cd484d8cf0234585d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/5e0fd287a1b22a6b346a9f7cd484d8cf0234585d",
+                "reference": "5e0fd287a1b22a6b346a9f7cd484d8cf0234585d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0",
+                "psr/container": "^1.0",
+                "psr/simple-cache": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Contracts\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate Contracts package.",
+            "homepage": "https://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2022-01-13T14:47:47+00:00"
+        },
+        {
+            "name": "illuminate/macroable",
+            "version": "v8.83.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/macroable.git",
+                "reference": "aed81891a6e046fdee72edd497f822190f61c162"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/macroable/zipball/aed81891a6e046fdee72edd497f822190f61c162",
+                "reference": "aed81891a6e046fdee72edd497f822190f61c162",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Support\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate Macroable package.",
+            "homepage": "https://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2021-11-16T13:57:03+00:00"
+        },
+        {
+            "name": "illuminate/support",
+            "version": "v8.83.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/support.git",
+                "reference": "c3d643e77082786ae8a51502c757e9b1a3ee254e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/c3d643e77082786ae8a51502c757e9b1a3ee254e",
+                "reference": "c3d643e77082786ae8a51502c757e9b1a3ee254e",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/inflector": "^1.4|^2.0",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "illuminate/collections": "^8.0",
+                "illuminate/contracts": "^8.0",
+                "illuminate/macroable": "^8.0",
+                "nesbot/carbon": "^2.53.1",
+                "php": "^7.3|^8.0",
+                "voku/portable-ascii": "^1.6.1"
+            },
+            "conflict": {
+                "tightenco/collect": "<5.5.33"
+            },
+            "suggest": {
+                "illuminate/filesystem": "Required to use the composer class (^8.0).",
+                "league/commonmark": "Required to use Str::markdown() and Stringable::markdown() (^1.3|^2.0.2).",
+                "ramsey/uuid": "Required to use Str::uuid() (^4.2.2).",
+                "symfony/process": "Required to use the composer class (^5.4).",
+                "symfony/var-dumper": "Required to use the dd function (^5.4).",
+                "vlucas/phpdotenv": "Required to use the Env class and env helper (^5.4.1)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
+                "psr-4": {
+                    "Illuminate\\Support\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The Illuminate Support package.",
+            "homepage": "https://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2022-06-27T13:26:30+00:00"
+        },
+        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.12",
             "source": {
@@ -4561,6 +5629,111 @@
             "time": "2022-04-13T08:02:27+00:00"
         },
         {
+            "name": "lucatume/wp-browser",
+            "version": "3.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucatume/wp-browser.git",
+                "reference": "5cefdab50d16f69447c48e5a8668d67d4892d6ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucatume/wp-browser/zipball/5cefdab50d16f69447c48e5a8668d67d4892d6ef",
+                "reference": "5cefdab50d16f69447c48e5a8668d67d4892d6ef",
+                "shasum": ""
+            },
+            "require": {
+                "antecedent/patchwork": "^2.0",
+                "bordoni/phpass": "^0.3",
+                "codeception/codeception": "^2.5 || ^3.0 || ^4.0",
+                "dg/mysql-dump": "^1.3",
+                "ext-fileinfo": "*",
+                "ext-json": "*",
+                "ext-pdo": "*",
+                "mikehaertl/php-shellcommand": "^1.6",
+                "mikemclin/laravel-wp-password": "~2.0.0",
+                "php": ">=5.6.0",
+                "vria/nodiacritic": "^0.1.2",
+                "wp-cli/wp-cli": ">=2.0 <3.0.0",
+                "zordius/lightncandy": "^1.2"
+            },
+            "conflict": {
+                "codeception/module-asserts": ">=2.0",
+                "codeception/module-cli": ">=2.0",
+                "codeception/module-db": ">=2.0",
+                "codeception/module-filesystem": ">=2.0",
+                "codeception/module-phpbrowser": ">=2.0",
+                "codeception/module-webdriver": ">=2.0",
+                "codeception/util-universalframework": ">=2.0"
+            },
+            "require-dev": {
+                "erusev/parsedown": "^1.7",
+                "ext-pcntl": "*",
+                "ext-sockets": "*",
+                "gumlet/php-image-resize": "^1.6",
+                "lucatume/codeception-snapshot-assertions": "^0.2",
+                "mikey179/vfsstream": "^1.6",
+                "victorjonsson/markdowndocs": "dev-master",
+                "vlucas/phpdotenv": "^3.0",
+                "wp-cli/wp-cli-bundle": "*"
+            },
+            "suggest": {
+                "codeception/module-asserts:^1.0": "Codeception 4.0 compatibility.",
+                "codeception/module-cli:^1.0": "Codeception 4.0 compatibility; required by the WPCLI module.",
+                "codeception/module-db:^1.0": "Codeception 4.0 compatibility; required by the WPDb module, PHP 5.6 compatible version.",
+                "codeception/module-filesystem:^1.0": "Codeception 4.0 compatibility; required by the WPFilesystem module.",
+                "codeception/module-phpbrowser:^1.0": "Codeception 4.0 compatibility; required by the WPBrowser module.",
+                "codeception/module-webdriver:^1.0": "Codeception 4.0 compatibility; required by the WPWebDriver module.",
+                "codeception/util-universalframework:^1.0": "Codeception 4.0 compatibility; required by the WordPress framework module.",
+                "gumlet/php-image-resize": "To handle runtime image modification in the WPDb::haveAttachmentInDatabase method.",
+                "vlucas/phpdotenv:^4.0": "To manage more complex environment file based configuration of the suites."
+            },
+            "type": "library",
+            "extra": {
+                "_hash": "484f861f69198089cab0e642f27e5653"
+            },
+            "autoload": {
+                "files": [
+                    "src/tad/WPBrowser/utils.php",
+                    "src/tad/WPBrowser/wp-polyfills.php"
+                ],
+                "psr-4": {
+                    "tad\\": "src/tad",
+                    "Codeception\\": "src/Codeception",
+                    "lucatume\\WPBrowser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "theAverageDev (Luca Tumedei)",
+                    "email": "luca@theaveragedev.com",
+                    "homepage": "http://theaveragedev.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "WordPress extension of the PhpBrowser class.",
+            "homepage": "http://github.com/lucatume/wp-browser",
+            "keywords": [
+                "codeception",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/lucatume/wp-browser/issues",
+                "source": "https://github.com/lucatume/wp-browser/tree/3.1.6"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/lucatume",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-04-28T06:45:08+00:00"
+        },
+        {
             "name": "mck89/peast",
             "version": "v1.14.0",
             "source": {
@@ -4609,6 +5782,117 @@
                 "source": "https://github.com/mck89/peast/tree/v1.14.0"
             },
             "time": "2022-05-01T15:09:54+00:00"
+        },
+        {
+            "name": "mikehaertl/php-shellcommand",
+            "version": "1.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikehaertl/php-shellcommand.git",
+                "reference": "3488d7803df1e8f1a343d3d0ca452d527ad8d5e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikehaertl/php-shellcommand/zipball/3488d7803df1e8f1a343d3d0ca452d527ad8d5e5",
+                "reference": "3488d7803df1e8f1a343d3d0ca452d527ad8d5e5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">4.0 <=9.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "mikehaertl\\shellcommand\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Härtl",
+                    "email": "haertl.mike@gmail.com"
+                }
+            ],
+            "description": "An object oriented interface to shell commands",
+            "keywords": [
+                "shell"
+            ],
+            "support": {
+                "issues": "https://github.com/mikehaertl/php-shellcommand/issues",
+                "source": "https://github.com/mikehaertl/php-shellcommand/tree/1.6.4"
+            },
+            "time": "2021-03-17T06:54:33+00:00"
+        },
+        {
+            "name": "mikemclin/laravel-wp-password",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikemclin/laravel-wp-password.git",
+                "reference": "5225c95f75aa0a5ad4040ec2074d1c8d7f10b5f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikemclin/laravel-wp-password/zipball/5225c95f75aa0a5ad4040ec2074d1c8d7f10b5f4",
+                "reference": "5225c95f75aa0a5ad4040ec2074d1c8d7f10b5f4",
+                "shasum": ""
+            },
+            "require": {
+                "bordoni/phpass": "0.3.*",
+                "illuminate/support": ">=4.0.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "^2.2"
+            },
+            "type": "laravel-package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MikeMcLin\\WpPassword\\WpPasswordProvider"
+                    ],
+                    "aliases": {
+                        "WpPassword": "MikeMcLin\\WpPassword\\Facades\\WpPassword"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MikeMcLin\\WpPassword\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mike McLin",
+                    "email": "mike@mikemclin.com",
+                    "homepage": "http://mikemclin.net"
+                }
+            ],
+            "description": "Laravel package that checks and creates WordPress password hashes",
+            "homepage": "https://github.com/mikemclin/laravel-wp-password",
+            "keywords": [
+                "hashing",
+                "laravel",
+                "password",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/mikemclin/laravel-wp-password/issues",
+                "source": "https://github.com/mikemclin/laravel-wp-password/tree/2.0.3"
+            },
+            "time": "2021-09-30T13:48:57+00:00"
         },
         {
             "name": "mustache/mustache",
@@ -4763,6 +6047,108 @@
                 "source": "https://github.com/nb/oxymel/tree/master"
             },
             "time": "2013-02-24T15:01:54+00:00"
+        },
+        {
+            "name": "nesbot/carbon",
+            "version": "2.59.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/briannesbitt/Carbon.git",
+                "reference": "a9000603ea337c8df16cc41f8b6be95a65f4d0f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/a9000603ea337c8df16cc41f8b6be95a65f4d0f5",
+                "reference": "a9000603ea337c8df16cc41f8b6be95a65f4d0f5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.1.8 || ^8.0",
+                "symfony/polyfill-mbstring": "^1.0",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/translation": "^3.4 || ^4.0 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^2.0 || ^3.0",
+                "doctrine/orm": "^2.7",
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "kylekatarnls/multi-tester": "^2.0",
+                "ondrejmirtes/better-reflection": "*",
+                "phpmd/phpmd": "^2.9",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12.99 || ^1.7.14",
+                "phpunit/php-file-iterator": "^2.0.5 || ^3.0.6",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.26 || ^9.5.20",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "bin": [
+                "bin/carbon"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev",
+                    "dev-master": "2.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Carbon\\Laravel\\ServiceProvider"
+                    ]
+                },
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Carbon\\": "src/Carbon/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Nesbitt",
+                    "email": "brian@nesbot.com",
+                    "homepage": "https://markido.com"
+                },
+                {
+                    "name": "kylekatarnls",
+                    "homepage": "https://github.com/kylekatarnls"
+                }
+            ],
+            "description": "An API extension for DateTime that supports 281 different languages.",
+            "homepage": "https://carbon.nesbot.com",
+            "keywords": [
+                "date",
+                "datetime",
+                "time"
+            ],
+            "support": {
+                "docs": "https://carbon.nesbot.com/docs",
+                "issues": "https://github.com/briannesbitt/Carbon/issues",
+                "source": "https://github.com/briannesbitt/Carbon"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/kylekatarnls",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/Carbon#sponsor",
+                    "type": "opencollective"
+                },
+                {
+                    "url": "https://tidelift.com/subscription/pkg/packagist-nesbot-carbon?utm_source=packagist-nesbot-carbon&utm_medium=referral&utm_campaign=readme",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-06-29T21:43:55+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -5577,6 +6963,150 @@
                 }
             ],
             "time": "2022-06-19T12:14:25+00:00"
+        },
+        {
+            "name": "psr/cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/cache/tree/master"
+            },
+            "time": "2016-08-06T20:24:11+00:00"
+        },
+        {
+            "name": "psr/simple-cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/simple-cache.git",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\SimpleCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for simple caching",
+            "keywords": [
+                "cache",
+                "caching",
+                "psr",
+                "psr-16",
+                "simple-cache"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/simple-cache/tree/master"
+            },
+            "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
+            "name": "ralouphie/getallheaders",
+            "version": "3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ralouphie/getallheaders.git",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/120b605dfeb996808c31b6477290a714d356e822",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5 || ^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/getallheaders.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ralph Khattar",
+                    "email": "ralph.khattar@gmail.com"
+                }
+            ],
+            "description": "A polyfill for getallheaders.",
+            "support": {
+                "issues": "https://github.com/ralouphie/getallheaders/issues",
+                "source": "https://github.com/ralouphie/getallheaders/tree/develop"
+            },
+            "time": "2019-03-08T08:55:37+00:00"
         },
         {
             "name": "react/promise",
@@ -6791,6 +8321,526 @@
             "time": "2021-12-10T11:20:11+00:00"
         },
         {
+            "name": "snicco/better-wp-cache",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/better-wp-cache.git",
+                "reference": "3c401001e0429b73c790cdbb465984eab5fdc883"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/better-wp-cache/zipball/3c401001e0429b73c790cdbb465984eab5fdc883",
+                "reference": "3c401001e0429b73c790cdbb465984eab5fdc883",
+                "shasum": ""
+            },
+            "require": {
+                "cache/simple-cache-bridge": "^1.2.0",
+                "cache/tag-interop": "^1.1",
+                "cache/taggable-cache": "1.2.0",
+                "php": "^7.4|^8.0",
+                "psr/cache": "^1.0.0",
+                "psr/simple-cache": "^1.0.0",
+                "snicco/better-wp-api": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "cache/integration-tests": "0.17.0",
+                "codeception/codeception": "^4.1.29",
+                "lucatume/wp-browser": "^3.1.4",
+                "phpunit/phpunit": "^9.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Component\\BetterWPCache\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/snicco/better-wp-cache/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:09:05+00:00"
+        },
+        {
+            "name": "snicco/better-wp-cache-bundle",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/better-wp-cache-bundle.git",
+                "reference": "295d2e99d99750c893592a731e94807e516e76bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/better-wp-cache-bundle/zipball/295d2e99d99750c893592a731e94807e516e76bd",
+                "reference": "295d2e99d99750c893592a731e94807e516e76bd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "snicco/better-wp-cache": "^1.2.1",
+                "snicco/kernel": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/testing-bundle": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Bundle\\BetterWPCache\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/snicco/better-wp-cache-bundle/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:08:51+00:00"
+        },
+        {
+            "name": "snicco/better-wp-mail",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/better-wp-mail.git",
+                "reference": "5c39850ff9e2fa5e44f6d88bf47d873e74c7d313"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/better-wp-mail/zipball/5c39850ff9e2fa5e44f6d88bf47d873e74c7d313",
+                "reference": "5c39850ff9e2fa5e44f6d88bf47d873e74c7d313",
+                "shasum": ""
+            },
+            "require": {
+                "ext-filter": "*",
+                "php": "^7.4|^8.0",
+                "snicco/better-wp-api": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1.29",
+                "lucatume/wp-browser": "^3.1.4",
+                "phpunit/phpunit": "^9.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Component\\BetterWPMail\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "description": "Keep your sanity when working with mails in WordPress",
+            "support": {
+                "source": "https://github.com/snicco/better-wp-mail/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:08:58+00:00"
+        },
+        {
+            "name": "snicco/better-wp-mail-bundle",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/better-wp-mail-bundle.git",
+                "reference": "e9698ba4667beaa24d5d1ebadde58ba540a81f73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/better-wp-mail-bundle/zipball/e9698ba4667beaa24d5d1ebadde58ba540a81f73",
+                "reference": "e9698ba4667beaa24d5d1ebadde58ba540a81f73",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "snicco/better-wp-mail": "^1.2.1",
+                "snicco/event-dispatcher": "^1.2.1",
+                "snicco/kernel": "^1.2.1",
+                "snicco/templating": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1.29",
+                "lucatume/wp-browser": "^3.1.4",
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/better-wp-hooks-bundle": "^1.2.1",
+                "snicco/better-wp-mail-testing": "^1.2.1",
+                "snicco/templating-bundle": "^1.2.1",
+                "snicco/testing-bundle": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Bundle\\BetterWPMail\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/snicco/better-wp-mail-bundle/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:08:51+00:00"
+        },
+        {
+            "name": "snicco/better-wp-mail-testing",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/better-wp-mail-testing.git",
+                "reference": "72813ee4faeb935e3518c809a4304dc51216c3f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/better-wp-mail-testing/zipball/72813ee4faeb935e3518c809a4304dc51216c3f9",
+                "reference": "72813ee4faeb935e3518c809a4304dc51216c3f9",
+                "shasum": ""
+            },
+            "require": {
+                "codeception/codeception": "^4.1.29",
+                "lucatume/wp-browser": "^3.1.4",
+                "php": "^7.4|^8.0",
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/better-wp-mail": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Component\\BetterWPMail\\Testing\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "description": "Provides test utilities for snicco/better-wp-mail",
+            "support": {
+                "source": "https://github.com/snicco/better-wp-mail-testing/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:08:58+00:00"
+        },
+        {
             "name": "snicco/event-dispatcher-testing",
             "version": "v1.2.1",
             "source": {
@@ -6888,6 +8938,808 @@
                 "source": "https://github.com/snicco/event-dispatcher-testing/tree/v1.2.1"
             },
             "time": "2022-05-28T10:09:27+00:00"
+        },
+        {
+            "name": "snicco/http-routing-testing",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/http-routing-testing.git",
+                "reference": "4329193376a17e03c24bb536d27cc3d4722433ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/http-routing-testing/zipball/4329193376a17e03c24bb536d27cc3d4722433ff",
+                "reference": "4329193376a17e03c24bb536d27cc3d4722433ff",
+                "shasum": ""
+            },
+            "require": {
+                "nyholm/psr7": "^1.0.0",
+                "php": "^7.4|^8.0",
+                "phpunit/phpunit": "^9.5.13",
+                "pimple/pimple": "^3.5",
+                "snicco/http-routing": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Component\\HttpRouting\\Testing\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "description": "Provides testing utilities for snicco/http-routing",
+            "support": {
+                "source": "https://github.com/snicco/http-routing-testing/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:09:32+00:00"
+        },
+        {
+            "name": "snicco/session",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/session.git",
+                "reference": "3da1957808ae8db0e0d2f975536e912d03bb1a8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/session/zipball/3da1957808ae8db0e0d2f975536e912d03bb1a8f",
+                "reference": "3da1957808ae8db0e0d2f975536e912d03bb1a8f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-filter": "*",
+                "paragonie/constant_time_encoding": "^2.4",
+                "php": "^7.4|^8.0",
+                "snicco/str-arr": "^1.2.1",
+                "snicco/testable-clock": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "cache/array-adapter": "^1.0.0",
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/session-testing": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Component\\Session\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "description": "A standalone session implementation for environments where $_SESSION cant be used.",
+            "support": {
+                "source": "https://github.com/snicco/session/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:09:54+00:00"
+        },
+        {
+            "name": "snicco/session-bundle",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/session-bundle.git",
+                "reference": "ccd0546e660fca6939faca7d14ca93cdedd84eff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/session-bundle/zipball/ccd0546e660fca6939faca7d14ca93cdedd84eff",
+                "reference": "ccd0546e660fca6939faca7d14ca93cdedd84eff",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "snicco/better-wp-api": "^1.2.1",
+                "snicco/better-wp-cache": "^1.2.1",
+                "snicco/better-wp-cache-bundle": "^1.2.1",
+                "snicco/better-wp-hooks": "^1.2.1",
+                "snicco/better-wp-hooks-bundle": "^1.2.1",
+                "snicco/better-wpdb": "^1.2.1",
+                "snicco/better-wpdb-bundle": "^1.2.1",
+                "snicco/encryption-bundle": "^1.2.1",
+                "snicco/event-dispatcher": "^1.2.1",
+                "snicco/http-routing": "^1.2.1",
+                "snicco/http-routing-bundle": "^1.2.1",
+                "snicco/kernel": "^1.2.1",
+                "snicco/session": "^1.2.1",
+                "snicco/session-psr16-bridge": "^1.2.1",
+                "snicco/session-wp-bridge": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1.29",
+                "lucatume/wp-browser": "^3.1.4",
+                "nyholm/psr7": "^1.0.0",
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/http-routing-testing": "^1.2.1",
+                "snicco/testable-clock": "^1.2.1",
+                "snicco/testing-bundle": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Bundle\\Session\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/snicco/session-bundle/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:09:34+00:00"
+        },
+        {
+            "name": "snicco/session-psr16-bridge",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/session-psr16-bridge.git",
+                "reference": "62fbcae674a041515153d054037c0cb830cd7636"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/session-psr16-bridge/zipball/62fbcae674a041515153d054037c0cb830cd7636",
+                "reference": "62fbcae674a041515153d054037c0cb830cd7636",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "psr/simple-cache": "^1.0.0",
+                "snicco/session": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "cache/array-adapter": "^1.0.0",
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/session-testing": "^1.2.1",
+                "snicco/testable-clock": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Bridge\\SessionPsr16\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/snicco/session-psr16-bridge/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:09:59+00:00"
+        },
+        {
+            "name": "snicco/session-wp-bridge",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/session-wp-bridge.git",
+                "reference": "735c5e9c7f9c4f82ee613bfdf9a24f9e2fbf0253"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/session-wp-bridge/zipball/735c5e9c7f9c4f82ee613bfdf9a24f9e2fbf0253",
+                "reference": "735c5e9c7f9c4f82ee613bfdf9a24f9e2fbf0253",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "snicco/better-wp-cache": "^1.2.1",
+                "snicco/better-wpdb": "^1.2.1",
+                "snicco/session": "^1.2.1",
+                "snicco/session-psr16-bridge": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.1",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1.29",
+                "lucatume/wp-browser": "^3.1.4",
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/session-testing": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Bridge\\SessionWP\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/snicco/session-wp-bridge/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:10:03+00:00"
+        },
+        {
+            "name": "snicco/templating",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/templating.git",
+                "reference": "3c268a763c2962596c1796ef001538669ee64620"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/templating/zipball/3c268a763c2962596c1796ef001538669ee64620",
+                "reference": "3c268a763c2962596c1796ef001538669ee64620",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "snicco/str-arr": "^1.2.1"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.2.1",
+                "snicco/better-wp-mail-testing": "<1.2.1",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/event-dispatcher": "<1.2.1",
+                "snicco/event-dispatcher-testing": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/http-routing": "<1.2.1",
+                "snicco/http-routing-bundle": "<1.2.1",
+                "snicco/http-routing-testing": "<1.2.1",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.2.1",
+                "snicco/psr7-error-handler": "<1.2.1",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session": "<1.2.1",
+                "snicco/session-bundle": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/testing-bundle": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Component\\Templating\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "description": "Provides a unified API for various templating engines.",
+            "support": {
+                "source": "https://github.com/snicco/templating/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:10:15+00:00"
+        },
+        {
+            "name": "snicco/testing-bundle",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snicco/testing-bundle.git",
+                "reference": "f3e5452fd00002dab187cea42ca2fde07f7a3397"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snicco/testing-bundle/zipball/f3e5452fd00002dab187cea42ca2fde07f7a3397",
+                "reference": "f3e5452fd00002dab187cea42ca2fde07f7a3397",
+                "shasum": ""
+            },
+            "require": {
+                "codeception/codeception": "^4.1.29",
+                "lucatume/wp-browser": "^3.1.4",
+                "php": "^7.4|^8.0",
+                "phpunit/phpunit": "^9.5.13",
+                "snicco/better-wp-mail": "^1.2.1",
+                "snicco/better-wp-mail-bundle": "^1.2.1",
+                "snicco/better-wp-mail-testing": "^1.2.1",
+                "snicco/event-dispatcher": "^1.2.1",
+                "snicco/event-dispatcher-testing": "^1.2.1",
+                "snicco/http-routing": "^1.2.1",
+                "snicco/http-routing-bundle": "^1.2.1",
+                "snicco/http-routing-testing": "^1.2.1",
+                "snicco/kernel": "^1.2.1",
+                "snicco/pimple-bridge": "^1.2.1",
+                "snicco/psr7-error-handler": "^1.2.1",
+                "snicco/session": "^1.2.1",
+                "snicco/session-bundle": "^1.2.1",
+                "snicco/str-arr": "^1.2.1",
+                "symfony/browser-kit": "^5.4",
+                "symfony/css-selector": "^5.4",
+                "symfony/dom-crawler": "^5.4.6",
+                "webmozart/assert": "^1.10"
+            },
+            "conflict": {
+                "snicco/better-wp-api": "<1.2.1",
+                "snicco/better-wp-cache": "<1.2.1",
+                "snicco/better-wp-cache-bundle": "<1.2.1",
+                "snicco/better-wp-cli": "<1.2.1",
+                "snicco/better-wp-hooks": "<1.2.1",
+                "snicco/better-wp-hooks-bundle": "<1.2.1",
+                "snicco/better-wp-mail-bundle": "<1.0.0",
+                "snicco/better-wpdb": "<1.2.1",
+                "snicco/better-wpdb-bundle": "<1.2.1",
+                "snicco/blade-bridge": "<1.2.1",
+                "snicco/blade-bundle": "<1.2.1",
+                "snicco/content-negotiation-middleware": "<1.2.1",
+                "snicco/debug-bundle": "<1.2.1",
+                "snicco/default-headers-middleware": "<1.2.1",
+                "snicco/eloquent": "<1.2.1",
+                "snicco/encryption-bundle": "<1.2.1",
+                "snicco/guests-only-middleware": "<1.0.0",
+                "snicco/https-only-middleware": "<1.2.1",
+                "snicco/illuminate-container-bridge": "<1.2.1",
+                "snicco/kernel-testing": "<1.2.1",
+                "snicco/method-override-middleware": "<1.2.1",
+                "snicco/must-match-route-middleware": "<1.2.1",
+                "snicco/no-robots-middleware": "<1.2.1",
+                "snicco/open-redirect-protection-middleware": "<1.2.1",
+                "snicco/payload-middleware": "<1.2.1",
+                "snicco/pimple-bridge": "<1.0.0",
+                "snicco/psr7-error-handler": "<1.0.0",
+                "snicco/redirect-middleware": "<1.2.1",
+                "snicco/session-psr16-bridge": "<1.2.1",
+                "snicco/session-testing": "<1.2.1",
+                "snicco/session-wp-bridge": "<1.2.1",
+                "snicco/share-cookies-middleware": "<1.2.1",
+                "snicco/signed-url": "<1.2.1",
+                "snicco/signed-url-psr15-bridge": "<1.2.1",
+                "snicco/signed-url-psr16-bridge": "<1.2.1",
+                "snicco/signed-url-testing": "<1.2.1",
+                "snicco/signed-url-wp-bridge": "<1.2.1",
+                "snicco/str-arr": "<1.2.0",
+                "snicco/templating": "<1.2.1",
+                "snicco/templating-bundle": "<1.2.1",
+                "snicco/testable-clock": "<1.2.1",
+                "snicco/trailing-slash-middleware": "<1.2.1",
+                "snicco/wp-auth-only-middleware": "<1.2.1",
+                "snicco/wp-capability-middleware": "<1.2.1",
+                "snicco/wp-capapility-middleware": "<1.0.0",
+                "snicco/wp-guests-only-middleware": "<1.2.1",
+                "snicco/wp-nonce-middleware": "<1.2.1"
+            },
+            "require-dev": {
+                "nyholm/psr7": "^1.0.0",
+                "snicco/better-wpdb-bundle": "^1.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snicco\\Bundle\\Testing\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Calvin Alkan",
+                    "email": "calvin@snicco.de"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/snicco/testing-bundle/tree/v1.2.1"
+            },
+            "time": "2022-05-28T10:10:18+00:00"
+        },
+        {
+            "name": "symfony/browser-kit",
+            "version": "v5.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/browser-kit.git",
+                "reference": "18e73179c6a33d520de1b644941eba108dd811ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/18e73179c6a33d520de1b644941eba108dd811ad",
+                "reference": "18e73179c6a33d520de1b644941eba108dd811ad",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/dom-crawler": "^4.4|^5.0|^6.0",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "require-dev": {
+                "symfony/css-selector": "^4.4|^5.0|^6.0",
+                "symfony/http-client": "^4.4|^5.0|^6.0",
+                "symfony/mime": "^4.4|^5.0|^6.0",
+                "symfony/process": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "symfony/process": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\BrowserKit\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Simulates the behavior of a web browser, allowing you to make requests, click on links and submit forms programmatically",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/browser-kit/tree/v5.4.3"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-02T09:53:40+00:00"
         },
         {
             "name": "symfony/console",
@@ -6989,6 +9841,72 @@
             "time": "2022-06-26T13:00:04+00:00"
         },
         {
+            "name": "symfony/css-selector",
+            "version": "v5.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/css-selector.git",
+                "reference": "b0a190285cd95cb019237851205b8140ef6e368e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/b0a190285cd95cb019237851205b8140ef6e368e",
+                "reference": "b0a190285cd95cb019237851205b8140ef6e368e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\CssSelector\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Jean-François Simon",
+                    "email": "jeanfrancois.simon@sensiolabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Converts CSS selectors to XPath expressions",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/css-selector/tree/v5.4.3"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-02T09:53:40+00:00"
+        },
+        {
             "name": "symfony/deprecation-contracts",
             "version": "v2.5.2",
             "source": {
@@ -7038,6 +9956,245 @@
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/deprecation-contracts/tree/v2.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-02T09:53:40+00:00"
+        },
+        {
+            "name": "symfony/dom-crawler",
+            "version": "v5.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dom-crawler.git",
+                "reference": "a213cbc80382320b0efdccdcdce232f191fafe3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/a213cbc80382320b0efdccdcdce232f191fafe3a",
+                "reference": "a213cbc80382320b0efdccdcdce232f191fafe3a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-mbstring": "~1.0",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "conflict": {
+                "masterminds/html5": "<2.6"
+            },
+            "require-dev": {
+                "masterminds/html5": "^2.6",
+                "symfony/css-selector": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "symfony/css-selector": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\DomCrawler\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Eases DOM navigation for HTML and XML documents",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/dom-crawler/tree/v5.4.9"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-05-04T14:46:32+00:00"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v5.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "8e6ce1cc0279e3ff3c8ff0f43813bc88d21ca1bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/8e6ce1cc0279e3ff3c8ff0f43813bc88d21ca1bc",
+                "reference": "8e6ce1cc0279e3ff3c8ff0f43813bc88d21ca1bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/event-dispatcher-contracts": "^2|^3",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "conflict": {
+                "symfony/dependency-injection": "<4.4"
+            },
+            "provide": {
+                "psr/event-dispatcher-implementation": "1.0",
+                "symfony/event-dispatcher-implementation": "2.0"
+            },
+            "require-dev": {
+                "psr/log": "^1|^2|^3",
+                "symfony/config": "^4.4|^5.0|^6.0",
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/error-handler": "^4.4|^5.0|^6.0",
+                "symfony/expression-language": "^4.4|^5.0|^6.0",
+                "symfony/http-foundation": "^4.4|^5.0|^6.0",
+                "symfony/service-contracts": "^1.1|^2|^3",
+                "symfony/stopwatch": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/event-dispatcher/tree/v5.4.9"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-05-05T16:45:39+00:00"
+        },
+        {
+            "name": "symfony/event-dispatcher-contracts",
+            "version": "v2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher-contracts.git",
+                "reference": "f98b54df6ad059855739db6fcbc2d36995283fe1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/f98b54df6ad059855739db6fcbc2d36995283fe1",
+                "reference": "f98b54df6ad059855739db6fcbc2d36995283fe1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "psr/event-dispatcher": "^1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher-implementation": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "2.5-dev"
+                },
+                "thanks": {
+                    "name": "symfony/contracts",
+                    "url": "https://github.com/symfony/contracts"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Contracts\\EventDispatcher\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Generic abstractions related to dispatching event",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "abstractions",
+                "contracts",
+                "decoupling",
+                "interfaces",
+                "interoperability",
+                "standards"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v2.5.2"
             },
             "funding": [
                 {
@@ -7823,6 +10980,256 @@
             "time": "2022-06-26T15:57:47+00:00"
         },
         {
+            "name": "symfony/translation",
+            "version": "v5.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "1639abc1177d26bcd4320e535e664cef067ab0ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/1639abc1177d26bcd4320e535e664cef067ab0ca",
+                "reference": "1639abc1177d26bcd4320e535e664cef067ab0ca",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-mbstring": "~1.0",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/translation-contracts": "^2.3"
+            },
+            "conflict": {
+                "symfony/config": "<4.4",
+                "symfony/console": "<5.3",
+                "symfony/dependency-injection": "<5.0",
+                "symfony/http-kernel": "<5.0",
+                "symfony/twig-bundle": "<5.0",
+                "symfony/yaml": "<4.4"
+            },
+            "provide": {
+                "symfony/translation-implementation": "2.3"
+            },
+            "require-dev": {
+                "psr/log": "^1|^2|^3",
+                "symfony/config": "^4.4|^5.0|^6.0",
+                "symfony/console": "^5.4|^6.0",
+                "symfony/dependency-injection": "^5.0|^6.0",
+                "symfony/finder": "^4.4|^5.0|^6.0",
+                "symfony/http-client-contracts": "^1.1|^2.0|^3.0",
+                "symfony/http-kernel": "^5.0|^6.0",
+                "symfony/intl": "^4.4|^5.0|^6.0",
+                "symfony/polyfill-intl-icu": "^1.21",
+                "symfony/service-contracts": "^1.1.2|^2|^3",
+                "symfony/yaml": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "psr/log-implementation": "To use logging capability in translator",
+                "symfony/config": "",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Resources/functions.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Component\\Translation\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides tools to internationalize your application",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/translation/tree/v5.4.9"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-05-06T12:33:37+00:00"
+        },
+        {
+            "name": "symfony/translation-contracts",
+            "version": "v2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation-contracts.git",
+                "reference": "136b19dd05cdf0709db6537d058bcab6dd6e2dbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/136b19dd05cdf0709db6537d058bcab6dd6e2dbe",
+                "reference": "136b19dd05cdf0709db6537d058bcab6dd6e2dbe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5"
+            },
+            "suggest": {
+                "symfony/translation-implementation": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "2.5-dev"
+                },
+                "thanks": {
+                    "name": "symfony/contracts",
+                    "url": "https://github.com/symfony/contracts"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Contracts\\Translation\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Generic abstractions related to translation",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "abstractions",
+                "contracts",
+                "decoupling",
+                "interfaces",
+                "interoperability",
+                "standards"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/translation-contracts/tree/v2.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-06-27T16:58:25+00:00"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v5.4.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "04e42926429d9e8b39c174387ab990bf7817f7a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/04e42926429d9e8b39c174387ab990bf7817f7a2",
+                "reference": "04e42926429d9e8b39c174387ab990bf7817f7a2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-ctype": "^1.8"
+            },
+            "conflict": {
+                "symfony/console": "<5.3"
+            },
+            "require-dev": {
+                "symfony/console": "^5.3|^6.0"
+            },
+            "suggest": {
+                "symfony/console": "For validating YAML files using the lint command"
+            },
+            "bin": [
+                "Resources/bin/yaml-lint"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Loads and dumps YAML files",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/yaml/tree/v5.4.10"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-06-20T11:50:59+00:00"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "1.2.1",
             "source": {
@@ -7871,6 +11278,133 @@
                 }
             ],
             "time": "2021-07-28T10:34:58+00:00"
+        },
+        {
+            "name": "voku/portable-ascii",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voku/portable-ascii.git",
+                "reference": "87337c91b9dfacee02452244ee14ab3c43bc485a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/87337c91b9dfacee02452244ee14ab3c43bc485a",
+                "reference": "87337c91b9dfacee02452244ee14ab3c43bc485a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.0 || ~7.0 || ~9.0"
+            },
+            "suggest": {
+                "ext-intl": "Use Intl for transliterator_transliterate() support"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "voku\\": "src/voku/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Moelleken",
+                    "homepage": "http://www.moelleken.org/"
+                }
+            ],
+            "description": "Portable ASCII library - performance optimized (ascii) string functions for php.",
+            "homepage": "https://github.com/voku/portable-ascii",
+            "keywords": [
+                "ascii",
+                "clean",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/voku/portable-ascii/issues",
+                "source": "https://github.com/voku/portable-ascii/tree/1.6.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/moelleken",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/voku",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/portable-ascii",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/voku",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/voku/portable-ascii",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-24T18:55:24+00:00"
+        },
+        {
+            "name": "vria/nodiacritic",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vria/nodiacritic.git",
+                "reference": "3efeb60fb2586fe3ce8ff0f3c122d380717b8b07"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vria/nodiacritic/zipball/3efeb60fb2586fe3ce8ff0f3c122d380717b8b07",
+                "reference": "3efeb60fb2586fe3ce8ff0f3c122d380717b8b07",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "VRia\\Utils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Riabchenko Vlad",
+                    "email": "contact@vria.eu",
+                    "homepage": "http://vria.eu"
+                }
+            ],
+            "description": "Tiny helper function that removes all diacritical signs from characters",
+            "homepage": "https://github.com/vria/nodiacritic",
+            "keywords": [
+                "accent",
+                "diacritic",
+                "filter",
+                "string",
+                "text"
+            ],
+            "support": {
+                "email": "contact@vria.eu",
+                "issues": "https://github.com/vria/nodiacritic/issues",
+                "source": "https://github.com/vria/nodiacritic/tree/0.1.2"
+            },
+            "time": "2016-09-17T22:03:11+00:00"
         },
         {
             "name": "wp-cli/cache-command",
@@ -9967,6 +13501,62 @@
                 "source": "https://github.com/wp-cli/wp-config-transformer/tree/v1.3.0"
             },
             "time": "2022-01-10T18:37:52+00:00"
+        },
+        {
+            "name": "zordius/lightncandy",
+            "version": "v1.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zordius/lightncandy.git",
+                "reference": "b451f73e8b5c73e62e365997ba3c993a0376b72a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/b451f73e8b5c73e62e365997ba3c993a0376b72a",
+                "reference": "b451f73e8b5c73e62e365997ba3c993a0376b72a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LightnCandy\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zordius Chen",
+                    "email": "zordius@gmail.com"
+                }
+            ],
+            "description": "An extremely fast PHP implementation of handlebars ( http://handlebarsjs.com/ ) and mustache ( http://mustache.github.io/ ).",
+            "homepage": "https://github.com/zordius/lightncandy",
+            "keywords": [
+                "handlebars",
+                "logicless",
+                "mustache",
+                "php",
+                "template"
+            ],
+            "support": {
+                "issues": "https://github.com/zordius/lightncandy/issues",
+                "source": "https://github.com/zordius/lightncandy/tree/v1.2.6"
+            },
+            "time": "2021-07-11T04:52:41+00:00"
         }
     ],
     "aliases": [],
@@ -9976,7 +13566,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.4|^8.0",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-hash": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

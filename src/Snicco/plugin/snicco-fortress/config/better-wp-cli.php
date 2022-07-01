@@ -6,5 +6,5 @@ use Snicco\Enterprise\Bundle\BetterWPCLI\BetterWPCLIOption;
 
 return [
     BetterWPCLIOption::NAME => 'snicco/fortress',
-    BetterWPCLIOption::COMMANDS => []
+    BetterWPCLIOption::COMMANDS => [],
 ];

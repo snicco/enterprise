@@ -15,7 +15,7 @@ final class StubList
     public function __construct(string $monorepo_root) {
     
         if(!is_dir($monorepo_root) || ! is_dir($monorepo_root.'/src/Snicco')){
-            throw new RuntimeException("$monorepo_root is not the root of the monorepo.");
+            throw new RuntimeException("{$monorepo_root} is not the root of the monorepo.");
         }
         
         $this->monorepo_root = $monorepo_root;
@@ -31,12 +31,13 @@ final class StubList
         if (false === $contents) {
             throw new RuntimeException("Could not get contents of file {$file}");
         }
-    
+
         $stubs = \json_decode($contents, true, \JSON_THROW_ON_ERROR);
-    
+
         if ( ! is_array($stubs)) {
             throw new RuntimeException('Stub file contents must be an array.');
         }
+
         /** @var string[] $stubs */
         return $stubs;
     }
@@ -48,7 +49,7 @@ final class StubList
     {
         /** @var string[] $polyfills_bootstraps */
         $polyfills_bootstraps = \array_map(
-            static fn (SplFileInfo $fileInfo) => $fileInfo->getPathname(),
+            static fn (SplFileInfo $fileInfo): string => $fileInfo->getPathname(),
             \iterator_to_array(
                 Finder::create()
                       ->in($plugin_dir . '/vendor/symfony')
@@ -61,7 +62,7 @@ final class StubList
     
         /** @var string[] $polyfills_stubs */
         $polyfills_stubs = \array_map(
-            static fn (SplFileInfo $fileInfo) => $fileInfo->getPathname(),
+            static fn (SplFileInfo $fileInfo): string => $fileInfo->getPathname(),
             \iterator_to_array(
                 Finder::create()
                       ->in($plugin_dir . '/vendor/symfony')

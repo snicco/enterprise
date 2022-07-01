@@ -54,7 +54,7 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->skip([
-        __DIR__ . '/src/Snicco/bundle/fortress-bundle/tests/_support/_generated',
+        __DIR__ . '/src/Snicco/plugin/snicco-fortress/tests/_support/_generated',
 
         // Skip rules from SetList::CODE_QUALITY.
         CallableThisArrayToAnonymousFunctionRector::class, // These two break controller syntax.

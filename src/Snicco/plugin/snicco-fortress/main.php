@@ -6,6 +6,7 @@ use Snicco\Bundle\HttpRouting\HttpKernelRunner;
 use Snicco\Bundle\HttpRouting\WPAdminMenu;
 use Snicco\Component\BetterWPCLI\WPCLIApplication;
 use Snicco\Component\BetterWPDB\BetterWPDB;
+use Snicco\Component\Kernel\Kernel;
 use Snicco\Component\Kernel\ValueObject\Environment;
 use Snicco\Enterprise\Fortress\Auth\AuthModuleOption;
 use Snicco\Enterprise\Fortress\Auth\TwoFactor\Infrastructure\TwoFactorChallengeRepositoryBetterWPDB;
@@ -14,7 +15,7 @@ use Snicco\Enterprise\Fortress\Password\Infrastructure\SecureWPPasswords;
 use Snicco\Enterprise\Fortress\Session\Infrastructure\SessionModuleOption;
 use Snicco\Enterprise\Fortress\Session\Infrastructure\SessionRepositoryBetterWPDB;
 
-defined('ABSPATH') || die('Forbidden');
+\defined('ABSPATH') || die('Forbidden');
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ defined('ABSPATH') || die('Forbidden');
 |--------------------------------------------------------------------------
 |
 */
-require_once __DIR__.'/boot/autoloader.php';
+require_once __DIR__ . '/boot/autoloader.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -30,11 +31,10 @@ require_once __DIR__.'/boot/autoloader.php';
 |--------------------------------------------------------------------------
 |
 */
-$debug = filter_var(
-    ($_SERVER['SNICCO_FORTRESS_DEBUG'] ?? (defined('WP_DEBUG') && (bool) WP_DEBUG)),
-    FILTER_VALIDATE_BOOLEAN
+$debug = \filter_var(
+    ($_SERVER['SNICCO_FORTRESS_DEBUG'] ?? (\defined('WP_DEBUG') && (bool) WP_DEBUG)),
+    \FILTER_VALIDATE_BOOLEAN
 );
-$env = (string) ($_SERVER['SNICCO_FORTRESS_ENV'] ?? 'prod');
 $env = Environment::fromString('dev', $debug);
 
 /*
@@ -46,7 +46,7 @@ $env = Environment::fromString('dev', $debug);
 | instantiation from booting. This will be needed in tests.
 |
 */
-/** @var Snicco\Component\Kernel\Kernel $kernel */
+/** @var Kernel $kernel */
 $kernel = (require_once __DIR__ . '/boot/create-kernel.php')($env);
 
 /*
@@ -99,7 +99,7 @@ SecureWPPasswords::alterTable($GLOBALS['wpdb']);
 |
 */
 $is_cli = $env->isCli();
-$is_wp_cli = $is_cli && \defined('WP_CLI');
+$is_wp_cli = $is_cli && \defined(WP_CLI::class);
 $is_cron = \wp_doing_cron();
 
 /*
@@ -114,11 +114,11 @@ if ($is_cli) {
     if (! $is_wp_cli) {
         return;
     }
-    
+
     $wp_cli_application = $container->make(WPCLIApplication::class);
-    
+
     $wp_cli_application->registerCommands();
-    
+
     return;
 }
 
@@ -162,7 +162,7 @@ $http_runner->listen($is_admin);
 */
 if ($is_admin) {
     $admin_menu = $kernel->container()
-                         ->make(WPAdminMenu::class);
-    
+        ->make(WPAdminMenu::class);
+
     $admin_menu->setUp('snicco-fortress');
 }

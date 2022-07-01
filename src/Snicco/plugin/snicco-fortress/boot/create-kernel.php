@@ -9,17 +9,16 @@ use Snicco\Component\Kernel\ValueObject\Directories;
 use Snicco\Component\Kernel\ValueObject\Environment;
 
 return function (Environment $env): Kernel {
-  
     $container = new PimpleContainerAdapter(new Container());
-    
+
     $base_dir = \dirname(__DIR__);
-    
+
     if ($env->isProduction() || $env->isStaging()) {
         //$cache = new ConfigCacheWithRuntimeChecks();
     } else {
         $cache = null;
     }
-    
+
     return new Kernel(
         $container,
         $env,
@@ -32,4 +31,3 @@ return function (Environment $env): Kernel {
         $cache
     );
 };
-

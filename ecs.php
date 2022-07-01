@@ -40,7 +40,7 @@ return static function (ContainerConfigurator $configurator): void {
         __DIR__ . '/ecs.php',
     ]);
     $parameters->set(Option::SKIP, [
-        __DIR__ . '/src/Snicco/bundle/fortress-bundle/tests/_support/_generated',
+        __DIR__ . '/src/Snicco/plugin/snicco-fortress/tests/_support/_generated',
     ]);
     $parameters->set(Option::PARALLEL, true);
     $parameters->set(Option::CACHE_DIRECTORY, '/tmp/snicco-qa/ecs');

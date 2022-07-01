@@ -15,4 +15,4 @@ declare(strict_types=1);
  * Text Domain:       snicco-fortress
  */
 
-require_once __DIR__.'/main.php';
+require_once __DIR__ . '/main.php';
