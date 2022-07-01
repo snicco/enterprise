@@ -47,8 +47,8 @@ export COMPOSER_ROOT_VERSION="dev-master"
 
 # @todo this seems to be a bug with composer. guzzlehttp/psr7 is installed even tho
 # its not required anywhere.
-composer remove --dev snicco/testing-bundle \
-  --working-dir="$PLUGIN_SRC_DIR" \
+# composer remove --dev snicco/testing-bundle \
+#  --working-dir="$PLUGIN_SRC_DIR" \
 
 composer install \
   --working-dir="$PLUGIN_SRC_DIR" \

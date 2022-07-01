@@ -98,6 +98,13 @@ jobs:
           make cli-tests
           make browser-tests
 
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: plugins
+          path: |
+            .build/plugins/*
+
       - name: 'Docker push'
         run: |
           make docker-push
