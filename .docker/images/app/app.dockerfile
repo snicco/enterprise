@@ -158,3 +158,4 @@ RUN composer install
 
 COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME . $MONOREPO_PATH
 
+RUN mkdir -p $MONOREPO_PATH/.build && chown $APP_USER_NAME:$APP_GROUP_NAME $MONOREPO_PATH/.build

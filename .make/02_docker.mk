@@ -206,6 +206,10 @@ docker-prune-v: _validate-docker-env docker-down ## Delete all docker volumes.
 .PHONY: dvp
 dvp: docker-prune-v
 
+.PHONY: docker-prune
+docker-prune: docker-down ## Remove ALL docker resources, including volumes and images.
+	@docker system prune -a -f --volumes
+
 .PHONY: docker-copy
 docker-copy: ## Copy files from a docker container to the host.
 	@$(if $(CONTAINER),,$(error CONTAINER is undefined))

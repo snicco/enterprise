@@ -86,9 +86,6 @@ jobs:
 #          make usecase-tests
 #          make integration-tests
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: 'Build plugins'
         run: |
           make build BUILD_VERSION=${{ github.sha }}
