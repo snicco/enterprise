@@ -72,16 +72,26 @@ jobs:
           restore-keys: |
             ${{ env.CACHE_PREFIX }}-qa-tools-composer-
 
-      - name: 'QA'
-        if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
-        run: |
-          make build-codeception 
-          make docker-copy-vendor
-          make composer-unused || true 
+#      - name: 'QA'
+#        if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
+#        run: |
+#          make build-codeception
+#          make docker-copy-vendor
+#          make composer-unused || true
 
-      - name: 'Tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
+      - name: 'Source code tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make unit-tests
+          make wpunit-tests
+          make usecase-tests
+          make integrations-tests
+
+      - name: 'Build plugins'
+        run: |
+          make build
+          make copy-prod-plugins
+          make cli-tests
+          make browser-tests
 
       - name: 'Docker push'
         run: |

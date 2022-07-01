@@ -96,7 +96,6 @@ PROD_BUILD_COMMAND=@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.))
 ifdef FORCE_PROD_BUILD
 	BUILD_COMMAND=$(PROD_BUILD_COMMAND)
 endif
-
 ifndef BUILD_COMMAND
 	ifeq ($(ENV),local)
 		BUILD_COMMAND=$(MAYBE_EXEC_APP_IN_DOCKER) composer update --working-dir=$@ $(ARGS)
@@ -106,12 +105,12 @@ ifndef BUILD_COMMAND
 endif
 
 .PHONY: build $(PLUGINS_SRC)
-build: $(PLUGINS_SRC)
+build: $(PLUGINS_SRC) ## Build all plugins based on the current environment.
 $(PLUGINS_SRC):
 	@$(BUILD_COMMAND)
 
 .PHONY: copy-prod-plugins $(PLUGIN_BUILDS)
-copy-prod-plugins: $(PLUGIN_BUILDS)
+copy-prod-plugins: $(PLUGIN_BUILDS) ## Copy built production plugins into the WordPress container (CI only).
 $(PLUGIN_BUILDS): _is_ci
 	$(eval OUTPUT_DIR := /var/www/html/wp-content/plugins/$(subst .build/plugins/,,$@))
 	docker cp $@ $(DOCKER_SERVICE_PHP_FPM_NAME):$(OUTPUT_DIR)

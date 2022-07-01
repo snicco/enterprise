@@ -11,7 +11,6 @@ version: '3.9'
 # even though the files should in theory be connected through the shared (named) volumes.
 # We need both the component and bundle directory so that composer path symlinks work.
 #
-
 services:
 
   wp:
