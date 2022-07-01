@@ -17,10 +17,9 @@ if [ ! -d "$PLUGIN_SRC_DIR" ]; then
   exit 1
 fi
 
-if [ ! -d "$OUTPUT_DIR" ]; then
-  mkdir -p "$OUTPUT_DIR"
-else
-  rm -rf "$OUTPUT_DIR"
+if [ ! -f "$PLUGIN_SRC_DIR/php-scoper.php" ]; then
+  echo -e "$RED Directory $PLUGIN_SRC_DIR does not have a php-scoper.php configuration file. $NC"
+  exit 1
 fi
 
 if [ -z "$BUILD_VERSION" ]; then
@@ -30,25 +29,21 @@ else
   export BUILD_VERSION
 fi
 
+if [ ! -d "$OUTPUT_DIR" ]; then
+  mkdir -p "$OUTPUT_DIR"
+else
+  rm -rf "$OUTPUT_DIR"
+fi
+
 echo -e "$GREEN Starting production build for plugin $PLUGIN_SRC_DIR in $OUTPUT_DIR with build-version $BUILD_VERSION .$NC"
 
 rm -rf "$PLUGIN_SRC_DIR/vendor"
 
 echo -e "$YELLOW Removed vendor directory.$NC"
 
-if [ ! -f "$PLUGIN_SRC_DIR/php-scoper.php" ]; then
-  echo -e "$RED Directory $PLUGIN_SRC_DIR does not have a php-scoper.php configuration file. $NC"
-  exit 1
-fi
-
 # @see https://github.com/composer/composer/issues/9368#issuecomment-718112361
 # @see https://github.com/composer/composer/issues/9368#issuecomment-718198161
 export COMPOSER_ROOT_VERSION="dev-master"
-
-# @todo this seems to be a bug with composer. guzzlehttp/psr7 is installed even tho
-# its not required anywhere.
-# composer remove --dev snicco/testing-bundle \
-#  --working-dir="$PLUGIN_SRC_DIR" \
 
 composer install \
   --working-dir="$PLUGIN_SRC_DIR" \
@@ -69,7 +64,7 @@ php-scoper add-prefix -c "$PLUGIN_SRC_DIR/php-scoper.php" \
 mkdir -p "$OUTPUT_DIR"/var/cache
 mkdir -p "$OUTPUT_DIR"/var/log
 
-echo -e "$YELLOW Scoped plugin $PLUGIN_SRC_DIR in. $OUTPUT_DIR $NC"
+echo -e "$YELLOW Scoped plugin $PLUGIN_SRC_DIR in $OUTPUT_DIR $NC"
 
 # We need the composer.json file to dump the autoloader.
 cp "$PLUGIN_SRC_DIR/composer.json" "$OUTPUT_DIR/composer.json"
