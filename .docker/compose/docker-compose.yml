@@ -28,7 +28,7 @@ x-wp-env: &wp-env
 services:
 
   wp:
-    container_name: wp_${ENV?}
+    container_name: wp
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}:${TAG?}
     build:
       context: ${MONOREPO_ROOT_HOST}
@@ -57,7 +57,7 @@ services:
         condition: service_healthy
 
   app:
-    container_name: app_${ENV?}
+    container_name: app
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:${TAG?}
     build:
       context: ${MONOREPO_ROOT_HOST}
@@ -102,7 +102,7 @@ services:
     tty: true
 
   node:
-    container_name: node_${ENV?}
+    container_name: node
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
     build:
       context: ${MONOREPO_ROOT_HOST}
@@ -127,7 +127,7 @@ services:
       - network
 
   nginx:
-    container_name: nginx_${ENV?}
+    container_name: nginx
     image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:${TAG?}
     build:
       context: ../images/nginx
@@ -149,7 +149,7 @@ services:
       - network
 
   db:
-    container_name: db_${ENV?}
+    container_name: db
     image: ${DB_IMAGE?}
     environment:
       MYSQL_DATABASE: snicco_enterprise
@@ -164,7 +164,7 @@ services:
       - network
 
   chrome:
-    container_name: chrome_${ENV?}
+    container_name: chrome
     image: selenium/standalone-chrome:4.2.2-20220609
     shm_size: 2gb
     ports:
