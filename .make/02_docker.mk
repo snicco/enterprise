@@ -50,9 +50,9 @@ endif
 # These values must match exactly the container names
 # in the docker-compose files.
 #
-DOCKER_SERVICE_NODE_NAME:=node
-DOCKER_SERVICE_APP_NAME:=app
-DOCKER_SERVICE_PHP_FPM_NAME:=wp
+DOCKER_SERVICE_NODE_NAME:=node_$(ENV)
+DOCKER_SERVICE_APP_NAME:=app_$(ENV)
+DOCKER_SERVICE_PHP_FPM_NAME:=wp_$(ENV)
 
 #
 # =================================================================

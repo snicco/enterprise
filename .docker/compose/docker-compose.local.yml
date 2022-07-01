@@ -42,7 +42,7 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    container_name: mailhog
+    container_name: mailhog_${ENV?}
     ports:
       - "${MAILHOG_SMTP_PORT?}:1025"
       - "${MAILHOG_UI_PORT?}:8025"

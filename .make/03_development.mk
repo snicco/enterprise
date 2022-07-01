@@ -91,7 +91,7 @@ PLUGINS_SRC=$(wildcard src/Snicco/plugin/*)
 PLUGIN_BUILDS=$(wildcard ./.build/plugins/*)
 
 PROD_BUILD_COMMAND=@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.)) \
-                   @$(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@) $(subst src/Snicco/plugin/,,$@)-$(BUILD_VERSION)
+                   $(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@) $(subst src/Snicco/plugin/,,$@)-$(BUILD_VERSION)
 
 ifdef FORCE_PROD_BUILD
 	BUILD_COMMAND=$(PROD_BUILD_COMMAND)
@@ -107,7 +107,7 @@ endif
 .PHONY: build $(PLUGINS_SRC)
 build: $(PLUGINS_SRC) ## Build all plugins based on the current environment.
 $(PLUGINS_SRC):
-	@$(BUILD_COMMAND)
+	$(BUILD_COMMAND)
 
 .PHONY: copy-prod-plugins $(PLUGIN_BUILDS)
 copy-prod-plugins: $(PLUGIN_BUILDS) ## Copy built production plugins into the WordPress container (CI only).
