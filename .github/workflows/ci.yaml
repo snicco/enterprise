@@ -88,7 +88,7 @@ jobs:
 
       - name: 'Build plugins'
         run: |
-          make build
+          make build BUILD_VERSION=${{ github.sha }}
           make copy-prod-plugins
           make cli-tests
           make browser-tests
