@@ -4,7 +4,6 @@ node_modules
 tests/_output/
 codeception.yml
 .wp/html
-.build
 
 ## repos
 /src/Snicco/*/*/tests/_output/*

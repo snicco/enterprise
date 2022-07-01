@@ -8,7 +8,7 @@ tests/_output/
 src/Snicco/*/*/tests/_output/*
 src/Snicco/*/*/tests/_support/_generated
 src/Snicco/*/*/vendor
-.build
+.build/*
 src/Snicco/*/*/composer.lock
 .make/.mk.env
 .docker/.env
