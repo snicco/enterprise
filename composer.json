@@ -50,8 +50,8 @@
         "php-stubs/wordpress-stubs": "^5.9.3",
         "phpunit/phpunit": "9.5.13",
         "rector/rector": "0.13.5",
-        "snicco/event-dispatcher-testing": "^1.2.0",
-        "snicco/testing-bundle": "^1.2.0",
+        "snicco/event-dispatcher-testing": "^1.2.1",
+        "snicco/testing-bundle": "^1.2.1",
         "sniccowp/php-scoper-wordpress-excludes": "^5.9.3",
         "symfony/console": "5.4.7",
         "symfony/finder": "5.4.7",
@@ -86,6 +86,20 @@
         }
     },
     "repositories": [
+        {
+            "options": {
+                "symlink": false
+            },
+            "type": "path",
+            "url": "src/Snicco/bundle/application-layer-bundle"
+        },
+        {
+            "options": {
+                "symlink": false
+            },
+            "type": "path",
+            "url": "src/Snicco/bundle/better-wp-cli-bundle"
+        },
         {
             "options": {
                 "symlink": false

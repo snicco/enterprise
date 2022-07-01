@@ -48,7 +48,8 @@
     },
     "require-dev": {
         "nyholm/psr7": "^1.5.0",
-        "snicco/event-dispatcher-testing": "^1.2.0",
+        "snicco/event-dispatcher-testing": "^1.2.1",
+        "snicco/testing-bundle": "^1.2.1",
         "wp-cli/wp-cli-bundle": "v2.6.0"
     },
     "autoload": {
