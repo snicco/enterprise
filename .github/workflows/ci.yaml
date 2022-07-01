@@ -82,14 +82,19 @@ jobs:
       - name: 'Source code tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
         run: |
           make unit-tests
-#          make wpunit-tests
-#          make usecase-tests
-#          make integration-tests
+          make wpunit-tests
+          make usecase-tests
+          make integration-tests
 
       - name: 'Build plugins'
         run: |
           make build BUILD_VERSION=${{ github.sha }}
           make copy-prod-plugins
+          make cli-tests
+          make browser-tests
+
+      - name: 'Build tests'
+        run: |
           make cli-tests
           make browser-tests
 
