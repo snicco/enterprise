@@ -1316,7 +1316,7 @@
         },
         {
             "name": "snicco/application-layer-bundle",
-            "version": "dev-feat/auth-bundle",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "../../bundle/application-layer-bundle",
@@ -1575,7 +1575,7 @@
         },
         {
             "name": "snicco/better-wp-cli-bundle",
-            "version": "dev-feat/auth-bundle",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "../../bundle/better-wp-cli-bundle",

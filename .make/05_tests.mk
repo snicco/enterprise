@@ -32,3 +32,6 @@ browser-tests: ## Run all browser test suites for all packages.
 .PHONY: cli-tests
 cli-tests: ## Run all cli test suites for all packages.
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept run cli,*::cli $(ARGS)
+
+test-plugin:
+	@$(MAYBE_EXEC_APP_IN_DOCKER) sh bin/test-plugin.sh src/Snicco/plugin/snicco-fortress

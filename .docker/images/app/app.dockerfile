@@ -99,6 +99,8 @@ COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME .docker/images/app/bin $MONOREPO_PAT
 
 RUN chmod a+x $MONOREPO_PATH/.docker/images/app/bin
 
+COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME .docker/images/app/app.entrypoint.sh /etc/entrypoint.sh
+
 WORKDIR $MONOREPO_PATH
 
 USER $APP_USER_NAME
@@ -147,6 +149,8 @@ RUN ssh-keygen -A
 
 EXPOSE 22
 
+ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
+
 CMD ["/usr/sbin/sshd", "-D"]
 
 FROM base as ci
@@ -157,3 +161,5 @@ COPY ./composer.lock $MONOREPO_PATH
 RUN composer install
 
 COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME . $MONOREPO_PATH
+
+ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
