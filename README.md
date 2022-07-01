@@ -68,11 +68,11 @@ din nginx # open a shell in the nginx container (must be running)
 On MacOs:
 
 ```shell
-cat .docker/bash_profile.sh >> ~/.zshrc
+cat .docker/bash_profile.sh >> ~/.zshrc && source ~/.zshrc
 ```
 
 On Linux:
 
 ```shell
-cat .docker/bash_profile.sh >> ~/.bash_profile
+cat .docker/bash_profile.sh >> ~/.bash_profile && source ~/.bash_profile
 ```

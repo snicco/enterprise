@@ -14,20 +14,21 @@ alias m="make"
 # din CONTAINER <user> <shell type>
 #
 function din() {
-  filter=$1
+  SERVICE=$1
 
-  user=""
+  USER=()
   if [[ -n "$2" ]];
   then
-    user="--user $2"
+    USER=("${USER[@]}" --user "$2")
   fi
 
-  shell="/bin/sh"
+  SHELL="/bin/sh"
   if [[ -n "$3" ]];
   then
-    shell=$3
+    SHELL=$3
   fi
 
-  docker exec -it "$user" "$(docker ps --filter name="$filter" -q | head -1)" "$shell"
+  docker exec --interactive --tty "${USER[@]}" "$(docker ps --filter name="${SERVICE}" -q | head -1)" "${SHELL}"
 }
+
 ### End Snicco

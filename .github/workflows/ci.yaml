@@ -17,20 +17,16 @@ jobs:
         wp: [ '6.0']
     env:
       CACHE_PREFIX: snicco_1
-      APP_IMAGE: ghcr.io/snicco/app-ci-php${{ matrix.php }}
-      WP_IMAGE: ghcr.io/snicco/wp-ci-php${{ matrix.php }}-wp${{ matrix.wp }}
-      NGINX_IMAGE: ghcr.io/snicco/nginx-ci
-      NODE_IMAGE: ghcr.io/snicco/node-ci
       ENV: ci
+      TAG: some-branch
       PHP_VERSION: ${{ matrix.php }}
       WP_VERSION: ${{ matrix.wp }}
-      TAG: some-branch
       FORCE_RUN_IN_CONTAINER: 1
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: 'Set ENV variables'
+      - name: 'Set make env variables'
         run: |
           echo "APP_USER_NAME=$(id -un)" >> $GITHUB_ENV
           echo "APP_USER_ID=$(id -u)" >> $GITHUB_ENV
@@ -47,7 +43,7 @@ jobs:
           docker --version
           docker buildx version
 
-      - name: 'Docker login'
+      - name: 'Login to GitHub package registry'
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           registry: ghcr.io
@@ -72,34 +68,27 @@ jobs:
           restore-keys: |
             ${{ env.CACHE_PREFIX }}-qa-tools-composer-
 
-#      - name: 'QA'
-#        if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
+      - name: 'QA'
+        if: ${{ matrix.php }} == '7.4' && ${{ matrix.wp }} == '6.0'
+        run: |
+          make build-codeception
+          make docker-copy-vendor
+          make composer-unused || true
+
+#      - name: 'Source code tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
 #        run: |
-#          make build-codeception
-#          make docker-copy-vendor
-#          make composer-unused || true
+#          make unit-tests
+#
+#      - name: 'Build plugins'
+#        run: |
+#          make build BUILD_VERSION=${{ github.sha }}
+#          make copy-prod-plugins
+#
+#      - name: 'Build tests'
+#        run: |
+#          make cli-tests
+#          make browser-tests
 
-      - name: 'Source code tests: PHP ${{ matrix.php }}, WP ${{ matrix.wp }}'
-        run: |
-          make unit-tests
-
-      - name: 'Build plugins'
-        run: |
-          make build BUILD_VERSION=${{ github.sha }}
-          make copy-prod-plugins
-
-      - name: 'Build tests'
-        run: |
-          make cli-tests
-          make browser-tests
-
-      - name: 'Upload artifacts'
-        uses: actions/upload-artifact@v2
-        with:
-          name: plugins
-          path: |
-            .build/plugins/*
-
-      - name: 'Docker push'
+      - name: 'Push docker images to GitHub package registry'
         run: |
           make docker-push
