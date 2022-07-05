@@ -8,12 +8,13 @@ dev-server: update ## Start all development containers.
 
 .PHONY: node
 node: ARGS?=node -v
-node: ## Run any script in the node container. Usage: make npm ARGS="npm run dev".
-	@$(MAYBE_EXEC_NODE_IN_DOCKER) ${ARGS}
+node: ## Run any script in the node container. Usage: make node ARGS="yarn workspaces info".
+	$(MAYBE_EXEC_NODE_IN_DOCKER) $(ARGS)
 
-.PHONY: npm
-npm: ## Run any npm script in the node container. Usage: make npm ARGS=dev".
-	$(MAYBE_EXEC_NODE_IN_DOCKER) npm run ${ARGS}
+.PHONY: yarn
+yarn: ARGS?=-v
+yarn: ## Run any npm script in the node container. Usage: make yarn ARGS="run commit".
+	$(MAYBE_EXEC_NODE_IN_DOCKER) yarn $(ARGS)
 
 .PHONY: commit
 commit:  ## Launch the interactive commit tool (node required locally).
@@ -22,7 +23,7 @@ commit:  ## Launch the interactive commit tool (node required locally).
         printf "$(RED)'make commit' can currently not run in docker and requires Node.js + npm on your local machine.\n$(NO_COLOR)";\
         exit 1;\
     fi
-	npm run commit;
+	yarn commit;
 
 .PHONY: php
 php: ARGS?=--help
@@ -91,11 +92,13 @@ PLUGINS_SRC=$(wildcard src/Snicco/plugin/*)
 PLUGIN_BUILDS=$(wildcard ./.build/plugins/*)
 
 PROD_BUILD_COMMAND=@$(if $(BUILD_VERSION),,$(error BUILD_VERSION is undefined.)) \
-                   $(MAYBE_EXEC_APP_IN_DOCKER) sh $(DOCKER_DIR)/images/app/bin/build_plugin.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@) $(subst src/Snicco/plugin/,,$@)-$(BUILD_VERSION)
+                   $(MAYBE_EXEC_APP_IN_DOCKER) sh .docker/images/app/bin/build_plugin.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@) $(subst src/Snicco/plugin/,,$@)-$(BUILD_VERSION)
+#                   $(MAYBE_EXEC_NODE_IN_DOCKER) sh .docker/images/node/bin/build_plugin_assets.sh $@ .build/plugins/$(subst src/Snicco/plugin/,,$@)
 
 ifdef FORCE_PROD_BUILD
 	BUILD_COMMAND=$(PROD_BUILD_COMMAND)
 endif
+
 ifndef BUILD_COMMAND
 	ifeq ($(ENV),local)
 		BUILD_COMMAND=$(MAYBE_EXEC_APP_IN_DOCKER) composer update --working-dir=$@ $(ARGS)
@@ -104,10 +107,13 @@ ifndef BUILD_COMMAND
 	endif
 endif
 
-.PHONY: build $(PLUGINS_SRC)
-build: $(PLUGINS_SRC) ## Build all plugins based on the current environment.
-$(PLUGINS_SRC):
-	$(BUILD_COMMAND)
+.PHONY: build-dev
+build-dev: ## Build all plugins based on the current environment.
+	$(MAYBE_EXEC_APP_IN_DOCKER) yarn workspaces foreach --interlaced --verbose --parallel --jobs $(CORES) run build-dev
+
+.PHONY: build-prod
+build-prod: ## Build all plugins based on the current environment.
+	$(MAYBE_EXEC_APP_IN_DOCKER) yarn workspaces foreach --interlaced --verbose --parallel --jobs $(CORES) run build-prod
 
 .PHONY: copy-prod-plugins $(PLUGIN_BUILDS)
 copy-prod-plugins: $(PLUGIN_BUILDS) ## Copy built production plugins into the WordPress container (CI only).

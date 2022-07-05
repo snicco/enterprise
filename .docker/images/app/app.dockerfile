@@ -10,7 +10,7 @@ ARG PHP_VERSION
 ARG ALPINE_VERSION
 ARG COMPOSER_VERSION
 
-FROM composer:${COMPOSER_VERSION} as composer
+FROM composer:${COMPOSER_VERSION} as composer_binary
 
 FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as base
 
@@ -38,6 +38,12 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
                            zip \
                            pcntl \
                            posix #Required for psalm threads
+
+RUN apk add --update --no-cache \
+        nodejs-current=18.2.0-r0 \
+        yarn
+
+RUN yarn set version 3.2.1 && yarn -v && node -v
 
 #
 # =================================================================
@@ -93,7 +99,7 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
 # We leverage multi-stage builds here, since we
 # are only interested in the composer (PHAR) binary.
 #
-COPY --from=composer --chown=$APP_USER_NAME:$APP_GROUP_NAME /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer_binary --chown=$APP_USER_NAME:$APP_GROUP_NAME /usr/bin/composer /usr/local/bin/composer
 
 COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME .docker/images/app/bin $MONOREPO_PATH/.docker/images/app/bin
 
@@ -158,8 +164,6 @@ FROM base as ci
 COPY ./composer.json $MONOREPO_PATH
 COPY ./composer.lock $MONOREPO_PATH
 
-RUN composer install
+RUN composer install && yarn install
 
 COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME . $MONOREPO_PATH
-
-ENTRYPOINT ["sh", "/etc/entrypoint.sh"]

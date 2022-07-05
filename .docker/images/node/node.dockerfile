@@ -37,17 +37,22 @@ RUN deluser --remove-home node && \
     mkdir -p $MONOREPO_PATH && \
     chown $APP_USER_NAME: $MONOREPO_PATH
 
+RUN corepack enable && \
+    yarn set version "3.2.1"
+
 WORKDIR $MONOREPO_PATH
 
 FROM base as local
 
 FROM base as ci
 
-ENV CI=1
-
-COPY package.json $MONOREPO_PATH
-COPY package-lock.json $MONOREPO_PATH
-
-RUN npm ci
+#ENV CI=1
+#
+#COPY package.json $MONOREPO_PATH
+#COPY package-lock.json $MONOREPO_PATH
+#
+#RUN npm ci
 
 COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME . $MONOREPO_PATH
+
+RUN yarn

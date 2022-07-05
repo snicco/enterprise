@@ -22,7 +22,9 @@
             <directory name="vendor"/>
             <directory name="src/Snicco/skeleton"/>
             <directory name=".wp"/>
-            <directory name="src/Snicco/plugin/snicco-fortress/tests/_support"/>
+            <directory name="src/Snicco/plugin/*/vendor"/>
+            <directory name="src/Snicco/plugin/*/tests/_support/_generated"/>
+            <directory name=".build"/>
         </ignoreFiles>
     </projectFiles>
 

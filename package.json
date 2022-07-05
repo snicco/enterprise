@@ -1,6 +1,11 @@
 {
-  "name": "snicco-enterprise",
+  "name": "@snicco/enterprise",
   "version": "0.0.0-dev",
+  "packageManager": "yarn@3.2.1",
+  "private": true,
+  "workspaces": [
+    "src/Snicco/plugin/*"
+  ],
   "devDependencies": {
     "@commitlint/config-conventional": "^16.2.1",
     "@commitlint/cz-commitlint": "^16.2.1",
@@ -11,12 +16,11 @@
     "commitlint": "^16.2.3",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^7.0.4",
+    "inquirer": "^8.0.0",
     "semantic-release": "^19.0.2"
   },
   "scripts": {
-    "commit": "cz",
-    "_disabled_prepare": "node bin/node/prepare.js && chmod ug+x .husky/*",
-    "semantic-release": "semantic-release"
+    "commit": "cz"
   },
   "config": {
     "commitizen": {

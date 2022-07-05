@@ -148,10 +148,10 @@ qa_all: ecs \
     magic-number-detector \
     composer-require-checker
 
-.PHONY: fix
-fix: ## Apply automatic fixes for the entire codebase.
+.PHONY: fix-cs
+fix-cs: ## Apply automatic fixes for the entire codebase.
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process $(ARGS)
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs --fix $(ARGS)
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --fix $(ARGS)
 
 .PHONY: clear-qa-cache
 clear-qa-cache: ## Clear all caches of QA tools
@@ -163,9 +163,9 @@ clear-qa-cache: ## Clear all caches of QA tools
 .PHONY: commitlint
 commitlint: ## Check a commit message against our commit message rules. Usage make commitlint MSG="chore(monorepo): is this valid"
 	$(if $(MSG),,$(error "Usage: make commitlint MSG=chore(monorepo): is this valid?"))
-	$(MAYBE_EXEC_NODE_IN_DOCKER) echo ${MSG} | npx commitlint
+	$(MAYBE_EXEC_NODE_IN_DOCKER) echo $(MSG) | yarn commitlint
 
 .PHONY: commitlint-from
 commitlint-from: ## Checks all commit message after the provided commit sha. Usage: make commitlint-from COMMIT_SHA=4234235423123.
 	$(if $(COMMIT_SHA),,$(error "Usage: make commitlint-from: COMMIT_SHA=4234235423123"))
-	$(MAYBE_EXEC_NODE_IN_DOCKER) npx commitlint --from ${COMMIT_SHA}
+	$(MAYBE_EXEC_NODE_IN_DOCKER) yarn commitlint --from $(COMMIT_SHA)
