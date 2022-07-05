@@ -153,8 +153,8 @@ qa_all: ecs \
 
 .PHONY: fix-cs
 fix-cs: ## Apply automatic fixes for the entire codebase.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process $(ARGS)
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --fix $(ARGS)
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process --ansi $(ARGS)
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --fix --ansi $(ARGS)
 
 .PHONY: clear-qa-cache
 clear-qa-cache: ## Clear all caches of QA tools

@@ -42,7 +42,8 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 
 RUN apk add --update --no-cache \
         nodejs-current=18.2.0-r0 \
-        yarn
+        yarn \
+        git
 
 RUN yarn set version 3.2.1 && yarn -v && node -v
 

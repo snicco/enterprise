@@ -72,5 +72,12 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "test": [
+            "vendor/bin/codecept run unit,usecase",
+            "vendor/bin/codecept run wpunit,integration",
+            "vendor/bin/codecept run cli,browser"
+        ]
+    }
 }

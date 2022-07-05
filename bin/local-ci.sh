@@ -10,8 +10,8 @@ NC='\033[0m'
 
 function heading() {
   echo ""
-  echo "$YELLOW $1"
-  echo "=================================================================$NC"
+  echo -e "$YELLOW $1"
+  echo -e "=================================================================$NC"
   echo ""
 }
 
@@ -112,14 +112,14 @@ END_QA=$(date +%s)
 
 #
 # =================================================================
-# Fast tests
+# Test
 # =================================================================
 #
 #
-heading "Running fast test suites"
-START_TEST_FAST=$(date +%s)
-make unit-tests "$MAKE_ARGS" QUIET=true || FAILED+=", TEST_FAST"
-END_TEST_FAST=$(date +%s)
+heading "Running test suites of affected packages"
+START_TEST=$(date +%s)
+make test-affected "$MAKE_ARGS" || FAILED+=", TEST_FAST"
+END_TEST=$(date +%s)
 
 #
 # =================================================================
@@ -131,19 +131,19 @@ END_TOTAL=$(date +%s)
 
 heading "Runtime results"
 
-echo "Pull images:         $YELLOW" $((END_DOCKER_PULL - START_DOCKER_PULL))"s$NC"
-echo "Build docker:        $YELLOW" $((END_DOCKER_BUILD - START_DOCKER_BUILD))"s$NC"
-echo "Start docker:        $YELLOW" $((END_DOCKER_UP - START_DOCKER_UP))"s$NC"
-echo "QA:                  $YELLOW" $((END_QA - START_QA))"s$NC"
-echo "Fast tests:          $YELLOW" $((END_TEST_FAST - START_TEST_FAST))"s$NC"
-echo "---------------------------"
-echo "Total:               $YELLOW" $((END_TOTAL - START_TOTAL))"s$NC"
-echo ""
+echo -e "Pull images:         $YELLOW" $((END_DOCKER_PULL - START_DOCKER_PULL))"s$NC"
+echo -e "Build docker:        $YELLOW" $((END_DOCKER_BUILD - START_DOCKER_BUILD))"s$NC"
+echo -e "Start docker:        $YELLOW" $((END_DOCKER_UP - START_DOCKER_UP))"s$NC"
+echo -e "QA:                  $YELLOW" $((END_QA - START_QA))"s$NC"
+echo -e "Fast tests:          $YELLOW" $((END_TEST - START_TEST))"s$NC"
+echo -e "---------------------------"
+echo -e "Total:               $YELLOW" $((END_TOTAL - START_TOTAL))"s$NC"
+echo -e ""
 
 if [ -n "$FAILED" ]; then
-  echo "${RED}[ERROR] One ore more steps failed: [$FAILED].$NC"
+  echo -e "${RED}[ERROR] One ore more steps failed: [$FAILED].$NC"
 else
-  echo "${GREEN}[SUCCESS] All CI steps passed.$NC"
+  echo -e "${GREEN}[SUCCESS] All CI steps passed.$NC"
 fi
 
 make docker-down > /dev/null 2>&1

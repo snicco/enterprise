@@ -1,5 +1,10 @@
 ##@ [Tests]
 
+.PHONY: test-affected
+test-affected:
+	$(MAYBE_EXEC_APP_IN_DOCKER) bash bin/test-affected-packages.sh
+
+
 .PHONY:codecept
 codecept: ## Run codeception for a set of files. Usage: make codecept FILES=src/Snicco/component/asset/tests/unit/AssetFactoryTest.
 	@$(if $(FILES),,$(error "Usage: make codecept FILES=src/Snicco/component/asset/tests/unit/AssetFactoryTest"))
