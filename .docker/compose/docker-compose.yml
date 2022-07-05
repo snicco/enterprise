@@ -101,30 +101,30 @@ services:
       - network
     tty: true
 
-  node:
-    container_name: node
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
-    build:
-      context: ${MONOREPO_ROOT_HOST}
-      dockerfile: ./.docker/images/node/node.dockerfile
-      target: ${ENV?}
-      cache_from:
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:latest
-      args:
-        <<: *user-args
-        <<: *shared-args
-        NODE_VERSION: ${NODE_VERSION?}
-        ALPINE_VERSION: ${ALPINE_VERSION?}
-        MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
-    # Keep the node container running.
-    # There is no long-running process defined as the entrypoint for the container.
-    # Keeping the container running saves as time for frequently run commands since
-    # we can use docker exec over docker run.
-    # @see https://stackoverflow.com/a/55953120
-    tty: true
-    networks:
-      - network
+#  node:
+#    container_name: node
+#    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
+#    build:
+#      context: ${MONOREPO_ROOT_HOST}
+#      dockerfile: ./.docker/images/node/node.dockerfile
+#      target: ${ENV?}
+#      cache_from:
+#        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
+#        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:latest
+#      args:
+#        <<: *user-args
+#        <<: *shared-args
+#        NODE_VERSION: ${NODE_VERSION?}
+#        ALPINE_VERSION: ${ALPINE_VERSION?}
+#        MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
+#    # Keep the node container running.
+#    # There is no long-running process defined as the entrypoint for the container.
+#    # Keeping the container running saves as time for frequently run commands since
+#    # we can use docker exec over docker run.
+#    # @see https://stackoverflow.com/a/55953120
+#    tty: true
+#    networks:
+#      - network
 
   nginx:
     container_name: nginx

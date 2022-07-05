@@ -100,6 +100,8 @@ include .make/*.mk
 # - make <target> ARGS="FOO=BAR"
 #
 ARGS?=
+MONOREPO_ROOT=$(shell pwd)
+
 
 #
 # =================================================================

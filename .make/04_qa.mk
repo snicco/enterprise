@@ -95,7 +95,10 @@ composer-unused: ## Check for unused composer packages.
 
 .PHONY: copy-paste-detector
 copy-paste-detector: ## Checks for copy-paste occurrences.
-	$(call execute_qa_tool_in_external_container, phpcpd ./src $(ARGS) --exclude ./src/Snicco/bundle/fortress-bundle/tests/_support/_generated --exclude ./src/Snicco/skeleton/ )
+	$(call execute_qa_tool_in_external_container, phpcpd ./src $(ARGS) \
+			--exclude ./src/Snicco/plugin/snicco-fortress/tests/_support/_generated \
+			--exclude ./src/Snicco/plugin/snicco-fortress/vendor \
+			--exclude ./src/Snicco/skeleton )
 
 .PHONY: phploc
 phploc: DIR?=src

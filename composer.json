@@ -16,6 +16,7 @@
         "php": "^7.4|^8.0",
         "ext-json": "*",
         "ext-mbstring": "*",
+        "ext-hash": "*",
         "bjeavons/zxcvbn-php": "^1.3",
         "league/tactician": "^1.1.0",
         "league/tactician-logger": "^0.11.0",
@@ -24,7 +25,11 @@
         "pragmarx/google2fa": "^8.0.0",
         "psr/container": "^1.1.2",
         "psr/log": "^1.1.4",
+        "psr/http-message": "^1.0.1",
         "snicco/better-wp-cli": "^1.2.1",
+        "snicco/psr7-error-handler": "^1.2.1",
+        "snicco/better-wp-api": "^1.2.1",
+        "snicco/better-wp-hooks": "^1.2.1",
         "snicco/better-wpdb": "^1.2.1",
         "snicco/better-wpdb-bundle": "^1.2.1",
         "snicco/content-negotiation-middleware": "^1.2.1",
@@ -39,7 +44,9 @@
         "snicco/str-arr": "^1.2.1",
         "snicco/testable-clock": "^1.2.1",
         "snicco/wp-guests-only-middleware": "^1.2.1",
-        "webmozart/assert": "^1.10.0"
+        "webmozart/assert": "^1.10.0",
+        "defuse/php-encryption": "^2.3",
+        "paragonie/constant_time_encoding": "^2.6.3"
     },
     "require-dev": {
         "codeception/codeception": "4.2",

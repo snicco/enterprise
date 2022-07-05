@@ -141,7 +141,6 @@ _validate-docker-env:
 	@$(if $(APP_HOST),,$(error APP_HOST is undefined - Did you run make setup?))
 	@$(if $(WP_CONTAINER_WP_APP_PATH),,$(error WP_CONTAINER_WP_APP_PATH is undefined - Did you run make setup?))
 	@$(if $(APP_CONTAINER_MONOREPO_PATH),,$(error APP_CONTAINER_MONOREPO_PATH is undefined - Did you run make setup?))
-	@echo "All docker variables are set."
 
 .PHONY: _is_ci
 _is_ci:

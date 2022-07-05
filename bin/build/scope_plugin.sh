@@ -8,9 +8,15 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
-PLUGIN_SRC_DIR="$1"
-OUTPUT_DIR="$2"
-BUILD_VERSION="$3"
+PLUGIN_SRC_DIR=$(pwd)
+OUTPUT_DIR="$1"
+BUILD_VERSION="$2"
+
+echo $PLUGIN_SRC_DIR
+echo $OUTPUT_DIR
+echo $BUILD_VERSION
+
+exit
 
 if [ ! -d "$PLUGIN_SRC_DIR" ]; then
   echo -e "$RED Directory $PLUGIN_SRC_DIR does not exit.$NC"

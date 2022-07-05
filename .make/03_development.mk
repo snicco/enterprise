@@ -113,7 +113,7 @@ build-dev: ## Build all plugins based on the current environment.
 
 .PHONY: build-prod
 build-prod: ## Build all plugins based on the current environment.
-	$(MAYBE_EXEC_APP_IN_DOCKER) yarn workspaces foreach --interlaced --verbose --parallel --jobs $(CORES) run build-prod
+	$(MAYBE_EXEC_APP_IN_DOCKER) yarn workspaces foreach --interlaced --verbose --parallel --jobs $(CORES) run build-prod $(MONOREPO_ROOT)/.build/plugins
 
 .PHONY: copy-prod-plugins $(PLUGIN_BUILDS)
 copy-prod-plugins: $(PLUGIN_BUILDS) ## Copy built production plugins into the WordPress container (CI only).

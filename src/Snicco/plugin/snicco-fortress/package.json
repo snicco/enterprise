@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build-dev": "concurrently \"composer update\" \"mix\"",
-    "build-prod": "mix --production"
+    "build-prod": "sh ${PROJECT_CWD}/bin/build/scope_plugin.sh"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

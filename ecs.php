@@ -38,6 +38,7 @@ return static function (ContainerConfigurator $configurator): void {
         __DIR__ . '/monorepo-builder.php',
         __DIR__ . '/rector.php',
         __DIR__ . '/ecs.php',
+        __DIR__ . '/composer-unused.php',
     ]);
     $parameters->set(Option::SKIP, [
         __DIR__ . '/src/Snicco/plugin/snicco-fortress/tests/_support/_generated',

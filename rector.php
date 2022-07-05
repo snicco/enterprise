@@ -23,11 +23,14 @@ use Rector\Set\ValueObject\SetList;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddArrayReturnDocTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 
+
+
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
         __DIR__ . '/rector.php',
         __DIR__ . '/ecs.php',
         __DIR__ . '/monorepo-builder.php',
+        __DIR__ . '/composer-unused.php',
         __DIR__ . '/src/Monorepo',
         __DIR__ . '/src/Snicco/plugin',
         __DIR__ . '/src/Snicco/component',
