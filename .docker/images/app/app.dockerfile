@@ -36,8 +36,9 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
                            mysqli \
                            bcmath \
                            zip \
-                           pcntl \
-                           posix #Required for psalm threads
+                           # intl: Ror rector so that it does not throw notices
+                           intl \
+                           posix #: Required for psalm threads
 
 RUN apk add --update --no-cache \
         nodejs-current=18.2.0-r0 \

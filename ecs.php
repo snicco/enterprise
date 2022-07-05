@@ -23,6 +23,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer;
 use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
+use Snicco\Enterprise\Monorepo\ExcludedQADirectories;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\CodingStandard\Fixer\LineLength\DocBlockLineLengthFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
@@ -41,7 +42,8 @@ return static function (ContainerConfigurator $configurator): void {
         __DIR__ . '/composer-unused.php',
     ]);
     $parameters->set(Option::SKIP, [
-        __DIR__ . '/src/Snicco/plugin/snicco-fortress/tests/_support/_generated',
+        ...ExcludedQADirectories::vendor(),
+        ...ExcludedQADirectories::generatedFiles(),
     ]);
     $parameters->set(Option::PARALLEL, true);
     $parameters->set(Option::CACHE_DIRECTORY, '/tmp/snicco-qa/ecs');

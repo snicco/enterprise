@@ -52,6 +52,9 @@ START_TOTAL=$(date +%s)
 # and also our internal images from the GH package registry.
 # The internal images are used as cache snapshots.
 #
+# This is on purpose not done inside docker compose build because
+# docker compose pull pulls missing images in parallel.
+#
 heading "Pulling docker images"
 START_DOCKER_PULL=$(date +%s)
 if [ "$LOCAL_CI_SKIP_REBUILD" == 1 ]; then

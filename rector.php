@@ -22,8 +22,7 @@ use Rector\Privatization\Rector\Property\ChangeReadOnlyPropertyWithDefaultValueT
 use Rector\Set\ValueObject\SetList;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddArrayReturnDocTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
-
-
+use Snicco\Enterprise\Monorepo\ExcludedQADirectories;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
@@ -57,10 +56,12 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->skip([
-        __DIR__ . '/src/Snicco/plugin/snicco-fortress/tests/_support/_generated',
+        ...ExcludedQADirectories::vendor(),
+        ...ExcludedQADirectories::generatedFiles(),
 
         // Skip rules from SetList::CODE_QUALITY.
-        CallableThisArrayToAnonymousFunctionRector::class, // These two break controller syntax.
+        CallableThisArrayToAnonymousFunctionRector::class,
+        // These two break controller syntax.
         ArrayThisCallToThisMethodCallRector::class,
 
         // Skip rules from SetList::TYPE_DECLARATION.
@@ -68,25 +69,37 @@ return static function (RectorConfig $rectorConfig): void {
         AddArrayReturnDocTypeRector::class,
 
         // Skip rules from SetList::CODING_STYLE.
-        EncapsedStringsToSprintfRector::class, // Breaks psalm non-empty-string assertions.
-        CatchExceptionNameMatchingTypeRector::class, // Does only support kebabCase.
-        AddArrayDefaultToArrayPropertyRector::class, // Breaks psalm for empty array on typed array property.
+        EncapsedStringsToSprintfRector::class,
+        // Breaks psalm non-empty-string assertions.
+        CatchExceptionNameMatchingTypeRector::class,
+        // Does only support kebabCase.
+        AddArrayDefaultToArrayPropertyRector::class,
+        // Breaks psalm for empty array on typed array property.
 
         // Skip rules from SetList::DEAD_CODE.
-        RecastingRemovalRector::class, // Need for psalm type safety on strictest mode
-        RemoveConcatAutocastRector::class, // Need for psalm type safety on strictest mode
-        RemoveParentCallWithoutParentRector::class, // Removes setUp/tearDown from test classes because WPTestCase does not have them.
+        RecastingRemovalRector::class,
+        // Need for psalm type safety on strictest mode
+        RemoveConcatAutocastRector::class,
+        // Need for psalm type safety on strictest mode
+        RemoveParentCallWithoutParentRector::class,
+        // Removes setUp/tearDown from test classes because WPTestCase does not have them.
         // @see https://github.com/lucatume/wp-browser/issues/583
 
         // Skip rules from SetList::PRIVATIZATION.
-        RemoveUnusedPrivateMethodRector::class, // Breaks currently with test cases because we have to use setUp/tearDown.
+        RemoveUnusedPrivateMethodRector::class,
+        // Breaks currently with test cases because we have to use setUp/tearDown.
         // https://github.com/lucatume/wp-browser/issues/583
-        RepeatedLiteralToClassConstantRector::class, // A bit too much, especially in tests.
-        PrivatizeFinalClassMethodRector::class, // Breaks because of https://github.com/lucatume/wp-browser/issues/583
-        ChangeReadOnlyPropertyWithDefaultValueToConstantRector::class, // Breaks for constants in string interpolation.
-        ChangeReadOnlyVariableWithDefaultValueToConstantRector::class, // Too much, especially in tests.
+        RepeatedLiteralToClassConstantRector::class,
+        // A bit too much, especially in tests.
+        PrivatizeFinalClassMethodRector::class,
+        // Breaks because of https://github.com/lucatume/wp-browser/issues/583
+        ChangeReadOnlyPropertyWithDefaultValueToConstantRector::class,
+        // Breaks for constants in string interpolation.
+        ChangeReadOnlyVariableWithDefaultValueToConstantRector::class,
+        // Too much, especially in tests.
 
         // Skip rules from PHPUnitSetList::PHPUNIT_CODE_QUALITY,
-        AddSeeTestAnnotationRector::class, // Useless as PHPStorm automatically support this.
+        AddSeeTestAnnotationRector::class,
+        // Useless as PHPStorm automatically support this.
     ]);
 };
