@@ -8,7 +8,6 @@ use Snicco\Enterprise\Monorepo\Symfony\Command\GenerateCommitScopes;
 use Snicco\Enterprise\Monorepo\Symfony\Command\GetAffectedPackages;
 use Snicco\Enterprise\Monorepo\Symfony\Command\GetAllPackages;
 use Snicco\Enterprise\Monorepo\Symfony\Command\SplitPackage;
-use Snicco\Enterprise\Monorepo\Symfony\Command\TestSinglePackage;
 use Snicco\Enterprise\Monorepo\ValueObject\RepositoryRoot;
 use Symfony\Component\Console\Application;
 
@@ -25,13 +24,10 @@ try {
     $application->add(new CreatePackageGitHubRepo($package_repo));
     $application->add(new GetAffectedPackages($package_repo));
     $application->add(new SplitPackage($package_repo));
-    $application->add(new TestSinglePackage());
 
     exit($application->run());
 } catch (Throwable $e) {
     $message = $e->getMessage();
-
-    \var_dump($e);
 
     echo \PHP_EOL . \PHP_EOL . "\033[0;31m[ERROR] " . $message . "\033[0m" . \PHP_EOL . \PHP_EOL;
 

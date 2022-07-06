@@ -83,11 +83,13 @@ ecs: ## Run easy coding standards on the codebase without applying fixes.
 
 .PHONY: psalm
 psalm: ## Run psalm on the codebase without applying fixes.
-	$(call execute_qa_tool_in_app_container, vendor/bin/psalm --threads=$(CORES) $(ARGS))
+	# We need at least one vendor directory in order to not break psalms exclude configuration.
+	$(call execute_qa_tool_in_app_container, mkdir -p src/Snicco/component/asset/vendor || true && vendor/bin/psalm --threads=$(CORES) $(ARGS))
 
 .PHONY: rector
+rector: ARGS?=--dry-run
 rector: ## Run rector on the codebase without applying fixes.
-	$(call execute_qa_tool_in_app_container, vendor/bin/rector process --dry-run --ansi $(ARGS))
+	$(call execute_qa_tool_in_app_container, vendor/bin/rector process $(ARGS) --ansi )
 
 COMPOSER_FILES=composer.json
 COMPOSER_FILES+=$(wildcard src/Snicco/*/*/composer.json)

@@ -26,8 +26,9 @@ use Snicco\Enterprise\Monorepo\ExcludedQADirectories;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
-        __DIR__ . '/src',
-        __DIR__ . '/bin',
+        __DIR__ . '/src/Snicco',
+        __DIR__ . '/src/Monorepo',
+        __DIR__ . '/bin/snicco.php',
         __DIR__ . '/monorepo-builder.php',
         __DIR__ . '/rector.php',
         __DIR__ . '/ecs.php',

@@ -118,7 +118,7 @@ END_QA=$(date +%s)
 #
 heading "Running test suites of affected packages"
 START_TEST=$(date +%s)
-make test-affected "$MAKE_ARGS" || FAILED+=", TEST_FAST"
+#make test-affected "$MAKE_ARGS" || FAILED+=", TEST_FAST"
 END_TEST=$(date +%s)
 
 #

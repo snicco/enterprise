@@ -46,9 +46,7 @@ $env = Environment::fromString('dev', $debug);
 | instantiation from booting. This will be needed in tests.
 |
 */
-/** @var Kernel $kernel */
 $kernel = (require_once __DIR__ . '/boot/create-kernel.php')($env);
-
 /*
 |--------------------------------------------------------------------------
 | Turning on the lights

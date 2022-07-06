@@ -7,8 +7,12 @@ dev-server: update ## Start all development containers.
 	$(MAKE) get-wp-files
 
 .PHONY: clean-vendor
-clean-vendor: ## Remove all vendor folders
-	rm -rf vendor src/Snicco/*/*/vendor
+clean-vendor: clean-packages-vendor ## Remove all vendor folders.
+	rm -rf vendor
+
+.PHONY: clean-packages-vendor
+clean-packages-vendor: ## Remove all vendor folders from packages.
+	rm -rf src/Snicco/*/*/vendor
 
 .PHONY: node
 node: ARGS?=node -v

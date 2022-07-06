@@ -12,6 +12,3 @@ src/Snicco/*/*/vendor
 src/Snicco/*/*/composer.lock
 .make/.mk.env
 .docker/.env
-
-
-bin/local-ci.sh

@@ -13,11 +13,11 @@ return function (Environment $env): Kernel {
 
     $base_dir = \dirname(__DIR__);
 
-    if ($env->isProduction() || $env->isStaging()) {
-        //$cache = new ConfigCacheWithRuntimeChecks();
-    } else {
-        $cache = null;
-    }
+    //if ($env->isProduction() || $env->isStaging()) {
+    //    //$cache = new ConfigCacheWithRuntimeChecks();
+    //} else {
+    //    $cache = null;
+    //}
 
     return new Kernel(
         $container,
@@ -27,7 +27,6 @@ return function (Environment $env): Kernel {
             $base_dir . '/config',
             $base_dir . '/var/cache',
             $base_dir . '/var/log'
-        ),
-        $cache
+        )
     );
 };

@@ -6,11 +6,9 @@ use Isolated\Symfony\Component\Finder\Finder;
 use Snicco\Enterprise\Monorepo\PHPScoper\ScoperPrefix;
 use Snicco\Enterprise\Monorepo\PHPScoper\StubList;
 
-$monorepo_root = \dirname(__DIR__, 4);
+$parent_config = require_once \dirname(__DIR__, 4) . '/php-scoper.php';
 
-$parent_config = require_once $monorepo_root . '/php-scoper.php';
-
-$stub_list = new StubList($monorepo_root);
+$stub_list = new StubList(\dirname(__DIR__, 4));
 
 $plugin_config = [
     'prefix' => (string) new ScoperPrefix(),
