@@ -1,48 +1,48 @@
 {
-    "name": "snicco/application-layer-bundle",
-    "description": "An application layer for building enterprise WordPress plugins.",
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "Calvin Alkan",
-            "email": "calvin@snicco.de"
-        }
-    ],
-    "require": {
-        "league/tactician": "^1.1.0",
-        "league/tactician-logger": "^0.11.0",
-        "psr/container": "^1.1.2",
-        "psr/log": "^1.1.4",
-        "snicco/better-wpdb": "^1.2.1",
-        "snicco/kernel": "^1.2.1",
-        "snicco/str-arr": "^1.2.1",
-        "webmozart/assert": "^1.10.0"
-    },
-    "require-dev": {
-        "codeception/codeception": "4.2",
-        "lucatume/wp-browser": "3.1.6",
-        "phpunit/phpunit": "9.5.13",
-        "snicco/testing-bundle": "^1.2.1"
-    },
-    "minimum-stability": "stable",
-    "autoload": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "tests"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "ergebnis/composer-normalize": true
-        }
-    },
-    "scripts": {
-        "test": [
-            "vendor/bin/codecept run"
-        ]
+  "name": "snicco/application-layer-bundle",
+  "description": "An application layer for building enterprise WordPress plugins.",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
     }
+  ],
+  "require": {
+    "league/tactician": "^1.1.0",
+    "league/tactician-logger": "^0.11.0",
+    "psr/container": "^1.1.2",
+    "psr/log": "^1.1.4",
+    "snicco/better-wpdb": "^1.2.1",
+    "snicco/kernel": "^1.2.1",
+    "snicco/str-arr": "^1.2.1",
+    "webmozart/assert": "^1.10.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "4.2",
+    "lucatume/wp-browser": "3.1.6",
+    "phpunit/phpunit": "9.5.13",
+    "snicco/testing-bundle": "^1.2.1"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run"
+    ]
+  }
 }

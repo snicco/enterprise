@@ -1320,7 +1320,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../bundle/application-layer-bundle",
-                "reference": "fbaf8d68d5f6892972b54e9aaf498651e323ea72"
+                "reference": "fa72b46776216ef791fdb2c6798793058acaa0e2"
             },
             "require": {
                 "league/tactician": "^1.1.0",
@@ -1584,7 +1584,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../bundle/better-wp-cli-bundle",
-                "reference": "85559d21e761bcd13850d400ebf39d6fd9f6ee60"
+                "reference": "6495ea65f63313b7c31fd842e200a77510268bb4"
             },
             "require": {
                 "snicco/better-wp-cli": "^1.2.1",

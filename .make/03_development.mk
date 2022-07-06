@@ -53,8 +53,8 @@ get-wp-files:  ## Get a fresh copy of all WordPress files in the wp container.
 composer-merge: ## Merge all composer.json files of all packages
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder merge --ansi
 	$(MAYBE_EXEC_APP_IN_DOCKER) sed -i 's#"url": "../../#"url": "src/Snicco/#g' 'composer.json'
-	$(MAYBE_EXEC_APP_IN_DOCKER) composer update --ansi
-	$(MAKE) composer.json NORMALIZE_ARGS="--diff --no-check-lock --no-update-lock"
+	$(MAYBE_EXEC_APP_IN_DOCKER) composer update --ansi --no-install
+	$(MAKE) composer.json NORMALIZE_ARGS="--diff --no-check-lock --indent-size=2 --indent-style=space"
 	$(MAYBE_EXEC_APP_IN_DOCKER) composer dump-autoload --ansi
 
 .PHONY: composer-propagate

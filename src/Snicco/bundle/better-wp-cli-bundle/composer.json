@@ -1,43 +1,43 @@
 {
-    "name": "snicco/better-wp-cli-bundle",
-    "description": "Integrates better-wp-cli into snicco/kernel",
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "Calvin Alkan",
-            "email": "calvin@snicco.de"
-        }
-    ],
-    "require": {
-        "snicco/better-wp-cli": "^1.2.1",
-        "snicco/kernel": "^1.2.1"
-    },
-    "require-dev": {
-        "codeception/codeception": "4.2",
-        "lucatume/wp-browser": "3.1.6",
-        "phpunit/phpunit": "9.5.13",
-        "snicco/pimple-bridge": "^1.2.1",
-        "snicco/testing-bundle": "^1.2.1"
-    },
-    "minimum-stability": "stable",
-    "autoload": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "tests"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "ergebnis/composer-normalize": true
-        }
-    },
-    "scripts": {
-        "test": [
-            "vendor/bin/codecept run"
-        ]
+  "name": "snicco/better-wp-cli-bundle",
+  "description": "Integrates better-wp-cli into snicco/kernel",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
     }
+  ],
+  "require": {
+    "snicco/better-wp-cli": "^1.2.1",
+    "snicco/kernel": "^1.2.1"
+  },
+  "require-dev": {
+    "codeception/codeception": "4.2",
+    "lucatume/wp-browser": "3.1.6",
+    "phpunit/phpunit": "9.5.13",
+    "snicco/pimple-bridge": "^1.2.1",
+    "snicco/testing-bundle": "^1.2.1"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run"
+    ]
+  }
 }

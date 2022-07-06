@@ -31,9 +31,9 @@ final class SplitPackage extends Command
     private PackageRepository $package_repo;
 
     private ?SymfonyStyle $output = null;
-    
+
     private string $default_branch = 'master';
-    
+
     public function __construct(PackageRepository $package_repo)
     {
         parent::__construct('split-package');

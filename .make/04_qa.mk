@@ -79,7 +79,7 @@ endef
 
 .PHONY: ecs
 ecs: ## Run easy coding standards on the codebase without applying fixes.
-	$(call execute_qa_tool_in_app_container, vendor/bin/ecs check --ansi)
+	$(call execute_qa_tool_in_app_container, vendor/bin/ecs check --ansi $(ARGS))
 
 .PHONY: psalm
 psalm: ## Run psalm on the codebase without applying fixes.
@@ -98,7 +98,7 @@ composer-normalize: $(COMPOSER_FILES)
 $(COMPOSER_FILES): NORMALIZE_ARGS?=--dry-run
 $(COMPOSER_FILES): VALIDATE_ARGS_ARGS?=
 $(COMPOSER_FILES):
-	$(call execute_qa_tool_in_app_container, composer-normalize $(@) --ansi $(NORMALIZE_ARGS))
+	$(call execute_qa_tool_in_app_container, composer-normalize $(@) --ansi --indent-size=2 --indent-style=space $(NORMALIZE_ARGS))
 	$(call execute_qa_tool_in_app_container, composer validate $(@) --ansi --strict $(VALIDATE_ARGS_ARGS))
 
 .PHONY: composer-unused
@@ -106,11 +106,14 @@ composer-unused: ## Check for unused composer packages.
 	$(call execute_qa_tool_in_external_container, composer-unused $(ARGS))
 
 .PHONY: copy-paste-detector
+copy-paste-detector: EXCLUDED_VENDOR_DIRS=$(foreach dir, $(wildcard ./src/Snicco/*/*/vendor), --exclude $(dir))
+copy-paste-detector: EXCLUDED_GENERATED_DIRS=$(foreach dir, $(wildcard ./src/Snicco/*/*/tests/_support/_generated), --exclude $(dir))
 copy-paste-detector: ## Checks for copy-paste occurrences.
 	$(call execute_qa_tool_in_external_container, phpcpd ./src $(ARGS) \
-			--exclude ./src/Snicco/plugin/snicco-fortress/tests/_support/_generated \
-			--exclude ./src/Snicco/plugin/snicco-fortress/vendor \
-			--exclude ./src/Snicco/skeleton )
+	--exclude src/skeleton \
+	$(EXCLUDED_VENDOR_DIRS) \
+	$(EXCLUDED_GENERATED_DIRS) \
+	)
 
 .PHONY: phploc
 phploc: DIR?=src

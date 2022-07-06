@@ -1,147 +1,147 @@
 {
-    "name": "snicco/enterprise",
-    "description": "Snicco Enterprise",
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "Calvin Alkan",
-            "email": "calvin@snicco.de"
-        },
-        {
-            "name": "Marlon Alkan",
-            "email": "marlon@snicco.de"
-        }
-    ],
-    "require": {
-        "php": "^7.4 || ^8.0",
-        "ext-hash": "*",
-        "ext-json": "*",
-        "ext-mbstring": "*",
-        "bjeavons/zxcvbn-php": "^1.3",
-        "defuse/php-encryption": "^2.3",
-        "league/tactician": "^1.1.0",
-        "league/tactician-logger": "^0.11.0",
-        "nyholm/psr7": "^1.5.0",
-        "paragonie/constant_time_encoding": "^2.6.3",
-        "paragonie/password_lock": "^3.1.0",
-        "pragmarx/google2fa": "^8.0.0",
-        "psr/container": "^1.1.2",
-        "psr/http-message": "^1.0.1",
-        "psr/log": "^1.1.4",
-        "snicco/better-wp-api": "^1.2.1",
-        "snicco/better-wp-cli": "^1.2.1",
-        "snicco/better-wp-hooks": "^1.2.1",
-        "snicco/better-wpdb": "^1.2.1",
-        "snicco/better-wpdb-bundle": "^1.2.1",
-        "snicco/content-negotiation-middleware": "^1.2.1",
-        "snicco/encryption-bundle": "^1.2.1",
-        "snicco/event-dispatcher": "^1.2.1",
-        "snicco/http-routing": "^1.2.1",
-        "snicco/http-routing-bundle": "^1.2.1",
-        "snicco/kernel": "^1.2.1",
-        "snicco/payload-middleware": "^1.2.1",
-        "snicco/pimple-bridge": "^1.2.1",
-        "snicco/psr7-error-handler": "^1.2.1",
-        "snicco/signed-url": "^1.2.1",
-        "snicco/str-arr": "^1.2.1",
-        "snicco/testable-clock": "^1.2.1",
-        "snicco/wp-guests-only-middleware": "^1.2.1",
-        "webmozart/assert": "^1.10.0"
+  "name": "snicco/enterprise",
+  "description": "Snicco Enterprise",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
     },
-    "require-dev": {
-        "codeception/codeception": "4.2",
-        "codeception/module-cli": "^1.0",
-        "codeception/module-db": "^1.0",
-        "codeception/module-webdriver": "^1.0",
-        "ergebnis/composer-normalize": "^2.28",
-        "lucatume/wp-browser": "3.1.6",
-        "php-stubs/wordpress-stubs": "^5.9.3",
-        "phpunit/phpunit": "9.5.13",
-        "rector/rector": "0.13.5",
-        "snicco/event-dispatcher-testing": "^1.2.1",
-        "snicco/testing-bundle": "^1.2.1",
-        "sniccowp/php-scoper-wordpress-excludes": "^5.9.3",
-        "symfony/console": "^5.4.7",
-        "symfony/finder": "^5.4.7",
-        "symplify/composer-json-manipulator": "9.3.26",
-        "symplify/easy-coding-standard": "10.1.2",
-        "symplify/monorepo-builder": "9.4.70",
-        "vimeo/psalm": "4.22.0",
-        "vlucas/phpdotenv": "5.4.1",
-        "wp-cli/wp-cli-bundle": "v2.6.0"
-    },
-    "replace": {
-        "snicco/application-layer-bundle": "self.version",
-        "snicco/asset": "self.version",
-        "snicco/better-wp-cli-bundle": "self.version",
-        "snicco/condition": "self.version",
-        "snicco/fortress": "self.version"
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "src/Snicco/bundle/application-layer-bundle",
-            "options": {
-                "symlink": false
-            }
-        },
-        {
-            "type": "path",
-            "url": "src/Snicco/bundle/better-wp-cli-bundle",
-            "options": {
-                "symlink": false
-            }
-        },
-        {
-            "type": "path",
-            "url": "src/Snicco/bundle/application-layer-bundle",
-            "options": {
-                "symlink": false
-            }
-        },
-        {
-            "type": "path",
-            "url": "src/Snicco/bundle/better-wp-cli-bundle",
-            "options": {
-                "symlink": false
-            }
-        }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src/Snicco/bundle/application-layer-bundle/src",
-            "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
-            "Snicco\\Enterprise\\Component\\Asset\\": "src/Snicco/component/asset/src",
-            "Snicco\\Enterprise\\Component\\Condition\\": "src/Snicco/component/condition/src",
-            "Snicco\\Enterprise\\Fortress\\": "src/Snicco/plugin/snicco-fortress/src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "src/Snicco/bundle/application-layer-bundle/tests",
-            "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "src/Snicco/bundle/better-wp-cli-bundle/tests",
-            "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "src/Snicco/component/asset/tests",
-            "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "src/Snicco/component/condition/tests",
-            "Snicco\\Enterprise\\Fortress\\Tests\\": [
-                "src/Snicco/plugin/snicco-fortress/tests",
-                "src/Snicco/plugin/snicco-fortress/tests/_support"
-            ],
-            "Snicco\\Enterprise\\Monorepo\\": "src/Monorepo/",
-            "Snicco\\Enterprise\\Monorepo\\Tests\\": "tests/"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "ergebnis/composer-normalize": true
-        },
-        "sort-packages": true
-    },
-    "scripts": {
-        "show-help": "make help"
-    },
-    "scripts-descriptions": {
-        "show-help": "We use make instead of comopser scripts. Run composer show-help or make to see all available scripts."
+    {
+      "name": "Marlon Alkan",
+      "email": "marlon@snicco.de"
     }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "ext-hash": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "bjeavons/zxcvbn-php": "^1.3",
+    "defuse/php-encryption": "^2.3",
+    "league/tactician": "^1.1.0",
+    "league/tactician-logger": "^0.11.0",
+    "nyholm/psr7": "^1.5.0",
+    "paragonie/constant_time_encoding": "^2.6.3",
+    "paragonie/password_lock": "^3.1.0",
+    "pragmarx/google2fa": "^8.0.0",
+    "psr/container": "^1.1.2",
+    "psr/http-message": "^1.0.1",
+    "psr/log": "^1.1.4",
+    "snicco/better-wp-api": "^1.2.1",
+    "snicco/better-wp-cli": "^1.2.1",
+    "snicco/better-wp-hooks": "^1.2.1",
+    "snicco/better-wpdb": "^1.2.1",
+    "snicco/better-wpdb-bundle": "^1.2.1",
+    "snicco/content-negotiation-middleware": "^1.2.1",
+    "snicco/encryption-bundle": "^1.2.1",
+    "snicco/event-dispatcher": "^1.2.1",
+    "snicco/http-routing": "^1.2.1",
+    "snicco/http-routing-bundle": "^1.2.1",
+    "snicco/kernel": "^1.2.1",
+    "snicco/payload-middleware": "^1.2.1",
+    "snicco/pimple-bridge": "^1.2.1",
+    "snicco/psr7-error-handler": "^1.2.1",
+    "snicco/signed-url": "^1.2.1",
+    "snicco/str-arr": "^1.2.1",
+    "snicco/testable-clock": "^1.2.1",
+    "snicco/wp-guests-only-middleware": "^1.2.1",
+    "webmozart/assert": "^1.10.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "4.2",
+    "codeception/module-cli": "^1.0",
+    "codeception/module-db": "^1.0",
+    "codeception/module-webdriver": "^1.0",
+    "ergebnis/composer-normalize": "^2.28",
+    "lucatume/wp-browser": "3.1.6",
+    "php-stubs/wordpress-stubs": "^5.9.3",
+    "phpunit/phpunit": "9.5.13",
+    "rector/rector": "0.13.5",
+    "snicco/event-dispatcher-testing": "^1.2.1",
+    "snicco/testing-bundle": "^1.2.1",
+    "sniccowp/php-scoper-wordpress-excludes": "^5.9.3",
+    "symfony/console": "^5.4.7",
+    "symfony/finder": "^5.4.7",
+    "symplify/composer-json-manipulator": "9.3.26",
+    "symplify/easy-coding-standard": "10.1.2",
+    "symplify/monorepo-builder": "9.4.70",
+    "vimeo/psalm": "4.22.0",
+    "vlucas/phpdotenv": "5.4.1",
+    "wp-cli/wp-cli-bundle": "v2.6.0"
+  },
+  "replace": {
+    "snicco/application-layer-bundle": "self.version",
+    "snicco/asset": "self.version",
+    "snicco/better-wp-cli-bundle": "self.version",
+    "snicco/condition": "self.version",
+    "snicco/fortress": "self.version"
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "src/Snicco/bundle/application-layer-bundle",
+      "options": {
+        "symlink": false
+      }
+    },
+    {
+      "type": "path",
+      "url": "src/Snicco/bundle/better-wp-cli-bundle",
+      "options": {
+        "symlink": false
+      }
+    },
+    {
+      "type": "path",
+      "url": "src/Snicco/bundle/application-layer-bundle",
+      "options": {
+        "symlink": false
+      }
+    },
+    {
+      "type": "path",
+      "url": "src/Snicco/bundle/better-wp-cli-bundle",
+      "options": {
+        "symlink": false
+      }
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src/Snicco/bundle/application-layer-bundle/src",
+      "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src/Snicco/bundle/better-wp-cli-bundle/src",
+      "Snicco\\Enterprise\\Component\\Asset\\": "src/Snicco/component/asset/src",
+      "Snicco\\Enterprise\\Component\\Condition\\": "src/Snicco/component/condition/src",
+      "Snicco\\Enterprise\\Fortress\\": "src/Snicco/plugin/snicco-fortress/src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "src/Snicco/bundle/application-layer-bundle/tests",
+      "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "src/Snicco/bundle/better-wp-cli-bundle/tests",
+      "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "src/Snicco/component/asset/tests",
+      "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "src/Snicco/component/condition/tests",
+      "Snicco\\Enterprise\\Fortress\\Tests\\": [
+        "src/Snicco/plugin/snicco-fortress/tests",
+        "src/Snicco/plugin/snicco-fortress/tests/_support"
+      ],
+      "Snicco\\Enterprise\\Monorepo\\": "src/Monorepo/",
+      "Snicco\\Enterprise\\Monorepo\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    },
+    "sort-packages": true
+  },
+  "scripts": {
+    "show-help": "make help"
+  },
+  "scripts-descriptions": {
+    "show-help": "We use make instead of comopser scripts. Run composer show-help or make to see all available scripts."
+  }
 }

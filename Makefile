@@ -38,6 +38,10 @@ endif
 MAKEFLAGS += --warn-undefined-variables # display a warning if variables are used but not defined
 MAKEFLAGS += --no-builtin-rules # remove some "magic make behavior"
 
+ifdef MAKE_SILENT
+	MAKEFLAGS+= --silent
+endif
+
 #
 # =================================================================
 # Include the make env file
