@@ -6,6 +6,8 @@ namespace Snicco\Enterprise\Fortress\Tests\browser;
 
 use Snicco\Enterprise\Fortress\Tests\End2EndTester;
 
+use function sleep;
+
 final class ExampleCest
 {
     /**
@@ -21,4 +23,10 @@ final class ExampleCest
 
         $I->seeCurrentUrlEquals('/hello-world');
     }
+    
+    public function this_test_simulates_60_really_slow_tests()
+    {
+        sleep(60);
+    }
+    
 }

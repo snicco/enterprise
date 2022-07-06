@@ -56,7 +56,10 @@
         "snicco/testing-bundle": "^1.2.1",
         "wp-cli/wp-cli-bundle": "v2.6.0",
         "lucatume/wp-browser": "3.1.6",
-        "codeception/codeception": "4.2"
+        "codeception/codeception": "4.2",
+        "codeception/module-cli": "^1.0",
+        "codeception/module-db": "^1.0",
+        "codeception/module-webdriver": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -77,7 +80,7 @@
         "test": [
             "vendor/bin/codecept run unit,usecase",
             "vendor/bin/codecept run wpunit,integration",
-            "vendor/bin/codecept run cli,browser"
+            "vendor/bin/codecept run browser"
         ]
     }
 }

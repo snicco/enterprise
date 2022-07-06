@@ -34,5 +34,10 @@
             "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\Tests\\": "tests"
         }
     },
+    "scripts": {
+        "test": [
+            "vendor/bin/codecept run"
+        ]
+    },
     "minimum-stability": "stable"
 }

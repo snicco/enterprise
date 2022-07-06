@@ -25,5 +25,10 @@
             "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "tests"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "scripts": {
+        "test": [
+            "vendor/bin/codecept run"
+        ]
+    }
 }

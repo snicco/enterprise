@@ -4,6 +4,43 @@
 test-affected:
 	$(MAYBE_EXEC_APP_IN_DOCKER) bash bin/test-affected-packages.sh
 
+PACKAGES:=$(wildcard src/Snicco/*/*)
+
+.PHONY: test-all
+test-all:
+	$(MAKE) --silent --jobs $(CORES) --keep-going --no-print-directory --output-sync _test-parallel
+
+.PHONY: _test-parallel $(PACKAGES)
+_test-parallel: $(PACKAGES)
+$(PACKAGES):
+	$(eval DOCKER_COMPOSE_PROJECT_NAME := $(lastword $(subst /, ,$@)))
+	$(MAKE) docker-up DOCKER_COMPOSE_PROJECT_NAME=$(DOCKER_COMPOSE_PROJECT_NAME) MODE=--detach
+	$(MAKE) test-package PACKAGE=$@ DOCKER_COMPOSE_PROJECT_NAME=$(DOCKER_COMPOSE_PROJECT_NAME)
+	$(MAKE) docker-down DOCKER_COMPOSE_PROJECT_NAME=$(DOCKER_COMPOSE_PROJECT_NAME)
+
+.PHONY: test-package
+test-package:
+	@$(if $(PACKAGE),,$(error "Usage: make test-package PACKAGE=src/Snicco/plugin/snicco-fortress"))
+	$(MAYBE_EXEC_APP_IN_DOCKER) bin/test-package.sh $(PACKAGE)
+
+.PHONY: test-package-suite
+test-package-suite:
+	@$(if $(PACKAGE),,$(error "Usage: make test-package-suite PACKAGE=src/Snicco/plugin/snicco-fortress SUITE=unit"))
+	@$(if $(SUITE),,$(error "Usage: make test-package-suite PACKAGE=src/Snicco/plugin/snicco-fortress SUITE=unit"))
+	$(MAYBE_EXEC_APP_IN_DOCKER) bash bin/test-package-suite.sh $(PACKAGE) $(SUITE)
+
+FORTRESS_SUITES=$(shell sh bin/package-suites.sh src/Snicco/plugin/snicco-fortress)
+FORTRESS_SUITES=unit wpunit integration usecase browser
+
+.PHONY: fortress $(FORTRESS_SUITES)
+fortress: QUIET=true
+fortress: $(FORTRESS_SUITES)
+
+$(FORTRESS_SUITES): DOCKER_COMPOSE_PROJECT_NAME=snicco-fortress-$@-tests
+$(FORTRESS_SUITES): _validate-docker-env
+	$(DOCKER_COMPOSE) up --detach > /dev/null 2>&1
+	$(call parallel_execute_helper, "$(MAYBE_EXEC_APP_IN_DOCKER) bash bin/test-package-suite.sh", "src/Snicco/plugin/snicco-fortress $(@)")
+	$(DOCKER_COMPOSE) down > /dev/null 2>&1
 
 .PHONY:codecept
 codecept: ## Run codeception for a set of files. Usage: make codecept FILES=src/Snicco/component/asset/tests/unit/AssetFactoryTest.

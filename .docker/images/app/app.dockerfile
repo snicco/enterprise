@@ -43,7 +43,9 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
 RUN apk add --update --no-cache \
         nodejs-current=18.2.0-r0 \
         yarn \
-        git
+        git \
+        bash
+
 
 RUN yarn set version 3.2.1 && yarn -v && node -v
 
@@ -134,7 +136,6 @@ USER root
 # to this container via SSH with PHPStorm.
 #
 RUN apk add --update --no-cache \
-        bash \
         make \
         vim \
         openssh
@@ -169,5 +170,7 @@ COPY ./composer.lock $MONOREPO_PATH
 RUN composer install
 
 COPY --chown=$APP_USER_NAME:$APP_GROUP_NAME . $MONOREPO_PATH
+
+RUN chmod +x $MONOREPO_PATH/bin/*.sh
 
 RUN yarn

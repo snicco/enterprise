@@ -26,7 +26,7 @@ DOCKER_COMPOSE_DIR:=$(DOCKER_DIR)/compose
 ROOT_DOCKER_COMPOSE_FILE:=$(DOCKER_COMPOSE_DIR)/docker-compose.yml
 ROOT_DOCKER_COMPOSE_FILE_LOCAL:=$(DOCKER_COMPOSE_DIR)/docker-compose.local.yml
 ROOT_DOCKER_COMPOSE_FILE_CI:=$(DOCKER_COMPOSE_DIR)/docker-compose.ci.yml
-DOCKER_COMPOSE_PROJECT_NAME:=snicco_enterprise_$(ENV)
+DOCKER_COMPOSE_PROJECT_NAME?=snicco_enterprise_$(ENV)
 
 #
 # =================================================================
@@ -65,7 +65,7 @@ DOCKER_SERVICE_PHP_FPM_NAME:=wp
 # This will export the current environment variables and then
 # run docker composer.
 #
-DOCKER_COMPOSE:=ENV=$(ENV) \
+DOCKER_COMPOSE=ENV=$(ENV) \
  TAG=$(TAG) \
  DOCKER_REGISTRY=$(DOCKER_REGISTRY) \
  DOCKER_NAMESPACE=$(DOCKER_NAMESPACE) \
@@ -119,11 +119,12 @@ ifndef FORCE_RUN_IN_CONTAINER
 	endif
 endif
 ifeq ($(FORCE_RUN_IN_CONTAINER),1)
-	MAYBE_RUN_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_NODE_NAME)
-	MAYBE_RUN_APP_IN_DOCKER:=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_APP_NAME)
-	MAYBE_EXEC_IN_DOCKER=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(SERVICE) # This needs to use "=" so that service does not evaluate to ""
-	MAYBE_EXEC_NODE_IN_DOCKER:=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_NODE_NAME)
-	MAYBE_EXEC_APP_IN_DOCKER:=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_APP_NAME)
+	# This needs to use "=" so that service does not evaluate to ""
+	MAYBE_RUN_NODE_IN_DOCKER=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_NODE_NAME)
+	MAYBE_RUN_APP_IN_DOCKER=$(DOCKER_COMPOSE) run --user $(APP_USER_NAME) --rm $(DOCKER_SERVICE_APP_NAME)
+	MAYBE_EXEC_IN_DOCKER=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(SERVICE)
+	MAYBE_EXEC_NODE_IN_DOCKER=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_NODE_NAME)
+	MAYBE_EXEC_APP_IN_DOCKER=$(DOCKER_COMPOSE) exec $(DOCKER_EXEC_ARGS) --user $(APP_USER_NAME) $(DOCKER_SERVICE_APP_NAME)
 endif
 
 .PHONY: _validate-docker-env
@@ -176,8 +177,12 @@ docker-up: _validate-docker-env ## Create one or more docker container(s). Usage
 	$(DOCKER_COMPOSE) up $(MODE) $(SERVICE)
 
 .PHONY: docker-down
-docker-down: _validate-docker-env ## Stop and remove docker all containers.
+docker-down: _validate-docker-env ## Remove docker all containers from the current project.
 	$(DOCKER_COMPOSE) down $(ARGS)
+
+.PHONY: docker-down-all
+docker-down-all: _validate-docker-env ## Remove docker all containers.
+	docker rm -f $$(docker ps -a -q) || true
 
 .PHONY: docker-restart
 docker-restart: docker-down docker-up ## Restart all containers.
