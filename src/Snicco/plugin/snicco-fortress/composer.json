@@ -1,13 +1,53 @@
 {
     "name": "snicco/fortress",
-    "license": "commercial",
     "description": "Snicco Fortress",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Calvin Alkan",
             "email": "calvin@snicco.de"
         }
     ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-hash": "*",
+        "ext-mbstring": "*",
+        "bjeavons/zxcvbn-php": "^1.3",
+        "defuse/php-encryption": "^2.3",
+        "nyholm/psr7": "^1.5.0",
+        "paragonie/constant_time_encoding": "^2.6.3",
+        "paragonie/password_lock": "^3.1.0",
+        "pragmarx/google2fa": "^8.0.0",
+        "psr/http-message": "^1.0.1",
+        "snicco/application-layer-bundle": "dev-master",
+        "snicco/better-wp-api": "^1.2.1",
+        "snicco/better-wp-cli-bundle": "dev-master",
+        "snicco/better-wp-hooks": "^1.2.1",
+        "snicco/better-wpdb": "^1.2.1",
+        "snicco/better-wpdb-bundle": "^1.2.1",
+        "snicco/content-negotiation-middleware": "^1.2.1",
+        "snicco/encryption-bundle": "^1.2.1",
+        "snicco/event-dispatcher": "^1.2.1",
+        "snicco/http-routing": "^1.2.1",
+        "snicco/http-routing-bundle": "^1.2.1",
+        "snicco/payload-middleware": "^1.2.1",
+        "snicco/pimple-bridge": "^1.2.1",
+        "snicco/psr7-error-handler": "^1.2.1",
+        "snicco/signed-url": "^1.2.1",
+        "snicco/testable-clock": "^1.2.1",
+        "snicco/wp-guests-only-middleware": "^1.2.1",
+        "webmozart/assert": "^1.10.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "4.2",
+        "codeception/module-cli": "^1.0",
+        "codeception/module-db": "^1.0",
+        "codeception/module-webdriver": "^1.0",
+        "lucatume/wp-browser": "3.1.6",
+        "snicco/event-dispatcher-testing": "^1.2.1",
+        "snicco/testing-bundle": "^1.2.1",
+        "wp-cli/wp-cli-bundle": "v2.6.0"
+    },
     "repositories": [
         {
             "type": "path",
@@ -24,43 +64,8 @@
             }
         }
     ],
-    "require": {
-        "php": "^7.4|^8.0",
-        "ext-mbstring": "*",
-        "ext-hash": "*",
-        "snicco/event-dispatcher": "^1.2.1",
-        "snicco/http-routing": "^1.2.1",
-        "snicco/http-routing-bundle": "^1.2.1",
-        "snicco/application-layer-bundle": "*",
-        "snicco/better-wp-cli-bundle": "*",
-        "snicco/signed-url": "^1.2.1",
-        "snicco/better-wp-api": "^1.2.1",
-        "snicco/encryption-bundle": "^1.2.1",
-        "defuse/php-encryption": "^2.3",
-        "snicco/better-wpdb": "^1.2.1",
-        "snicco/better-wpdb-bundle": "^1.2.1",
-        "snicco/testable-clock": "^1.2.1",
-        "snicco/content-negotiation-middleware": "^1.2.1",
-        "snicco/payload-middleware": "^1.2.1",
-        "snicco/wp-guests-only-middleware": "^1.2.1",
-        "snicco/pimple-bridge": "^1.2.1",
-        "webmozart/assert": "^1.10.0",
-        "pragmarx/google2fa": "^8.0.0",
-        "paragonie/password_lock": "^3.1.0",
-        "paragonie/constant_time_encoding": "^2.6.3",
-        "bjeavons/zxcvbn-php": "^1.3",
-        "nyholm/psr7": "^1.5.0"
-    },
-    "require-dev": {
-        "snicco/event-dispatcher-testing": "^1.2.1",
-        "snicco/testing-bundle": "^1.2.1",
-        "wp-cli/wp-cli-bundle": "v2.6.0",
-        "lucatume/wp-browser": "3.1.6",
-        "codeception/codeception": "4.2",
-        "codeception/module-cli": "^1.0",
-        "codeception/module-db": "^1.0",
-        "codeception/module-webdriver": "^1.0"
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Snicco\\Enterprise\\Fortress\\": "src"
@@ -74,8 +79,11 @@
             ]
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
+    },
     "scripts": {
         "test": [
             "vendor/bin/codecept run unit,usecase",

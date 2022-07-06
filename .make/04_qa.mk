@@ -89,6 +89,18 @@ psalm: ## Run psalm on the codebase without applying fixes.
 rector: ## Run rector on the codebase without applying fixes.
 	$(call execute_qa_tool_in_app_container, vendor/bin/rector process --dry-run --ansi $(ARGS))
 
+COMPOSER_FILES=composer.json
+COMPOSER_FILES+=$(wildcard src/Snicco/*/*/composer.json)
+
+.PHONY: composer-normalize $(COMPOSER_FILES)
+composer-normalize: $(COMPOSER_FILES)
+
+$(COMPOSER_FILES): NORMALIZE_ARGS?=--dry-run
+$(COMPOSER_FILES): VALIDATE_ARGS_ARGS?=
+$(COMPOSER_FILES):
+	$(call execute_qa_tool_in_app_container, composer-normalize $(@) --ansi $(NORMALIZE_ARGS))
+	$(call execute_qa_tool_in_app_container, composer validate $(@) --ansi --strict $(VALIDATE_ARGS_ARGS))
+
 .PHONY: composer-unused
 composer-unused: ## Check for unused composer packages.
 	$(call execute_qa_tool_in_external_container, composer-unused $(ARGS))
@@ -142,7 +154,8 @@ qa: ## Run code quality tools on all files.
 	$(MAKE) --silent --jobs $(CORES) --keep-going --no-print-directory --output-sync qa_all QUIET=true
 
 .PHONY: qa_all
-qa_all: ecs \
+qa_all: composer-normalize \
+	ecs \
 	rector \
     psalm \
     composer-unused \
@@ -153,8 +166,9 @@ qa_all: ecs \
 
 .PHONY: fix-cs
 fix-cs: ## Apply automatic fixes for the entire codebase.
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process --ansi $(ARGS)
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --fix --ansi $(ARGS)
+	$(MAKE) composer-normalize --silent --jobs $(CORES) --output-sync NORMALIZE_ARGS=--diff
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process --ansi
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --fix --ansi
 
 .PHONY: clear-qa-cache
 clear-qa-cache: ## Clear all caches of QA tools

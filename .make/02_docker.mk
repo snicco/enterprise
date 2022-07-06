@@ -106,6 +106,8 @@ DOCKER_EXEC_ARGS?=
 
 ifeq ($(ENV),ci)
 	DOCKER_EXEC_ARGS+= -T # avoid "the input device is not a TTY" in GitHub Actions
+else ifeq (,$(findstring -j,$(MAKEFLAGS)))
+	DOCKER_EXEC_ARGS+= -T # avoid "the input device is not a TTY" if running in parallel
 endif
 
 ifndef FORCE_RUN_IN_CONTAINER

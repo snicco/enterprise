@@ -1,6 +1,7 @@
 {
     "name": "snicco/condition",
-    "license": "commercial",
+    "description": "Condition classes for WordPress",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Calvin Alkan",
@@ -8,13 +9,14 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^7.4 || ^8.0",
         "snicco/str-arr": "^1.2.1"
     },
     "require-dev": {
         "codeception/codeception": "4.2",
         "lucatume/wp-browser": "3.1.6"
     },
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Snicco\\Enterprise\\Component\\Condition\\": "src"
@@ -25,7 +27,11 @@
             "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "tests"
         }
     },
-    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
+    },
     "scripts": {
         "test": [
             "vendor/bin/codecept run"

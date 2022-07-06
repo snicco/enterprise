@@ -26,9 +26,11 @@
         "paragonie/password_lock": "^3.1.0",
         "pragmarx/google2fa": "^8.0.0",
         "psr/container": "^1.1.2",
+        "psr/http-message": "^1.0.1",
         "psr/log": "^1.1.4",
         "snicco/better-wp-api": "^1.2.1",
         "snicco/better-wp-cli": "^1.2.1",
+        "snicco/better-wp-hooks": "^1.2.1",
         "snicco/better-wpdb": "^1.2.1",
         "snicco/better-wpdb-bundle": "^1.2.1",
         "snicco/content-negotiation-middleware": "^1.2.1",
@@ -39,6 +41,7 @@
         "snicco/kernel": "^1.2.1",
         "snicco/payload-middleware": "^1.2.1",
         "snicco/pimple-bridge": "^1.2.1",
+        "snicco/psr7-error-handler": "^1.2.1",
         "snicco/signed-url": "^1.2.1",
         "snicco/str-arr": "^1.2.1",
         "snicco/testable-clock": "^1.2.1",
@@ -50,6 +53,7 @@
         "codeception/module-cli": "^1.0",
         "codeception/module-db": "^1.0",
         "codeception/module-webdriver": "^1.0",
+        "ergebnis/composer-normalize": "^2.28",
         "lucatume/wp-browser": "3.1.6",
         "php-stubs/wordpress-stubs": "^5.9.3",
         "phpunit/phpunit": "9.5.13",
@@ -74,6 +78,20 @@
         "snicco/fortress": "self.version"
     },
     "repositories": [
+        {
+            "type": "path",
+            "url": "src/Snicco/bundle/application-layer-bundle",
+            "options": {
+                "symlink": false
+            }
+        },
+        {
+            "type": "path",
+            "url": "src/Snicco/bundle/better-wp-cli-bundle",
+            "options": {
+                "symlink": false
+            }
+        },
         {
             "type": "path",
             "url": "src/Snicco/bundle/application-layer-bundle",

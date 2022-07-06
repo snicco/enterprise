@@ -60,7 +60,10 @@ RUN yarn set version 3.2.1 && yarn -v && node -v
 # @see (https://github.com/humbug/php-scoper/issues/307)
 #
 COPY ./bin/php-scoper-0.17.5.phar /usr/local/bin/php-scoper
-RUN chmod a+x /usr/local/bin/php-scoper
+RUN chmod +x /usr/local/bin/php-scoper
+
+COPY ./bin/composer-normalize-2.28.3.phar /usr/local/bin/composer-normalize
+RUN chmod +x /usr/local/bin/composer-normalize
 
 #
 # =================================================================

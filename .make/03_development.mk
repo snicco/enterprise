@@ -6,6 +6,10 @@ dev-server: update ## Start all development containers.
 	@echo "Development server is running at https://$(APP_HOST)"
 	$(MAKE) get-wp-files
 
+.PHONY: clean-vendor
+clean-vendor: ## Remove all vendor folders
+	rm -rf vendor src/Snicco/*/*/vendor
+
 .PHONY: node
 node: ARGS?=node -v
 node: ## Run any script in the node container. Usage: make node ARGS="yarn workspaces info".
@@ -47,13 +51,16 @@ get-wp-files:  ## Get a fresh copy of all WordPress files in the wp container.
 
 .PHONY: composer-merge
 composer-merge: ## Merge all composer.json files of all packages
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder merge
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder merge --ansi
 	$(MAYBE_EXEC_APP_IN_DOCKER) sed -i 's#"url": "../../#"url": "src/Snicco/#g' 'composer.json'
-	$(MAYBE_EXEC_APP_IN_DOCKER) composer dump-autoload
+	$(MAYBE_EXEC_APP_IN_DOCKER) composer update --ansi
+	$(MAKE) composer.json NORMALIZE_ARGS="--diff --no-check-lock --no-update-lock"
+	$(MAYBE_EXEC_APP_IN_DOCKER) composer dump-autoload --ansi
 
 .PHONY: composer-propagate
 composer-propagate: ## Propagate dependencies from the main composer.json to packages
-	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate
+	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/monorepo-builder propagate --ansi
+	$(MAKE) composer-normalize --jobs $(CORES) --output-sync NORMALIZE_ARGS="--diff --no-check-lock"
 
 .PHONY: xdebug-on
 xdebug-on: SERVICE?=$(DOCKER_SERVICE_PHP_FPM_NAME)

@@ -31,7 +31,8 @@ return [
     AuthModule::NAME => [
         AuthModuleOption::TWO_FACTOR_CHALLENGES_TABLE_BASENAME => 'snicco_fortress_2fa_challenges',
         AuthModuleOption::TWO_FACTOR_SETTINGS_TABLE_BASENAME => 'snicco_fortress_2fa_settings',
-        AuthModuleOption::TWO_FACTOR_CHALLENGE_HMAC_KEY => 'insecure-fortress-key', # @todo
+        AuthModuleOption::TWO_FACTOR_CHALLENGE_HMAC_KEY => 'insecure-fortress-key',
+        // @todo
     ],
 
     PasswordModule::NAME => [

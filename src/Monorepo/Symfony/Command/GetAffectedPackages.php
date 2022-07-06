@@ -57,6 +57,7 @@ final class GetAffectedPackages extends Command
             foreach ($affected_packages as $affected_package) {
                 $lines[] = $affected_package->absolute_directory_path;
             }
+
             $output->writeln($lines);
             return Command::SUCCESS;
         }
