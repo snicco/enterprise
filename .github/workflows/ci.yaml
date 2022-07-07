@@ -44,7 +44,7 @@ jobs:
 
       - name: 'Pull docker images'
         run: |
-          make docker-pull || true
+          make docker-pull SERVICE=app
 
       - name: 'Build docker images'
         run: |
