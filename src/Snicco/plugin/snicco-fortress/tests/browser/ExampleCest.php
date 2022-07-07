@@ -24,8 +24,4 @@ final class ExampleCest
         $I->seeCurrentUrlEquals('/hello-world');
     }
 
-    public function this_test_simulates_60_really_slow_tests(): void
-    {
-        sleep(60);
-    }
 }

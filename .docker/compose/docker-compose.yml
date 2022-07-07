@@ -73,6 +73,7 @@ services:
         MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
         WORDPRESS_APP_PATH: ${APP_CONTAINER_WP_APP_PATH?}
         WORDPRESS_SRC_PATH: ${APP_CONTAINER_WP_SRC_PATH?}
+        SNICCO_QA_CACHE_DIR: ${SNICCO_QA_CACHE_DIR?}
     environment:
       <<: *wp-env
       WORDPRESS_DB_NAME: snicco_enterprise_e2e_testing

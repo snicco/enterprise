@@ -26,3 +26,6 @@ modules:
       capabilities:
         chromeOptions:
           args: [ "--headless", "--disable-gpu", "--user-agent=snicco-e2e-tester", "--ignore-certificate-errors"]
+
+coverage:
+  enabled: false # @todo Browser test coverage

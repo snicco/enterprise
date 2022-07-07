@@ -31,14 +31,14 @@ fi
 # We need to stop previous containers and also set the environment
 # to ci.
 #
-heading "Cleaning up previous runs"
+heading "Cleaning up all containers and volumes"
 
 export ENV=ci
 
 if [ "$LOCAL_CI_SKIP_REBUILD" == 1 ]; then
   echo "Skipped clean up."
 else
-  make docker-down "$MAKE_ARGS" || true
+  make docker-prune-v "$MAKE_ARGS" || true
 fi
 
 START_TOTAL=$(date +%s)
@@ -95,7 +95,7 @@ END_DOCKER_BUILD=$(date +%s)
 #
 heading "Starting containers"
 START_DOCKER_UP=$(date +%s)
-make docker-up "$MAKE_ARGS" MODE="--detach"
+make docker-up "$MAKE_ARGS" SERVICE=app MODE=--detach
 END_DOCKER_UP=$(date +%s)
 
 #
@@ -107,18 +107,18 @@ END_DOCKER_UP=$(date +%s)
 #
 heading "Running QA tools"
 START_QA=$(date +%s)
-make qa "$MAKE_ARGS" QUIET=true || FAILED+=QA
+make qa "$MAKE_ARGS" QUIET=1 || FAILED+=QA
 END_QA=$(date +%s)
 
 #
 # =================================================================
-# Test
+# Tests
 # =================================================================
 #
 #
-heading "Running test suites of affected packages"
+heading "Running all tests in isolated docker containers"
 START_TEST=$(date +%s)
-#make test-affected "$MAKE_ARGS" || FAILED+=", TEST_FAST"
+make test-parallel-docker "$MAKE_ARGS" QUIET=1 DOCKER_UP_ARGS=--detach || FAILED+=", Tests"
 END_TEST=$(date +%s)
 
 #
@@ -135,7 +135,7 @@ echo -e "Pull images:         $YELLOW" $((END_DOCKER_PULL - START_DOCKER_PULL))"
 echo -e "Build docker:        $YELLOW" $((END_DOCKER_BUILD - START_DOCKER_BUILD))"s$NC"
 echo -e "Start docker:        $YELLOW" $((END_DOCKER_UP - START_DOCKER_UP))"s$NC"
 echo -e "QA:                  $YELLOW" $((END_QA - START_QA))"s$NC"
-echo -e "Fast tests:          $YELLOW" $((END_TEST - START_TEST))"s$NC"
+echo -e "Tests:               $YELLOW" $((END_TEST - START_TEST))"s$NC"
 echo -e "---------------------------"
 echo -e "Total:               $YELLOW" $((END_TOTAL - START_TOTAL))"s$NC"
 echo -e ""
@@ -146,7 +146,7 @@ else
   echo -e "${GREEN}[SUCCESS] All CI steps passed.$NC"
 fi
 
-make docker-down > /dev/null 2>&1
+make docker-prune-v > /dev/null 2>&1
 
 if [ -n "$FAILED" ]; then
   exit 1;

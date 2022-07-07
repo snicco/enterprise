@@ -35,6 +35,8 @@ services:
     build:
       args:
         - SSH_PASSWORD=${SSH_PASSWORD?}
+    environment:
+      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG?} # This value is used by Xdebug
     ports:
       - "${SSH_PORT?}:22"
     extra_hosts:

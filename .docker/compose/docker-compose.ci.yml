@@ -4,8 +4,3 @@ services:
   app:
     volumes:
       - ${MONOREPO_ROOT_HOST?}/.build:${APP_CONTAINER_MONOREPO_PATH?}/.build
-
-#  nginx:
-#    ports:
-#      - "${NGINX_UNSECURE_PORT?}:8080"
-#      - "${NGINX_SECURE_PORT?}:8443"

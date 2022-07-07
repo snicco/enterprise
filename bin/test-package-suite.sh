@@ -31,7 +31,7 @@ fi
 
 cd "$PACKAGE" || (echo 'Could not change directory.' && exit 1)
 
-heading "Running test suite $SUITE from $PACKAGE"
+heading "Running test suite '$SUITE' from $PACKAGE"
 
 if [ ! -d "$PACKAGE/vendor" ]; then
   echo "Package $PACKAGE has no vendor directory. Installing now..."
@@ -39,3 +39,5 @@ if [ ! -d "$PACKAGE/vendor" ]; then
 fi
 
 vendor/bin/codecept run "$SUITE"
+
+rm -rf "$PACKAGE/vendor"

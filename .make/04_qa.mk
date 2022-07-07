@@ -37,20 +37,27 @@ JAZKAL_PHP_QA_IMAGE_VERSION=1.72.2
 # For successful execution only a short summary is printed.
 # This behaviour can be controlled with the QUIET argument.
 #
-QUIET?=false
+QUIET?=0
 
 EXTERNAL_TOOL_COMMAND_OPTIONS=--interactive
 ifeq ($(QUIET),false)
 	EXTERNAL_TOOL_COMMAND_OPTIONS+= --tty
 endif
 
+#
+# =================================================================
+# Parallel execution helper
+# =================================================================
+#
+# Usage: $(call parallel_execute_helper, "Tests" vendor/bin/codeception run unit --ansi)
+#
 define parallel_execute_helper
-    if [ "$(QUIET)" = "false" ]; then \
-        eval "$(1) $(2)"; \
+    if [ "$(QUIET)" == "0" ]; then \
+        eval "$(1)"; \
     else \
         START=$$(date +%s); \
-        printf "%-35s" "$@"; \
-        if OUTPUT=$$(eval "$(1) $(2)" 2>&1); then \
+        printf "%-50s" "$(2)"; \
+        if OUTPUT=$$(eval "$(1)" 2>&1); then \
             printf " $(GREEN)%-6s$(NO_COLOR)" "Ok"; \
             END=$$(date +%s); \
             RUNTIME=$$((END-START)) ;\
@@ -68,13 +75,13 @@ define parallel_execute_helper
 endef
 
 define execute_qa_tool_in_app_container
-	$(call parallel_execute_helper, $(MAYBE_EXEC_APP_IN_DOCKER), $(1))
+	 $(call parallel_execute_helper, $(MAYBE_EXEC_APP_IN_DOCKER) $(1), $(@))
 endef
 
 EXTERNAL_TOOL_IMAGE:=jakzal/phpqa:$(JAZKAL_PHP_QA_IMAGE_VERSION)-php$(QA_PHP_VERSION)
 EXTERNAL_TOOL_COMMAND?=docker run $(EXTERNAL_TOOL_COMMAND_OPTIONS) --rm -v "$$(pwd):/project" -w /project -v $(SNICCO_QA_CACHE_DIR):$(SNICCO_QA_CACHE_DIR) $(EXTERNAL_TOOL_IMAGE)
 define execute_qa_tool_in_external_container
-    $(call parallel_execute_helper, $(EXTERNAL_TOOL_COMMAND), $(1))
+    $(call parallel_execute_helper, $(EXTERNAL_TOOL_COMMAND) $(1), $(@))
 endef
 
 .PHONY: ecs
@@ -91,8 +98,7 @@ rector: ARGS?=--dry-run
 rector: ## Run rector on the codebase without applying fixes.
 	$(call execute_qa_tool_in_app_container, vendor/bin/rector process $(ARGS) --ansi )
 
-COMPOSER_FILES=composer.json
-COMPOSER_FILES+=$(wildcard src/Snicco/*/*/composer.json)
+COMPOSER_FILES=composer.json $(wildcard src/Snicco/*/*/composer.json)
 
 .PHONY: composer-normalize $(COMPOSER_FILES)
 composer-normalize: $(COMPOSER_FILES)
@@ -100,8 +106,10 @@ composer-normalize: $(COMPOSER_FILES)
 $(COMPOSER_FILES): NORMALIZE_ARGS?=--dry-run
 $(COMPOSER_FILES): VALIDATE_ARGS_ARGS?=
 $(COMPOSER_FILES):
-	$(call execute_qa_tool_in_app_container, composer-normalize $(@) --ansi --indent-size=2 --indent-style=space $(NORMALIZE_ARGS))
-	$(call execute_qa_tool_in_app_container, composer validate $(@) --ansi --strict $(VALIDATE_ARGS_ARGS))
+	$(eval PACKAGE_DIR := $(firstword $(subst /composer.json, ,$(@))))
+	$(eval PACKAGE_NAME := $(lastword $(subst /, ,$(PACKAGE_DIR))))
+	$(call execute_qa_tool_in_app_container,composer-normalize $(@) --ansi --indent-size=2 --indent-style=space $(NORMALIZE_ARGS),  composer-normalize ($(PACKAGE_NAME)))
+	$(call execute_qa_tool_in_app_container, composer validate $(@) --ansi --strict $(VALIDATE_ARGS_ARGS), composer-validate ($(PACKAGE_NAME)) )
 
 .PHONY: composer-unused
 composer-unused: ## Check for unused composer packages.
@@ -156,7 +164,7 @@ magic-number-detector: ## Checks that the codebase does not contain magic number
 .PHONY: qa
 qa: ## Run code quality tools on all files.
 	@printf "$(GREEN)Running QA tools in parallel...$(NO_COLOR)\n"
-	$(MAKE) --silent --jobs $(CORES) --keep-going --no-print-directory --output-sync qa_all QUIET=true
+	$(MAKE) --silent --jobs $(CORES) --keep-going --no-print-directory --output-sync qa_all
 
 .PHONY: qa_all
 qa_all: composer-normalize \

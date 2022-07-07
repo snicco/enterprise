@@ -89,6 +89,7 @@ ARG APP_GROUP_NAME
 ARG MONOREPO_PATH
 ARG WORDPRESS_APP_PATH
 ARG WORDPRESS_SRC_PATH
+ARG SNICCO_QA_CACHE_DIR
 
 RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     adduser -D -u $APP_USER_ID -s /bin/bash $APP_USER_NAME -G $APP_GROUP_NAME && \
@@ -97,6 +98,10 @@ RUN addgroup -g $APP_GROUP_ID $APP_GROUP_NAME && \
     chown -R $APP_USER_NAME:$APP_GROUP_NAME $MONOREPO_PATH $WORDPRESS_APP_PATH $WORDPRESS_SRC_PATH && \
     mkdir -p /home/$APP_USER_NAME/.composer && \
     chown -R $APP_USER_NAME:$APP_GROUP_NAME /home/$APP_USER_NAME/.composer
+
+RUN mkdir -p $SNICCO_QA_CACHE_DIR/ecs $SNICCO_QA_CACHE_DIR/rector $SNICCO_QA_CACHE_DIR/psalm && \
+    chown -R $APP_USER_NAME:$APP_GROUP_NAME $SNICCO_QA_CACHE_DIR
+
 
 #
 # =================================================================

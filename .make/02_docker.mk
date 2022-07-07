@@ -78,6 +78,7 @@ DOCKER_COMPOSE=ENV=$(ENV) \
  APP_HOST=$(APP_HOST) \
  WP_CONTAINER_WP_APP_PATH=$(WP_CONTAINER_WP_APP_PATH) \
  APP_CONTAINER_MONOREPO_PATH=$(APP_CONTAINER_MONOREPO_PATH) \
+ SNICCO_QA_CACHE_DIR=$(SNICCO_QA_CACHE_DIR) \
  docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE) $(ALL_DOCKER_COMPOSE_FILES)
 
 #
@@ -144,11 +145,12 @@ _validate-docker-env:
 	@$(if $(APP_HOST),,$(error APP_HOST is undefined - Did you run make setup?))
 	@$(if $(WP_CONTAINER_WP_APP_PATH),,$(error WP_CONTAINER_WP_APP_PATH is undefined - Did you run make setup?))
 	@$(if $(APP_CONTAINER_MONOREPO_PATH),,$(error APP_CONTAINER_MONOREPO_PATH is undefined - Did you run make setup?))
+	@$(if $(SNICCO_QA_CACHE_DIR),,$(error SNICCO_QA_CACHE_DIR is undefined - Did you run make setup?))
 
 .PHONY: _is_ci
 _is_ci:
 	@if [ $(ENV) != ci ]; then \
-            printf "$(RED) make '$(MAKECMDGOALS)' should only be run in CI.\n$(NO_COLOR)";\
+            printf "$(RED) make '$(MAKECMDGOALS)' can only be run with ENV=ci.\n$(NO_COLOR)";\
             exit 1;\
     fi
 
@@ -206,14 +208,14 @@ docker-pull: _validate-docker-env ## Push image to a remote registry.
 	$(DOCKER_COMPOSE) pull $(SERVICE)
 
 .PHONY: docker-prune-v
-docker-prune-v: _validate-docker-env docker-down ## Delete all docker volumes.
+docker-prune-v: _validate-docker-env docker-down-all ## Delete all docker volumes.
 	docker volume prune -f
 
 .PHONY: dvp
 dvp: docker-prune-v
 
 .PHONY: docker-prune
-docker-prune: docker-down ## Remove ALL docker resources, including volumes and images.
+docker-prune: docker-down-all ## Remove ALL docker resources, including volumes and images.
 	@docker system prune -a -f --volumes
 
 .PHONY: docker-copy

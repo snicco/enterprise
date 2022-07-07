@@ -6,7 +6,7 @@
 # =================================================================
 #
 .PHONY: setup
-init: .make/.mk.env .docker/.env mkcert ## Initializes the repository.
+init: .make/.mk.env .docker/.env mkcert cache_dirs ## Initializes the repository.
 
 update: .make/.mk.env .docker/.env vendor composer.lock node_modules package-lock.json build-codeception ## Check if all files are still up to date (vendor, node_modules, etc.)
 
@@ -113,3 +113,9 @@ mkcert:
 .PHONY: build-codeception
 build-codeception: ## Build codeception actors/helpers/testers.
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/codecept build
+
+.PHONY: cache_dirs
+cache_dirs:
+	mkdir -p $(SNICCO_QA_CACHE_DIR)/ecs || true
+	mkdir -p $(SNICCO_QA_CACHE_DIR)/rector || true
+	mkdir -p $(SNICCO_QA_CACHE_DIR)/psalm || true

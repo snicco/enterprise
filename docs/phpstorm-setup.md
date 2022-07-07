@@ -52,10 +52,12 @@ You should now be able to run tests through the PhpStorm UI and also debug them 
 2. Map the full **local path** to [.wp/html](.wp/html) to `/var/www/html` (the value of `WP_CONTAINER_WP_APP_PATH` in [.mk.configuration](.make/.mk.configuration))
    <br>   
    ![](images/server-configuration.png)
-3. Optionally, map the path to the plugins you are working on to `var/www/html/wp-content/plugins/$PLUGIN_NAME`
-4. Run `make xdebug-on` to enable Xdebug for the php-fpm container.
-5. Set a breakpoint in [.wp/html/index.php](.wp/html/index.php) and click `Start Listening to debug connections` in the PhpStorm UI.
-6. Go to [https://snicco-enterprise.test](https://snicco-enterprise.test), you should now hit the breakpoint inside PhpStorm.
+3. Map the full **local path** to the repository root to `/snicco/enterprise` (the value of `APP_CONTAINER_MONOREPO_PATH
+   ` in [.mk.configuration](.make/.mk.configuration))
+4. Optionally, map the path to the plugins you are working on to `var/www/html/wp-content/plugins/$PLUGIN_NAME`
+5. Run `make xdebug-on` to enable Xdebug for the php-fpm container.
+6. Set a breakpoint in [.wp/html/index.php](.wp/html/index.php) and click `Start Listening to debug connections` in the PhpStorm UI.
+7. Go to [https://snicco-enterprise.test](https://snicco-enterprise.test), you should now hit the breakpoint inside PhpStorm.
 
 ## Debugging WP-CLI requests
 
