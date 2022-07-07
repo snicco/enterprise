@@ -17,9 +17,9 @@ use const JSON_THROW_ON_ERROR;
 final class GetAllPackages extends Command
 {
     private PackageRepository $package_repo;
-
+    
     private RepositoryRoot $repository_root;
-
+    
     public function __construct(PackageRepository $package_repo, RepositoryRoot $repository_root)
     {
         parent::__construct('get-packages');
@@ -30,9 +30,9 @@ final class GetAllPackages extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln($this->package_repo->getAll()->toJson(fn (Package $package): array => [
-            'abs_path' => $package->absolute_directory_path,
-            'rel_path' => Str::replaceFirst($package->absolute_directory_path, (string) $this->repository_root, ''),
             'name' => $package->name,
+            'rel_path' => Str::replaceFirst($package->absolute_directory_path, (string) $this->repository_root, ''),
+            'abs_path' => $package->absolute_directory_path,
             'vendor_name' => $package->vendor_name,
             'short_name' => $package->short_name,
         ], JSON_THROW_ON_ERROR));
