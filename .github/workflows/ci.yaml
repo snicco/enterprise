@@ -142,11 +142,15 @@ jobs:
 
       - name: 'Pull docker images'
         run: |
-          make docker-pull || true # This can fail if the tag does not exist yet.
+          make docker-pull SERVICE="app wp db" || true # This can fail if the tag does not exist yet.
 
       - name: 'Build docker images'
         run: |
-          make docker-build
+          make docker-build SERVICE="app wp db"
+
+      - name: 'Start app container'
+        run: |
+          make docker-up SERVICE=app MODE=--detach
 
       - name: 'Set matrix'
         id: set-matrix
