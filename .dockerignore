@@ -11,3 +11,4 @@ src/Snicco/*/*/vendor
 .build/*
 .make/.mk.env
 .docker/.env
+.github
