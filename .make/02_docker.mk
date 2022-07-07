@@ -79,7 +79,7 @@ DOCKER_COMPOSE=ENV=$(ENV) \
  WP_CONTAINER_WP_APP_PATH=$(WP_CONTAINER_WP_APP_PATH) \
  APP_CONTAINER_MONOREPO_PATH=$(APP_CONTAINER_MONOREPO_PATH) \
  SNICCO_QA_CACHE_DIR=$(SNICCO_QA_CACHE_DIR) \
- docker-compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE) $(ALL_DOCKER_COMPOSE_FILES)
+ docker compose -p $(DOCKER_COMPOSE_PROJECT_NAME) --env-file $(DOCKER_ENV_FILE) $(ALL_DOCKER_COMPOSE_FILES)
 
 #
 # =================================================================
@@ -227,11 +227,11 @@ docker-prune: docker-down-all ## Remove ALL docker resources, including volumes 
 
 .PHONY: docker-copy
 docker-copy: ## Copy files from a docker container to the host.
-	@$(if $(CONTAINER),,$(error CONTAINER is undefined))
+	@$(if $(SERVICE),,$(error SERVICE is undefined))
 	@$(if $(FROM),,$(error FROM is undefined))
 	@$(if $(TO),,$(error TO is undefined))
-	docker cp $(CONTAINER):$(FROM) $(TO)
+	$(DOCKER_COMPOSE) cp $(SERVICE):$(FROM) $(TO)
 
 .PHONY: docker-copy-vendor
 docker-copy-vendor: _is_ci
-	$(MAKE) CONTAINER=$(DOCKER_SERVICE_APP_NAME) FROM=$(APP_CONTAINER_MONOREPO_PATH)/vendor TO=vendor docker-copy
+	$(MAKE) SERVICE=$(DOCKER_SERVICE_APP_NAME) FROM=$(APP_CONTAINER_MONOREPO_PATH)/vendor TO=vendor docker-copy --no-print-directory
