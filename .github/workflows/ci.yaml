@@ -18,7 +18,9 @@ jobs:
   qa:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+
       - name: 'Install docker compose'
         run : |
           DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
@@ -28,12 +30,14 @@ jobs:
           docker compose version
           docker --version
           docker buildx version
+
       - name: 'Login to GitHub package registry'
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 'Initialize make'
         run: |
           echo "APP_USER_NAME=$(id -un)" >> $GITHUB_ENV
@@ -41,19 +45,24 @@ jobs:
           echo "APP_GROUP_NAME=$(id -gn)" >> $GITHUB_ENV
           echo "APP_GROUP_ID=$(id -g)" >> $GITHUB_ENV
           make init
+
       - name: 'Pull docker images'
         run: |
           make docker-pull || true
+
       - name: 'Build docker images'
         run: |
           make docker-build
+
       - name: 'Start containers'
         run: |
           make docker-up MODE=--detach
+
       - name: 'QA'
         run: |
           make build-codeception
           make qa QUIET=1
+
       - name: 'Push docker images to GitHub package registry'
         run: |
           make docker-push
