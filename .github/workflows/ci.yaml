@@ -44,7 +44,7 @@ jobs:
 
       - name: 'Pull docker images'
         run: |
-          make docker-pull SERVICE=app
+          make docker-pull || true # This can fail if the tag does not exist yet.
 
       - name: 'Build docker images'
         run: |
