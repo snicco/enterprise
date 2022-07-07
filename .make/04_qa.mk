@@ -179,7 +179,7 @@ qa_all: composer-normalize \
     composer-require-checker
 
 .PHONY: fix-cs
-fix-cs: ## Apply automatic fixes for the entire codebase.
+fix-cs: _is_local ## Apply automatic fixes for the entire codebase.
 	$(MAKE) composer-normalize --silent --jobs $(CORES) --output-sync NORMALIZE_ARGS=--diff
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/rector process --ansi
 	$(MAYBE_EXEC_APP_IN_DOCKER) vendor/bin/ecs check --fix --ansi

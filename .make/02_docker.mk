@@ -154,6 +154,13 @@ _is_ci:
             exit 1;\
     fi
 
+.PHONY: _is_local
+_is_local:
+	@if [ $(ENV) != local ]; then \
+            printf "$(RED) make '$(MAKECMDGOALS)' can only be run with ENV=local.\n$(NO_COLOR)";\
+            exit 1;\
+    fi
+
 #
 # =================================================================
 # General purpose docker commands
