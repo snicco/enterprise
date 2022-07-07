@@ -38,7 +38,10 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
                            zip \
                            intl \
                            posix \
-                           pcntl
+                           pcntl \
+                           xdebug \
+                           # ensure that xdebug is not enabled by default
+                           && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN apk add --update --no-cache \
         nodejs-current=18.2.0-r0 \
@@ -147,10 +150,6 @@ RUN apk add --update --no-cache \
         make \
         vim \
         openssh
-
-RUN install-php-extensions xdebug \
-    # ensure that xdebug is not enabled by default
-    && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 COPY ./.docker/images/zz-app.ini /usr/local/etc/php/conf.d/zz-app.ini
 

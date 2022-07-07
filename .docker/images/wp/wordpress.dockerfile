@@ -41,16 +41,6 @@ FROM wordpress:cli-${WP_CLI_VERSION}-php${PHP_VERSION} as wp_cli
 #
 FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as base
 
-#
-# =================================================================
-# Install system dependencies
-# =================================================================
-#
-# WP-CLI needs less and bash to work properly.
-#
-RUN apk add --update --no-cache \
-        less \
-        bash
 
 #
 # =================================================================
@@ -85,7 +75,21 @@ RUN chmod a+x /usr/local/bin/install-php-extensions && \
                             simplexml \
                             sodium \
                             xmlreader \
-                            zlib
+                            zlib \
+                            xdebug \
+                            # ensure that xdebug is not enabled by default
+                            && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+#
+# =================================================================
+# Install system dependencies
+# =================================================================
+#
+# WP-CLI needs less and bash to work properly.
+#
+RUN apk add --update --no-cache \
+        less \
+        bash
 
 #
 # =================================================================
@@ -230,10 +234,6 @@ RUN apk add --update --no-cache \
         bash \
         vim \
         make
-
-RUN install-php-extensions xdebug \
-    # ensure that xdebug is not enabled by default
-    && rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 COPY ./.docker/images/zz-app.ini /usr/local/etc/php/conf.d/zz-app.ini
 
