@@ -20,7 +20,7 @@ try {
     $application = new Application();
 
     $application->add(new GenerateCommitScopes($package_repo, $repo_root));
-    $application->add(new GetAllPackages($package_repo));
+    $application->add(new GetAllPackages($package_repo, $repo_root));
     $application->add(new CreatePackageGitHubRepo($package_repo));
     $application->add(new GetAffectedPackages($package_repo));
     $application->add(new SplitPackage($package_repo));

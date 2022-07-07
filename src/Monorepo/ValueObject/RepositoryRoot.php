@@ -37,4 +37,10 @@ final class RepositoryRoot
     {
         return $this->dir . trim($file_name_or_path, DIRECTORY_SEPARATOR);
     }
+    
+    public function __toString() :string
+    {
+        return $this->dir;
+    }
+    
 }

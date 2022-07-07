@@ -6,6 +6,12 @@ dev-server: update ## Start all development containers.
 	@echo "Development server is running at https://$(APP_HOST)"
 	$(MAKE) get-wp-files
 
+.PHONY: snicco
+snicco: COMMAND?=--help
+snicco: ARGS?=
+snicco:
+	$(MAYBE_EXEC_APP_IN_DOCKER) php bin/snicco.php $(COMMAND) $(ARGS)
+
 .PHONY: clean-vendor
 clean-vendor: clean-packages-vendor ## Remove all vendor folders.
 	rm -rf vendor

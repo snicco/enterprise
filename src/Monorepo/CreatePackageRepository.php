@@ -15,7 +15,6 @@ final class CreatePackageRepository
             $repository_root->append('/src/Snicco/bundle'),
             $repository_root->append('/src/Snicco/component'),
             $repository_root->append('/src/Snicco/plugin'),
-            $repository_root->append('/src/Snicco/skeleton'),
         ], $repository_root);
     }
 }
