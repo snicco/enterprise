@@ -131,9 +131,8 @@ jobs:
         id: set-matrix
         run: |
           PACKAGES=$(php bin/snicco.php get-packages)
-          echo PACKAGES
           echo $PACKAGES
-          echo "::set-output name=packages::PACKAGES"
+          echo "::set-output name=packages::$PACKAGES"
 
   Build-packages:
     runs-on: ubuntu-latest
