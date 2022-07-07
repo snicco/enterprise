@@ -57,6 +57,9 @@ jobs:
       - name: 'QA'
         run: |
           make build-codeception
+          # We need the vendor directory on the runner so that we can share it
+          # with the jazqal/phpqa docker image.
+          make copy-vendor
           make qa QUIET=1
 
       - name: 'Push docker images to GitHub package registry'

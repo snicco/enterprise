@@ -28,14 +28,14 @@ x-wp-env: &wp-env
 services:
 
   wp:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp:${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
     build:
       context: ${MONOREPO_ROOT_HOST}
       dockerfile: ./.docker/images/wp/wordpress.dockerfile
       target: ${ENV?}
       cache_from:
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:php${PHP_VERSION?}-wp${WP_VERSION?}-stable
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp:${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp:${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}-stable
       args:
         <<: *user-args
         <<: *shared-args
@@ -56,14 +56,14 @@ services:
         condition: service_healthy
 
   app:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:php${PHP_VERSION?}-${TAG?}
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app:${ENV?}-php${PHP_VERSION?}-${TAG?}
     build:
       context: ${MONOREPO_ROOT_HOST}
       dockerfile: ./.docker/images/app/app.dockerfile
       target: ${ENV?}
       cache_from:
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:php${PHP_VERSION?}-${TAG?}
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:php${PHP_VERSION?}-stable
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app:${ENV?}-php${PHP_VERSION?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app:${ENV?}-php${PHP_VERSION?}-stable
       args:
         <<: *user-args
         <<: *shared-args
@@ -126,14 +126,14 @@ services:
 #      - network
 
   nginx:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:${TAG?}
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx:${ENV?}-${TAG?}
     build:
       context: ../images/nginx
       dockerfile: nginx.dockerfile
       target: ${ENV?}
       cache_from:
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:${TAG?}
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:stable
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx:${ENV?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx:${ENV?}-stable
       args:
         <<: *user-args
         <<: *shared-args
