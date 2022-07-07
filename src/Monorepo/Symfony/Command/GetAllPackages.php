@@ -12,13 +12,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
 
 final class GetAllPackages extends Command
 {
     private PackageRepository $package_repo;
+
     private RepositoryRoot $repository_root;
-    
+
     public function __construct(PackageRepository $package_repo, RepositoryRoot $repository_root)
     {
         parent::__construct('get-packages');
@@ -34,7 +35,7 @@ final class GetAllPackages extends Command
             'name' => $package->name,
             'vendor_name' => $package->vendor_name,
             'short_name' => $package->short_name,
-        ], JSON_PRETTY_PRINT));
+        ], JSON_THROW_ON_ERROR));
 
         return Command::SUCCESS;
     }
