@@ -10,7 +10,7 @@ permissions:
 
 env:
   ENV: ci
-  TAG: some-branch
+  TAG: stable
   FORCE_RUN_IN_CONTAINER: 1
 
 jobs:
@@ -50,10 +50,10 @@ jobs:
       - name: 'Start containers'
         run: |
           make docker-up MODE=--detach
-      - name: 'QA'
-        run: |
-          make build-codeception
-          make qa QUIET=1
+#      - name: 'QA'
+#        run: |
+#          make build-codeception
+#          make qa QUIET=1
       - name: 'Push docker images to GitHub package registry'
         run: |
           make docker-push

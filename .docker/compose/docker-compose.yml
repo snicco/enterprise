@@ -28,14 +28,14 @@ x-wp-env: &wp-env
 services:
 
   wp:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}:${TAG?}
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
     build:
       context: ${MONOREPO_ROOT_HOST}
       dockerfile: ./.docker/images/wp/wordpress.dockerfile
       target: ${ENV?}
       cache_from:
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}:${TAG?}
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}:latest
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp-${ENV?}:php${PHP_VERSION?}-wp${WP_VERSION?}-stable
       args:
         <<: *user-args
         <<: *shared-args
@@ -56,14 +56,14 @@ services:
         condition: service_healthy
 
   app:
-    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:${TAG?}
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:php${PHP_VERSION?}-${TAG?}
     build:
       context: ${MONOREPO_ROOT_HOST}
       dockerfile: ./.docker/images/app/app.dockerfile
       target: ${ENV?}
       cache_from:
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:${TAG?}
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}-php${PHP_VERSION?}:latest
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:php${PHP_VERSION?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app-${ENV?}:php${PHP_VERSION?}-stable
       args:
         <<: *user-args
         <<: *shared-args
@@ -109,7 +109,7 @@ services:
 #      target: ${ENV?}
 #      cache_from:
 #        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
-#        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:latest
+#        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:stable
 #      args:
 #        <<: *user-args
 #        <<: *shared-args
@@ -133,7 +133,7 @@ services:
       target: ${ENV?}
       cache_from:
         - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:${TAG?}
-        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:latest
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx-${ENV?}:stable
       args:
         <<: *user-args
         <<: *shared-args
