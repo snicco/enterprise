@@ -5,9 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
-  packages: read
+#permissions:
+#  contents: read
+#  packages: read
 
 env:
   ENV: ci
