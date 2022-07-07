@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
+set -x
 set -e
 set -o pipefail
 
-if [ -z "$DOCKER_CONFIG" ]; then
-    echo "DOCKER_CONFIG is empty"
-    exit 1
-fi
+DOCKER_CONFIG="$HOME/.docker"
 
-if [ "$CONFIRM_IS_GITHUB" != 1 ]; then
+if [ -z "$GITHUB_ACTION" ]; then
     echo "install-docker-compose.sh should only be run in GitHub actions."
     exit 1
 fi
