@@ -115,7 +115,7 @@ jobs:
   provide_packages:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.packages }}
+      packages: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v3
@@ -132,7 +132,7 @@ jobs:
         run: |
           PACKAGES=$(php bin/snicco.php get-packages)
           echo $PACKAGES
-          echo "::set-output name=packages::$PACKAGES"
+          echo "::set-output name=matrix::$PACKAGES"
 
   Build-packages:
     runs-on: ubuntu-latest
