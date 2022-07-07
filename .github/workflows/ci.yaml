@@ -23,13 +23,15 @@ jobs:
 
       - name: 'Install docker compose'
         run : |
-          DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
-          mkdir -p $DOCKER_CONFIG/cli-plugins 
-          curl -sSL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose
-          chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
-          docker compose version
-          docker --version
-          docker buildx version
+          chmod +x "${GITHUB_WORKSPACE}/.github/install-docker-compose.sh"
+          "${GITHUB_WORKSPACE}/.github/install-docker-compose.sh"
+#          DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+#          mkdir -p $DOCKER_CONFIG/cli-plugins
+#          curl -sSL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-$(uname -m) -o $DOCKER_CONFIG/cli-plugins/docker-compose
+#          chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+#          docker compose version
+#          docker --version
+#          docker buildx version
 
       - name: 'Login to GitHub package registry'
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
