@@ -5,8 +5,9 @@ PACKAGES_AND_SUITES:=$(foreach dir, $(PACKAGES), $(foreach suite, $(shell bash b
 
 .PHONY: test-parallel-docker tests-in-docker $(PACKAGES_AND_SUITES)
 test-parallel-docker: ARGS?=--keep-going --no-print-directory --output-sync
+test-parallel-docker: JOBS?=$(shell expr $(CORES) + 1 )
 test-parallel-docker: _is_ci
-	$(MAKE) --silent --jobs $(CORES) $(ARGS) tests-in-docker
+	$(MAKE) --silent --jobs $(JOBS) $(ARGS) tests-in-docker
 
 tests-in-docker: $(PACKAGES_AND_SUITES)
 
