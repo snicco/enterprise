@@ -17,9 +17,9 @@ use const JSON_THROW_ON_ERROR;
 final class GetAllPackages extends Command
 {
     private PackageRepository $package_repo;
-    
+
     private RepositoryRoot $repository_root;
-    
+
     public function __construct(PackageRepository $package_repo, RepositoryRoot $repository_root)
     {
         parent::__construct('get-packages');
