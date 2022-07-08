@@ -12,6 +12,7 @@ test-parallel-docker: _is_ci
 tests-in-docker: $(PACKAGES_AND_SUITES)
 
 $(PACKAGES_AND_SUITES): DOCKER_UP_ARGS?=--detach --build
+$(PACKAGES_AND_SUITES): SERVICES?=
 $(PACKAGES_AND_SUITES):
 	echo "------------------------------------------------------------------"
 	$(eval PACKAGE_DIR := $(firstword $(subst !, ,$@))) # src/Snicco/plugin/snicco-fortress
@@ -19,7 +20,7 @@ $(PACKAGES_AND_SUITES):
 	$(eval SUITE := $(lastword $(subst !, ,$@))) # unit
 	$(eval NAME := $(PACKAGE_NAME)-$(SUITE))
 	$(eval DOCKER_COMPOSE_PROJECT_NAME := $(PACKAGE_NAME)-$(SUITE)-tests)
-	$(call parallel_execute_helper, $(DOCKER_COMPOSE) up $(DOCKER_UP_ARGS), $(PACKAGE_NAME):$(SUITE) (docker-up))
+	$(call parallel_execute_helper, $(DOCKER_COMPOSE) up $(SERVICES) $(DOCKER_UP_ARGS), $(PACKAGE_NAME):$(SUITE) (docker-up))
 	$(call parallel_execute_helper, $(MAYBE_EXEC_APP_IN_DOCKER) bash bin/test-package-suite.sh $(PACKAGE_DIR) $(SUITE), $(PACKAGE_NAME):$(SUITE) (tests) )
 	$(call parallel_execute_helper, $(DOCKER_COMPOSE) down, $(PACKAGE_NAME):$(SUITE) (docker-down))
 

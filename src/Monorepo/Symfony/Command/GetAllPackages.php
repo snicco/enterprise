@@ -12,6 +12,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function implode;
+
 use const JSON_THROW_ON_ERROR;
 
 final class GetAllPackages extends Command
@@ -35,6 +37,7 @@ final class GetAllPackages extends Command
             'abs_path' => $package->absolute_directory_path,
             'vendor_name' => $package->vendor_name,
             'short_name' => $package->short_name,
+            'docker_services' => implode(" ",$package->docker_services),
         ], JSON_THROW_ON_ERROR));
 
         return Command::SUCCESS;

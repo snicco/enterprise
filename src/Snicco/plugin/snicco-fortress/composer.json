@@ -90,5 +90,14 @@
       "vendor/bin/codecept run wpunit,integration",
       "vendor/bin/codecept run browser"
     ]
+  },
+  "extra": {
+    "docker-services" : [
+      "db",
+      "app",
+      "wp",
+      "nginx",
+      "chrome"
+    ]
   }
 }

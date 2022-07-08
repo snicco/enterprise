@@ -34,5 +34,12 @@
     "test": [
       "vendor/bin/codecept run"
     ]
+  },
+  "extra": {
+    "docker-services" : [
+      "app",
+      "wp",
+      "db"
+    ]
   }
 }

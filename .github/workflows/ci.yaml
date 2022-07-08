@@ -172,17 +172,19 @@ jobs:
 
       - name: 'Pull docker images'
         run: |
-          make docker-pull || true # This can fail if the tag does not exist yet.
+          make docker-pull SERVICES=${{ matrix.packages.docker_services }} || true # This can fail if the tag does not exist yet.
 
       - name: 'Build docker images'
         run: |
-          make docker-build
+          make docker-build SERVICES=${{ matrix.packages.docker_services }}
 
       - name: 'Parallel docker tests'
         run: |
-          make test-parallel-docker PACKAGES=${{ matrix.packages.rel_path }} QUIET=1 DOCKER_UP_ARGS=--detach
+          make test-parallel-docker PACKAGES=${{ matrix.packages.rel_path }} SERVICES=${{ matrix.packages.docker_services }} QUIET=1 DOCKER_UP_ARGS=--detach
 
-  Push-images:
+
+
+  Push-images-matrix:
     runs-on: ubuntu-latest
     needs: [Build-in-matrix, QA]
     strategy:
