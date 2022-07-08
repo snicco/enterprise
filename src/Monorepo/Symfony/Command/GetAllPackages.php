@@ -37,7 +37,7 @@ final class GetAllPackages extends Command
             'vendor_name' => $package->vendor_name,
             'rel_path' => Str::replaceFirst($package->absolute_directory_path, (string) $this->repository_root, ''),
             'abs_path' => $package->absolute_directory_path,
-            'docker_services' => implode(" ",$package->docker_services),
+            'docker_services' => implode(' ', $package->docker_services),
         ], JSON_THROW_ON_ERROR));
 
         return Command::SUCCESS;

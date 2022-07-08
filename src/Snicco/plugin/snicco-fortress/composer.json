@@ -84,20 +84,20 @@
       "ergebnis/composer-normalize": true
     }
   },
-  "scripts": {
-    "test": [
-      "vendor/bin/codecept run unit,usecase",
-      "vendor/bin/codecept run wpunit,integration",
-      "vendor/bin/codecept run browser"
-    ]
-  },
   "extra": {
-    "docker-services" : [
+    "docker-services": [
       "db",
       "app",
       "wp",
       "nginx",
       "chrome"
+    ]
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run unit,usecase",
+      "vendor/bin/codecept run wpunit,integration",
+      "vendor/bin/codecept run browser"
     ]
   }
 }

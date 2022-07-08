@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0486b643aaed8069e4c987682880d5a5",
+    "content-hash": "b70e7978219b2b27ea9de391839d5eba",
     "packages": [
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1320,7 +1320,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../bundle/application-layer-bundle",
-                "reference": "fa72b46776216ef791fdb2c6798793058acaa0e2"
+                "reference": "cbf4089e28e5c680e1b7206cb092e36c091d9c34"
             },
             "require": {
                 "league/tactician": "^1.1.0",
@@ -1339,6 +1339,13 @@
                 "snicco/testing-bundle": "^1.2.1"
             },
             "type": "library",
+            "extra": {
+                "docker-services": [
+                    "app",
+                    "wp",
+                    "db"
+                ]
+            },
             "autoload": {
                 "psr-4": {
                     "Snicco\\Enterprise\\Bundle\\ApplicationLayer\\": "src"
@@ -1584,7 +1591,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../bundle/better-wp-cli-bundle",
-                "reference": "6495ea65f63313b7c31fd842e200a77510268bb4"
+                "reference": "f72c408356155ec4fb88c17a0dae43c668fe755c"
             },
             "require": {
                 "snicco/better-wp-cli": "^1.2.1",
@@ -1598,6 +1605,13 @@
                 "snicco/testing-bundle": "^1.2.1"
             },
             "type": "library",
+            "extra": {
+                "docker-services": [
+                    "app",
+                    "wp",
+                    "db"
+                ]
+            },
             "autoload": {
                 "psr-4": {
                     "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src"
