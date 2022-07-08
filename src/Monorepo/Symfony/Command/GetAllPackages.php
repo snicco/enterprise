@@ -32,11 +32,11 @@ final class GetAllPackages extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln($this->package_repo->getAll()->toJson(fn (Package $package): array => [
+            'short_name' => $package->short_name,
             'name' => $package->name,
+            'vendor_name' => $package->vendor_name,
             'rel_path' => Str::replaceFirst($package->absolute_directory_path, (string) $this->repository_root, ''),
             'abs_path' => $package->absolute_directory_path,
-            'vendor_name' => $package->vendor_name,
-            'short_name' => $package->short_name,
             'docker_services' => implode(" ",$package->docker_services),
         ], JSON_THROW_ON_ERROR));
 
