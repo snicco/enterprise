@@ -109,8 +109,8 @@ $(COMPOSER_FILES): VALIDATE_ARGS_ARGS?=
 $(COMPOSER_FILES):
 	$(eval PACKAGE_DIR := $(firstword $(subst /composer.json, ,$(@))))
 	$(eval PACKAGE_NAME := $(lastword $(subst /, ,$(PACKAGE_DIR))))
-	$(call execute_qa_tool_in_app_container,composer-normalize $(@) --ansi --indent-size=2 --indent-style=space $(NORMALIZE_ARGS),  composer-normalize ($(PACKAGE_NAME)))
-	$(call execute_qa_tool_in_app_container, composer validate $(@) --ansi --strict $(VALIDATE_ARGS_ARGS), composer-validate ($(PACKAGE_NAME)) )
+	$(call execute_qa_tool_in_app_container,composer-normalize $(@) --ansi --indent-size=2 --indent-style=space $(NORMALIZE_ARGS))
+	$(call execute_qa_tool_in_app_container, composer validate $(@) --ansi --strict $(VALIDATE_ARGS_ARGS))
 
 .PHONY: composer-unused
 composer-unused: ## Check for unused composer packages.

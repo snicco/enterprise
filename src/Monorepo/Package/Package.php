@@ -46,12 +46,12 @@ final class Package
      * @var non-empty-string
      */
     public string $composer_path;
-    
+
     /**
-     * @var string[]
+     * @var list<string>
      */
     public array $docker_services = [];
-    
+
     private ComposerJson $composer_json;
 
     /**
@@ -94,10 +94,11 @@ final class Package
         $path = $file_info->getRealPath();
         Assert::stringNotEmpty($path);
         $this->composer_path = $path;
-        
+
         $extra = $this->composer_json->getExtra();
         $docker_services = $extra['docker-services'] ?? [];
         Assert::allString($docker_services);
+        Assert::isList($docker_services);
         $this->docker_services = $docker_services;
     }
 }

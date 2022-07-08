@@ -35,16 +35,16 @@
       "ergebnis/composer-normalize": true
     }
   },
-  "scripts": {
-    "test": [
-      "vendor/bin/codecept run"
-    ]
-  },
   "extra": {
-    "docker-services" : [
+    "docker-services": [
       "app",
       "wp",
       "db"
+    ]
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run"
     ]
   }
 }
