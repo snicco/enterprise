@@ -19,6 +19,7 @@ jobs:
     name: QA - ${{matrix.runs-on}}
     runs-on: ${{matrix.runs-on}}
     strategy:
+      fail-fast: false
       matrix:
         runs-on: [buildjet-8vcpu-ubuntu-2004, buildjet-16vcpu-ubuntu-2004, buildjet-32vcpu-ubuntu-2004, buildjet-64vcpu-ubuntu-2004]
     steps:
