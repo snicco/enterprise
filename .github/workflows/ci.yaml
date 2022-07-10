@@ -16,7 +16,7 @@ env:
 jobs:
 
   QA:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v3
@@ -62,7 +62,7 @@ jobs:
           make qa QUIET=1
 
 #  Build:
-#    runs-on: ubuntu-latest
+#    runs-on: self-hosted
 #    strategy:
 #      fail-fast: false
 #      matrix:
@@ -113,7 +113,7 @@ jobs:
 #
 
   provide_packages:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       packages: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -136,7 +136,7 @@ jobs:
 
 
   Build-in-matrix:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: provide_packages
     strategy:
       fail-fast: false
@@ -186,7 +186,7 @@ jobs:
 
 
   Push-images-matrix:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [Build-in-matrix, QA]
     strategy:
       fail-fast: false
