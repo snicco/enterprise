@@ -16,7 +16,7 @@ env:
 jobs:
 
   QA:
-    runs-on: self-hosted
+    runs-on: [buildjet-2vcpu-ubuntu-2004, buildjet-4vcpu-ubuntu-2004, buildjet-8vcpu-ubuntu-2004, buildjet-16vcpu-ubuntu-2004, buildjet-32vcpu-ubuntu-2004, buildjet-64vcpu-ubuntu-2004]
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v3
@@ -62,7 +62,7 @@ jobs:
           make qa QUIET=1
 
 #  Build:
-#    runs-on: self-hosted
+#    runs-on: [buildjet-2vcpu-ubuntu-2004, buildjet-4vcpu-ubuntu-2004, buildjet-8vcpu-ubuntu-2004, buildjet-16vcpu-ubuntu-2004, buildjet-32vcpu-ubuntu-2004, buildjet-64vcpu-ubuntu-2004]
 #    strategy:
 #      fail-fast: false
 #      matrix:
@@ -113,7 +113,7 @@ jobs:
 #
 
   provide_packages:
-    runs-on: self-hosted
+    runs-on: [buildjet-2vcpu-ubuntu-2004, buildjet-4vcpu-ubuntu-2004, buildjet-8vcpu-ubuntu-2004, buildjet-16vcpu-ubuntu-2004, buildjet-32vcpu-ubuntu-2004, buildjet-64vcpu-ubuntu-2004]
     outputs:
       packages: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -136,7 +136,7 @@ jobs:
 
 
   Build-in-matrix:
-    runs-on: self-hosted
+    runs-on: [buildjet-2vcpu-ubuntu-2004, buildjet-4vcpu-ubuntu-2004, buildjet-8vcpu-ubuntu-2004, buildjet-16vcpu-ubuntu-2004, buildjet-32vcpu-ubuntu-2004, buildjet-64vcpu-ubuntu-2004]
     needs: provide_packages
     strategy:
       fail-fast: false
@@ -186,7 +186,7 @@ jobs:
 
 
   Push-images-matrix:
-    runs-on: self-hosted
+    runs-on: [buildjet-2vcpu-ubuntu-2004, buildjet-4vcpu-ubuntu-2004, buildjet-8vcpu-ubuntu-2004, buildjet-16vcpu-ubuntu-2004, buildjet-32vcpu-ubuntu-2004, buildjet-64vcpu-ubuntu-2004]
     needs: [Build-in-matrix, QA]
     strategy:
       fail-fast: false
