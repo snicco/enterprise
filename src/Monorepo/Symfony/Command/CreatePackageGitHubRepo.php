@@ -36,6 +36,21 @@ use const JSON_THROW_ON_ERROR;
 
 final class CreatePackageGitHubRepo extends Command
 {
+    /**
+     * @var int
+     */
+    private const HTTP_NOT_FOUND = 404;
+
+    /**
+     * @var int
+     */
+    private const HTTP_CREATED = 201;
+
+    /**
+     * @var int
+     */
+    private const HTTP_OK = 200;
+
     private PackageRepository $package_repo;
 
     public function __construct(PackageRepository $package_repo)
@@ -114,11 +129,11 @@ final class CreatePackageGitHubRepo extends Command
 
         curl_close($handle);
 
-        if (200 === $http_code) {
+        if (self::HTTP_OK === $http_code) {
             return true;
         }
 
-        if (404 === $http_code) {
+        if (self::HTTP_NOT_FOUND === $http_code) {
             return false;
         }
 
@@ -165,7 +180,7 @@ final class CreatePackageGitHubRepo extends Command
 
         $http_code = (int) curl_getinfo($handle, CURLINFO_HTTP_CODE);
 
-        if (201 !== $http_code) {
+        if (self::HTTP_CREATED !== $http_code) {
             throw new RuntimeException("GitHub repo not created.\nHTTP-Code: {$http_code}.\n{$output}.");
         }
 

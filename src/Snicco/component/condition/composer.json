@@ -1,35 +1,47 @@
 {
-    "name": "snicco/condition",
-    "license": "commercial",
-    "authors": [
-        {
-            "name": "Calvin Alkan",
-            "email": "calvin@snicco.de"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/snicco/codeception"
-        }
-    ],
-    "require": {
-        "php": "^7.4|^8.0",
-        "snicco/str-arr": "^1.2.1"
-    },
-    "require-dev": {
-        "codeception/codeception": "4.1.x-dev",
-        "lucatume/wp-browser": "3.1.6"
-    },
-    "autoload": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Component\\Condition\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "tests"
-        }
-    },
-    "minimum-stability": "stable"
+  "name": "snicco/condition",
+  "description": "Condition classes for WordPress",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "snicco/str-arr": "^1.2.1"
+  },
+  "require-dev": {
+    "codeception/codeception": "4.2",
+    "lucatume/wp-browser": "3.1.6"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Component\\Condition\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Component\\Condition\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
+  },
+  "extra": {
+    "docker-services": [
+      "app",
+      "wp",
+      "db"
+    ]
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run"
+    ]
+  }
 }

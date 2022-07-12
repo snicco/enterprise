@@ -13,7 +13,7 @@ final class IsAdminEntryPoint implements Condition
     /**
      * @var string[]
      */
-    private array $entry_points;
+    private array $entry_points = [];
 
     /**
      * @param string[] $entry_points A list of file names inside the /wp-admin folder.

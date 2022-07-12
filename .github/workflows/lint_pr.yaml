@@ -1,12 +1,9 @@
 name: 'Conventional PR'
-
 on:
-  # See https://github.com/amannn/action-semantic-pull-request#event-triggers for why pull_request is not correct here.
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - edited
-      - synchronize
 
 jobs:
   lint_pr_title:

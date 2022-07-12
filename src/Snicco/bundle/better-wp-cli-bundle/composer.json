@@ -1,33 +1,50 @@
 {
-    "name": "snicco/better-wp-cli-bundle",
-    "license": "commercial",
-    "description": "Integrates better-wp-cli into snicco/kernel",
-    "authors": [
-        {
-            "name": "Calvin Alkan",
-            "email": "calvin@snicco.de"
-        }
-    ],
-    "require": {
-        "snicco/kernel": "^1.2.1",
-        "snicco/better-wp-cli": "^1.2.1"
-    },
-    "require-dev": {
-        "codeception/codeception": "4.1.x-dev",
-        "lucatume/wp-browser": "3.1.6",
-        "phpunit/phpunit": "9.5.13",
-        "snicco/testing-bundle": "^1.2.0",
-        "snicco/pimple-bridge": "^1.2.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "tests"
-        }
-    },
-    "minimum-stability": "stable"
+  "name": "snicco/better-wp-cli-bundle",
+  "description": "Integrates better-wp-cli into snicco/kernel",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "require": {
+    "snicco/better-wp-cli": "^1.2.1",
+    "snicco/kernel": "^1.2.1"
+  },
+  "require-dev": {
+    "codeception/codeception": "4.2",
+    "lucatume/wp-browser": "3.1.6",
+    "phpunit/phpunit": "9.5.13",
+    "snicco/pimple-bridge": "^1.2.1",
+    "snicco/testing-bundle": "^1.2.1"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Bundle\\BetterWPCLI\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
+  },
+  "extra": {
+    "docker-services": [
+      "app",
+      "wp",
+      "db"
+    ]
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run"
+    ]
+  }
 }

@@ -30,6 +30,11 @@ final class RepositoryRoot
         $this->dir = $dir;
     }
 
+    public function __toString(): string
+    {
+        return $this->dir;
+    }
+
     /**
      * @return non-empty-string
      */

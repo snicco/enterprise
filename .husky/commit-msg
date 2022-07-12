@@ -1,4 +1,20 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx --no -- commitlint --edit
+
+#
+# =================================================================
+# Lint commit message pre commit
+# =================================================================
+#
+# We need to use -T here to disable TTY support.
+# Otherwise we get the "the input device is not a TTY" error.
+# (https://github.com/docker/compose/issues/5696)
+#
+#
+make docker-run SERVICE=node COMMAND="npx --no -- commitlint --edit" DOCKER_EXEC_ARGS="--no-TTY" && exit 0;
+
+echo "\n\033[0;31mPlease make sure that your commit message adheres to the commit message guidelines.\033[0m\n"
+echo "\033[0;32mIf you have Node.js installed locally run make commit to get an interactive commit CLI.\033[0m\n"
+
+exit 1;

@@ -29,7 +29,7 @@ final class PackageRepository
     /**
      * @var non-empty-string[]
      */
-    private array          $package_source_dirs;
+    private array          $package_source_dirs = [];
 
     private RepositoryRoot $repository_root;
 

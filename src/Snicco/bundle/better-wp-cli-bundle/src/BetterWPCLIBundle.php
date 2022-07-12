@@ -68,7 +68,7 @@ final class BetterWPCLIBundle implements Bundle
     /**
      * @return Closure(class-string<Command>):Command
      */
-    private function commandFactory(DIContainer $container): callable
+    private function commandFactory(DIContainer $container): Closure
     {
         return fn (string $command_class): object => $container->make($command_class);
     }

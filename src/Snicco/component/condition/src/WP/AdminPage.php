@@ -14,7 +14,7 @@ final class AdminPage implements Condition
     /**
      * @var string[]
      */
-    private array $pages;
+    private array $pages = [];
 
     /**
      * @param string[]|string $pages

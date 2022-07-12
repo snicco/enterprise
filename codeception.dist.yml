@@ -2,8 +2,11 @@
 include:
   - src/Snicco/component/*
   - src/Snicco/bundle/*
+  - src/Snicco/plugin/snicco-fortress
+  # Currently using a * resolves all directories recursively which fails because some snicco/* packages in vendor contain
+  # a codeception.dist.yml file. For that reason we define plugins explicitly.
 paths:
-  output: tests/_output
+  output: .build/coverage
   tests: tests
   data: tests/_data
   support: tests/_support

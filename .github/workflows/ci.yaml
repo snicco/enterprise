@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+
+  QA:
+    runs-on: buildjet-8vcpu-ubuntu-2004
+    env:
+      PHP_VERSION: '8.0'
+      WP_VERSION: '6.0'
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: 'Setup GitHub CI environment'
+        uses: ./.github/actions/ci-setup
+        with:
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Start app container'
+        run:  make docker-up SERVICE=app
+
+      - name: 'QA'
+        run: |
+          # We need the vendor directory on the runner so that we can share it
+          # with the jazqal/phpqa docker image.
+          make docker-copy-vendor
+          make qa QUIET=1
+
+      - name: 'Send Psalm type-coverage to shepherd.io'
+        if: github.event_name  == 'push'
+        run: make psalm ARGS="--shepherd --stats"
+
+  Build:
+    runs-on: buildjet-8vcpu-ubuntu-2004
+    permissions:
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1' ]
+        wp: [ '6.0' ]
+    env:
+      PHP_VERSION: ${{ matrix.php }}
+      WP_VERSION: ${{ matrix.wp }}
+      COMPOSER_AUTH_JSON_PATH: /tmp/composer-auth.json
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: 'Setup GitHub CI environment'
+        uses: ./.github/actions/ci-setup
+        with:
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Configure composer auth.json'
+        run: |
+          echo '${{ secrets.COMPOSER_AUTH_JSON }}' > ${{ env.COMPOSER_AUTH_JSON_PATH }}
+
+      - name: 'Pull docker images'
+        run: |
+          make docker-pull || true # This can fail if the tag does not exist yet.
+
+      - name: 'Build docker images'
+        run: |
+          make docker-build
+
+      - name: 'Tests'
+        run: |
+          # Only detach container, dont rebuild them.
+          make test-packages-parallel QUIET=1 DOCKER_UP_ARGS=--detach
+
+      - name: 'Push images'
+        run: make docker-push
+
+  Coverage:
+    runs-on: buildjet-8vcpu-ubuntu-2004
+    env:
+      PHP_VERSION: '8.1'
+      WP_VERSION: '6.0'
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # This is needed so that codecov auto-detects git related stuff.
+
+      - name: 'Setup GitHub CI environment'
+        uses: ./.github/actions/ci-setup
+        with:
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Start containers'
+        run: make docker-up
+
+      - name: 'Collect coverage'
+        run: make test-coverage
+
+      - name: 'Upload coverage to codecov.io'
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -Z --file $(find .build/coverage/*-coverage.xml)
+
+
+  lint_commits:
+    name: Lint commits
+    runs-on: buildjet-8vcpu-ubuntu-2004
+    if: github.event_name == 'pull_request'
+    steps:
+      # @see: https://github.com/conventional-changelog/commitlint/issues/586#issuecomment-663571375
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: 'Setup GitHub CI environment'
+        uses: ./.github/actions/ci-setup
+        with:
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Start app container'
+        run: make docker-up SERVICE=app
+
+      - name: 'Lint commit messages'
+        run: |
+          FIRST_COMMIT_SHA=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.pull_request.commits_url }} | jq -r '.[0].sha')
+          make commitlint-from SHA="$FIRST_COMMIT_SHA" 
+

@@ -24,7 +24,7 @@ final class MapCommandToApplicationService implements HandlerLocator, MethodName
     /**
      * @var array<class-string, array{0:class-string, 1:string}>
      */
-    private array $command_map;
+    private array $command_map = [];
 
     /**
      * @param array<class-string, array{0:class-string, 1:string}> $command_map

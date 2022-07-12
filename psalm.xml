@@ -14,21 +14,45 @@
         sealAllMethods="true"
         sealAllProperties="true"
         autoloader="psalm/bootstrap.php"
+        cacheDirectory="/tmp/snicco-qa/psalm"
 >
     <projectFiles>
         <directory name="src"/>
         <ignoreFiles>
-            <directory name="vendor"/>
-            <directory name="src/Snicco/skeleton"/>
+            <directory name="**vendor"/>
+            <directory name="src/skeleton"/>
+            <directory name=".wp"/>
+            <directory name="src/Snicco/*/*/vendor"/>
+            <directory name="src/Snicco/*/*/tests/_support/_generated"/>
+            <directory name=".build"/>
         </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
-
+        <InvalidDocblock>
+            <errorLevel type="suppress">
+                <file name="vendor/php-stubs/wordpress-stubs/wordpress-stubs.php"/>
+            </errorLevel>
+        </InvalidDocblock>
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <!--                This is due to the fact that we have to use the IsolatedFinder class from php-scoper -->
+                <!--                https://github.com/humbug/php-scoper/issues/579 -->
+                <file name="src/Snicco/*/*/php-scoper.php"/>
+            </errorLevel>
+        </UndefinedClass>
+        <MixedMethodCall>
+            <errorLevel type="suppress">
+                <!--                This is due to the fact that we have to use the IsolatedFinder class from php-scoper -->
+                <!--                https://github.com/humbug/php-scoper/issues/579 -->
+                <file name="src/Snicco/*/*/php-scoper.php"/>
+            </errorLevel>
+        </MixedMethodCall>
     </issueHandlers>
 
     <globals>
-        <var name="GLOBALS" type="array{phpmailer: \PHPMailer\PHPMailer\PHPMailer, wpdb: \wpdb, wp_hasher: null|\PasswordHash}"/>
+        <var name="GLOBALS"
+             type="array{phpmailer: \PHPMailer\PHPMailer\PHPMailer, wpdb: \wpdb, wp_hasher: null|\PasswordHash}"/>
     </globals>
 
     <plugins>

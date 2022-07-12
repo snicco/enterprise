@@ -1,0 +1,31 @@
+actor: End2EndTester
+modules:
+  enabled:
+    - WPDb
+    - WPWebDriver
+  config:
+    WPDb:
+      dsn: 'mysql:host=%E2E_TEST_DB_HOST%;dbname=%E2E_TEST_DB_NAME%'
+      user: "%E2E_TEST_DB_USER%"
+      password: "%E2E_TEST_DB_PASSWORD%"
+      dump: null
+      populate: false
+      cleanup: false
+      url: '%E2E_TEST_SITE_URL%'
+      tablePrefix: "%E2E_TEST_DB_PREFIX%"
+      urlReplacement: true
+    WPWebDriver:
+      url: "%E2E_TEST_SITE_URL%"
+      adminUsername: "%E2E_TEST_ADMIN_USERNAME%"
+      adminPassword: "%E2E_TEST_ADMIN_PASSWORD%"
+      adminPath: '/wp-admin'
+      browser: chrome
+      host: chrome
+      port: 4444
+      window_size: false #disabled for Chrome driver
+      capabilities:
+        chromeOptions:
+          args: [ "--headless", "--disable-gpu", "--user-agent=snicco-e2e-tester", "--ignore-certificate-errors"]
+
+coverage:
+  enabled: false # @todo Browser test coverage

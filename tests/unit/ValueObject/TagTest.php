@@ -90,7 +90,6 @@ final class TagTest extends Unit
      */
     public function that_it_works_with_patch_releases() :void
     {
-    
         $tag = new Tag('1.0.1');
     
         $this->assertFalse($tag->isMajor());
@@ -139,6 +138,5 @@ final class TagTest extends Unit
         $this->assertFalse($tag->isMinor());
         $this->assertTrue($tag->isPatch());
     }
-    
     
 }

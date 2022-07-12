@@ -1,0 +1,103 @@
+{
+  "name": "snicco/fortress",
+  "description": "Snicco Fortress plugin",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "ext-hash": "*",
+    "ext-mbstring": "*",
+    "bjeavons/zxcvbn-php": "^1.3",
+    "defuse/php-encryption": "^2.3",
+    "nyholm/psr7": "^1.5.0",
+    "paragonie/constant_time_encoding": "^2.6.3",
+    "paragonie/password_lock": "^3.1.0",
+    "pragmarx/google2fa": "^8.0.0",
+    "psr/http-message": "^1.0.1",
+    "snicco/application-layer-bundle": "dev-master",
+    "snicco/better-wp-api": "^1.2.1",
+    "snicco/better-wp-cli-bundle": "dev-master",
+    "snicco/better-wp-hooks": "^1.2.1",
+    "snicco/better-wpdb": "^1.2.1",
+    "snicco/better-wpdb-bundle": "^1.2.1",
+    "snicco/content-negotiation-middleware": "^1.2.1",
+    "snicco/encryption-bundle": "^1.2.1",
+    "snicco/event-dispatcher": "^1.2.1",
+    "snicco/http-routing": "^1.2.1",
+    "snicco/http-routing-bundle": "^1.2.1",
+    "snicco/payload-middleware": "^1.2.1",
+    "snicco/pimple-bridge": "^1.2.1",
+    "snicco/psr7-error-handler": "^1.2.1",
+    "snicco/signed-url": "^1.2.1",
+    "snicco/testable-clock": "^1.2.1",
+    "snicco/wp-guests-only-middleware": "^1.2.1",
+    "webmozart/assert": "^1.10.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "4.2",
+    "codeception/module-cli": "^1.0",
+    "codeception/module-db": "^1.0",
+    "codeception/module-webdriver": "^1.0",
+    "lucatume/wp-browser": "3.1.6",
+    "snicco/event-dispatcher-testing": "^1.2.1",
+    "snicco/testing-bundle": "^1.2.1",
+    "wp-cli/wp-cli-bundle": "v2.6.0"
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../../bundle/application-layer-bundle",
+      "options": {
+        "symlink": false
+      }
+    },
+    {
+      "type": "path",
+      "url": "../../bundle/better-wp-cli-bundle",
+      "options": {
+        "symlink": false
+      }
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Fortress\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Fortress\\Tests\\": [
+        "tests",
+        "tests/_support"
+      ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
+  },
+  "extra": {
+    "docker-services": [
+      "db",
+      "app",
+      "wp",
+      "nginx",
+      "chrome"
+    ]
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run unit,usecase",
+      "vendor/bin/codecept run wpunit,integration",
+      "vendor/bin/codecept run browser"
+    ]
+  }
+}

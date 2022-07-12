@@ -1,33 +1,45 @@
 {
-    "name": "snicco/asset",
-    "license": "commercial",
-    "authors": [
-        {
-            "name": "Calvin Alkan",
-            "email": "calvin@snicco.de"
-        }
-    ],
-  "repositories": [
+  "name": "snicco/asset",
+  "description": "Helper library for enqueing webpack generated assets",
+  "license": "proprietary",
+  "authors": [
     {
-      "type": "vcs",
-      "url": "https://github.com/snicco/codeception"
+      "name": "Calvin Alkan",
+      "email": "calvin@snicco.de"
     }
   ],
   "require": {
     "ext-json": "*"
   },
-    "require-dev": {
-        "codeception/codeception": "4.1.x-dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Component\\Asset\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "tests"
-        }
-    },
-    "minimum-stability": "stable"
+  "require-dev": {
+    "codeception/codeception": "4.2"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Component\\Asset\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snicco\\Enterprise\\Component\\Asset\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
+  },
+  "extra": {
+    "docker-services": [
+      "app",
+      "wp",
+      "db"
+    ]
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/codecept run"
+    ]
+  }
 }
