@@ -1,0 +1,14 @@
+# ---
+# Rules from .gitignore
+# ---
+vendor
+node_modules
+tests/_output/
+.wp/html
+src/Snicco/*/*/tests/_output/*
+src/Snicco/*/*/tests/_support/_generated
+src/Snicco/*/*/vendor
+.build/*
+.make/.mk.env
+.docker/.env
+.github

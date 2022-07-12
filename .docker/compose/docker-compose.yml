@@ -1,0 +1,174 @@
+version: '3.9'
+
+networks:
+  network:
+
+volumes:
+  db:
+  wordpress_app:
+  wordpress_src:
+
+secrets:
+  composer_auth_json:
+    file: ${COMPOSER_AUTH_JSON_PATH}
+
+x-shared-args: &shared-args
+  BUILDKIT_INLINE_CACHE: ${BUILDKIT_INLINE_CACHE?}
+
+x-user-args: &user-args
+  APP_GROUP_ID: ${APP_GROUP_ID?}
+  APP_GROUP_NAME: ${APP_GROUP_NAME?}
+  APP_USER_ID: ${APP_USER_ID?}
+  APP_USER_NAME: ${APP_USER_NAME?}
+
+x-wp-env: &wp-env
+  WORDPRESS_DB_HOST: db
+  WORDPRESS_DB_USER: root
+  WORDPRESS_DB_PASSWORD: root
+  WORDPRESS_DB_NAME: snicco_enterprise
+  E2E_TEST_WORDPRESS_DB_NAME: snicco_enterprise_e2e_testing
+  WORDPRESS_SITE_URL: "https://${APP_HOST?}"
+
+services:
+
+  wp:
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp:${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
+    build:
+      context: ${MONOREPO_ROOT_HOST}
+      dockerfile: ./.docker/images/wp/wordpress.dockerfile
+      target: ${ENV?}
+      cache_from:
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp:${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/wp:${ENV?}-php${PHP_VERSION?}-wp${WP_VERSION?}-stable
+      args:
+        <<: *user-args
+        <<: *shared-args
+        WP_VERSION: ${WP_VERSION?}
+        WP_CLI_VERSION: ${WP_CLI_VERSION?}
+        PHP_VERSION: ${PHP_VERSION?}
+        ALPINE_VERSION: ${ALPINE_VERSION?}
+        WP_APPLICATION_PATH: ${WP_CONTAINER_WP_APP_PATH?}
+        WP_SRC_PATH: ${WP_CONTAINER_WP_SRC_PATH?}
+    environment: *wp-env
+    volumes:
+      - wordpress_app:${WP_CONTAINER_WP_APP_PATH?}
+      - wordpress_src:${WP_CONTAINER_WP_SRC_PATH?}
+    networks:
+      - network
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app:${ENV?}-php${PHP_VERSION?}-${TAG?}
+    build:
+      context: ${MONOREPO_ROOT_HOST}
+      dockerfile: ./.docker/images/app/app.dockerfile
+      target: ${ENV?}
+      cache_from:
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app:${ENV?}-php${PHP_VERSION?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/app:${ENV?}-php${PHP_VERSION?}-stable
+      args:
+        <<: *user-args
+        <<: *shared-args
+        PHP_VERSION: ${PHP_VERSION?}
+        ALPINE_VERSION: ${ALPINE_VERSION?}
+        COMPOSER_VERSION: ${COMPOSER_VERSION?}
+        MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
+        WORDPRESS_APP_PATH: ${APP_CONTAINER_WP_APP_PATH?}
+        WORDPRESS_SRC_PATH: ${APP_CONTAINER_WP_SRC_PATH?}
+        SNICCO_QA_CACHE_DIR: ${SNICCO_QA_CACHE_DIR?}
+    environment:
+      <<: *wp-env
+      WORDPRESS_DB_NAME: snicco_enterprise_e2e_testing
+      # @see https://github.com/composer/composer/issues/9368#issuecomment-718112361
+      COMPOSER_ROOT_VERSION: "dev-master"
+    volumes:
+      - wordpress_app:${APP_CONTAINER_WP_APP_PATH?}
+      - wordpress_src:${APP_CONTAINER_WP_SRC_PATH?}
+    secrets:
+      - source: composer_auth_json
+        target: /home/${APP_USER_NAME?}/.composer/auth.json
+    depends_on:
+      # The app container must start after the WordPress one due to the way shared volumes are populated.
+      # If the app container is started before the wp container the "wordpress_app" named volume does
+      # not receive the correct contents.
+      # We might change this in the future, but then we would probably need to put php-fpm and
+      # nginx into one container to facility sharing the code.
+      - wp
+
+    # Keep the app container running.
+    # There is no long-running process defined as the entrypoint for the container.
+    # Keeping the container running saves as time for frequently run commands since
+    # we can use docker exec over docker run.
+    # @see https://stackoverflow.com/a/55953120
+    networks:
+      - network
+    tty: true
+
+#  node:
+#    container_name: node
+#    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
+#    build:
+#      context: ${MONOREPO_ROOT_HOST}
+#      dockerfile: ./.docker/images/node/node.dockerfile
+#      target: ${ENV?}
+#      cache_from:
+#        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:${TAG?}
+#        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/node-${ENV?}:stable
+#      args:
+#        <<: *user-args
+#        <<: *shared-args
+#        NODE_VERSION: ${NODE_VERSION?}
+#        ALPINE_VERSION: ${ALPINE_VERSION?}
+#        MONOREPO_PATH: ${APP_CONTAINER_MONOREPO_PATH?}
+#    # Keep the node container running.
+#    # There is no long-running process defined as the entrypoint for the container.
+#    # Keeping the container running saves as time for frequently run commands since
+#    # we can use docker exec over docker run.
+#    # @see https://stackoverflow.com/a/55953120
+#    tty: true
+#    networks:
+#      - network
+
+  nginx:
+    image: ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx:${ENV?}-${TAG?}
+    build:
+      context: ../images/nginx
+      dockerfile: nginx.dockerfile
+      target: ${ENV?}
+      cache_from:
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx:${ENV?}-${TAG?}
+        - ${DOCKER_REGISTRY?}/${DOCKER_NAMESPACE?}/nginx:${ENV?}-stable
+      args:
+        <<: *user-args
+        <<: *shared-args
+        NGINX_VERSION: ${NGINX_VERSION?}
+        WP_APPLICATION_PATH: ${WP_CONTAINER_WP_APP_PATH?}
+    depends_on:
+      - wp
+    volumes:
+      - wordpress_app:${WP_CONTAINER_WP_APP_PATH?}:ro
+    networks:
+      - network
+
+  db:
+    image: ${DB_IMAGE?}
+    environment:
+      MYSQL_DATABASE: snicco_enterprise
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ${MONOREPO_ROOT_HOST}/.docker/images/db/imports:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "mysql snicco_enterprise -uroot -proot -e 'SELECT 1;'  || exit 1" ]
+      interval: 0.2s
+      retries: 50
+    networks:
+      - network
+
+  chrome:
+    image: selenium/standalone-chrome:4.2.2-20220609
+    shm_size: 2gb
+    networks:
+      - network
+

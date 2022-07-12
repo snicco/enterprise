@@ -1,0 +1,24 @@
+namespace: Snicco\Enterprise\Fortress\Tests
+actor: WPCLITester
+
+modules:
+  enabled:
+    - WPDb
+    - WPCLI
+  config:
+    WPDb:
+      dsn: 'mysql:host=%E2E_TEST_DB_HOST%;dbname=%E2E_TEST_DB_NAME%'
+      user: "%E2E_TEST_DB_USER%"
+      password: "%E2E_TEST_DB_PASSWORD%"
+      dump: null
+      populate: false
+      cleanup: false
+      url: '%E2E_TEST_SITE_URL%'
+      tablePrefix: "%E2E_TEST_DB_PREFIX%"
+      urlReplacement: true
+    WPCLI:
+      path: "%E2E_TEST_WP_ROOT_FOLDER%"
+      throw: false
+      env:
+        strict_args: true
+        disable-auto-update: true

@@ -9,7 +9,7 @@ final class All implements Condition
     /**
      * @var Condition[]
      */
-    private array $conditions;
+    private array $conditions = [];
 
     /**
      * @param Condition[] $conditions

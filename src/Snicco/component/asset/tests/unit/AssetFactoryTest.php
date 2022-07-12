@@ -24,7 +24,7 @@ final class AssetFactoryTest extends Unit
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectNoticeMessage('[bogus] is not a valid manifest file.');
-        new AssetFactory('/foo/bar', 'bogus',);
+        new AssetFactory('/foo/bar', 'bogus', );
     }
 
     /**
@@ -32,7 +32,7 @@ final class AssetFactoryTest extends Unit
      */
     public function that_an_asset_can_be_created(): void
     {
-        $factory = new AssetFactory('/foo/bar/public', $this->fixturesDir() . '/public/manifest.json',);
+        $factory = new AssetFactory('/foo/bar/public', $this->fixturesDir() . '/public/manifest.json', );
 
         $this->assertSame('/foo/bar/public/js/frontend.js?1234', $factory('js/frontend.js'));
         $this->assertSame('/foo/bar/public/js/frontend.js?1234', $factory('/js/frontend.js'));
@@ -57,7 +57,7 @@ final class AssetFactoryTest extends Unit
      */
     public function that_missing_files_throw_an_exception(): void
     {
-        $factory = new AssetFactory('/foo/bar/public', $this->fixturesDir() . '/public/manifest.json',);
+        $factory = new AssetFactory('/foo/bar/public', $this->fixturesDir() . '/public/manifest.json', );
 
         $this->expectException(MissingManifestAsset::class);
         $factory('foo');

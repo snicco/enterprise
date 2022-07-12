@@ -12,7 +12,7 @@ final class QueryVar implements Condition
     /**
      * @var array<string,string>
      */
-    private array $query_vars;
+    private array $query_vars = [];
 
     /**
      * @param array<string,string> $query_vars

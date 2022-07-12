@@ -1,0 +1,76 @@
+version: '3.9'
+
+#
+# =================================================================
+# Shared local volumes:
+# =================================================================
+#
+# We need to create bind-mounts for project files for
+# each container if we want to have live updates.
+# Defining bind-mounts in one container only will not work,
+# even though the files should in theory be connected through the shared (named) volumes.
+# We need both the component and bundle directory so that composer path symlinks work.
+#
+services:
+
+  wp:
+    volumes:
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${WP_CONTAINER_WP_APP_PATH?}/wp-content/bundle
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${WP_CONTAINER_WP_APP_PATH?}/wp-content/component
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/snicco-fortress:${WP_CONTAINER_WP_APP_PATH?}/wp-content/plugins/snicco-fortress
+    environment:
+      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG?} # This value is used by Xdebug
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  app:
+    volumes:
+      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${APP_CONTAINER_WP_APP_PATH?}/wp-content/bundle
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${APP_CONTAINER_WP_APP_PATH?}/wp-content/component
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/snicco-fortress:${APP_CONTAINER_WP_APP_PATH?}/wp-content/plugins/snicco-fortress
+        # We persist the host composer cache of the docker container.
+        # Otherwise, each composer update will be extremely slow.
+      - ${COMPOSER_CACHE_PATH?}:/home/${APP_USER_NAME?}/.composer/cache
+    build:
+      args:
+        - SSH_PASSWORD=${SSH_PASSWORD?}
+    environment:
+      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG?} # This value is used by Xdebug
+    ports:
+      - "${SSH_PORT?}:22"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "${MAILHOG_SMTP_PORT?}:1025"
+      - "${MAILHOG_UI_PORT?}:8025"
+    networks:
+      - network
+
+  db:
+    ports:
+      # Expose the database in local environment so that we are able
+      # to connect to it using Sequel Ace / Table Plus
+      - "${DB_PORT?}:3306"
+    volumes:
+      - db:/var/lib/mysql
+
+  nginx:
+    volumes:
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/bundle:${WP_CONTAINER_WP_APP_PATH?}/wp-content/bundle
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/component:${WP_CONTAINER_WP_APP_PATH?}/wp-content/component
+      - ${MONOREPO_ROOT_HOST?}/src/Snicco/plugin/snicco-fortress:${WP_CONTAINER_WP_APP_PATH?}/wp-content/plugins/snicco-fortress
+    ports:
+      # The NGINX container is not running as root
+      # which is why we can't listen on ports below
+      # 1000.
+      - "${NGINX_UNSECURE_PORT?}:8080"
+      - "${NGINX_SECURE_PORT?}:8443"
+
+#  node:
+#    volumes:
+#      - ${MONOREPO_ROOT_HOST?}:${APP_CONTAINER_MONOREPO_PATH?}

@@ -1,0 +1,38 @@
+name: "Setup GitHub CI environment"
+description: "Install docker compose, login to GitHub contain registry and setup make."
+
+inputs:
+  registry_password:
+    description: "Registry password"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: 'Install docker compose'
+      shell: bash
+      run: |
+        chmod +x ${GITHUB_WORKSPACE}/.github/actions/ci-setup/install-docker-compose.sh
+        ${GITHUB_WORKSPACE}/.github/actions/ci-setup/install-docker-compose.sh
+
+    - name: 'Login to GitHub package registry'
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ inputs.registry_password }}
+
+    - name: 'Set make env variables'
+      shell: bash
+      run: |
+        echo "APP_USER_NAME=$(id -un)" >> $GITHUB_ENV
+        echo "APP_USER_ID=$(id -u)" >> $GITHUB_ENV
+        echo "APP_GROUP_NAME=$(id -gn)" >> $GITHUB_ENV
+        echo "APP_GROUP_ID=$(id -g)" >> $GITHUB_ENV
+        echo "ENV=ci" >> $GITHUB_ENV
+        echo "TAG=auth-bundle" >> $GITHUB_ENV
+        echo "FORCE_RUN_IN_CONTAINER=1" >> $GITHUB_ENV
+
+    - name: 'Make init'
+      shell: bash
+      run: make init

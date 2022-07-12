@@ -4,6 +4,7 @@
     "asset",
     "condition",
     "application-layer-bundle",
+    "auth-bundle",
     "better-wp-cli-bundle",
     "distributed-plugin"
 ]

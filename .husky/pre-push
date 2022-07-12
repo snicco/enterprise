@@ -1,4 +1,15 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-composer lint || { echo "Please run composer lint:fix before pushing your changes." && exit 1; }
+#
+# =================================================================
+# Lint the codebase pre push.
+# =================================================================
+#
+# We need to use -T here to disable TTY support.
+# Otherwise we get the "the input device is not a TTY" error.
+# (https://github.com/docker/compose/issues/5696)
+#
+#
+make lint DOCKER_EXEC_ARGS=--no-TTY || { echo "\033[0;31mPlease run 'make fix' and 'git commit --amend --no-edit' before pushing your changes.\033[0m" && exit 1; }
+

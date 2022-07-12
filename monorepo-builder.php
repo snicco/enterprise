@@ -18,33 +18,33 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/src/Snicco/bundle',
         __DIR__ . '/src/Snicco/component',
         __DIR__ . '/src/Snicco/plugin',
-        __DIR__ . '/src/Snicco/skeleton',
+        //__DIR__ . '/src/Snicco/skeleton',
     ]);
 
     $parameters->set(Option::DATA_TO_APPEND, [
-        ComposerJsonSection::REPOSITORIES => [
-            [
-                'type' => 'vcs',
-                'url' => 'https://github.com/snicco/codeception',
-            ],
-        ],
         ComposerJsonSection::REQUIRE => [
-            'php' => '^7.4|^8.0',
+            'php' => '^7.4 || ^8.0',
         ],
         ComposerJsonSection::REQUIRE_DEV => [
-            'codeception/codeception' => '4.1.x-dev',
+            // Codeception dependencies
+            'codeception/codeception' => '4.2',
+            'codeception/module-cli' => '^1.0',
+            'codeception/module-db' => '^1.0',
+            'codeception/module-webdriver' => '^1.0',
             'phpunit/phpunit' => '9.5.13',
-            'symplify/monorepo-builder' => '9.4.70',
             'lucatume/wp-browser' => '3.1.6',
+            // QA dependencies
             'vimeo/psalm' => '4.22.0',
-            'rector/rector' => '0.12.18',
             'symplify/easy-coding-standard' => '10.1.2',
+            'rector/rector' => '0.13.5',
+            // Monorepo dependencies,
+            'sniccowp/php-scoper-wordpress-excludes' => '^5.9.3',
+            'symplify/monorepo-builder' => '9.4.70',
             'vlucas/phpdotenv' => '5.4.1',
             'php-stubs/wordpress-stubs' => '^5.9.3',
-            'symfony/console' => '5.4.7',
+            'symfony/console' => '^5.4.7',
+            'symfony/finder' => '^5.4.7',
             'symplify/composer-json-manipulator' => '9.3.26',
-            'webmozart/assert' => '^1.10.0',
-            'snicco/str-arr' => '^1.1.1',
         ],
         ComposerJsonSection::AUTOLOAD_DEV => [
             'psr-4' => [

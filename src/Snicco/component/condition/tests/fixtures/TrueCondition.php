@@ -7,6 +7,9 @@ namespace Snicco\Enterprise\Component\Condition\Tests\fixtures;
 use Snicco\Enterprise\Component\Condition\Condition;
 use Snicco\Enterprise\Component\Condition\Context;
 
+/**
+ * @psalm-suppress UnusedClass
+ */
 final class TrueCondition implements Condition
 {
     public function isTruthy(Context $context): bool
