@@ -105,10 +105,16 @@ jobs:
         run: make test-coverage
 
       - name: 'Upload coverage to codecov.io'
-        run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -Z --file $(find .build/coverage/*-coverage.xml)
+        # v3.1.0
+        uses: codecov/codecov-action@81cd2dc8148241f03f5839d295e000b8f761e378
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: .build/coverage
+          fail_ci_if_error: true
+#        run: |
+#          curl -Os https://uploader.codecov.io/latest/linux/codecov
+#          chmod +x codecov
+#          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -Z --file $(find .build/coverage/*-coverage.xml)
 
 
   lint_commits:
