@@ -91,15 +91,22 @@ declare -A SUITE_START
 declare -A SUITE_END
 
 for UNIQUE_SUITE in "${UNIQUE_SUITES[@]}"; do
-  SUITE_START["$UNIQUE_SUITE"]="$(date +%s)"
-
-  heading "Running all $UNIQUE_SUITE suites at once"
-
   ARGS=()
   if [ "$COVERAGE" == 1 ]; then
+
+    # codeception cant collect code coverage for cli tests.
+    # @todo enable coverage for browser tests
+    if [ "$UNIQUE_SUITE" == "cli" ] || [ "$UNIQUE_SUITE" == "browser" ]; then
+        continue
+    fi
+
     ARGS+=("--coverage" "--coverage-xml" "$UNIQUE_SUITE-coverage.xml")
     export XDEBUG_MODE="$XDEBUG_MODE"
   fi
+
+  heading "Running all $UNIQUE_SUITE suites at once"
+
+  SUITE_START["$UNIQUE_SUITE"]="$(date +%s)"
 
   # @see https://codeception.com/docs/08-Customization#One-Runner-for-Multiple-Applications
   vendor/bin/codecept run "*::$UNIQUE_SUITE" "${ARGS[@]}" || FAILED+=("$UNIQUE_SUITE")

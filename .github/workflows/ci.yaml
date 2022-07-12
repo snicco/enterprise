@@ -111,11 +111,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: .build/coverage
           fail_ci_if_error: true
-#        run: |
-#          curl -Os https://uploader.codecov.io/latest/linux/codecov
-#          chmod +x codecov
-#          ./codecov -t ${{ secrets.CODECOV_TOKEN }} -Z --file $(find .build/coverage/*-coverage.xml)
-
 
   lint_commits:
     name: Lint commits
